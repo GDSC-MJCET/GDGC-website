@@ -137,7 +137,7 @@ const JoinUsButton = () => {
   return (
     <div className="flex flex-col  items-center space-y-6 py-16">
       {/* Text */}
-      <p className="text-xl md:text-2xl font-medium text-gray-800 text-center">
+      <p className="text-xl md:text-2xl font-medium text-center">
         Apply for an Execom position !!
       </p>
       <img src={gdglogo} alt=""  className="w-10" />
@@ -146,7 +146,6 @@ const JoinUsButton = () => {
         width="120" 
         height="60" 
         viewBox="0 0 120 60" 
-        className="text-gray-600"
       >
         <path
           d="M10 20 Q30 10, 50 25 T90 30 L85 25 M90 30 L85 35"

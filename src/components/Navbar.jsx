@@ -11,6 +11,7 @@ import {
   MobileNavMenu,
 } from "@/components/ui/resizable-navbar";
 import { useState } from "react";
+import { ModeToggle } from "./mode-toggle";
 
 export function Navibar() {
     const navItems = [
@@ -41,6 +42,7 @@ export function Navibar() {
             {/* <NavbarButton variant="secondary">Login</NavbarButton>
             <NavbarButton variant="primary">Book a call</NavbarButton> */}
           </div>
+          <ModeToggle />
         </NavBody>
 
         {/* Mobile Navigation */}
