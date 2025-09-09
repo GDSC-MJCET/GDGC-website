@@ -349,7 +349,6 @@ export const ApplicationFormPage = () => {
         },
       });
 
-      console.log('Application submitted successfully:', response.data);
       setSubmitStatus('success');
       
       // Reset form on successful submission
@@ -372,16 +371,7 @@ export const ApplicationFormPage = () => {
       setResumeUrl("");
       
     } catch (error) {
-      console.error('Error submitting application:', error);
       setSubmitStatus('error');
-      
-      // For now, also copy to clipboard as fallback
-      const jsonData = JSON.stringify(applicationData, null, 2);
-      navigator.clipboard.writeText(jsonData).then(() => {
-        alert('API request failed. Application data copied to clipboard as JSON!');
-      }).catch(() => {
-        alert('API request failed. Application data:\n\n' + jsonData);
-      });
     } finally {
       setIsSubmitting(false);
     }
