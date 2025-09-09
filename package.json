@@ -8,7 +8,6 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "postbuild": "react-snap"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.3.3",
