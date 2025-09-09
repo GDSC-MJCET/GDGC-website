@@ -343,7 +343,7 @@ export const ApplicationFormPage = () => {
 
     try {
       // Replace with your actual API endpoint
-      const response = await axios.post('http://localhost:3000/application', applicationData, {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_KEY}/application`, applicationData, {
         headers: {
           'Content-Type': 'application/json',
         },
