@@ -12,21 +12,22 @@ import {
 } from "@/components/ui/resizable-navbar";
 import { useState } from "react";
 import { ModeToggle } from "./mode-toggle";
+import { Link, NavLink } from "react-router-dom";
 
 export function Navibar() {
     const navItems = [
-        {
-          name: "Home",
-          link: "/",
-        },
+        // {
+        //   name: "Home",
+        //   link: "/",
+        // },
         {
           name: "Hiring",
-          link: "/hiring",
+          link: "/  ",
         },
-        {
-          name: "About",
-          link: "/about",
-        },
+        // {
+        //   name: "About",
+        //   link: "/about",
+        // },
     ];
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -49,12 +50,19 @@ export function Navibar() {
         <MobileNav>
           <MobileNavHeader>
             <NavbarLogo />
-            <MobileNavToggle
-              isOpen={isMobileMenuOpen}
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
+            <div className="flex items-center justify-center space-x-6 mr-5">
+            {navItems.map((item, idx) => (
+              <NavLink 
+                key={idx}
+                to={item.link} 
+                className="relative text-neutral-600 dark:text-neutral-300 hover:text-blue-600 transition-colors duration-200"
+              >
+                {item.name}
+              </NavLink>
+            ))}
+            </div>
           </MobileNavHeader>
-
-          <MobileNavMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)}>
+          {/* <MobileNavMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)}>
             {navItems.map((item, idx) => (
               <a
                 key={`mobile-link-${idx}`}
@@ -62,8 +70,8 @@ export function Navibar() {
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="relative text-neutral-600 dark:text-neutral-300">
                 <span className="block">{item.name}</span>
-              </a>
-            ))}
+                  </a>
+                ))}
             <div className="flex w-full flex-col gap-4">
               {/* <NavbarButton
                 onClick={() => setIsMobileMenuOpen(false)}
@@ -77,8 +85,8 @@ export function Navibar() {
                 className="w-full">
                 Book a call
               </NavbarButton> */}
-            </div>
-          </MobileNavMenu>
+            {/* </div> */}
+          {/* </MobileNavMenu> */} 
         </MobileNav>
       </Navbar>
       {/* Navbar */}

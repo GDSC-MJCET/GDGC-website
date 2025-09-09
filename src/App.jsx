@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import {Navibar} from './components/Navbar'
 import { HiringPage } from './pages/HiringPage'
+import { ApplicationFormPage } from './pages/ApplicationFormPage'
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
@@ -27,9 +28,10 @@ function AppWithRouter() {
     <Router>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route index element={<HomePage/>} />
-          <Route path="hiring" element={<HiringPage/>} />
-          <Route path="about" element={<AboutPage/>} />
+          {/* <Route index element={<HomePage/>} /> */}
+          <Route index element={<HiringPage/>} />
+          <Route path="apply" element={<ApplicationFormPage/>} />
+          {/* <Route path="about" element={<AboutPage/>} /> */}
         </Route>
       </Routes>
     </Router>

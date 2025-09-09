@@ -11,6 +11,8 @@ import { Button } from "../components/ui/button";
 import gdglogo from "../assets/gdg-logo.png"
 import random from "../assets/random.png"
 import { PixelatedCanvas } from "../components/ui/pixelated-canvas";
+import { Link } from 'lucide-react'
+import { NavLink } from 'react-router-dom'
 
 export const HiringPage = () => {
   return (
@@ -142,8 +144,10 @@ const JoinUsButton = () => {
       {/* Swigly Arrow SVG */}
       
       {/* Button */}
-      <Button className=" hover:bg-gray-800 px-6 sm:px-8 py-6 sm:py-8 rounded-lg font-semibold text-base sm:text-lg transition-all duration-300 hover:scale-105">
+      <Button  className="  px-6 sm:px-8 py-6 sm:py-8 rounded-lg font-semibold text-base sm:text-lg transition-all duration-300 hover:scale-105">
+       <NavLink to="apply">
         Apply Here !!
+        </NavLink>
       </Button>
       <div className="w-full max-w-4xl">
         <PixelatedCanvasDemo />
