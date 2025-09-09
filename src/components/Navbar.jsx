@@ -32,7 +32,7 @@ export function Navibar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full ">
       <Navbar>
         {/* Desktop Navigation */}
         <NavBody>

@@ -9,11 +9,11 @@ import { ThemeProvider } from './components/theme-provider';
 
 function App() {
   return (
-      <div className="min-h-screen bg-repeat min-w-full bg-center bg-auto"> 
-        <div className="fixed top-5 left-0 w-full z-50">
+      <div className=" min-h-screen bg-repeat  w-full bg-center bg-auto"> 
+        <div className=" fixed top-5 w-full z-50 ">
           <Navibar/>
         </div>
-        <div className="pt-20">
+        <div className="pt-10 w-full">
           <Outlet />
         </div>
       </div>
