@@ -192,13 +192,53 @@ export function PixelatedCanvasDemo() {
 
 export function ColourfulTextDemo() {
   return (
-      <div className='flex flex-col justify-center items-center mb-10'>
-        <p className="text-4xl md:text-5xl lg:text-9xl font-bold text-center text-white relative z-2 font-sans">
+      <motion.div 
+        className='flex flex-col justify-center items-center mb-10 cursor-pointer'
+        whileHover={{
+          scale: 1.05,
+          rotate: [0, -2, 2, -2, 2, 0],
+          y: [0, -5, 5, -5, 5, 0],
+        }}
+        transition={{
+          duration: 0.8,
+          ease: "easeInOut",
+          rotate: {
+            duration: 0.6,
+            ease: "easeInOut"
+          },
+          y: {
+            duration: 0.6,
+            ease: "easeInOut"
+          }
+        }}
+        whileTap={{
+          scale: 0.95,
+          rotate: [0, -5, 5, -5, 5, 0],
+        }}
+      >
+        <motion.p 
+          className="text-4xl md:text-5xl lg:text-9xl font-bold text-center text-white relative z-2 font-sans"
+          whileHover={{
+            textShadow: "0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(255,255,255,0.4)",
+          }}
+        >
            <ColourfulText className="text-4xl" text="GDGC" />  
-        </p>
+        </motion.p>
         <br/>
-        <p className='text-xl md:text-2xl lg:text-3xl font-bold text-center text-white relative z-2 font-sans'>MJCET</p>
-      </div>
+        <motion.p 
+          className='text-xl md:text-2xl lg:text-3xl font-bold text-center text-white relative z-2 font-sans'
+          whileHover={{
+            y: [0, -3, 3, 0],
+            rotate: [0, -1, 1, 0],
+          }}
+          transition={{
+            duration: 0.4,
+            ease: "easeInOut"
+          }}
+        >
+          MJCET
+        </motion.p>
+      </motion.div>
   );
 }
 
