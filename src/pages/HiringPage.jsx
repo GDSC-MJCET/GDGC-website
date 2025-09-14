@@ -19,7 +19,7 @@ export const HiringPage = () => {
     <div className='flex flex-col items-center justify-center w-full min-h-screen '>
         <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
           <h1 className="mb-4 text-center text-3xl sm:text-4xl lg:text-5xl font-bold">
-            We are Hiring !!
+            We are Hiring!
           </h1>
           <p className="mb-8 sm:mb-10 text-center text-sm sm:text-base text-zinc-500">
             Be a part of our Amazing Team 
@@ -138,7 +138,7 @@ const JoinUsButton = () => {
     <div className="flex flex-col items-center space-y-4 sm:space-y-6 py-8 sm:py-16 px-4">
       {/* Text */}
       <p className="text-lg sm:text-xl md:text-2xl font-medium text-center">
-        Apply for an Execom position !!
+        Apply for an Execom position!
       </p>
       <img src={gdglogo} alt="" className="w-8 sm:w-10" />
       {/* Swigly Arrow SVG */}
@@ -146,7 +146,7 @@ const JoinUsButton = () => {
       {/* Button */}
       <Button  className="  px-6 sm:px-8 py-6 sm:py-8 rounded-lg font-semibold text-base sm:text-lg transition-all duration-300 hover:scale-105">
        <NavLink to="apply">
-        Apply Here !!
+        Apply Here!
         </NavLink>
       </Button>
       <div className="w-full max-w-4xl">

@@ -88,6 +88,12 @@ const portfolios = [
     name: 'PR & Outreach',
     description: 'Manage public relations and community outreach initiatives',
     color: 'bg-rose-500'
+  } , 
+  {
+    id : 'log',
+    name : "Logistics & Operations",
+    description : "Manage logistics and operations for events and activities",
+    color : "bg-emerald-500"
   }
 ];
 
@@ -104,7 +110,8 @@ export const ApplicationFormPage = () => {
     previousWork: '',
     github: '',
     portfolio1: '',
-    portfolio2: ''
+    portfolio2: '',
+    customPortfolio: ''
   });
 
   const [selectedPortfolios, setSelectedPortfolios] = useState([]);
@@ -232,6 +239,13 @@ export const ApplicationFormPage = () => {
         'Collaborate with Web/App teams',
       ],
     },
+    log: {
+      title: 'Logistics & Operations',
+      summary: 'Manage logistics and operations for events and activities',
+      bullets: [
+        'Manage logistics and operations for events and activities',
+      ],
+    },
   };
 
   const handleInputChange = useCallback((e) => {
@@ -298,6 +312,19 @@ export const ApplicationFormPage = () => {
     });
   }, []);
 
+  const handleCustomPortfolioToggle = useCallback(() => {
+    if (!formData.customPortfolio.trim()) return;
+    
+    setSelectedPortfolios(current => {
+      if (current.includes('custom')) {
+        return current.filter(id => id !== 'custom');
+      } else if (current.length < 2) {
+        return [...current, 'custom'];
+      }
+      return current;
+    });
+  }, [formData.customPortfolio]);
+
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     
@@ -336,9 +363,10 @@ export const ApplicationFormPage = () => {
       linkedin: formData.linkedin,
       github: formData.github,
       previousWork: formData.previousWork,
+      customPortfolio: formData.customPortfolio,
       selectedPortfolios: selectedPortfolios,
-      portfolio1: selectedPortfolios[0] || null,
-      portfolio2: selectedPortfolios[1] || null
+      portfolio1: selectedPortfolios[0] === 'custom' ? formData.customPortfolio : selectedPortfolios[0] || null,
+      portfolio2: selectedPortfolios[1] === 'custom' ? formData.customPortfolio : selectedPortfolios[1] || null
     };
 
     try {
@@ -364,7 +392,8 @@ export const ApplicationFormPage = () => {
         previousWork: '',
         github: '',
         portfolio1: '',
-        portfolio2: ''
+        portfolio2: '',
+        customPortfolio: ''
       });
       setSelectedPortfolios([]);
       setResumeFile(null);
@@ -396,7 +425,7 @@ export const ApplicationFormPage = () => {
               Complete the application form below to be considered for the Executive Committee position.
             </p>
             <p className="text-sm text-red-400">
-              All fields marked with * are required. Applications will be reviewed by the current executive committee.
+              All fields marked with * are required. 
             </p>
           </div>
         </div>
@@ -427,7 +456,8 @@ export const ApplicationFormPage = () => {
                     name="rollNo"
                     value={formData.rollNo}
                     onChange={handleInputChange}
-                    placeholder="Enter your roll number"
+                    maxLength={15}
+                    placeholder="1604-XX-XXX-XXX"
                     required
                   />
                 </div>
@@ -524,7 +554,9 @@ export const ApplicationFormPage = () => {
               <CardTitle className="text-2xl font-bold">Portfolio Selection</CardTitle>
               <CardDescription>
                 Select up to 2 portfolios that align with your interests and skills. These will be considered for role assignment.
+                <p className='text-sm text-red-400'>Click on the info button to know more about the portfolios.</p>
               </CardDescription>
+
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -597,6 +629,76 @@ export const ApplicationFormPage = () => {
                     </div>
                   );
                 })}
+                {/* Custom Portfolio Option */}
+                <div className="col-span-2">
+                  <div className="relative p-4 rounded-lg border-2 border-dashed border-muted-foreground/30 bg-muted/20">
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); setOpenInfoId(openInfoId === 'custom' ? null : 'custom'); }}
+                      aria-label="About custom portfolio"
+                      className="absolute top-4 left-2 h-6 w-6 rounded-full flex items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-sm border border-white/60 dark:border-neutral-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    >
+                      <svg viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5">
+                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM9 8a1 1 0 112 0 1 1 0 01-2 0zm.25 2.75a.75.75 0 011.5 0v3.5a.75.75 0 11-1.5 0v-3.5z" clipRule="evenodd" />
+                      </svg>
+                    </button>
+                    <div className="ml-6 flex items-start space-x-3">
+                      {/* <div className="w-4 h-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 mt-1"></div> */}
+                      <div className="flex-1">
+                        <h3 className="font-semibold mb-1">Custom Portfolio</h3>
+                        <p className="text-sm text-muted-foreground mb-3">Add your own area of interest or specialization</p>
+                        <Input
+                          placeholder="Enter your custom portfolio (e.g., Blockchain, IoT, Data Science...)"
+                          value={formData.customPortfolio}
+                          onChange={handleInputChange}
+                          name="customPortfolio"
+                          className="mb-2"
+                        />
+                        {formData.customPortfolio && (
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-2">
+                              <div className={`w-4 h-4 rounded border ${
+                                selectedPortfolios.includes('custom')
+                                  ? 'bg-primary border-primary' 
+                                  : 'border-muted-foreground/50'
+                              } flex items-center justify-center cursor-pointer`}
+                              onClick={handleCustomPortfolioToggle}>
+                                {selectedPortfolios.includes('custom') && (
+                                  <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                  </svg>
+                                )}
+                              </div>
+                              <span className="text-sm text-muted-foreground">Select as portfolio</span>
+                            </div>
+                            {selectedPortfolios.includes('custom') && (
+                              <Badge variant="secondary">
+                                {selectedPortfolios.indexOf('custom') === 0 ? 'P1' : 'P2'}
+                              </Badge>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    {openInfoId === 'custom' && (
+                      <div
+                        className="absolute z-30 top-10 left-2 w-72 rounded-md border border-border bg-white dark:bg-neutral-900 opacity-100 backdrop-blur-0 p-3 shadow-xl"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className="mb-1 text-sm font-semibold">Custom Portfolio</div>
+                        <div className="text-sm text-muted-foreground">
+                          <p className="mb-2">Define your own area of expertise and bring unique perspectives to the chapter.</p>
+                          <ul className="list-disc pl-4 space-y-1">
+                            <li>Lead workshops in your specialized field</li>
+                            <li>Mentor members with similar interests</li>
+                            <li>Contribute to emerging technology discussions</li>
+                            <li>Bridge gaps between traditional and new domains</li>
+                          </ul>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
               <div className="mt-4 text-sm text-muted-foreground">
                 Selected: {selectedPortfolios.length}/2 portfolios
