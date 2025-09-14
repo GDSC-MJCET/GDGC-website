@@ -148,11 +148,11 @@ const JoinUsButton = () => {
       {/* Swigly Arrow SVG */}
       
       {/* Button */}
-      <Button  className="  px-6 sm:px-8 py-6 sm:py-8 rounded-lg font-semibold text-base sm:text-lg transition-all duration-300 hover:scale-105">
        <NavLink to="apply">
+      <Button  className="  px-6 sm:px-8 py-6 sm:py-8 rounded-lg font-semibold text-base sm:text-lg transition-all duration-300 hover:scale-105">
         Apply Here!
-        </NavLink>
       </Button>
+        </NavLink>
       <div className="w-full max-w-4xl">
         <PixelatedCanvasDemo />
       </div>
