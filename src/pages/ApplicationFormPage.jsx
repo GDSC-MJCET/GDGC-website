@@ -119,7 +119,7 @@ export const ApplicationFormPage = () => {
   const [resumeFile, setResumeFile] = useState(null);
   const [resumeUrl, setResumeUrl] = useState("");
   const [uploadError, setUploadError] = useState("");
-  const [openInfoId, setOpenInfoId] = useState(null);
+  const [hoveredInfoId, setHoveredInfoId] = useState(null);
   const [errors, setErrors] = useState({});
   const [prevWorkWords, setPrevWorkWords] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -240,10 +240,13 @@ export const ApplicationFormPage = () => {
       ],
     },
     log: {
-      title: 'Logistics & Operations',
-      summary: 'Manage logistics and operations for events and activities',
+      title: 'Operations/Logistics',
+      summary: 'The Operations/Logistics portfolio ensures smooth execution of events and activities by managing the behind-the-scenes work. The lead handles resources, planning, and coordination to ensure efficiency.',
       bullets: [
-        'Manage logistics and operations for events and activities',
+        'Manage event logistics including venues, equipment, and permissions',
+        'Coordinate with teams to ensure timely execution of plans',
+        'Oversee scheduling, budgeting, and resource allocation',
+        'Teach members event management and organizational skills',
       ],
     },
   };
@@ -565,76 +568,86 @@ export const ApplicationFormPage = () => {
                   const selectionIndex = selectedPortfolios.indexOf(portfolio.id);
                   
                   return (
-                    <div
-                      key={portfolio.id}
-                      className={`relative p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 hover:scale-105 select-none ${
-                        isSelected
-                          ? 'border-primary bg-primary/5 shadow-md'
-                          : 'border-border hover:border-muted-foreground/50'
-                      }`}
-                      onClick={() => handlePortfolioToggle(portfolio.id)}
-                    >
-                      <button
-                        type="button"
-                        onClick={(e) => { e.stopPropagation(); setOpenInfoId(openInfoId === portfolio.id ? null : portfolio.id); }}
-                        aria-label="About portfolio"
-                        className={`absolute top-4 left-2 h-6 w-6 rounded-full flex items-center justify-center ${portfolio.color} text-white shadow-sm border border-white/60 dark:border-neutral-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring`}
-                      >
-                        <svg viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5">
-                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM9 8a1 1 0 112 0 1 1 0 01-2 0zm.25 2.75a.75.75 0 011.5 0v3.5a.75.75 0 11-1.5 0v-3.5z" clipRule="evenodd" />
-                        </svg>
-                      </button>
-                      <div className="ml-6 flex items-start space-x-3">
-                      
-                        {/* <div className={`w-4 h-4 rounded-full ${portfolio.color} mt-1`}></div> */}
-                        <div className="flex-1">
-                          <h3 className="font-semibold mb-1">{portfolio.name}</h3>
-                          <p className="text-sm text-muted-foreground">{portfolio.description}</p>
-                        </div>
-                        <div className="mt-1">
-                          <div className={`w-4 h-4 rounded border ${
-                            isSelected 
-                              ? 'bg-primary border-primary' 
-                              : 'border-muted-foreground/50'
-                          } flex items-center justify-center`}>
-                            {isSelected && (
-                              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                              </svg>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                      {openInfoId === portfolio.id && (
-                        <div
-                          className="absolute z-30 top-10 left-2 w-72 rounded-md border border-border bg-white dark:bg-neutral-900 opacity-100 backdrop-blur-0 p-3 shadow-xl"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <div className="mb-1 text-sm font-semibold">{portfolioInfo[portfolio.id]?.title || portfolio.name}</div>
-                          <div className="text-sm text-muted-foreground">
-                            <p className="mb-2">{portfolioInfo[portfolio.id]?.summary}</p>
-                            <ul className="list-disc pl-4 space-y-1">
-                              {(portfolioInfo[portfolio.id]?.bullets || []).map((b, i) => (
-                                <li key={i}>{b}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      )}
-                      {isSelected && (
-                        <Badge variant="secondary" className="absolute top-2 right-2">
-                          {selectionIndex === 0 ? 'P1' : 'P2'}
-                        </Badge>
-                      )}
-                    </div>
+<div className="relative">
+   <div
+     key={portfolio.id}
+     className={`relative p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 hover:scale-105 select-none h-38 ${
+       isSelected
+         ? 'border-primary bg-primary/5 shadow-md'
+         : 'border-border hover:border-muted-foreground/50'
+     }`}
+     onClick={() => handlePortfolioToggle(portfolio.id)}
+   >
+     <button
+       type="button"
+       onMouseEnter={() => setHoveredInfoId(portfolio.id)}
+       onMouseLeave={() => setHoveredInfoId(null)}
+       onClick={(e) => e.stopPropagation()}
+       aria-label="About portfolio"
+       className={`absolute top-4 left-2 h-6 w-6 rounded-full flex items-center justify-center ${portfolio.color} text-white shadow-sm border border-white/60 dark:border-neutral-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring`}
+     >
+      <svg viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5">
+        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM9 8a1 1 0 112 0 1 1 0 01-2 0zm.25 2.75a.75.75 0 011.5 0v3.5a.75.75 0 11-1.5 0v-3.5z" clipRule="evenodd" />
+      </svg>
+    </button>
+    <div className="ml-6 flex items-start space-x-3">
+      <div className="flex-1">
+        <h3 className="font-semibold mb-1">{portfolio.name}</h3>
+        <p className="text-sm text-muted-foreground">{portfolio.description}</p>
+      </div>
+      <div className="mt-1">
+        <div className={`w-4 h-4 rounded border ${
+          isSelected 
+            ? 'bg-primary border-primary' 
+            : 'border-muted-foreground/50'
+        } flex items-center justify-center`}>
+          {isSelected && (
+            <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+            </svg>
+          )}
+        </div>
+      </div>
+    </div>
+    {isSelected && (
+      <Badge variant="secondary" className="absolute top-2 right-2">
+        {selectionIndex === 0 ? 'P1' : 'P2'}
+      </Badge>
+    )}
+  </div>
+  
+   {/* Hover popup positioned relative to card */}
+   {hoveredInfoId === portfolio.id && (
+     <div
+       className="absolute z-50 top-12 left-2 w-72 rounded-md border border-border bg-card p-3 shadow-xl"
+       style={{ 
+         opacity: 1,
+         pointerEvents: 'auto'
+       }}
+     >
+      <div className="mb-1 text-sm font-semibold">{portfolioInfo[portfolio.id]?.title || portfolio.name}</div>
+      <div className="text-sm text-muted-foreground">
+        <p className="mb-2">{portfolioInfo[portfolio.id]?.summary}</p>
+        <ul className="list-disc pl-4 space-y-1">
+          {(portfolioInfo[portfolio.id]?.bullets || []).map((b, i) => (
+            <li key={i}>{b}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  )}
+</div>
+  
                   );
                 })}
                 {/* Custom Portfolio Option */}
-                <div className="col-span-2">
-                  <div className="relative p-4 rounded-lg border-2 border-dashed border-muted-foreground/30 bg-muted/20">
+                <div className="md:col-span-2 col-span-1">
+                  <div className="relative p-4 rounded-lg border-2 border-dashed border-muted-foreground/30 bg-muted/20 h-38">
                     <button
                       type="button"
-                      onClick={(e) => { e.stopPropagation(); setOpenInfoId(openInfoId === 'custom' ? null : 'custom'); }}
+                      onMouseEnter={() => setHoveredInfoId('custom')}
+                      onMouseLeave={() => setHoveredInfoId(null)}
+                      onClick={(e) => e.stopPropagation()}
                       aria-label="About custom portfolio"
                       className="absolute top-4 left-2 h-6 w-6 rounded-full flex items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-sm border border-white/60 dark:border-neutral-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     >
@@ -680,10 +693,13 @@ export const ApplicationFormPage = () => {
                         )}
                       </div>
                     </div>
-                    {openInfoId === 'custom' && (
+                    {hoveredInfoId === 'custom' && (
                       <div
-                        className="absolute z-30 top-10 left-2 w-72 rounded-md border border-border bg-white dark:bg-neutral-900 opacity-100 backdrop-blur-0 p-3 shadow-xl"
-                        onClick={(e) => e.stopPropagation()}
+                        className="absolute z-50 top-12 left-2 w-72 rounded-md border border-border bg-card p-3 shadow-xl"
+                        style={{ 
+                          opacity: 1,
+                          pointerEvents: 'auto'
+                        }}
                       >
                         <div className="mb-1 text-sm font-semibold">Custom Portfolio</div>
                         <div className="text-sm text-muted-foreground">

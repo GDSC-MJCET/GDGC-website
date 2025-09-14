@@ -13,13 +13,17 @@ import random from "../assets/random.png"
 import { PixelatedCanvas } from "../components/ui/pixelated-canvas";
 import { Link } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
+import ColourfulText from "@/components/ui/colourful-text";
+import { motion } from "motion/react";
+
 
 export const HiringPage = () => {
   return (
     <div className='flex flex-col items-center justify-center w-full min-h-screen '>
         <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
+          <ColourfulTextDemo /> 
           <h1 className="mb-4 text-center text-3xl sm:text-4xl lg:text-5xl font-bold">
-            We are Hiring!
+            We are Recruiting!
           </h1>
           <p className="mb-8 sm:mb-10 text-center text-sm sm:text-base text-zinc-500">
             Be a part of our Amazing Team 
@@ -183,3 +187,19 @@ export function PixelatedCanvasDemo() {
     </div>
   );
 }
+
+
+
+export function ColourfulTextDemo() {
+  return (
+      <div className='flex flex-col justify-center items-center mb-10'>
+        <p className="text-4xl md:text-5xl lg:text-9xl font-bold text-center text-white relative z-2 font-sans">
+           <ColourfulText className="text-4xl" text="GDGC" />  
+        </p>
+        <br/>
+        <p className='text-xl md:text-2xl lg:text-3xl font-bold text-center text-white relative z-2 font-sans'>MJCET</p>
+      </div>
+  );
+}
+
+

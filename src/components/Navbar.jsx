@@ -21,7 +21,7 @@ export function Navibar() {
         //   link: "/",
         // },
         {
-          name: "Hiring",
+          name: "Recruitment",
           link: "/  ",
         },
         // {
@@ -33,7 +33,7 @@ export function Navibar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <div className="relative w-full ">
+    <div className=" w-full ">
       <Navbar>
         {/* Desktop Navigation */}
         <NavBody>
