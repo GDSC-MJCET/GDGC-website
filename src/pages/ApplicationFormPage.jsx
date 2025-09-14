@@ -477,10 +477,10 @@ export const ApplicationFormPage = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-sm font-medium">Email </Label>
+                  <Label htmlFor="email" className="text-sm font-medium">Email *</Label>
                   <Input
                     id="email"
-                    name="email"
+                    name="email "
                     type="email"
                     value={formData.email}
                     onChange={handleInputChange}
@@ -541,7 +541,7 @@ export const ApplicationFormPage = () => {
                       <span className="text-xs text-green-600">Uploaded ✓</span>
                     )}
                     {!resumeUrl && !isUploading && (
-                      <span className="text-xs text-muted-foreground">Upload a PDF file. Max ~10MB.</span>
+                      <span className="text-xs text-muted-foreground">Upload a PDF file. Max ~1MB.</span>
                     )}
                     {uploadError && (
                       <span className="text-xs text-red-600">{uploadError}</span>
@@ -571,7 +571,7 @@ export const ApplicationFormPage = () => {
 <div className="relative">
    <div
      key={portfolio.id}
-     className={`relative p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 hover:scale-105 select-none h-38 ${
+     className={`relative p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 hover:scale-105 select-none md:h-40 ${
        isSelected
          ? 'border-primary bg-primary/5 shadow-md'
          : 'border-border hover:border-muted-foreground/50'
@@ -642,7 +642,7 @@ export const ApplicationFormPage = () => {
                 })}
                 {/* Custom Portfolio Option */}
                 <div className="md:col-span-2 col-span-1">
-                  <div className="relative p-4 rounded-lg border-2 border-dashed border-muted-foreground/30 bg-muted/20 h-38">
+                  <div className="relative p-4 rounded-lg border-2 border-dashed border-muted-foreground/30 bg-muted/20 md:h-40">
                     <button
                       type="button"
                       onMouseEnter={() => setHoveredInfoId('custom')}
@@ -659,7 +659,7 @@ export const ApplicationFormPage = () => {
                       {/* <div className="w-4 h-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 mt-1"></div> */}
                       <div className="flex-1">
                         <h3 className="font-semibold mb-1">Custom Portfolio</h3>
-                        <p className="text-sm text-muted-foreground mb-3">Add your own area of interest or specialization</p>
+                        <p className="text-sm text-muted-foreground mb-3">Add your own area of interest </p>
                         <Input
                           placeholder="Enter your custom portfolio (e.g., Blockchain, IoT, Data Science...)"
                           value={formData.customPortfolio}
@@ -695,20 +695,22 @@ export const ApplicationFormPage = () => {
                     </div>
                     {hoveredInfoId === 'custom' && (
                       <div
-                        className="absolute z-50 top-12 left-2 w-72 rounded-md border border-border bg-card p-3 shadow-xl"
+                        className="absolute z-50 top-12 left-2 w-80 rounded-md border border-border bg-card p-3 shadow-xl"
                         style={{ 
                           opacity: 1,
                           pointerEvents: 'auto'
                         }}
                       >
-                        <div className="mb-1 text-sm font-semibold">Custom Portfolio</div>
+                        <div className="mb-2 text-sm font-semibold">Custom Portfolio Requirements</div>
                         <div className="text-sm text-muted-foreground">
-                          <p className="mb-2">Define your own area of expertise and bring unique perspectives to the chapter.</p>
-                          <ul className="list-disc pl-4 space-y-1">
-                            <li>Lead workshops in your specialized field</li>
-                            <li>Mentor members with similar interests</li>
-                            <li>Contribute to emerging technology discussions</li>
-                            <li>Bridge gaps between traditional and new domains</li>
+                          <p className="mb-3 font-medium">The custom portfolio must fulfil the 1st criteria and at least 3 of the remaining criteria:</p>
+                          <ul className="list-disc pl-4 space-y-2">
+                            <li><strong>Must address</strong> a specific gap or emerging domain relevant to the chapter</li>
+                            <li>Scope and responsibilities must be well-defined and documented</li>
+                            <li>Lead should mentor members in the chosen domain</li>
+                            <li>Must have measurable outcomes (projects, workshops, collaborations)</li>
+                            <li>Activities should align with chapter's vision and goals</li>
+                            <li>Documentation of learnings and results is required</li>
                           </ul>
                         </div>
                       </div>
