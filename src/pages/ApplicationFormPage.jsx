@@ -338,6 +338,7 @@ export const ApplicationFormPage = () => {
     if (!rollRegex.test(formData.rollNo || '')) newErrors.rollNo = 'Enter a valid roll no (letters/numbers/dash)';
     const words = (formData.previousWork || '').trim().split(/\s+/).filter(Boolean);
     if (words.length > 100) newErrors.previousWork = 'Maximum 100 words';
+    if (selectedPortfolios.length !== 2) newErrors.portfolios = 'You must select exactly 2 portfolios';
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
 
@@ -477,7 +478,7 @@ export const ApplicationFormPage = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-sm font-medium">Email </Label>
+                  <Label htmlFor="email" className="text-sm font-medium">Email *</Label>
                   <Input
                     id="email"
                     name="email"
@@ -541,7 +542,7 @@ export const ApplicationFormPage = () => {
                       <span className="text-xs text-green-600">Uploaded ✓</span>
                     )}
                     {!resumeUrl && !isUploading && (
-                      <span className="text-xs text-muted-foreground">Upload a PDF file. Max ~10MB.</span>
+                      <span className="text-xs text-muted-foreground">Upload a PDF file. Max ~1MB.</span>
                     )}
                     {uploadError && (
                       <span className="text-xs text-red-600">{uploadError}</span>
@@ -571,7 +572,7 @@ export const ApplicationFormPage = () => {
 <div className="relative">
    <div
      key={portfolio.id}
-     className={`relative p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 hover:scale-105 select-none h-38 ${
+     className={`relative p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 hover:scale-105 select-none md:h-40 ${
        isSelected
          ? 'border-primary bg-primary/5 shadow-md'
          : 'border-border hover:border-muted-foreground/50'
@@ -642,7 +643,7 @@ export const ApplicationFormPage = () => {
                 })}
                 {/* Custom Portfolio Option */}
                 <div className="md:col-span-2 col-span-1">
-                  <div className="relative p-4 rounded-lg border-2 border-dashed border-muted-foreground/30 bg-muted/20 h-38">
+                  <div className="relative p-4 rounded-lg border-2 border-dashed border-muted-foreground/30 bg-muted/20 md:h-40">
                     <button
                       type="button"
                       onMouseEnter={() => setHoveredInfoId('custom')}
@@ -659,7 +660,7 @@ export const ApplicationFormPage = () => {
                       {/* <div className="w-4 h-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 mt-1"></div> */}
                       <div className="flex-1">
                         <h3 className="font-semibold mb-1">Custom Portfolio</h3>
-                        <p className="text-sm text-muted-foreground mb-3">Add your own area of interest or specialization</p>
+                        <p className="text-sm text-muted-foreground mb-3">Add your own area of interest </p>
                         <Input
                           placeholder="Enter your custom portfolio (e.g., Blockchain, IoT, Data Science...)"
                           value={formData.customPortfolio}
@@ -695,20 +696,22 @@ export const ApplicationFormPage = () => {
                     </div>
                     {hoveredInfoId === 'custom' && (
                       <div
-                        className="absolute z-50 top-12 left-2 w-72 rounded-md border border-border bg-card p-3 shadow-xl"
+                        className="absolute z-50 top-12 left-2 w-80 rounded-md border border-border bg-card p-3 shadow-xl"
                         style={{ 
                           opacity: 1,
                           pointerEvents: 'auto'
                         }}
                       >
-                        <div className="mb-1 text-sm font-semibold">Custom Portfolio</div>
+                        <div className="mb-2 text-sm font-semibold">Custom Portfolio Requirements</div>
                         <div className="text-sm text-muted-foreground">
-                          <p className="mb-2">Define your own area of expertise and bring unique perspectives to the chapter.</p>
-                          <ul className="list-disc pl-4 space-y-1">
-                            <li>Lead workshops in your specialized field</li>
-                            <li>Mentor members with similar interests</li>
-                            <li>Contribute to emerging technology discussions</li>
-                            <li>Bridge gaps between traditional and new domains</li>
+                          <p className="mb-3 font-medium">The custom portfolio must fulfil the 1st criteria and at least 3 of the remaining criteria:</p>
+                          <ul className="list-disc pl-4 space-y-2">
+                            <li><strong>Must address</strong> a specific gap or emerging domain relevant to the chapter</li>
+                            <li>Scope and responsibilities must be well-defined and documented</li>
+                            <li>Lead should mentor members in the chosen domain</li>
+                            <li>Must have measurable outcomes (projects, workshops, collaborations)</li>
+                            <li>Activities should align with chapter's vision and goals</li>
+                            <li>Documentation of learnings and results is required</li>
                           </ul>
                         </div>
                       </div>
@@ -716,8 +719,13 @@ export const ApplicationFormPage = () => {
                   </div>
                 </div>
               </div>
-              <div className="mt-4 text-sm text-muted-foreground">
-                Selected: {selectedPortfolios.length}/2 portfolios
+              <div className="mt-4 flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">
+                  Selected: {selectedPortfolios.length}/2 portfolios
+                </span>
+                {errors.portfolios && (
+                  <span className="text-xs text-red-600">{errors.portfolios}</span>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -777,7 +785,7 @@ export const ApplicationFormPage = () => {
             <Button 
               type="submit" 
               className="px-8 py-5 text-lg font-semibold" 
-              disabled={isUploading || !resumeUrl || isSubmitting}
+              disabled={isUploading || !resumeUrl || isSubmitting || selectedPortfolios.length !== 2}
             >
               {isSubmitting ? 'Submitting...' : 'Submit Application'}
             </Button>
@@ -796,6 +804,30 @@ export const ApplicationFormPage = () => {
           </div>
         </form>
       </div>
+      
+      {/* Footer */}
+      <footer className="mt-16 py-8 border-t border-border bg-muted/30">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <div className="mb-4">
+            <h3 className="text-lg font-semibold text-foreground mb-2">Need Help?</h3>
+            <p className="text-sm text-muted-foreground">
+              If you face any difficulties with the website registration, contact:
+            </p>
+          </div>
+          <div className="flex items-center justify-center gap-2 text-primary font-medium">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+            <span>Sami</span>
+            <svg className="w-5 h-5 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+            </svg>
+            <a href="tel:8125624958" className="hover:underline">
+              8125624958
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
