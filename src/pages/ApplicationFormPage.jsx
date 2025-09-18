@@ -515,8 +515,8 @@ export const ApplicationFormPage = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="resume" className="text-sm font-medium">Resume (PDF) *</Label>
-                  <div className="flex items-center gap-3">
+                  <Label htmlFor="resume" className="text-sm font-medium">Resume (PDF) </Label>
+                  <div className="flex flex-col items-center gap-3">
                     <Input
                       id="resume"
                       name="resume-file"
@@ -527,10 +527,11 @@ export const ApplicationFormPage = () => {
                     />
                     {resumeFile && (
                       <span className="text-xs text-muted-foreground truncate max-w-[12rem]">
-                        {resumeFile.name}
+                      {resumeFile.name}
                       </span>
                     )}
                   </div>
+                    <p className="text-xs text-muted-foreground  md:w-full">If you are unable to submit your resume , submit  withoutuploading and DM us later</p>
                   <div className="flex items-center gap-2 mt-1">
                     {isUploading && (
                       <svg className="h-4 w-4 animate-spin text-blue-600" viewBox="0 0 24 24">
