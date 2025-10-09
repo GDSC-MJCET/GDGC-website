@@ -9,14 +9,20 @@ import AboutPage from './pages/AboutPage';
 import { ThemeProvider } from './components/theme-provider';
 import ClosedPage from './pages/closedPage';
 
+
+import Footer from './components/footer/footer.jsx';
+import HeadingSection from './components/heading-section'
+
 function App() {
   return (
       <div className=" min-h-screen bg-repeat  w-full bg-center bg-auto"> 
         <div className=" top-5 w-full mt-5 ">
-          <Navibar/>
+          <HeadingSection/>
+          {/* <Navibar/>
         </div>
         <div className="pt-10 w-full">
-          <Outlet />
+          <Outlet /> */}
+          <Footer />
         </div>
       </div>
   )
