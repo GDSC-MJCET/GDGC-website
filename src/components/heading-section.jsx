@@ -189,22 +189,20 @@ function HeadingSection() {
       </a>
     </div>
 
-    {/* Planet image */}
     <motion.img 
-      src={planet}  
-      alt="Planet"
-      className="w-60 h-60"
-      style={{
-        animation: 'spin 12s ease-in-out infinite',
-        filter: 'drop-shadow(0 0 10px rgba(0, 255, 255, 0.4))',
-        transformOrigin: 'center',
-      }}
-      whileHover={{
-        scale: 1.1,
-        rotate: 360,
-        transition: { duration: 2 },
-      }}
-    />
+  src={planet}  
+  alt="Planet"
+  className="w-60 h-60 spin-slow"
+  style={{
+    filter: 'drop-shadow(0 0 10px rgba(0, 255, 255, 0.4))',
+    transformOrigin: 'center',
+  }}
+  whileHover={{
+    scale: 1.1,
+    transition: { duration: 0.3 },
+  }}
+/>
+
   </div>
 </section>
      

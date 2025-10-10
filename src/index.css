@@ -120,3 +120,17 @@
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+
+@keyframes spinSlow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spin-slow {
+  animation: spinSlow 12s linear infinite;
+}
