@@ -33,7 +33,7 @@ const interestFields = [
     { id: 'other', label: 'Other' },
 ];
 
-export const DyeFormPage1 = () => {
+export const DyeFormPage = () => {
   const [formData, setFormData] = useState({
     name: '',
     rollNo: '',
