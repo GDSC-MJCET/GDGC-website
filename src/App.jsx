@@ -8,6 +8,7 @@ import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import { ThemeProvider } from './components/theme-provider';
 import ClosedPage from './pages/closedPage';
+import { DyeFormPage } from './pages/DyeFormPage'
 
 function App() {
   return (
@@ -31,7 +32,7 @@ function AppWithRouter() {
         <Route path="/" element={<App />}>
           {/* <Route index element={<HomePage/>} /> */}
           <Route index element={<HiringPage/>} />
-          <Route path="apply" element={<ClosedPage/>} />
+          <Route path="apply" element={<DyeFormPage/>} />
           {/* <Route path="about" element={<AboutPage/>} /> */}
         </Route>
       </Routes>
