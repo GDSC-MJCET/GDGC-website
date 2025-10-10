@@ -8,6 +8,7 @@ import { Badge } from "../components/ui/badge";
 import { Checkbox } from "../components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "../components/ui/radio-group";
 import gdglogo from "../assets/gdg-logo.png";
+import qrCodeImage from "../assets/qr_code.jpg"; // Import the QR code image
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 
@@ -341,12 +342,23 @@ export const DyeFormPage = () => {
                                     )}
         
                                     {formData.hasMembership === 'no' && (
-                                        <div className="space-y-2">
-                                            <Label htmlFor="paymentScreenshot">Upload Payment Screenshot *</Label>
-                                            <Input id="paymentScreenshot" name="paymentScreenshot" type="file" onChange={handleFileChange} accept="image/*" required={formData.hasMembership === 'no'} />
-                                            {paymentScreenshotPreview && <img src={paymentScreenshotPreview} alt="Payment screenshot preview" className="mt-2 h-32 object-cover" />}
-                                            {errors.paymentScreenshot && <p className="text-red-500 text-xs">{errors.paymentScreenshot}</p>}
-                                            {errors.fileUpload && formData.hasMembership === 'no' && <p className="text-red-500 text-xs">{errors.fileUpload}</p>}
+                                        <div className="space-y-4">
+                                            <div className="p-4 border rounded-lg bg-muted/50 flex flex-col items-center">
+                                                <h4 className="font-semibold text-lg mb-2">Scan to Pay</h4>
+                                                <img 
+                                                    src={qrCodeImage} 
+                                                    alt="Payment QR Code" 
+                                                    className="w-80 h-120 object-contain rounded-md"
+                                                />
+                                                <p className="text-muted-foreground text-sm mt-2">After paying, upload the screenshot below.</p>
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label htmlFor="paymentScreenshot">Upload Payment Screenshot *</Label>
+                                                <Input id="paymentScreenshot" name="paymentScreenshot" type="file" onChange={handleFileChange} accept="image/*" required={formData.hasMembership === 'no'} />
+                                                {paymentScreenshotPreview && <img src={paymentScreenshotPreview} alt="Payment screenshot preview" className="mt-2 h-32 object-cover" />}
+                                                {errors.paymentScreenshot && <p className="text-red-500 text-xs">{errors.paymentScreenshot}</p>}
+                                                {errors.fileUpload && formData.hasMembership === 'no' && <p className="text-red-500 text-xs">{errors.fileUpload}</p>}
+                                            </div>
                                         </div>
                                     )}
                                 </CardContent>
@@ -360,6 +372,7 @@ export const DyeFormPage = () => {
                             </div>
                         </form>
       </div>
+
       
       {submitStatus === 'success' && (
             <div className="fixed top-4 right-4 bg-green-500 text-white p-4 rounded-lg shadow-lg">
