@@ -35,19 +35,23 @@ function Footer() {
             <FaEnvelope />
           </a>
 
+
           <a
-            href="tel:+91---------"
+            href="tel:+917842483580"
             className="hover:text-[#34A853] hover:scale-125 transition-transform duration-300 hover:drop-shadow-[0_0_10px_#34A853]"
             aria-label="Phone"
           >
-            <FaPhoneAlt />
-          </a>
+        <FaPhoneAlt />
+        </a>
+        </div>
+        <div className="text-sm text-[#ccc] space-y-1">
+          <p>Email: gdscmjcet@gmail.com</p>
+          <p>
+              Abrar: <a href="tel:+917842483580" className="underline hover:text-white">+91 78424 83580</a><br />
+              Aimen: <a href="tel:+919676071331" className="underline hover:text-white">+91 96760 71331</a>
+          </p>
         </div>
 
-        <div className="text-sm text-[#ccc] space-y-1">
-          <p>Email: contact@gdgcmjcet.in</p>
-          <p>Phone: +91 12345 67890</p>
-        </div>
       </div>
     </footer>
   );
