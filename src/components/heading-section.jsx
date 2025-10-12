@@ -6,7 +6,7 @@ import stars from '../assets/Group 49.png';
 function HeadingSection() {
   return (
 
-<div className="min-h-screen flex flex-col items-center justify-center text-center relative overflow-hidden bg-black text-white font-inter pt-20 sm:pt-32">
+<div className="min-h-screen flex flex-col items-center justify-center text-center relative overflow-hidden text-white font-inter pt-20 sm:pt-32">
 
   {/* Header */}
 <header className="absolute top-6 left-1/2 transform -translate-x-1/2 w-[90%] flex flex-col sm:flex-row sm:justify-between items-center gap-2 text-[1.1rem] text-center sm:text-left z-50">
@@ -18,7 +18,7 @@ function HeadingSection() {
   </div>
 </header>
 
-<section className="py-40 bg-black text-white flex justify-center items-center relative">
+<section className="py-40 text-white flex justify-center items-center relative">
 
   {/* Dye Image with bounce + float */}
   <motion.div
@@ -140,7 +140,7 @@ function HeadingSection() {
 
 
 {/* ABOUT SECTION + STARS */}
-<section className="w-full bg-black text-white pt-36 pb-36 px-6 text-center flex justify-center relative overflow-hidden">
+<section className="w-full text-white pt-36 pb-36 px-6 text-center flex justify-center relative overflow-hidden">
   {/* ✨ Twinkling Stars */}
   <motion.img
   src={stars}
@@ -165,47 +165,46 @@ function HeadingSection() {
     ease: "easeInOut"
   }}
 />
-
-
-  {/* Main Content */}
-  <div className="flex flex-col lg:flex-row items-center gap-12 max-w-6xl text-left">
+ {/* Main Content */}
+  <div className="flex flex-col lg:flex-row items-center gap-12 max-w-6xl mx-auto text-left">
     {/* Text Content */}
     <div className="flex-1">
       <h2 className="text-5xl font-extrabold mb-10 text-[#00FF7F] text-center lg:text-left">
         About the Event
       </h2>
       <p className="max-w-xl text-xl text-gray-300 leading-relaxed mb-12">
-        Doodle Your Engineering is a one-of-a-kind tech and design event hosted by GDGC MJCET. 
-        It's a space for creative engineers and developers to showcase their innovative ideas through doodles, designs, and prototypes. 
+        Doodle Your Engineering is a one-of-a-kind tech and design event hosted by GDGC MJCET.
+        It's a space for creative engineers and developers to showcase their innovative ideas through doodles, designs, and prototypes.
         Whether you're a coder, designer, or just curious about tech, there's something here for you. Come connect, build, and be inspired!
       </p>
-      <a
-        href=""
-        target="_blank"
-        rel="noreferrer"
-        className="inline-block bg-[#8A2BE2] hover:bg-[#FFD700] hover:text-black text-white py-5 px-12 text-xl rounded-full font-semibold transition-all duration-300 shadow-md"
+    <a
+      href="#"
+      target="_blank"
+      rel="noreferrer noopener"
+      aria-label="Apply for the event"
+      className="inline-block bg-[#8A2BE2] hover:bg-[#FFD700] hover:text-black text-white py-3 px-8 text-lg rounded-md font-semibold transition-all duration-300 shadow-md"
       >
-        Apply Now
-      </a>
+    Apply Now
+    </a>
+
     </div>
 
-    <motion.img 
-  src={planet}  
-  alt="Planet"
-  className="w-60 h-60 spin-slow"
-  style={{
-    filter: 'drop-shadow(0 0 10px rgba(0, 255, 255, 0.4))',
-    transformOrigin: 'center',
-  }}
-  whileHover={{
-    scale: 1.1,
-    transition: { duration: 0.3 },
-  }}
-/>
-
-  </div>
-</section>
-     
+    {/* Planet Image */}
+    <motion.img
+      src={planet}
+      alt="Planet"
+      className="w-60 h-60 spin-slow"
+      style={{
+        filter: "drop-shadow(0 0 10px rgba(0, 255, 255, 0.4))",
+        transformOrigin: "center",
+      }}
+      whileHover={{
+        scale: 1.1,
+        transition: { duration: 0.3 },
+      }}
+    />
+        </div>
+        </section>     
       </div>
   );
 }
