@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import dyeLoad from '../assets/DYE-LOAD.png'; 
 import planet from '../assets/Wireframe 57.png';
 import stars from '../assets/Group 49.png';
+import { NavLink } from "react-router-dom";
+import { Button } from "./ui/button";
 
 function HeadingSection() {
   return (
@@ -177,38 +179,34 @@ function HeadingSection() {
  By providing insightful sessions on various domains like Web development, AI/ML, Cybersecurity, UI/UX design, and Cloud computing, this event will not only give a clear understanding of each domain but will also help students recognise their areas of interest.
 The event's objective is to spark curiosity, build awareness and encourage students to take their first step into the fast-paced world of innovation and technology.
 </p>
-<div className="relative bg-[#2a003f] p-6 mb-12 text-gray-200 shadow-xl rounded-lg border border-[#00FF7F]/30 hover:shadow-[0_0_20px_#00FF7F] transition-all duration-300 ease-in-out">
+<div className="relative p-6 mb-12 text-gray-200 shadow-xl rounded-lg border border-white/30 hover:shadow-[0_0_20px_#00FF7F] transition-all duration-300 ease-in-out">
 
-  <h3 className="text-3xl font-extrabold text-[#00FF7F] mb-4">
-    📣 Event Details
+  <h3 className="text-3xl font-extrabold  text-[#00FF7F] mb-4">
+    Event Details
   </h3>
   
   <ul className="list-none space-y-3 text-lg leading-relaxed">
     <li>
-      📅 <strong className="text-white">Date:</strong> <span className="text-[#ADFF2F]">17th October, 2025</span>
+      📅 <strong className="text-white">Date:</strong> <span className="text-white">17th October, 2025</span>
     </li>
     <li>
-      🕑 <strong className="text-white">Time:</strong> <span className="text-[#ADFF2F]">2:00 PM – 4:00 PM</span>
+      🕑 <strong className="text-white">Time:</strong> <span className="text-white">2:00 PM – 4:00 PM</span>
     </li>
     <li>
-      📍 <strong className="text-white">Venue:</strong> <span className="text-[#ADFF2F]">Seminar Hall, Block 4</span>
+      📍 <strong className="text-white">Venue:</strong> <span className="text-white">Seminar Hall, Block 4</span>
     </li>
     <li>
-      💰 <strong className="text-white">Registration Fee:</strong> <span className="text-[#ADFF2F]">₹50</span>
+      💰 <strong className="text-white">Registration Fee:</strong> <span className="text-white">₹50</span>
     </li>
   </ul>
 </div>
 
    
-    <a
-      href="#"
-      target="_blank"
-      rel="noreferrer noopener"
-      aria-label="Apply for the event"
-      className="inline-block bg-[#8A2BE2] hover:bg-[#FFD700] hover:text-black text-white py-3 px-8 text-lg rounded-md font-semibold transition-all duration-300 shadow-md"
-      >
-    Apply Now
-    </a>
+    <NavLink to="apply">
+      <Button className="bg-blue-500 hover:bg-[#FFD700] hover:text-black text-white py-3 px-8 text-lg rounded-md font-semibold transition-all duration-300 shadow-md">
+        Register Here!
+      </Button>
+    </NavLink>
 
     </div>
 

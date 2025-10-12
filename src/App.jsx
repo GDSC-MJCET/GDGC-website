@@ -50,9 +50,8 @@ function App() {
       />
 
       {/* Foreground content */}
-      <div className="w-full mt-5" style={{ position: 'relative', zIndex: 1 }}>
+      <div className="w-full " style={{ position: 'relative', zIndex: 1 }}>
         <HeadingSection />
-
         {/* <Navibar /> */}
         {/* <Outlet /> */}
         <Footer />
@@ -68,9 +67,9 @@ function AppWithRouter() {
 
     <Router>
       <Routes>
-        <Route path="/" element={<App />}>
+        <Route path="/">
           {/* <Route index element={<HomePage/>} /> */}
-          <Route index element={<HiringPage/>} />
+          <Route index element={<HeadingSection />} />
           <Route path="apply" element={<DyeFormPage/>} />
           {/* <Route path="about" element={<AboutPage/>} /> */}
         </Route>
