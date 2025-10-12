@@ -2,7 +2,7 @@ import { FaInstagram, FaLinkedin, FaPhoneAlt, FaEnvelope } from 'react-icons/fa'
 
 function Footer() {
   return (
-    <footer className="bg-black text-white py-10 px-5 text-center font-poppins">
+    <footer className="text-white py-10 px-5 text-center font-poppins">
       <div className="max-w-4xl mx-auto">
         <h2 className="text-2xl font-semibold mb-6">Contact Us</h2>
 
