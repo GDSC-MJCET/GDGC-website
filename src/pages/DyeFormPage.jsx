@@ -177,7 +177,7 @@ export const DyeFormPage = () => {
     try {
       // The user's original code used axios to post data.
       // This is a placeholder for how it might be adapted.
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_KEY}/dye-application`, applicationData, {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_KEY}/api/v1/dye-application`, applicationData, {
         //const response = await axios.post('YOUR_BACKEND_URL_HERE', applicationData, {
         headers: {
           'Content-Type': 'application/json',
@@ -278,8 +278,8 @@ export const DyeFormPage = () => {
                                 </CardHeader>
                                 <CardContent className="space-y-6">
                                     <div className="space-y-2">
-                                        <Label>Field(s) you are interested in *</Label>
-                                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                        <Label className="pb-3">Field(s) you are interested in *</Label>
+                                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
                                             {interestFields.map(field => (
                                                 <div key={field.id} className="flex items-center space-x-2">
                                                     <Checkbox
@@ -298,8 +298,8 @@ export const DyeFormPage = () => {
                                         {errors.interests && <p className="text-red-500 text-xs">{errors.interests}</p>}
                                     </div>
                                     <div className="space-y-2">
-                                        <Label htmlFor="sessionTopics">Field(s) you would like to know about in the session</Label>
-                                        <Textarea id="sessionTopics" name="sessionTopics" value={formData.sessionTopics} onChange={handleInputChange} placeholder="Tell us what you're excited to learn about!" />
+                                        <Label htmlFor="sessionTopics" >Field(s) you would like to know about in the session</Label>
+                                        <Textarea id="sessionTopics" className="mt-4" name="sessionTopics" value={formData.sessionTopics} onChange={handleInputChange} placeholder="Tell us what you're excited to learn about!" />
                                     </div>
                                 </CardContent>
                             </Card>
@@ -311,7 +311,7 @@ export const DyeFormPage = () => {
                                 <CardContent className="space-y-6">
                                     <div className="space-y-2">
                                         <Label className="mb-2">Are you a member of the club? *</Label>
-                                        <RadioGroup name="hasMembership" value={formData.hasMembership} onValueChange={(value) => handleInputChange({ target: { name: 'hasMembership', value } })} className="flex space-x-4">
+                                        <RadioGroup name="hasMembership" value={formData.hasMembership} onValueChange={(value) => handleInputChange({ target: { name: 'hasMembership', value } })} className="flex space-x-4 mt-4">
                                             <div className="flex items-center space-x-2">
                                                 <RadioGroupItem value="yes" id="mem-yes" />
                                                 <Label htmlFor="mem-yes">Yes</Label>
@@ -326,14 +326,14 @@ export const DyeFormPage = () => {
         
                                     {formData.hasMembership === 'yes' && (
                                         <>
-                                            <div className="space-y-2">
+                                            <div className="space-y-2 gap-2">
                                                 <Label htmlFor="membershipNumber">Membership ID/Number *</Label>
-                                                <Input id="membershipNumber" name="membershipNumber" value={formData.membershipNumber} onChange={handleInputChange} placeholder="Enter your membership number" required={formData.hasMembership === 'yes'} />
-                                                {errors.membershipNumber && <p className="text-red-500 text-xs">{errors.membershipNumber}</p>}
+                                                <Input className="mt-2" id="membershipNumber" name="membershipNumber"  value={formData.membershipNumber} onChange={handleInputChange} placeholder="Enter your membership number" required={formData.hasMembership === 'yes'} />
+                                                {errors.membershipNumber && <p className="text-red-500 text-xs ">{errors.membershipNumber}</p>}
                                             </div>
-                                            <div className="space-y-2">
+                                            <div className="space-y-2 gap-2">
                                                 <Label htmlFor="membershipCardPhoto">Upload Membership Card Photo *</Label>
-                                                <Input id="membershipCardPhoto" name="membershipCardPhoto" type="file" onChange={handleFileChange} accept="image/*" required={formData.hasMembership === 'yes'} />
+                                                <Input className="mt-2" id="membershipCardPhoto" name="membershipCardPhoto" type="file" onChange={handleFileChange} accept="image/*" required={formData.hasMembership === 'yes'} />
                                                 {membershipCardPhotoPreview && <img src={membershipCardPhotoPreview} alt="Membership card preview" className="mt-2 h-32 object-cover" />}
                                                 {errors.membershipCardPhoto && <p className="text-red-500 text-xs">{errors.membershipCardPhoto}</p>}
                                                 {errors.fileUpload && formData.hasMembership === 'yes' && <p className="text-red-500 text-xs">{errors.fileUpload}</p>}
@@ -368,7 +368,7 @@ export const DyeFormPage = () => {
                                 <Button type="submit" disabled={isSubmitting} className="px-8 py-5 text-lg font-semibold">
                                     {isSubmitting ? 'Submitting...' : 'Submit'}
                                 </Button>
-                                {submitStatus === 'error' && <p className="text-red-500 text-sm mt-4">Submission failed. Please check your details and try again.</p>}
+                                {submitStatus === 'error' && <p className="text-red-500 text-sm mt-4">Submission failed. Please check your details and try again</p>}
                             </div>
                         </form>
       </div>
@@ -376,7 +376,7 @@ export const DyeFormPage = () => {
       
       {submitStatus === 'success' && (
             <div className="fixed top-4 right-4 bg-green-500 text-white p-4 rounded-lg shadow-lg">
-                <p>Form submitted successfully!</p>
+                <p>Registration successfull </p>
             </div>
         )}
         {submitStatus === 'error' && (
