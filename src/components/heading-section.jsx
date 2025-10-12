@@ -173,10 +173,33 @@ function HeadingSection() {
         About the Event
       </h2>
       <p className="max-w-xl text-xl text-gray-300 leading-relaxed mb-12">
-        Doodle Your Engineering is a one-of-a-kind tech and design event hosted by GDGC MJCET.
-        It's a space for creative engineers and developers to showcase their innovative ideas through doodles, designs, and prototypes.
-        Whether you're a coder, designer, or just curious about tech, there's something here for you. Come connect, build, and be inspired!
-      </p>
+        Doodle your engineering is an introductory event crafted specially for college freshers to navigate through the seemingly overwhelming universe of technology.
+ By providing insightful sessions on various domains like Web development, AI/ML, Cybersecurity, UI/UX design, and Cloud computing, this event will not only give a clear understanding of each domain but will also help students recognise their areas of interest.
+The event's objective is to spark curiosity, build awareness and encourage students to take their first step into the fast-paced world of innovation and technology.
+</p>
+<div className="relative bg-[#2a003f] p-6 mb-12 text-gray-200 shadow-xl rounded-lg border border-[#00FF7F]/30 hover:shadow-[0_0_20px_#00FF7F] transition-all duration-300 ease-in-out">
+
+  <h3 className="text-3xl font-extrabold text-[#00FF7F] mb-4">
+    📣 Event Details
+  </h3>
+  
+  <ul className="list-none space-y-3 text-lg leading-relaxed">
+    <li>
+      📅 <strong className="text-white">Date:</strong> <span className="text-[#ADFF2F]">17th October, 2025</span>
+    </li>
+    <li>
+      🕑 <strong className="text-white">Time:</strong> <span className="text-[#ADFF2F]">2:00 PM – 4:00 PM</span>
+    </li>
+    <li>
+      📍 <strong className="text-white">Venue:</strong> <span className="text-[#ADFF2F]">Seminar Hall, Block 4</span>
+    </li>
+    <li>
+      💰 <strong className="text-white">Registration Fee:</strong> <span className="text-[#ADFF2F]">₹50</span>
+    </li>
+  </ul>
+</div>
+
+   
     <a
       href="#"
       target="_blank"
