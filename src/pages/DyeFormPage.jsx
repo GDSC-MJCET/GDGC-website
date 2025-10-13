@@ -169,8 +169,7 @@ export const DyeFormPage = () => {
     const applicationData = {
       ...formData,
       membershipCardUrl: formData.hasMembership === 'yes' ? fileUrl : null,
-      paymentScreenshotUrl: formData.hasMembership === 'no' ? fileUrl : null,
-      hasMembership : tempFileUrl  
+      paymentScreenshotUrl: formData.hasMembership === 'no' ? fileUrl : null  
     };
 
     console.log('Submitting Form Data:', applicationData);
