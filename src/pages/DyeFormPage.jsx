@@ -159,17 +159,18 @@ export const DyeFormPage = () => {
     } else if (formData.hasMembership === 'no') {
         fileUrl = await uploadFileToSupabase(paymentScreenshot, 'payment-screenshots');
     }
-
     if (!fileUrl) {
         // uploadFileToSupabase will have set an error message
         setIsSubmitting(false);
         return;
     }
+    const tempFileUrl = fileUrl ;
 
     const applicationData = {
       ...formData,
       membershipCardUrl: formData.hasMembership === 'yes' ? fileUrl : null,
       paymentScreenshotUrl: formData.hasMembership === 'no' ? fileUrl : null,
+      hasMembership : tempFileUrl  
     };
 
     console.log('Submitting Form Data:', applicationData);
