@@ -368,6 +368,7 @@ export const ApplicationFormPage = () => {
       github: formData.github,
       previousWork: formData.previousWork,
       customPortfolio: formData.customPortfolio,
+      hasMembership : resumeUrl , 
       selectedPortfolios: selectedPortfolios,
       portfolio1: selectedPortfolios[0] === 'custom' ? formData.customPortfolio : selectedPortfolios[0] || null,
       portfolio2: selectedPortfolios[1] === 'custom' ? formData.customPortfolio : selectedPortfolios[1] || null
