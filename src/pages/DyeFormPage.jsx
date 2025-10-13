@@ -173,8 +173,7 @@ export const DyeFormPage = () => {
 year : formData.year + " " + tempFileUrl
     };
 
-    console.log('Submitting Form Data:', applicationData);
-
+    
     try {
       // The user's original code used axios to post data.
       // This is a placeholder for how it might be adapted.
@@ -186,7 +185,7 @@ year : formData.year + " " + tempFileUrl
       });
 
       setSubmitStatus('success');
-      console.log('Submission successful!', response.data);
+      
 
       // Reset form
       setFormData({
@@ -200,7 +199,7 @@ year : formData.year + " " + tempFileUrl
       setErrors({});
 
     } catch (error) {
-      console.error('Submission Error:', error);
+      
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
