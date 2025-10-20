@@ -70,7 +70,7 @@ function AppWithRouter() {
         <Route path="/">
           {/* <Route index element={<HomePage/>} /> */}
           <Route index element={<App />} />
-          <Route path="apply" element={<DyeFormPage/>} />
+          {/* <Route path="apply" element={<DyeFormPage/>} /> */}
           {/* <Route path="about" element={<AboutPage/>} /> */}
         </Route>
       </Routes>
