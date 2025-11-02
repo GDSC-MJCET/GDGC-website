@@ -368,7 +368,7 @@ year : formData.year + " " + tempFileUrl
                                 <Button type="submit" disabled={isSubmitting} className="px-8 py-5 text-lg font-semibold">
                                     {isSubmitting ? 'Submitting...' : 'Submit'}
                                 </Button>
-                                {submitStatus === 'error' && <p className="text-red-500 text-sm mt-4">Submission failed. Please check your details and try again.</p>}
+                                {submitStatus === 'error' && <p className="text-red-500 text-sm mt-4">Submission failed. Please check your details and try again</p>}
                             </div>
                         </form>
       </div>
@@ -376,7 +376,7 @@ year : formData.year + " " + tempFileUrl
       
       {submitStatus === 'success' && (
             <div className="fixed top-4 right-4 bg-green-500 text-white p-4 rounded-lg shadow-lg">
-                <p>Form submitted successfully!</p>
+                <p>Registration successfull </p>
             </div>
         )}
         {submitStatus === 'error' && (

@@ -10,6 +10,15 @@ import { ThemeProvider } from './components/theme-provider';
 import ClosedPage from './pages/closedPage';
 import { DyeFormPage } from './pages/DyeFormPage'
 
+
+import LiquidEther from './components/LiquidEther.jsx';
+
+
+
+
+import Footer from './components/footer/footer.jsx';
+import HeadingSection from './components/heading-section'
+
 function App() {
   return (
     <div className="min-h-screen w-full" style={{ position: 'relative' }}>
@@ -60,7 +69,7 @@ function AppWithRouter() {
       <Routes>
         <Route path="/">
           {/* <Route index element={<HomePage/>} /> */}
-          <Route index element={<HiringPage/>} />
+          <Route index element={<App />} />
           <Route path="apply" element={<DyeFormPage/>} />
           {/* <Route path="about" element={<AboutPage/>} /> */}
         </Route>
