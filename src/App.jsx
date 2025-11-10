@@ -9,8 +9,7 @@ import AboutPage from './pages/AboutPage';
 import { ThemeProvider } from './components/theme-provider';
 import ClosedPage from './pages/closedPage';
 import { DyeFormPage } from './pages/DyeFormPage'
-
-
+import gdg from "./assets/silkbg.png"
 import LiquidEther from './components/LiquidEther.jsx';
 
 
@@ -18,6 +17,14 @@ import LiquidEther from './components/LiquidEther.jsx';
 
 import Footer from './components/footer/footer.jsx';
 import HeadingSection from './components/heading-section'
+import LoginPage from './pages/loginPage.jsx'
+import InitialSetup from './pages/InitialSetup.jsx'
+import Dashboard from './pages/Dashboard.jsx'
+import QrChange from './pages/QrChange.jsx'
+import Portfolio from './pages/Portfolio.jsx'
+import SideBae from './components/SideBae.jsx'
+import BlogWrite from './pages/BlogWrite.jsx'
+import { Card, CardHeader } from './components/ui/card.jsx'
 
 function App() {
   return (
@@ -60,6 +67,67 @@ function App() {
   );
 }
 
+function PopUpMenu() {
+  return (
+    <div className="absolute right-7 top-11 lg:w-50 lg:h-60">
+      <div className="absolute right-0 mt-2 w-56 rounded-xl border bg-[#1E1E1E] shadow-lg p-2 text-sm text-gray-200">
+        <div className="px-3 py-2">
+          <p className="font-semibold">shadcn</p>
+          <p className="text-gray-400 text-xs">m@example.com</p>
+        </div>
+
+        <div className="mt-2 space-y-1 border-t pt-2">
+          <MenuItem label="Portfolio" shortcut="⌘S" />
+          {/* <MenuItem label="New Team" /> */}
+        </div>
+
+        <div className="mt-2 border-t border-gray-700 pt-2">
+          <MenuItem label="Log out" shortcut="⌘Q" danger />
+        </div>
+      </div>
+    </div>
+  );
+}
+function MenuItem({ label, shortcut, active, danger }) {
+  return (
+    <div
+      className={`flex items-center justify-between px-3 py-2 rounded cursor-pointer 
+      ${active ? "bg-gray-700" : "hover:bg-gray-700"} 
+      ${danger ? "text-red-400 hover:bg-red-950 hover:text-red-300" : ""}`}
+    >
+      <span>{label}</span>
+      {shortcut && <span className="text-xs text-gray-400">{shortcut}</span>}
+    </div>
+  );
+}
+
+function TeamLayout() {
+  const [openPopup , setopenPopup] = useState(false)
+  const handleOpenPopup = () => {
+    console.log("This is the boommmmm")
+    setopenPopup(!openPopup)
+  }
+  return (
+    <div className='relative noto-sans-mono flex flex-row'>
+        <SideBae />
+        <div className='h-screen w-full bg-black  border-white'>
+            {/* this will be out nav bar with the account stuff and all */}
+            <div className='flex h-15 items-end w-full justify-end px-5 flex-row p-2 border-b bottom-1border-stone-700 text-black text-md'>
+              {/* we have very little height here  */}
+              <p>lolo</p>
+              <span className='rounded-full bg-red-50 cursor-pointer'  onClick={handleOpenPopup}>
+                <img src={gdg} className='h-9 w-9 rounded-full' alt="" />
+              </span>
+              {/* this is the popup component */}
+              {openPopup && <PopUpMenu/>}
+            </div>
+            
+            <Outlet/>
+        </div>
+    </div>
+  )
+}
+
 
 function AppWithRouter() {
   return (
@@ -71,7 +139,17 @@ function AppWithRouter() {
           {/* <Route index element={<HomePage/>} /> */}
           <Route index element={<App />} />
           <Route path="apply" element={<DyeFormPage/>} />
-          {/* <Route path="about" element={<AboutPage/>} /> */}
+          <Route path='initialsetup/:id' element={<InitialSetup/>}/>
+          <Route path="login" element={<LoginPage/>} />
+          <Route path='team' element={<TeamLayout/>}>
+              <Route path='dashboard' element={<Dashboard/>} />
+              <Route path='blog' element={<BlogWrite/>} />
+              <Route path='costumization' >
+                <Route path='qrchange' element={<QrChange/>} />
+                <Route path='portfolio' element={<Portfolio/>} />
+              </Route>
+          </Route>
+          
         </Route>
       </Routes>
     </Router>
