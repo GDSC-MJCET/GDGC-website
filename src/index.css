@@ -3,6 +3,29 @@
 
 @custom-variant dark (&:is(.dark *));
 
+
+.google-sans-code-1 {
+  font-family: "Google Sans Code", monospace;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+}
+
+
+.share-tech-mono-regular {
+  font-family: "Share Tech Mono", monospace;
+  font-weight: 200;
+  font-style: normal;
+}
+.noto-sans-mono {
+  font-family: "Noto Sans Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -130,6 +153,8 @@
     transform: rotate(360deg);
   }
 }
+
+
 
 .spin-slow {
   animation: spinSlow 12s linear infinite;
