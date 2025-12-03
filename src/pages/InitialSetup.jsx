@@ -7,10 +7,12 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 
 export default function InitialSetup() {
   const [email, setEmail] = useState('');
+  const [name,setName]= useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
@@ -20,33 +22,24 @@ export default function InitialSetup() {
 
 
   const handleSubmit = () => {
-    // setError('');
-    // setIsLoading(true);
+    setError('');
+    setIsLoading(true);
+    const server = import.meta.env.VITE_SERVER_PATH | "http://localhost:5174"
+     axios.post(server+"/signup",{
+      name,email,id
+    }).then((data)=>{
+        if (data.message=="success") {
+          let semiRoot = document.getElementById('ayan')
+          semiRoot.style.display = "none"
+        }
+    }).finally(()=>{
 
-    // // Simulate login validation
-    // setTimeout(() => {
-    //   if (!email || !password) {
-    //     setError('Please fill in all fields');
-    //     setIsLoading(false);
-    //     return;
-    //   }
-      
-    //   if (!email.includes('@')) {
-    //     setError('Please enter a valid email address');
-    //     setIsLoading(false);
-    //     return;
-    //   }
-
-    //   // Simulate successful login
-    //   alert('Login successful! (This is a demo)');
-    //   setIsLoading(false);
-    //   setEmail('');
-    //   setPassword('');
-    // }, 1000);
+      setIsLoading(false)
+    }) //sigup is the route which sends user an email with the password
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div  id='ayan' className="min-h-screen flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardDescription>
