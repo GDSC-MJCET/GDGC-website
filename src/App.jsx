@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import './App.css'
-import {Navibar} from './components/Navbar'
-import { HiringPage } from './pages/HiringPage'
-import { ApplicationFormPage } from './pages/ApplicationFormPage'
+// import {Navibar} from './components/Navbar'
+// import { HiringPage } from './pages/HiringPage'
+// import { ApplicationFormPage } from './pages/ApplicationFormPage'
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import AboutPage from './pages/AboutPage';
+// import HomePage from './pages/HomePage';
+// import AboutPage from './pages/AboutPage';
 import { ThemeProvider } from './components/theme-provider';
-import ClosedPage from './pages/closedPage';
-import { DyeFormPage } from './pages/DyeFormPage'
+// import ClosedPage from './pages/closedPage';
+// import { DyeFormPage } from './pages/DyeFormPage'
 import gdg from "./assets/silkbg.png"
 import LiquidEther from './components/LiquidEther.jsx';
 
@@ -138,19 +138,19 @@ function AppWithRouter() {
         <Route path="/">
           {/* <Route index element={<HomePage/>} /> */}
           <Route index element={<App />} />
-          <Route path="apply" element={<DyeFormPage/>} />
+          {/* <Route path="apply" element={<DyeFormPage/>} /> */}
           <Route path='initialsetup/:id' element={<InitialSetup/>}/>
           <Route path="login" element={<LoginPage/>} />
-          <Route path='team' element={<TeamLayout/>}>
+          {/* <Route path='team' element={<TeamLayout/>}>
               <Route path='dashboard' element={<Dashboard/>} />
               <Route path='blog' element={<BlogWrite/>} />
               <Route path='costumization' >
                 <Route path='qrchange' element={<QrChange/>} />
                 <Route path='portfolio' element={<Portfolio/>} />
-              </Route>
+              </Route> */}
           </Route>
           
-        </Route>
+        {/* </Route> */}
       </Routes>
     </Router>
 

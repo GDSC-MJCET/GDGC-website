@@ -17,16 +17,17 @@ export default function InitialSetup() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { id } = useParams();
-    console.log("This is the Id" , id)
-
+  const { id} = useParams();
+   
 
   const handleSubmit = () => {
     setError('');
     setIsLoading(true);
-    const server = import.meta.env.VITE_SERVER_PATH | "http://localhost:5174"
-     axios.post(server+"/signup",{
-      name,email,id
+    const server = "http://localhost:3009"
+    console.log(name, email, id)
+    const ID = id.slice(1)
+     axios.post(server+"/api/v1/auth/signup",{
+      name,email,id:ID
     }).then((data)=>{
         if (data.message=="success") {
           let semiRoot = document.getElementById('ayan')
@@ -46,6 +47,15 @@ export default function InitialSetup() {
             Hello my Dear team member 
             enter your email to create an account on the GDGC platform 
           </CardDescription>
+          <Label className="my-3" htmlFor="name">Name</Label>
+          <Input
+            id="name"
+            type="text"
+            placeholder="xyz"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            disabled={isLoading}
+            />
           <Label className="my-3" htmlFor="email">Email</Label>
             <Input
             id="email"
