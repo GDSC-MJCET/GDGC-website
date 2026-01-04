@@ -14,7 +14,7 @@ const QrChange = () => {
   const nav =  useNavigate()
   if (!auth?.loggedIn) {
     toast.error("Please log in first");
-     nav('/login')
+    nav('/login')
   }
   useEffect(() => {
   axios
@@ -24,18 +24,18 @@ const QrChange = () => {
       },
     })
     .then((res) => {
-       
-
       if (res.data.data.destination === "https://gdgcmjcet.in/login") {
         setShowPopUp(true);
       } else {
+        // setDestination(res.data.data.destination)
+        console.log("we are setting the current url" , res.data.data.destination)
         setCurrentUrl(res.data.data.destination);
       }
     })
     .catch((err) => {
       
     });
-}, []);
+}, [destination ,currentUrl ]);
 
   const handleSave = () => {
     if (
@@ -47,7 +47,7 @@ const QrChange = () => {
 
     axios
       .post(
-        "http://localhost:3009"+ "/redirect",
+        import.meta.env.VITE_SERVER+ "/redirect",
         { destination },
         {
           headers: {
@@ -66,7 +66,7 @@ const QrChange = () => {
   };
 
  return (
-  <div className="min-h-screen flex items-center justify-center bg-background px-4">
+  <div className="min-h-screen flex mt-30 justify-center bg-background px-4">
     <Toaster />
 
     <div className="w-full max-w-lg space-y-6">
