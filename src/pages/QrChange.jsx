@@ -13,8 +13,6 @@ const QrChange = () => {
   const server = import.meta.env.VITE_SERVER
   const nav =  useNavigate()
   if (!auth?.loggedIn) {
-    print("-----------------------")
-    print(auth)
     toast.error("Please log in first");
     nav('/login')
   }
@@ -68,7 +66,7 @@ const QrChange = () => {
   };
 
  return (
-  <div className="min-h-screen flex items-center justify-center bg-background px-4">
+  <div className="min-h-screen flex mt-30 justify-center bg-background px-4">
     <Toaster />
 
     <div className="w-full max-w-lg space-y-6">
