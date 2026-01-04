@@ -199,7 +199,7 @@ year : formData.year + " " + tempFileUrl
       setErrors({});
 
     } catch (error) {
-      
+      console.error('Submission Error:', error);
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
