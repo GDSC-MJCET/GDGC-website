@@ -11,8 +11,17 @@ import defaultBanner from "../assets/random.png"
 const BlogEditor = () => {
     const { blog, blog: { title, content, des, banner }, setBlog, textEditor, setTextEditor } = useContext(EditorContext)
     const [isDragging, setIsDragging] = useState(false)
-
+    const nav = useNavigate()
     useEffect(() => {
+        
+        // const server = import.meta.env.VITE_SERVER || "http://localhost:3009"
+        // axios.post(server+"/confirm").then((data)=>{
+        //     if (data.data.success || data.success) {
+        //         return;
+        //     }else{
+        //         nav("/login")
+        //     }
+        // }).catch((err)=>console.err(err))
         if (!textEditor.isReady) {
             setTextEditor(new EditorJS({
                 holder: "textEditor",
@@ -62,7 +71,7 @@ const BlogEditor = () => {
             textEditor.save().then(data => {
                 if (data.blocks.length) {
                     setBlog({ ...blog, content: data })
-                    setEditorState("Publish")
+                    
                 } else {
                     toast.error("Please write some content")
                 }
@@ -184,7 +193,7 @@ const BlogEditor = () => {
                 {/* Title Input */}
                 <div className="mt-8">
                     <textarea
-                        placeholder="Why GDGC is better than CSI"
+                        placeholder="title:Yap Yap Yap ...."
                         onKeyDown={handleKeyDown}
                         onChange={handleTitleOnChange}
                         defaultValue={title}

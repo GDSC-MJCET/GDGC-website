@@ -45,7 +45,7 @@ const SideBae = () => {
                     <IconBrandLine color='grey' className='w-4'/>
                     <p  >Dashboard</p> 
                 </span>
-                <span onClick={()=>handleClickRedirect("blog","/team/blog" )} className={`flex ${clicked == "blog" ? "bg-white text-black" : ""} p-2  flex-row gap-2 items-center cursor-pointer rounded-md`}>
+                <span onClick={()=>handleClickRedirect("blog","/team/blog/editor" )} className={`flex ${clicked == "blog" ? "bg-white text-black" : ""} p-2  flex-row gap-2 items-center cursor-pointer rounded-md`}>
                     <IconArticle color='grey' className='w-4'/>
                     <p >Write Blog</p> 
                 </span>

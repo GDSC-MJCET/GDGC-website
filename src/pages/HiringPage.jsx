@@ -16,7 +16,6 @@ import { NavLink } from 'react-router-dom'
 import ColourfulText from "@/components/ui/colourful-text";
 import { motion } from "motion/react";
 
-
 export const HiringPage = () => {
   return (
     <div className='flex flex-col items-center justify-center w-full min-h-screen '>

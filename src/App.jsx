@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState,useContext,createContext } from 'react'
 import './App.css'
 // import {Navibar} from './components/Navbar'
 // import { HiringPage } from './pages/HiringPage'
@@ -25,6 +25,15 @@ import Portfolio from './pages/Portfolio.jsx'
 import SideBae from './components/SideBae.jsx'
 import BlogWrite from './pages/BlogWrite.jsx'
 import { Card, CardHeader } from './components/ui/card.jsx'
+import BlogHome from './pages/BlogHomePage.jsx';
+import WelcomeBlog from './pages/WelcomeBlogPage.jsx';
+import { SpecificBlog } from './pages/SpecificBlogPage.jsx';
+import BlogHelp from './pages/BlogHelp.jsx';
+import BlogLand from './pages/BlogLand.jsx';
+import { useEffect } from 'react';
+import axios from 'axios';
+import { AuthContext } from './context/AuthContext.js';
+
 
 function App() {
   return (
@@ -130,7 +139,22 @@ function TeamLayout() {
 
 
 function AppWithRouter() {
+  const initialAuthContext={
+    loggedIn:false,
+    token:"nothing"
+  }
+  useEffect(()=>{
+    const initLogged = JSON.parse(localStorage.getItem("AuthState"))
+    if(initLogged && initLogged.loggedIn){
+      setAuthState(initLogged)
+    }else{
+      setAuthState(initialAuthContext)
+    }
+  })
+  const [authState,setAuthState] = useState(initialAuthContext);
   return (
+  
+    <AuthContext.Provider value={{authState,setAuthState}}>
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
 
     <Router>
@@ -141,21 +165,32 @@ function AppWithRouter() {
           {/* <Route path="apply" element={<DyeFormPage/>} /> */}
           <Route path='initialsetup/:id' element={<InitialSetup/>}/>
           <Route path="login" element={<LoginPage/>} />
-          {/* <Route path='team' element={<TeamLayout/>}>
+          {/* <Route path="blog/welcome" element={<WelcomeBlog/>}/> */}
+          
+
+          <Route path='team' element={<TeamLayout/>}>
               <Route path='dashboard' element={<Dashboard/>} />
-              <Route path='blog' element={<BlogWrite/>} />
-              <Route path='costumization' >
+              {/* <Route path="blog/" element ={<BlogLand/>}>
+            <Route path='home' element={<BlogHome/>} />
+            <Route path="editor" element={<BlogWrite/>} />
+            <Route path="posts/:postId" element={<SpecificBlog/>} />
+            <Route path ="help" element = {<BlogHelp/>} />
+            
+
+          </Route> */}
+              <Route path='customization' >
                 <Route path='qrchange' element={<QrChange/>} />
-                <Route path='portfolio' element={<Portfolio/>} />
-              </Route> */}
+                {/* <Route path='portfolio' element={<Portfolio/>} /> */}
+              </Route>
           </Route>
           
-        {/* </Route> */}
+        </Route>
       </Routes>
     </Router>
 
     </ThemeProvider>
-
+    </AuthContext.Provider>
+  
   )
 }
 

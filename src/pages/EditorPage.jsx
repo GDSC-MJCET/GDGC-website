@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom"
     title : '',
     banner: '',
     content : '',
-    tags:[],
     des:'',
 }
 
@@ -19,9 +18,7 @@ const EditorPage = () =>{
     const nav = useNavigate ()
      const handleSubmit=async({blog})=>{
         const tl = toast.loading ("Submitting...")
-        const res =  await axios.post(import.meta.env.VITE_SERVER_PATH+"/submit-blog",blog,{
-            Authorization:`Bearer ${token}` //token which is from maybe cookies, which are stored after the user is authorized 
-         })
+        const res =  await axios.post(import.meta.env.VITE_SERVER+"/publish-blog",blog)
          if (res.data.success) {
             toast.dismiss (tl)
             toast.success ("Blog submitted")
