@@ -104,6 +104,7 @@ function MenuItem({ label, shortcut, active, danger }) {
 
 function TeamLayout() {
   const [openPopup , setopenPopup] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const [userEmail , setUserEmail] = useState("")
   const [userName , setUserName] = useState("")
   const handleOpenPopup = () => {
@@ -126,11 +127,23 @@ function TeamLayout() {
   },[])
   return (
     <div className='relative noto-sans-mono flex flex-row h-screen overflow-hidden'>
-        <SideBae />
+        <SideBae isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         <div className='flex-1 flex flex-col bg-black border-white overflow-hidden'>
             {/* this will be out nav bar with the account stuff and all */}
-            <div className='flex h-15 items-end w-full justify-end px-5 flex-row p-2 border-b bottom-1border-stone-700 text-black text-md flex-shrink-0'>
-              {/* we have very little height here  */}
+            <div className='flex h-15 items-center w-full justify-between px-5 flex-row p-2 border-b bottom-1border-stone-700 text-black text-md flex-shrink-0'>
+              {/* Hamburger menu button for mobile */}
+              <button 
+                onClick={() => setSidebarOpen(true)}
+                className='md:hidden p-2 hover:bg-gray-800 rounded-lg'
+              >
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+              
+              {/* Spacer for desktop */}
+              <div className='hidden md:block'></div>
+              
               <span className='rounded-full bg-red-50 cursor-pointer'  onClick={handleOpenPopup}>
                 <img src={gdg} className='h-9 w-9 rounded-full' alt="" />
               </span>
