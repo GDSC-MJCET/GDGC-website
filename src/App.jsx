@@ -122,7 +122,6 @@ function MenuItem({ label, shortcut, active, danger }) {
 function TeamLayout() {
   const [openPopup , setopenPopup] = useState(false)
   const handleOpenPopup = () => {
-    console.log("This is the boommmmm")
     setopenPopup(!openPopup)
   }
   return (

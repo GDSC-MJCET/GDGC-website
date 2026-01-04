@@ -22,10 +22,10 @@ export default function InitialSetup() {
   const nav = useNavigate()
 
   useEffect(()=>{
-    const ID = id.slice(1)
+    let identifier = parseInt(id)/parseInt(import.meta.env.VITE_DIVISOR)
     const server = import.meta.env.VITE_SERVER || "http://localhost:3009"
     axios.post(server+"/api/v1/auth/confirm",{
-      id:ID
+      identifier
     }).then((data)=>{
       if (data.data.success) {
          nav("/login")
@@ -56,7 +56,7 @@ export default function InitialSetup() {
      axios.post(server+"/api/v1/auth/signup",{
       name,email,id:ID
     }).then((data)=>{
-      console.log(data);
+     
       
         if (data.data.success) {
           let semiRoot = document.getElementById('ayan')

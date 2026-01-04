@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Eye, EyeOff, AlertCircle } from 'lucide-react';
 import axios from 'axios';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import { WavyBackground } from '../components/ui/wavy-background';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
@@ -41,7 +41,7 @@ export default function LoginPage() {
         toast.error('Please enter a valid email address');
         return;
       }
-    console.log(email,password);
+     
     
     toast.loading("Signing in...")
      const server = import.meta.env.VITE_SERVER+"/api/v1/auth/signin" || "http://localhost:3009"
@@ -57,12 +57,13 @@ export default function LoginPage() {
         
 
       }
-    }).catch((error)=>console.log(server+error.message))
+    }).catch((error)=>  toast.error(server+error.message))
   };
 
  return (
  
     <div className="min-h-screen flex items-center justify-center p-4">
+   <Toaster/>
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">
