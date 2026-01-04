@@ -126,11 +126,11 @@ function TeamLayout() {
     getDataAboutUser()
   },[])
   return (
-    <div className='relative noto-sans-mono flex flex-row h-screen overflow-hidden'>
+    <div className='relative noto-sans-mono flex flex-row h-screen overflow-hidden bg-background'>
         <SideBae isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-        <div className='flex-1 flex flex-col bg-black border-white overflow-hidden'>
+        <div className='flex-1 flex flex-col bg-background border-white overflow-hidden'>
             {/* this will be out nav bar with the account stuff and all */}
-            <div className='flex h-15 items-center w-full justify-between px-5 flex-row p-2 border-b bottom-1border-stone-700 text-black text-md flex-shrink-0'>
+            <div className='flex h-15 items-center w-full justify-between px-5 flex-row p-2 border-b border-border text-foreground text-md flex-shrink-0'>
               {/* Hamburger menu button for mobile */}
               <button 
                 onClick={() => setSidebarOpen(true)}
