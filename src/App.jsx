@@ -1,14 +1,12 @@
-import { useState } from 'react'
+import { useState,useContext,createContext } from 'react'
 import './App.css'
-import {Navibar} from './components/Navbar'
-import { HiringPage } from './pages/HiringPage'
-import { ApplicationFormPage } from './pages/ApplicationFormPage'
-import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import AboutPage from './pages/AboutPage';
+// import {Navibar} from './components/Navbar'
+// import { HiringPage } from './pages/HiringPage'
+// import { ApplicationFormPage } from './pages/ApplicationFormPage'
+import { BrowserRouter as Router, Routes, Route, Outlet, useNavigate } from 'react-router-dom';
+// import HomePage from './pages/HomePage';
+// import AboutPage from './pages/AboutPage';
 import { ThemeProvider } from './components/theme-provider';
-import ClosedPage from './pages/closedPage';
-import { DyeFormPage } from './pages/DyeFormPage'
 import gdg from "./assets/silkbg.png"
 import LiquidEther from './components/LiquidEther.jsx';
 
@@ -17,7 +15,8 @@ import LiquidEther from './components/LiquidEther.jsx';
 
 import Footer from './components/footer/footer.jsx';
 import HeadingSection from './components/heading-section'
-import LoginPage from './pages/loginPage.jsx'
+import LoginPage from './pages/LoginPage.jsx'
+
 import InitialSetup from './pages/InitialSetup.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import QrChange from './pages/QrChange.jsx'
@@ -25,6 +24,15 @@ import Portfolio from './pages/Portfolio.jsx'
 import SideBae from './components/SideBae.jsx'
 import BlogWrite from './pages/BlogWrite.jsx'
 import { Card, CardHeader } from './components/ui/card.jsx'
+import BlogHome from './pages/BlogHomePage.jsx';
+import WelcomeBlog from './pages/WelcomeBlogPage.jsx';
+import { SpecificBlog } from './pages/SpecificBlogPage.jsx';
+import BlogHelp from './pages/BlogHelp.jsx';
+import BlogLand from './pages/BlogLand.jsx';
+import { useEffect } from 'react';
+import axios from 'axios';
+import { AuthContext } from './context/AuthContext.js';
+
 
 function App() {
   return (
@@ -68,6 +76,16 @@ function App() {
 }
 
 function PopUpMenu() {
+  const {authState,setAuthState} = useContext(AuthContext)
+  const nav = useNavigate()
+  useEffect(()=>{
+    localStorage.setItem("AuthState",JSON.stringify(authState))
+
+  },[authState])
+  const handleLogout = () =>{
+    setAuthState({token:" ",loggedIn:false})
+    nav("/login")
+  }
   return (
     <div className="absolute right-7 top-11 lg:w-50 lg:h-60">
       <div className="absolute right-0 mt-2 w-56 rounded-xl border bg-[#1E1E1E] shadow-lg p-2 text-sm text-gray-200">
@@ -81,8 +99,8 @@ function PopUpMenu() {
           {/* <MenuItem label="New Team" /> */}
         </div>
 
-        <div className="mt-2 border-t border-gray-700 pt-2">
-          <MenuItem label="Log out" shortcut="⌘Q" danger />
+        <div onClick={handleLogout} className="mt-2 border-t border-gray-700 pt-2">
+          <MenuItem label="Log out" shortcut="⌘Q" danger  />
         </div>
       </div>
     </div>
@@ -130,7 +148,21 @@ function TeamLayout() {
 
 
 function AppWithRouter() {
+  const initialAuthContext={
+    loggedIn:false,
+    token:"nothing"
+  }
+  useEffect(()=>{
+    const initLogged = JSON.parse(localStorage.getItem("AuthState"))
+    if(initLogged && initLogged.loggedIn){
+      setAuthState(initLogged)
+    }
+  },[])
+  const [authState,setAuthState] = useState(initialAuthContext);
+  
   return (
+  
+    <AuthContext.Provider value={{authState,setAuthState}}>
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
 
     <Router>
@@ -138,15 +170,25 @@ function AppWithRouter() {
         <Route path="/">
           {/* <Route index element={<HomePage/>} /> */}
           <Route index element={<App />} />
-          <Route path="apply" element={<DyeFormPage/>} />
+          {/* <Route path="apply" element={<DyeFormPage/>} /> */}
           <Route path='initialsetup/:id' element={<InitialSetup/>}/>
           <Route path="login" element={<LoginPage/>} />
+          {/* <Route path="blog/welcome" element={<WelcomeBlog/>}/> */}
+          
+
           <Route path='team' element={<TeamLayout/>}>
               <Route path='dashboard' element={<Dashboard/>} />
-              <Route path='blog' element={<BlogWrite/>} />
-              <Route path='costumization' >
+              {/* <Route path="blog/" element ={<BlogLand/>}>
+            <Route path='home' element={<BlogHome/>} />
+            <Route path="editor" element={<BlogWrite/>} />
+            <Route path="posts/:postId" element={<SpecificBlog/>} />
+            <Route path ="help" element = {<BlogHelp/>} />
+            
+
+          </Route> */}
+              <Route path='customization' >
                 <Route path='qrchange' element={<QrChange/>} />
-                <Route path='portfolio' element={<Portfolio/>} />
+                {/* <Route path='portfolio' element={<Portfolio/>} /> */}
               </Route>
           </Route>
           
@@ -155,7 +197,8 @@ function AppWithRouter() {
     </Router>
 
     </ThemeProvider>
-
+    </AuthContext.Provider>
+  
   )
 }
 

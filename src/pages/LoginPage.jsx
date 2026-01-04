@@ -1,10 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Eye, EyeOff, AlertCircle } from 'lucide-react';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import { WavyBackground } from '../components/ui/wavy-background';
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -12,41 +18,61 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
+  const {authState,setAuthState}=useContext(AuthContext)
+  const nav = useNavigate()
+  useEffect(()=>{
+    if(authState.loggedIn){
+      localStorage.setItem("AuthState", JSON.stringify(authState));
+    }
+  },[authState])
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
-
-    // Simulate login validation
-    setTimeout(() => {
-      if (!email || !password) {
-        setError('Please fill in all fields');
-        setIsLoading(false);
+    if (!email?.trim()) {
+      toast.error('Email is required');
+      return;
+    }
+    if (!password?.trim()) {
+  toast.error('God forbid developers dealing with empty passwords');
+  return;
+}
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        toast.error('Please enter a valid email address');
         return;
       }
-      
-      if (!email.includes('@')) {
-        setError('Please enter a valid email address');
-        setIsLoading(false);
-        return;
-      }
+    console.log(email,password);
+    
+    toast.loading("Signing in...")
+     const server = import.meta.env.VITE_SERVER+"/api/v1/auth/signin" || "http://localhost:3009"
+    axios.post(server,{
 
-      // Simulate successful login
-      alert('Login successful! (This is a demo)');
-      setIsLoading(false);
-    }, 1000);
+      email,password
+    }).then((data)=>{
+      if(data.data.token){
+        toast.success("Logged In Successfully")
+        toast.dismissAll()
+        setAuthState({token:data.data.token,loggedIn:true})
+        return nav('/team/dashboard');
+        
+
+      }
+    }).catch((error)=>console.log(server+error.message))
   };
 
-  return (
-    <div className="min-h-screen flex items-center justify-center  p-4">
+ return (
+ 
+    <div className="min-h-screen flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">Login Dashboard</CardTitle>
+          <CardTitle className="text-2xl font-bold">
+            Login Dashboard
+          </CardTitle>
           <CardDescription>
-            only authorized personals 
+            only authorized personals
           </CardDescription>
         </CardHeader>
+
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
             {error && (
@@ -55,7 +81,7 @@ export default function LoginPage() {
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
-            
+
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -73,7 +99,7 @@ export default function LoginPage() {
               <div className="relative">
                 <Input
                   id="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -95,7 +121,10 @@ export default function LoginPage() {
             </div>
 
             <div className="flex items-center justify-between text-sm">
-              <a href="#" className="text-blue-600 hover:underline">
+              <a
+                href="#"
+                className="text-blue-300 hover:underline"
+              >
                 Forgot password?
               </a>
             </div>
@@ -107,12 +136,15 @@ export default function LoginPage() {
               className="w-full"
               disabled={isLoading}
             >
-              {isLoading ? 'Signing in...' : 'Sign in'}
+              {isLoading ? "Signing in..." : "Sign in"}
             </Button>
 
-            <div className="text-sm text-center text-slate-600">
-              Don't have an account?{' '}
-              <a href="#" className="text-blue-600 hover:underline font-medium">
+            <div className="text-sm text-center text-slate-400">
+              Don&apos;t have an account?{" "}
+              <a
+                href="#"
+                className="text-blue-300 hover:underline font-medium"
+              >
                 Sign up
               </a>
             </div>
@@ -120,5 +152,7 @@ export default function LoginPage() {
         </form>
       </Card>
     </div>
-  );
+ 
+);
+
 }
