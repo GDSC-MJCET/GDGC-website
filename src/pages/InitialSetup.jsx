@@ -21,17 +21,17 @@ export default function InitialSetup() {
   const { id} = useParams();
   const nav = useNavigate()
 
-  useEffect(()=>{
-    let identifier = parseInt(id)/parseInt(import.meta.env.VITE_DIVISOR)
-    const server = import.meta.env.VITE_SERVER || "http://localhost:3009"
-    axios.post(server+"/api/v1/auth/confirm",{
-      identifier
-    }).then((data)=>{
-      if (data.data.success) {
-         nav("/login")
-      }
-    }).catch((err)=>console.error(err))
-  },[])
+  // useEffect(()=>{
+  //   let identifier = parseInt(id)/parseInt(import.meta.env.VITE_DIVISOR)
+  //   const server = import.meta.env.VITE_SERVER || "http://localhost:3009"
+  //   axios.post(server+"/api/v1/auth/confirm",{
+  //     identifier
+  //   }).then((data)=>{
+  //     if (data.data.success) {
+  //        nav("/login")
+  //     }
+  //   }).catch((err)=>console.error(err))
+  // },[])
 
 
 
@@ -51,19 +51,17 @@ export default function InitialSetup() {
     return;
   }
     const server = import.meta.env.VITE_SERVER || "http://localhost:3009"
-    
-    const ID = id
-     axios.post(server+"/api/v1/auth/signup",{
-      name,email,id:ID
-    }).then((data)=>{
-     
-      
-        if (data.data.success) {
-          let semiRoot = document.getElementById('ayan')
+    const identifier = parseInt(id)/parseInt(import.meta.env.VITE_DIVISOR)
+    console.log(identifier )
+    axios.post(server+"/api/v1/auth/signup",{
+      name,email,id:`${identifier}`
+      }).then((data)=>{
+        console.log(data)
         
-          semiRoot.style.display = "none"
+        if (data.data.success) {
+          
           toast.success("Password Sent to your Email")
-           nav("/login")
+          nav("/login")
         }
     }).finally(()=>{
 
