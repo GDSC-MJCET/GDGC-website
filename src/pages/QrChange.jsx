@@ -13,8 +13,10 @@ const QrChange = () => {
   const server = import.meta.env.VITE_SERVER
   const nav =  useNavigate()
   if (!auth?.loggedIn) {
+    print("-----------------------")
+    print(auth)
     toast.error("Please log in first");
-     nav('/login')
+    nav('/login')
   }
   useEffect(() => {
   axios
@@ -24,18 +26,18 @@ const QrChange = () => {
       },
     })
     .then((res) => {
-       
-
       if (res.data.data.destination === "https://gdgcmjcet.in/login") {
         setShowPopUp(true);
       } else {
+        // setDestination(res.data.data.destination)
+        console.log("we are setting the current url" , res.data.data.destination)
         setCurrentUrl(res.data.data.destination);
       }
     })
     .catch((err) => {
       
     });
-}, []);
+}, [destination ,currentUrl ]);
 
   const handleSave = () => {
     if (
@@ -47,7 +49,7 @@ const QrChange = () => {
 
     axios
       .post(
-        "http://localhost:3009"+ "/redirect",
+        import.meta.env.VITE_SERVER+ "/redirect",
         { destination },
         {
           headers: {

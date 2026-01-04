@@ -1,36 +1,12 @@
-import { IconBrandLine } from '@tabler/icons-react'
-import { ChartLine, Settings2 } from 'lucide-react'
-import React, { useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import SideBae from '../components/SideBae'
-import axios from 'axios'
+import React from 'react'
 import { NavLink } from 'react-router-dom'
 
-const Dashboard = () => {
-  const auth =  JSON.parse(localStorage.getItem("AuthState"))
-  
-  const nav = useNavigate()
-  useEffect(()=>{
-    axios.get(import.meta.env.VITE_SERVER+"/api/v1/dashboard/get-dashboard",{headers:{
-    Authorization:`Bearer ${auth?.token}`
-   }}).then((data)=>{
-     
-    if (!data.data.success) {
-       nav("/login")
-    }
-    }).catch((err)=>{
-        
-      if (err.status==401) {
-        nav("/login")
-      }
-    })
-  },[])
- 
+const Socials = () => {
   return (
     <div className="min-h-[70vh] flex flex-col items-center justify-center px-4">
       <div className="text-center space-y-4">
         <h1 className="text-3xl md:text-4xl font-bold text-white">
-          Dashboard
+          Socials
         </h1>
         <p className="text-gray-400 text-lg max-w-md mx-auto">
           Coming Soon
@@ -58,4 +34,4 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard
+export default Socials

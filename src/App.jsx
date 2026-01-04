@@ -3,7 +3,7 @@ import './App.css'
 // import {Navibar} from './components/Navbar'
 // import { HiringPage } from './pages/HiringPage'
 // import { ApplicationFormPage } from './pages/ApplicationFormPage'
-import { BrowserRouter as Router, Routes, Route, Outlet, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Outlet, useNavigate, NavLink } from 'react-router-dom';
 // import HomePage from './pages/HomePage';
 // import AboutPage from './pages/AboutPage';
 import { ThemeProvider } from './components/theme-provider';
@@ -20,7 +20,7 @@ import LoginPage from './pages/LoginPage.jsx'
 import InitialSetup from './pages/InitialSetup.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import QrChange from './pages/QrChange.jsx'
-import Portfolio from './pages/Portfolio.jsx'
+import Portfolio from './pages/Socials.jsx'
 import SideBae from './components/SideBae.jsx'
 import BlogWrite from './pages/BlogWrite.jsx'
 import { Card, CardHeader } from './components/ui/card.jsx'
@@ -32,75 +32,58 @@ import BlogLand from './pages/BlogLand.jsx';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from './context/AuthContext.js';
+import Socials from './pages/Socials.jsx';
 
 
 function App() {
+  
   return (
-    <div className="min-h-screen w-full" style={{ position: 'relative' }}>
-      {/* Background canvas */}
-      <LiquidEther
-        colors={['#5227FF', '#FF9FFC', '#84db9f']}
-        mouseForce={20}
-        cursorSize={100}
-        isViscous={false}
-        viscous={30}
-        iterationsViscous={32}
-        iterationsPoisson={32}
-        resolution={0.5}
-        isBounce={false}
-        autoDemo={true}
-        autoSpeed={0.5}
-        autoIntensity={2.2}
-        takeoverDuration={0.25}
-        autoResumeDelay={3000}
-        autoRampDuration={0.6}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          zIndex: 0,
-        }}
-      />
-
-      {/* Foreground content */}
-      <div className="w-full " style={{ position: 'relative', zIndex: 1 }}>
-        <HeadingSection />
-        {/* <Navibar /> */}
-        {/* <Outlet /> */}
-        <Footer />
+    <div className="min-h-screen w-full bg-black flex flex-col items-center justify-center px-4">
+      <div className="text-center space-y-6">
+        <h1 className="text-4xl md:text-6xl font-bold text-white">
+          Coming Soon
+        </h1>
+        <p className="text-gray-400 text-lg md:text-xl max-w-md mx-auto">
+          We're working on something exciting. Stay tuned!
+        </p>
+        
       </div>
     </div>
   );
 }
 
-function PopUpMenu() {
+function PopUpMenu({name , email}) {
   const {authState,setAuthState} = useContext(AuthContext)
   const nav = useNavigate()
   useEffect(()=>{
     localStorage.setItem("AuthState",JSON.stringify(authState))
 
   },[authState])
-  const handleLogout = () =>{
+  
+  const handleLogout = () => {
     setAuthState({token:" ",loggedIn:false})
     nav("/login")
   }
+  
+  const handleNavigate = (route) => {
+    nav(route)
+  }
+  
   return (
     <div className="absolute right-7 top-11 lg:w-50 lg:h-60">
       <div className="absolute right-0 mt-2 w-56 rounded-xl border bg-[#1E1E1E] shadow-lg p-2 text-sm text-gray-200">
         <div className="px-3 py-2">
-          <p className="font-semibold">shadcn</p>
-          <p className="text-gray-400 text-xs">m@example.com</p>
+          <p className="font-semibold">{name}</p>
+          <p className="text-gray-400 text-xs">{email}</p>
         </div>
 
-        <div className="mt-2 space-y-1 border-t pt-2">
-          <MenuItem label="Portfolio" shortcut="⌘S" />
+        <div onClick={()=>handleNavigate("/team/customization/qrchange")} className="mt-2 space-y-1 border-t pt-2">
+          <MenuItem label="Change Qr"/>
           {/* <MenuItem label="New Team" /> */}
         </div>
 
         <div onClick={handleLogout} className="mt-2 border-t border-gray-700 pt-2">
-          <MenuItem label="Log out" shortcut="⌘Q" danger  />
+          <MenuItem label="Log out"  danger  />
         </div>
       </div>
     </div>
@@ -121,25 +104,43 @@ function MenuItem({ label, shortcut, active, danger }) {
 
 function TeamLayout() {
   const [openPopup , setopenPopup] = useState(false)
+  const [userEmail , setUserEmail] = useState("")
+  const [userName , setUserName] = useState("")
   const handleOpenPopup = () => {
     setopenPopup(!openPopup)
   }
+  const auth =  JSON.parse(localStorage.getItem("AuthState"))
+
+  const getDataAboutUser = async () => {
+    console.log("this is the serer url and stuff")
+      const response = await axios.get(import.meta.env.VITE_SERVER + '/api/v1/auth/about' , {headers:{
+      Authorization: `Bearer ${auth?.token}`
+      }})
+    console.log(response , "this is the user response")
+    setUserEmail(response.data.email)
+    setUserName(response.data.name)
+  }
+  useEffect(()=>{
+    console.log("Hello from use effect")
+    getDataAboutUser()
+  },[])
   return (
-    <div className='relative noto-sans-mono flex flex-row'>
+    <div className='relative noto-sans-mono flex flex-row h-screen overflow-hidden'>
         <SideBae />
-        <div className='h-screen w-full bg-black  border-white'>
+        <div className='flex-1 flex flex-col bg-black border-white overflow-hidden'>
             {/* this will be out nav bar with the account stuff and all */}
-            <div className='flex h-15 items-end w-full justify-end px-5 flex-row p-2 border-b bottom-1border-stone-700 text-black text-md'>
+            <div className='flex h-15 items-end w-full justify-end px-5 flex-row p-2 border-b bottom-1border-stone-700 text-black text-md flex-shrink-0'>
               {/* we have very little height here  */}
-              <p>lolo</p>
               <span className='rounded-full bg-red-50 cursor-pointer'  onClick={handleOpenPopup}>
                 <img src={gdg} className='h-9 w-9 rounded-full' alt="" />
               </span>
               {/* this is the popup component */}
-              {openPopup && <PopUpMenu/>}
+              {openPopup && <PopUpMenu name={userName} email={userEmail}/>}
             </div>
             
-            <Outlet/>
+            <div className='flex-1 overflow-y-auto'>
+              <Outlet/>
+            </div>
         </div>
     </div>
   )
@@ -187,7 +188,7 @@ function AppWithRouter() {
           </Route> */}
               <Route path='customization' >
                 <Route path='qrchange' element={<QrChange/>} />
-                {/* <Route path='portfolio' element={<Portfolio/>} /> */}
+                <Route path='socials' element={<Socials/>} />
               </Route>
           </Route>
           
