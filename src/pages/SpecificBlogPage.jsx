@@ -14,7 +14,7 @@ export const SpecificBlog = () => {
     const [blogState,setBlogState] = useState([IndividualBlogStructure])
     // useEffect(() => {
     //     axios.post(`${import.meta.env.VITE_SERVER}/api/v1/blog/get-blog`,{_id}).then((response) => {
-    //           (response.data);
+    //         console.log(response.data);
     //     }).catch((error) => {
     //         console.error("There was an error fetching the blog! ", error);
     //     }); 

@@ -24,10 +24,10 @@ const BlogHome = () => {
     // useEffect(()=>{
     //     try {
     //       axios.get(server+"/api/v1/blog/get-blogs").then(data=>{
-    //         setBlogs(data.data.blogs).catch(err=>  (err))
+    //         setBlogs(data.data.blogs).catch(err=>console.log(err))
     //       })
     //     } catch (error) {
-    //         (error)
+    //       console.log(error)
     //     } //get blogs for home pages
         // commenting out for testing purposes
     // },[])
