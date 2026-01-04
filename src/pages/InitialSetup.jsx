@@ -21,6 +21,7 @@ export default function InitialSetup() {
   const { id} = useParams();
   const nav = useNavigate()
 
+
   // useEffect(()=>{
   //   let identifier = parseInt(id)/parseInt(import.meta.env.VITE_DIVISOR)
   //   const server = import.meta.env.VITE_SERVER || "http://localhost:3009"
