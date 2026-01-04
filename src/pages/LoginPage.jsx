@@ -41,7 +41,7 @@ export default function LoginPage() {
         toast.error('Please enter a valid email address');
         return;
       }
-    console.log(email,password);
+     
     
     toast.loading("Signing in...")
      const server = import.meta.env.VITE_SERVER+"/api/v1/auth/signin" || "http://localhost:3009"
@@ -57,7 +57,7 @@ export default function LoginPage() {
         
 
       }
-    }).catch((error)=>console.log(server+error.message))
+    }).catch((error)=>  toast.error(server+error.message))
   };
 
  return (

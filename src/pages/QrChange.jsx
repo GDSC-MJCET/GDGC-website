@@ -24,7 +24,7 @@ const QrChange = () => {
       },
     })
     .then((res) => {
-      console.log(res, "yaha redirect ana");
+       
 
       if (res.data.data.destination === "https://gdgcmjcet.in/login") {
         setShowPopUp(true);
@@ -33,7 +33,7 @@ const QrChange = () => {
       }
     })
     .catch((err) => {
-      console.log("this is error", err);
+      
     });
 }, []);
 

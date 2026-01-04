@@ -13,12 +13,12 @@ const Dashboard = () => {
     axios.get(import.meta.env.VITE_SERVER+"/api/v1/dashboard/get-dashboard",{headers:{
     Authorization:`Bearer ${auth?.token}`
    }}).then((data)=>{
-    console.log(data)
+     
     if (!data.data.success) {
        nav("/login")
     }
     }).catch((err)=>{
-      console.log(err,"this is err")
+        
       if (err.status==401) {
         nav("/login")
       }
