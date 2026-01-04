@@ -7,8 +7,6 @@ import { BrowserRouter as Router, Routes, Route, Outlet, useNavigate } from 'rea
 // import HomePage from './pages/HomePage';
 // import AboutPage from './pages/AboutPage';
 import { ThemeProvider } from './components/theme-provider';
-// import ClosedPage from './pages/closedPage';
-// import { DyeFormPage } from './pages/DyeFormPage'
 import gdg from "./assets/silkbg.png"
 import LiquidEther from './components/LiquidEther.jsx';
 
@@ -18,6 +16,7 @@ import LiquidEther from './components/LiquidEther.jsx';
 import Footer from './components/footer/footer.jsx';
 import HeadingSection from './components/heading-section'
 import LoginPage from './pages/LoginPage.jsx'
+
 import InitialSetup from './pages/InitialSetup.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import QrChange from './pages/QrChange.jsx'
