@@ -3,7 +3,7 @@ import './App.css'
 // import {Navibar} from './components/Navbar'
 // import { HiringPage } from './pages/HiringPage'
 // import { ApplicationFormPage } from './pages/ApplicationFormPage'
-import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Outlet, useNavigate } from 'react-router-dom';
 // import HomePage from './pages/HomePage';
 // import AboutPage from './pages/AboutPage';
 import { ThemeProvider } from './components/theme-provider';
@@ -77,6 +77,16 @@ function App() {
 }
 
 function PopUpMenu() {
+  const {authState,setAuthState} = useContext(AuthContext)
+  const nav = useNavigate()
+  useEffect(()=>{
+    localStorage.setItem("AuthState",JSON.stringify(authState))
+
+  },[authState])
+  const handleLogout = () =>{
+    setAuthState({token:" ",loggedIn:false})
+    nav("/login")
+  }
   return (
     <div className="absolute right-7 top-11 lg:w-50 lg:h-60">
       <div className="absolute right-0 mt-2 w-56 rounded-xl border bg-[#1E1E1E] shadow-lg p-2 text-sm text-gray-200">
@@ -90,8 +100,8 @@ function PopUpMenu() {
           {/* <MenuItem label="New Team" /> */}
         </div>
 
-        <div className="mt-2 border-t border-gray-700 pt-2">
-          <MenuItem label="Log out" shortcut="⌘Q" danger />
+        <div onClick={handleLogout} className="mt-2 border-t border-gray-700 pt-2">
+          <MenuItem label="Log out" shortcut="⌘Q" danger  />
         </div>
       </div>
     </div>
@@ -147,11 +157,10 @@ function AppWithRouter() {
     const initLogged = JSON.parse(localStorage.getItem("AuthState"))
     if(initLogged && initLogged.loggedIn){
       setAuthState(initLogged)
-    }else{
-      setAuthState(initialAuthContext)
     }
-  })
+  },[])
   const [authState,setAuthState] = useState(initialAuthContext);
+  
   return (
   
     <AuthContext.Provider value={{authState,setAuthState}}>

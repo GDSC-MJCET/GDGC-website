@@ -9,12 +9,12 @@ const SettingSubPanel = () => {
         <div className='text-[12px] flex flex-col gap-2 pl-6 pt-2'>
             <span className='flex flex-row  gap-2 items-center'>
                 {/* <Settings2 className='w-4'/> */}
-                <Link to="/team/costumization/qrchange" className='hover:bg-stone-700 py-1 px-3 w-full rounded-md' >QR change </Link> 
+                <Link to="/team/customization/qrchange" className='hover:bg-stone-700 py-1 px-3 w-full rounded-md' >QR change </Link> 
                 {/* <ChevronUp onClick={handleClickSetting} className='w-4'/> */}
             </span>
             <span className='flex flex-row gap-2 items-center'>
                 {/* <Settings2 className='w-4'/> */}
-                <Link to="/team/costumization/portfolio" className='hover:bg-stone-700 py-1 px-3 w-full rounded-md' >Portfolio</Link> 
+                <Link to="/team/customization/portfolio" className='hover:bg-stone-700 py-1 px-3 w-full rounded-md' >Portfolio</Link> 
                 {/* <ChevronUp onClick={handleClickSetting} className='w-4'/> */}
             </span>
         </div>

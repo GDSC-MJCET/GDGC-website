@@ -10,6 +10,7 @@ import toast from 'react-hot-toast';
 import { WavyBackground } from '../components/ui/wavy-background';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -18,7 +19,12 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const {authState,setAuthState}=useContext(AuthContext)
-
+  const nav = useNavigate()
+  useEffect(()=>{
+    if(authState.loggedIn){
+      localStorage.setItem("AuthState", JSON.stringify(authState));
+    }
+  },[authState])
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -47,14 +53,15 @@ export default function LoginPage() {
         toast.success("Logged In Successfully")
         toast.dismissAll()
         setAuthState({token:data.data.token,loggedIn:true})
-        localStorage.setItem("AuthState", JSON.stringify(authState));
+        return nav('/team/dashboard');
+        
 
       }
     }).catch((error)=>console.log(server+error.message))
   };
 
  return (
-  <WavyBackground>
+ 
     <div className="min-h-screen flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
@@ -145,7 +152,7 @@ export default function LoginPage() {
         </form>
       </Card>
     </div>
-  </WavyBackground>
+ 
 );
 
 }
