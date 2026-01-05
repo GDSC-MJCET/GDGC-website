@@ -140,7 +140,7 @@ export default function LoginPage() {
               {isLoading ? "Signing in..." : "Sign in"}
             </Button>
 
-            <div className="text-sm text-center text-slate-400">
+            {/* <div className="text-sm text-center text-slate-400">
               Don&apos;t have an account?{" "}
               <a
                 href="#"
@@ -148,7 +148,7 @@ export default function LoginPage() {
               >
                 Sign up
               </a>
-            </div>
+            </div> */}
           </CardFooter>
         </form>
       </Card>
