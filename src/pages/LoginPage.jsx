@@ -18,13 +18,33 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const {authState,setAuthState}=useContext(AuthContext)
+  const {authState,setAuthState}=useContext(AuthContext);
+  const [checkingAuth, setCheckingAuth]=useState(true)
   const nav = useNavigate()
   useEffect(()=>{
     if(authState.loggedIn){
       localStorage.setItem("AuthState", JSON.stringify(authState));
     }
   },[authState])
+  const auth = JSON.parse(localStorage.getItem("AuthState"))
+  useEffect(()=>{
+    axios.get(import.meta.env.VITE_SERVER+"/api/v1/dashboard/landing-page",{headers:{
+    Authorization:`Bearer ${auth?.token}`
+   }}).then((data)=>{
+     
+    if (data.data.success) {
+       nav("/team/dashboard")
+    }
+    else {
+        setCheckingAuth(false);
+      }
+    }).catch((err)=>{
+        setCheckingAuth(false)
+    })
+  },[])
+  if(checkingAuth){
+    return null;
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
