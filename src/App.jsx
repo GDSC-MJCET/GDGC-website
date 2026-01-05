@@ -3,7 +3,7 @@ import './App.css'
 // import {Navibar} from './components/Navbar'
 // import { HiringPage } from './pages/HiringPage'
 // import { ApplicationFormPage } from './pages/ApplicationFormPage'
-import { BrowserRouter as Router, Routes, Route, Outlet, useNavigate, NavLink } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 // import HomePage from './pages/HomePage';
 // import AboutPage from './pages/AboutPage';
 import { ThemeProvider } from './components/theme-provider';
@@ -33,12 +33,41 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from './context/AuthContext.js';
 import Socials from './pages/Socials.jsx';
+import { NavLink,useNavigate } from 'react-router-dom'
 
 
 function App() {
-  
+  const [isVerified, setIsVerified] = useState(null);
+  const auth = JSON.parse(localStorage.getItem("AuthState"));
+  const nav = useNavigate();
+  useEffect(() => {
+  const verifyUser = async () => {
+    try {
+      const res = await axios.get(
+        (import.meta.env.VITE_SERVER) +
+          "/api/v1/dashboard/landing-page",
+        {
+          headers: {
+            Authorization: `Bearer ${auth?.token}`,
+          },
+        }
+      );
+      setIsVerified(res.data.success);
+    } catch (err) {
+      setIsVerified(false);
+    }
+  };
+  verifyUser();
+}, [auth?.token]);
+
   return (
-    <div className="min-h-screen w-full bg-black flex flex-col items-center justify-center px-4">
+    <div className=" min-h-screen w-full bg-black flex flex-col items-center justify-center px-4">
+      <div className="fixed top-4 right-4 z-10">
+        {isVerified ?
+        <button className="border-none text-white px-2 py-1 shadow text-base md:text-lg hover:bg-white hover:text-black hover:border hover:rounded-xl" onClick={()=>{nav("/team/dashboard")}}>Dashboard</button>
+        :<button className="border-none text-white px-2 py-1 shadow text-base md:text-lg hover:bg-white hover:text-black hover:border hover:rounded-xl" onClick={()=>{nav("/login")}}>Login</button>
+        }
+      </div>
       <div className="text-center space-y-6">
         <h1 className="text-4xl md:text-6xl font-bold text-white">
           Coming Soon
@@ -46,7 +75,6 @@ function App() {
         <p className="text-gray-400 text-lg md:text-xl max-w-md mx-auto">
           We're working on something exciting. Stay tuned!
         </p>
-        
       </div>
     </div>
   );
