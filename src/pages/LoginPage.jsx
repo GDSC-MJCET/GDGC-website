@@ -10,7 +10,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { WavyBackground } from '../components/ui/wavy-background';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -18,13 +18,33 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const {authState,setAuthState}=useContext(AuthContext)
+  const {authState,setAuthState}=useContext(AuthContext);
+  const [checkingAuth, setCheckingAuth]=useState(true)
   const nav = useNavigate()
   useEffect(()=>{
     if(authState.loggedIn){
       localStorage.setItem("AuthState", JSON.stringify(authState));
     }
   },[authState])
+  const auth = JSON.parse(localStorage.getItem("AuthState"))
+  useEffect(()=>{
+    axios.get(import.meta.env.VITE_SERVER+"/api/v1/auth/simple-verify",{headers:{
+    Authorization:`Bearer ${auth?.token}`
+   }}).then((data)=>{
+     
+    if (data.data.success) {
+       nav("/team/dashboard")
+    }
+    else {
+        setCheckingAuth(false);
+      }
+    }).catch((err)=>{
+        setCheckingAuth(false)
+    })
+  },[])
+  if(checkingAuth){
+    return <div className='bg-black'></div>;
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -64,6 +84,12 @@ export default function LoginPage() {
  
     <div className="min-h-screen flex items-center justify-center p-4">
    <Toaster/>
+    <div className="
+      w-full max-w-md rounded-lg p-[2px]
+      bg-gradient-to-r
+      from-blue-500 via-green-400 via-red-500 via-orange-400 to-yellow-400
+      animate-gradient
+    ">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">
@@ -122,12 +148,12 @@ export default function LoginPage() {
             </div>
 
             <div className="flex items-center justify-between text-sm">
-              <a
-                href="#"
+              <Link
+                to="/forgotpassword"
                 className="text-blue-300 hover:underline"
               >
                 Forgot password?
-              </a>
+              </Link>
             </div>
           </CardContent>
 
@@ -140,7 +166,7 @@ export default function LoginPage() {
               {isLoading ? "Signing in..." : "Sign in"}
             </Button>
 
-            <div className="text-sm text-center text-slate-400">
+            {/* <div className="text-sm text-center text-slate-400">
               Don&apos;t have an account?{" "}
               <a
                 href="#"
@@ -148,10 +174,11 @@ export default function LoginPage() {
               >
                 Sign up
               </a>
-            </div>
+            </div> */}
           </CardFooter>
         </form>
       </Card>
+      </div>
     </div>
  
 );

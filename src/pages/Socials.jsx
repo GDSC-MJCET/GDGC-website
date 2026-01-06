@@ -1,7 +1,38 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { useState,useEffect } from 'react'
+import { NavLink,useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 const Socials = () => {
+  const [checkingAuth,setCheckingAuth] = useState(true)
+  const nav = useNavigate()
+  const server = import.meta.env.VITE_SERVER
+  const auth = JSON.parse(localStorage.getItem("AuthState"))
+  useEffect(() => {
+    if (!auth?.token) {
+    nav("/login");
+    return;
+  }
+  axios
+    .get(`${server}/api/v1/auth/simple-verify`, {
+      headers: {
+        Authorization: `Bearer ${auth.token}`,
+      },
+    })
+    .then((res) => {
+      if (!res.data.success){
+        nav("/login")
+      }
+      else if(res.data.success){
+        setCheckingAuth(false)
+      }
+    })
+    .catch((err) => {
+      
+    });
+}, [auth?.token]);
+if(checkingAuth){
+    return <div className="bg-black"></div>
+}
   return (
     <div className="min-h-[70vh] flex flex-col items-center justify-center px-4">
       <div className="text-center space-y-4">
