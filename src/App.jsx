@@ -34,6 +34,7 @@ import axios from 'axios';
 import { AuthContext } from './context/AuthContext.js';
 import Socials from './pages/Socials.jsx';
 import { NavLink,useNavigate } from 'react-router-dom'
+import ChangePassword from './pages/ChangePassword.jsx';
 
 
 function App() {
@@ -109,7 +110,10 @@ function PopUpMenu({name , email}) {
           <MenuItem label="Change Qr"/>
           {/* <MenuItem label="New Team" /> */}
         </div>
-
+        <div onClick={()=>handleNavigate("/team/customization/changepassword")} className="mt-2 space-y-1 border-t pt-2">
+          <MenuItem label="Change Password"/>
+          {/* <MenuItem label="New Team" /> */}
+        </div>
         <div onClick={handleLogout} className="mt-2 border-t border-gray-700 pt-2">
           <MenuItem label="Log out"  danger  />
         </div>
@@ -141,16 +145,13 @@ function TeamLayout() {
   const auth =  JSON.parse(localStorage.getItem("AuthState"))
 
   const getDataAboutUser = async () => {
-    console.log("this is the serer url and stuff")
       const response = await axios.get(import.meta.env.VITE_SERVER + '/api/v1/dashboard/get-dashboard' , {headers:{
       Authorization: `Bearer ${auth?.token}`
       }})
-    console.log(response , "this is the user response")
     setUserEmail(response.data.user.email)
     setUserName(response.data.user.name)
   }
   useEffect(()=>{
-    console.log("Hello from use effect")
     getDataAboutUser()
   },[])
   return (
@@ -230,6 +231,7 @@ function AppWithRouter() {
               <Route path='customization' >
                 <Route path='qrchange' element={<QrChange/>} />
                 <Route path='socials' element={<Socials/>} />
+                <Route path='changepassword' element={<ChangePassword/>} />
               </Route>
           </Route>
           

@@ -65,7 +65,6 @@ export default function InitialSetup() {
   }
     const server = import.meta.env.VITE_SERVER || "http://localhost:3009"
     const identifier = parseInt(id)/parseInt(import.meta.env.VITE_DIVISOR)
-    console.log(identifier )
     axios.post(server+"/api/v1/auth/signup",{
       name,email,id:`${identifier}`
       }).then((data)=>{
