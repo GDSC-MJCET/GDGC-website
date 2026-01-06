@@ -4,18 +4,38 @@ import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
-
 const QrChange = () => {
   const auth = JSON.parse(localStorage.getItem("AuthState"));
   const [destination, setDestination] = useState("");
   const [showPopUp,setShowPopUp] = useState(false);
   const [currentUrl,setCurrentUrl] = useState("");
+  const [checkingAuth,setCheckingAuth] = useState(true)
   const server = import.meta.env.VITE_SERVER
   const nav =  useNavigate()
-  if (!auth?.loggedIn) {
-    toast.error("Please log in first");
-    nav('/login')
+  useEffect(() => {
+    if (!auth?.token) {
+    nav("/login");
+    return;
   }
+  axios
+    .get(`${server}/api/v1/auth/simple-verify`, {
+      headers: {
+        Authorization: `Bearer ${auth.token}`,
+      },
+    })
+    .then((res) => {
+      if (!res.data.success){
+        nav("/login")
+      }
+      else if(res.data.success){
+        setCheckingAuth(false)
+      }
+    })
+    .catch((err) => {
+      
+    });
+}, [auth?.token]);
+
   useEffect(() => {
   axios
     .get(`${server}/data`, {
@@ -36,6 +56,9 @@ const QrChange = () => {
       
     });
 }, [destination ,currentUrl ]);
+if(checkingAuth){
+    return <div className="bg-black"></div>
+}
 
   const handleSave = () => {
     if (

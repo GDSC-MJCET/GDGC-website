@@ -16,7 +16,7 @@ import LiquidEther from './components/LiquidEther.jsx';
 import Footer from './components/footer/footer.jsx';
 import HeadingSection from './components/heading-section'
 import LoginPage from './pages/LoginPage.jsx'
-
+import ForgotPassword from './pages/ForgotPassword.jsx';
 import InitialSetup from './pages/InitialSetup.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import QrChange from './pages/QrChange.jsx'
@@ -60,6 +60,9 @@ function App() {
   };
   verifyUser();
 }, [auth?.token]);
+  if(isVerified==null){
+    return <div className='bg-black'></div>
+  }
 
   return (
     <div className=" min-h-screen w-full bg-black flex flex-col items-center justify-center px-4">
@@ -81,7 +84,7 @@ function App() {
   );
 }
 
-function PopUpMenu({name , email}) {
+function PopUpMenu({name , email,closePopup}) {
   const {authState,setAuthState} = useContext(AuthContext)
   const nav = useNavigate()
   useEffect(()=>{
@@ -91,10 +94,12 @@ function PopUpMenu({name , email}) {
   
   const handleLogout = () => {
     setAuthState({token:" ",loggedIn:false})
+    closePopup()
     nav("/login")
   }
   
   const handleNavigate = (route) => {
+    closePopup()
     nav(route)
   }
   
@@ -177,7 +182,7 @@ function TeamLayout() {
                 <img src={gdg} className='h-9 w-9 rounded-full' alt="" />
               </span>
               {/* this is the popup component */}
-              {openPopup && <PopUpMenu name={userName} email={userEmail}/>}
+              {openPopup && <PopUpMenu name={userName} email={userEmail} closePopup={() => setopenPopup(false)}/>}
             </div>
             
             <div className='flex-1 overflow-y-auto'>
@@ -216,7 +221,7 @@ function AppWithRouter() {
           <Route path='initialsetup/:id' element={<InitialSetup/>}/>
           <Route path="login" element={<LoginPage/>} />
           {/* <Route path="blog/welcome" element={<WelcomeBlog/>}/> */}
-          
+          <Route path="forgotpassword" element={<ForgotPassword/>} />
 
           <Route path='team' element={<TeamLayout/>}>
               <Route path='dashboard' element={<Dashboard/>} />

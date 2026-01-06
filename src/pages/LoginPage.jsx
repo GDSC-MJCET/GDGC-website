@@ -10,7 +10,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { WavyBackground } from '../components/ui/wavy-background';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -43,7 +43,7 @@ export default function LoginPage() {
     })
   },[])
   if(checkingAuth){
-    return null;
+    return <div className='bg-black'></div>;
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -84,6 +84,12 @@ export default function LoginPage() {
  
     <div className="min-h-screen flex items-center justify-center p-4">
    <Toaster/>
+    <div className="
+      w-full max-w-md rounded-lg p-[2px]
+      bg-gradient-to-r
+      from-blue-500 via-green-400 via-red-500 via-orange-400 to-yellow-400
+      animate-gradient
+    ">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">
@@ -142,12 +148,12 @@ export default function LoginPage() {
             </div>
 
             <div className="flex items-center justify-between text-sm">
-              <a
-                href="#"
+              <Link
+                to="/forgotpassword"
                 className="text-blue-300 hover:underline"
               >
                 Forgot password?
-              </a>
+              </Link>
             </div>
           </CardContent>
 
@@ -172,6 +178,7 @@ export default function LoginPage() {
           </CardFooter>
         </form>
       </Card>
+      </div>
     </div>
  
 );

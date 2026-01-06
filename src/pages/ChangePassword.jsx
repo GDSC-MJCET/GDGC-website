@@ -11,7 +11,9 @@ const ChangePassword = () => {
   const [newPassword,setNewPassword] = useState("");
   const [confirmPassword,setConfirmPassword] = useState("");
   const [showNewPassword, setShowNewPassword] = useState(false);
-  const [showConfirmPassword,setShowConfirmPassword] = useState(false)
+  const [showConfirmPassword,setShowConfirmPassword] = useState(false);
+  const [isLoading,setIsLoading] = useState(false);
+  const [checkingAuth, setCheckingAuth]=useState(true)
   const server = import.meta.env.VITE_SERVER
   const nav =  useNavigate()
   if (!auth?.loggedIn) {
@@ -19,6 +21,10 @@ const ChangePassword = () => {
     nav('/login')
   }
   useEffect(() => {
+      if (!auth?.token) {
+    nav("/login");
+    return;
+  }
   axios
     .get(`${server}/api/v1/auth/simple-verify`, {
       headers: {
@@ -29,15 +35,25 @@ const ChangePassword = () => {
       if (!res.data.success){
         nav("/login")
       }
+      else if(res.data.success){
+        setCheckingAuth(false)
+      }
     })
     .catch((err) => {
       
     });
 }, [auth?.token]);
+if(checkingAuth){
+    return <div className="bg-black"></div>
+}
   const handleSave = () => {
+    if(newPassword.length<6||confirmPassword.length<6){
+        toast.error("Password should be of minimum 6 characters")
+    }
     if(newPassword!=confirmPassword){
         return toast.error("Passwords must be the same")
     }
+    setIsLoading(true);
     const password = newPassword
     axios
       .post(
@@ -55,12 +71,16 @@ const ChangePassword = () => {
         }
       })
       .catch((err) => {
+        setIsLoading(false);
         if (err.response?.status === 401) {
          if (err.response?.data?.message === "It's the same password") {
              return toast.error("The password is the same as the old password");
     }
         return toast.error("There was an error while saving your changes " + er);
-      }});
+      }}).finally(()=>{
+
+      setIsLoading(false)
+    });
   };
 
  return (
@@ -81,7 +101,7 @@ const ChangePassword = () => {
             className="bg-muted/40 text-foreground"
             onChange={(e) => setNewPassword(e.target.value)}
             placeholder="New Password"
-            minlength="6" required
+            required
             
           />
         <button
@@ -107,7 +127,7 @@ const ChangePassword = () => {
             className="bg-muted/40 text-foreground"
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="Confirm Password"
-            minlength="6" required
+             required
         />
         <button
         type="button"
@@ -120,8 +140,12 @@ const ChangePassword = () => {
         )}
       </button>
         </div>
-        <Button className="w-full" onClick={handleSave}>
-            Save Changes
+        <Button className="w-full" onClick={handleSave}
+        >
+           
+              <span className="relative z-10">
+            {isLoading ? "Saving" : "Save"}
+        </span>
           </Button>
         </div>
     </div>
