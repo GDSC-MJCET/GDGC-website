@@ -20,6 +20,7 @@ export default function InitialSetup() {
   const [isLoading, setIsLoading] = useState(false);
   const { id} = useParams();
   const nav = useNavigate()
+  const [CheckingId, setCheckingId]=useState(true)
 
   // useEffect(()=>{
   //   let identifier = parseInt(id)/parseInt(import.meta.env.VITE_DIVISOR)
@@ -33,7 +34,19 @@ export default function InitialSetup() {
   //   }).catch((err)=>console.error(err))
   // },[])
 
-
+  useEffect(()=>{
+    if(parseInt(id)%parseInt(import.meta.env.VITE_DIVISOR)!=0){
+    
+     toast.error("Unauthorized Page")
+     nav("/")
+    }
+    else{
+      setCheckingId(false)
+    }
+  },[])
+  if(CheckingId){
+    return null
+  }
 
   const handleSubmit = () => {
     setError('');

@@ -45,7 +45,7 @@ function App() {
     try {
       const res = await axios.get(
         (import.meta.env.VITE_SERVER) +
-          "/api/v1/dashboard/landing-page",
+          "/api/v1/auth/simple-verify",
         {
           headers: {
             Authorization: `Bearer ${auth?.token}`,
@@ -142,12 +142,12 @@ function TeamLayout() {
 
   const getDataAboutUser = async () => {
     console.log("this is the serer url and stuff")
-      const response = await axios.get(import.meta.env.VITE_SERVER + '/api/v1/auth/about' , {headers:{
+      const response = await axios.get(import.meta.env.VITE_SERVER + '/api/v1/dashboard/get-dashboard' , {headers:{
       Authorization: `Bearer ${auth?.token}`
       }})
     console.log(response , "this is the user response")
-    setUserEmail(response.data.email)
-    setUserName(response.data.name)
+    setUserEmail(response.data.user.email)
+    setUserName(response.data.user.name)
   }
   useEffect(()=>{
     console.log("Hello from use effect")

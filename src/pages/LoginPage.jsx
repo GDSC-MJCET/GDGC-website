@@ -28,7 +28,7 @@ export default function LoginPage() {
   },[authState])
   const auth = JSON.parse(localStorage.getItem("AuthState"))
   useEffect(()=>{
-    axios.get(import.meta.env.VITE_SERVER+"/api/v1/dashboard/landing-page",{headers:{
+    axios.get(import.meta.env.VITE_SERVER+"/api/v1/auth/simple-verify",{headers:{
     Authorization:`Bearer ${auth?.token}`
    }}).then((data)=>{
      
