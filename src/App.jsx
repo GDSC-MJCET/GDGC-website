@@ -94,7 +94,6 @@ function PopUpMenu({name , email,closePopup}) {
   
   const handleLogout = () => {
     setAuthState({token:" ",loggedIn:false})
-    closePopup()
     nav("/login")
   }
   
