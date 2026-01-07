@@ -35,15 +35,18 @@ export default function ForgotPassword() {
   if(checkingAuth){
     return <div className='bg-black'></div>;
   }
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault()
     setError('');
     setIsLoading(true);
   if (!email?.trim()) {
     toast.error('Email is required');
+    setIsLoading(false);
     return;
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     toast.error('Please enter a valid email address');
+    setIsLoading(false);
     return;
   }
     const server = import.meta.env.VITE_SERVER || "http://localhost:3009"
@@ -55,7 +58,15 @@ export default function ForgotPassword() {
           toast.success("Password Sent to your Email")
           nav("/login")
         }
-    }).finally(()=>{
+    }).catch((err) => {
+        setIsLoading(false);
+        if (err.response?.status === 401) {
+          if(err.response?.data.message=="email not found") toast.error("Email not found")
+             }
+        toast.error("There was an error while saving your changes " + er);
+        
+        return
+      }).finally(()=>{
 
       setIsLoading(false)
     }) //sigup is the route which sends user an email with the password
@@ -68,6 +79,7 @@ export default function ForgotPassword() {
   <Toaster />
 
   {/* Gradient shell */}
+  
   <div
     className="
       w-full max-w-md rounded-2xl p-[2px]
@@ -75,7 +87,7 @@ export default function ForgotPassword() {
       from-blue-500 via-green-400 via-red-500 via-orange-400 to-yellow-400
       animate-gradient
     "
-  >
+  ><form onSubmit={handleSubmit}>
     {/* Inner card */}
     <Card className="bg-black border-none rounded-2xl">
       <CardHeader className="space-y-1">
@@ -117,7 +129,7 @@ export default function ForgotPassword() {
       <CardFooter className="flex flex-col space-y-4 px-6 pb-6">
         <button
   disabled={isLoading}
-  onClick={handleSubmit}
+    type="submit"
   className="
     relative
     w-full
@@ -142,6 +154,7 @@ export default function ForgotPassword() {
         </p>
       </CardFooter>
     </Card>
+    </form>
   </div>
 </div>
 
