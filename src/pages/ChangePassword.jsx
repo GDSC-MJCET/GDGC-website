@@ -54,7 +54,7 @@ if(checkingAuth){
         return
     }
     if(newPassword!=confirmPassword){
-        toast.error("Passwords must be the same")
+        toast.error("Confirm password should match the new password")
         return
     }
     setIsLoading(true);
@@ -71,11 +71,14 @@ if(checkingAuth){
       )
       .then((data) => {
         if (data.data.success) {
+          setNewPassword("");
+          setConfirmPassword("");
           toast.success("Successfully saved");
         }
       })
       .catch((err) => {
         setIsLoading(false);
+        
         if (err.response?.status === 401) {
          if (err.response?.data?.message === "It's the same password") {
              toast.error("The password is the same as the old password");
