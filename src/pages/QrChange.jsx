@@ -81,6 +81,7 @@ if(checkingAuth){
       .then((data) => {
         if (data.data.success) {
           toast.success("Successfully saved");
+          setCurrentUrl(destination)
         }
       })
       .catch((er) => {
