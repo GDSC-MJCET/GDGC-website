@@ -63,7 +63,7 @@ export default function LoginPage() {
       }
      
     
-    toast.loading("Signing in...")
+     toast.loading("Signing in...")
      const server = import.meta.env.VITE_SERVER+"/api/v1/auth/signin" || "http://localhost:3009"
     axios.post(server,{
 
@@ -77,7 +77,15 @@ export default function LoginPage() {
         
 
       }
-    }).catch((error)=>  toast.error(server+error.message))
+    }).catch((error)=>{
+      setIsLoading(false)
+      toast.dismiss()
+      if(error.response?.status==401){
+        toast.error("Invalid user credentials");
+        return;
+      } 
+      toast.error(server+error.message)
+      })
   };
 
  return (
