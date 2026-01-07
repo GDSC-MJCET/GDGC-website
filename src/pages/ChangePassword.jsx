@@ -46,12 +46,16 @@ const ChangePassword = () => {
 if(checkingAuth){
     return <div className="bg-black"></div>
 }
-  const handleSave = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault()
     if(newPassword.length<6||confirmPassword.length<6){
         toast.error("Password should be of minimum 6 characters")
+  
+        return
     }
     if(newPassword!=confirmPassword){
-        return toast.error("Passwords must be the same")
+        toast.error("Passwords must be the same")
+        return
     }
     setIsLoading(true);
     const password = newPassword
@@ -74,9 +78,13 @@ if(checkingAuth){
         setIsLoading(false);
         if (err.response?.status === 401) {
          if (err.response?.data?.message === "It's the same password") {
-             return toast.error("The password is the same as the old password");
+             toast.error("The password is the same as the old password");
+            
+             return
     }
-        return toast.error("There was an error while saving your changes " + er);
+        toast.error("There was an error while saving your changes " + er);
+        
+        return
       }}).finally(()=>{
 
       setIsLoading(false)
@@ -90,6 +98,7 @@ if(checkingAuth){
     <div className="w-full max-w-lg space-y-3">
         <h1 className="text-xl font-semibold">Change Password</h1>
       {/* Current URL Display */}
+      <form className="space-y-3" onSubmit={handleSubmit}>
         <label className="text-sm font-medium text-muted-foreground" for="new-password">
           New Password
         </label>
@@ -140,13 +149,14 @@ if(checkingAuth){
         )}
       </button>
         </div>
-        <Button className="w-full" onClick={handleSave}
+        <Button className="w-full" type="submit"
         >
            
               <span className="relative z-10">
             {isLoading ? "Saving" : "Save"}
         </span>
           </Button>
+        </form>
         </div>
     </div>
 
