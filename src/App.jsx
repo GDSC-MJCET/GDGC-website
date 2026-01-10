@@ -224,14 +224,14 @@ function AppWithRouter() {
 
           <Route path='team' element={<TeamLayout/>}>
               <Route path='dashboard' element={<Dashboard/>} />
-              {/* <Route path="blog/" element ={<BlogLand/>}>
+              <Route path="blog/" element ={<BlogLand/>}>
             <Route path='home' element={<BlogHome/>} />
             <Route path="editor" element={<BlogWrite/>} />
             <Route path="posts/:postId" element={<SpecificBlog/>} />
             <Route path ="help" element = {<BlogHelp/>} />
             
 
-          </Route> */}
+          </Route>
               <Route path='customization' >
                 <Route path='qrchange' element={<QrChange/>} />
                 <Route path='socials' element={<Socials/>} />
