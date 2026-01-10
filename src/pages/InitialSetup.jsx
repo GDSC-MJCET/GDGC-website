@@ -33,6 +33,10 @@ export default function InitialSetup() {
   // },[])
   const auth = JSON.parse(localStorage.getItem("AuthState"))
   useEffect(()=>{
+    const check = parseInt(id)/parseInt(import.meta.env.VITE_DIVISOR)
+    if (check<import.meta.env.VITE_DIVISOR - 1) {
+       nav("/")
+    }
     axios.get(import.meta.env.VITE_SERVER+"/api/v1/auth/simple-verify",{headers:{
     Authorization:`Bearer ${auth?.token}`
    }}).then((data)=>{

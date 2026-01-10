@@ -1,26 +1,9 @@
 import { IconArticle, IconBrandLine } from '@tabler/icons-react'
-<<<<<<< HEAD
-import { ChevronDown, ChevronUp ,Settings2 } from 'lucide-react'
-=======
 import { ChevronDown, ChevronUp, Settings2, X } from 'lucide-react'
->>>>>>> 885552715ba8535617f73449cc04204d6f39bc85
 import React, { useState } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import gdg from "../assets/gdg-logo.png" 
 
-<<<<<<< HEAD
-const SettingSubPanel = () => {
-    return (
-        <div className='text-[12px] flex flex-col gap-2 pl-6 pt-2'>
-            <span className='flex flex-row  gap-2 items-center'>
-                {/* <Settings2 className='w-4'/> */}
-                <Link to="/team/customization/qrchange" className='hover:bg-stone-700 py-1 px-3 w-full rounded-md' >QR change </Link> 
-                {/* <ChevronUp onClick={handleClickSetting} className='w-4'/> */}
-            </span>
-            <span className='flex flex-row gap-2 items-center'>
-                {/* <Settings2 className='w-4'/> */}
-                <Link to="/team/customization/portfolio" className='hover:bg-stone-700 py-1 px-3 w-full rounded-md' >Portfolio</Link> 
-=======
 const SettingSubPanel = ({handleClickRedirect , clicked}) => {
     return (
         <div className='text-[12px] flex flex-col gap-2 pl-6 pt-2'>
@@ -34,70 +17,22 @@ const SettingSubPanel = ({handleClickRedirect , clicked}) => {
             <span onClick={()=>handleClickRedirect("socials","/team/customization/socials" )} className={`${clicked == "socials" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}>
                 {/* <Settings2 className='w-4'/> */}
                 <Link to="/team/customization/socials" className=' py-1 px-3 w-full rounded-md' >Socials</Link> 
->>>>>>> 885552715ba8535617f73449cc04204d6f39bc85
                 {/* <ChevronUp onClick={handleClickSetting} className='w-4'/> */}
             </span>
         </div>
     )
 }
 
-<<<<<<< HEAD
-const SideBae = () => {
-    const [clicked , setClicked] = useState("blog")
-    const [openSettingPanel , setOpenSettingPanel] = useState(false)
-    const navigate = useNavigate();
-    function handleClickMagic() {
-=======
 const SideBae = ({ isOpen, onClose }) => {
     const [clicked , setClicked] = useState("blog")
     const [openSettingPanel , setOpenSettingPanel] = useState(false)
     const navigate = useNavigate();
     function handleClickSettings() {
->>>>>>> 885552715ba8535617f73449cc04204d6f39bc85
         setOpenSettingPanel(!openSettingPanel)
     }
     function handleClickRedirect(item , redirect) {
         setClicked(item)
         navigate(redirect)
-<<<<<<< HEAD
-    }
-  return (
-    <div className='w-[18%] text-md h-screen  border-r border-r[0.1]'>
-            <div className='flex flex-col bottom-1  items-center just'>
-                <p className='p-2 border-b  flex h-10 flex-row'>
-                    <img src={gdg} alt="" className='w-8 h-4' />
-                </p>
-            </div>
-            {/* in the dashboard section we can have announment and all */}
-            <div className='flex flex-col text-[13px] p-5 gap-3'>
-                <span onClick={()=>handleClickRedirect("dash","/team/dashboard" )} className={`flex ${clicked == "dash" ? "bg-white text-black" : ""} p-2 rounded-md flex-row cursor-pointer gap-2 items-center`}>
-                    <IconBrandLine color='grey' className='w-4'/>
-                    <p  >Dashboard</p> 
-                </span>
-                <span onClick={()=>handleClickRedirect("blog","/team/blog/editor" )} className={`flex ${clicked == "blog" ? "bg-white text-black" : ""} p-2  flex-row gap-2 items-center cursor-pointer rounded-md`}>
-                    <IconArticle color='grey' className='w-4'/>
-                    <p >Write Blog</p> 
-                </span>
-                <div>
-                    <span className='flex flex-row text-[13px] gap-2 items-center rounded-md'>
-                        <Settings2 color='grey' className='w-4'/>
-                        <Link to="/team/setting" >Magic</Link> 
-                        <button className='hover:bg-stone-700 px-[3px] rounded'>
-                        {
-                            openSettingPanel == false ? <ChevronUp onClick={handleClickMagic} className='w-4'/> :
-                            <ChevronDown color='grey' onClick={handleClickMagic} className='w-4'/> 
-                        }
-                        
-                        </button>
-                    </span>
-                    {
-                        openSettingPanel == false ? <SettingSubPanel/> : ""
-                    }
-                    
-                </div>
-            </div>
-        </div>
-=======
         // Close sidebar on mobile after navigation
         if (onClose) onClose()
     }
@@ -155,7 +90,6 @@ const SideBae = ({ isOpen, onClose }) => {
         </div>
       </div>
     </>
->>>>>>> 885552715ba8535617f73449cc04204d6f39bc85
   )
 }
 
