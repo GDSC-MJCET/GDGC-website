@@ -33,10 +33,7 @@ export default function InitialSetup() {
   // },[])
   const auth = JSON.parse(localStorage.getItem("AuthState"))
   useEffect(()=>{
-    const check = parseInt(id)/parseInt(import.meta.env.VITE_DIVISOR)
-    if (check<import.meta.env.VITE_DIVISOR - 1) {
-       nav("/")
-    }
+   
     axios.get(import.meta.env.VITE_SERVER+"/api/v1/auth/simple-verify",{headers:{
     Authorization:`Bearer ${auth?.token}`
    }}).then((data)=>{
@@ -79,9 +76,8 @@ export default function InitialSetup() {
     return;
   }
     const server = import.meta.env.VITE_SERVER || "http://localhost:3009"
-    const identifier = parseInt(id)/parseInt(import.meta.env.VITE_DIVISOR)
     axios.post(server+"/api/v1/auth/signup",{
-      name,email,id:`${identifier}`
+      name,email,id
       }).then((data)=>{
         console.log(data)
         
