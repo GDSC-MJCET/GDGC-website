@@ -12,29 +12,29 @@ const QrChange = () => {
   const [checkingAuth,setCheckingAuth] = useState(true)
   const server = import.meta.env.VITE_SERVER
   const nav =  useNavigate()
-  useEffect(() => {
-    if (!auth?.token) {
-    nav("/login");
-    return;
-  }
-  axios
-    .get(`${server}/api/v1/auth/simple-verify`, {
-      headers: {
-        Authorization: `Bearer ${auth.token}`,
-      },
-    })
-    .then((res) => {
-      if (!res.data.success){
-        nav("/login")
-      }
-      else if(res.data.success){
-        setCheckingAuth(false)
-      }
-    })
-    .catch((err) => {
+//   useEffect(() => {
+//     if (!auth?.token) {
+//     nav("/login");
+//     return;
+//   }
+//   axios
+//     .get(`${server}/api/v1/auth/simple-verify`, {
+//       headers: {
+//         Authorization: `Bearer ${auth.token}`,
+//       },
+//     })
+//     .then((res) => {
+//       if (!res.data.success){
+//         nav("/login")
+//       }
+//       else if(res.data.success){
+//         setCheckingAuth(false)
+//       }
+//     })
+//     .catch((err) => {
       
-    });
-}, [auth?.token]);
+//     });
+// }, [auth?.token]);
 
   useEffect(() => {
   axios
@@ -44,6 +44,7 @@ const QrChange = () => {
       },
     })
     .then((res) => {
+      setCheckingAuth(false)
       if (res.data.data.destination === "https://gdgcmjcet.in/login") {
         setShowPopUp(true);
       } else {
@@ -53,7 +54,11 @@ const QrChange = () => {
       }
     })
     .catch((err) => {
-      
+      if(err.response?.status==401){
+        if(err.response?.data.message=="No token provided, access denied"||err.response?.res.message=="Token is not valid") {
+          console.log("hi")
+          nav("/login")}
+      }
     });
 }, [destination ,currentUrl ]);
 if(checkingAuth){
