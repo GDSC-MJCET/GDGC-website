@@ -1,7 +1,7 @@
 import { useState,useEffect } from 'react'
 import { NavLink,useNavigate } from 'react-router-dom'
 import axios from 'axios'
-
+import { AuthContext } from '../context/AuthContext'
 const Socials = () => {
   const [checkingAuth,setCheckingAuth] = useState(true)
   const nav = useNavigate()
@@ -27,7 +27,7 @@ const Socials = () => {
       }
     })
     .catch((err) => {
-      
+      nav("/login")
     });
 }, [auth?.token]);
 if(checkingAuth){
