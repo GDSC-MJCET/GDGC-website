@@ -16,10 +16,10 @@ const ChangePassword = () => {
   const [checkingAuth, setCheckingAuth]=useState(true)
   const server = import.meta.env.VITE_SERVER
   const nav =  useNavigate()
-  if (!auth?.loggedIn) {
-    toast.error("Please log in first");
-    nav('/login')
-  }
+  // if (!auth?.loggedIn) {
+  //   toast.error("Please log in first");
+  //   nav('/login')
+  // }
   useEffect(() => {
       if (!auth?.token) {
     nav("/login");
@@ -40,7 +40,8 @@ const ChangePassword = () => {
       }
     })
     .catch((err) => {
-      
+      toast.error("Authentication failed");
+      nav("/login");
     });
 }, [auth?.token]);
 if(checkingAuth){
