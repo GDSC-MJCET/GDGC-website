@@ -39,7 +39,7 @@ const QrChange = () => {
     return;
   }
   axios
-    .get(`http://localhost:3009/data`, {
+    .get(`${server}/data`, {
       headers: {
         Authorization: `Bearer ${auth.token}`,
       },
