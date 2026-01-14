@@ -5,12 +5,16 @@ import { Link, useNavigate } from 'react-router-dom'
 import SideBae from '../components/SideBae'
 import axios from 'axios'
 import { NavLink } from 'react-router-dom'
+import { AuthContext } from '../context/AuthContext'
 
 const Dashboard = () => {
   const auth =  JSON.parse(localStorage.getItem("AuthState"))
   
   const nav = useNavigate()
   useEffect(()=>{
+    if(!AuthContext){
+      nav("/login")
+    }
     axios.get(import.meta.env.VITE_SERVER+"/api/v1/dashboard/get-dashboard",{headers:{
     Authorization:`Bearer ${auth?.token}`
    }}).then((data)=>{
@@ -20,9 +24,7 @@ const Dashboard = () => {
     }
     }).catch((err)=>{
         
-      if (err.status==401) {
-        nav("/login")
-      }
+      nav('/login')
     })
   },[])
  

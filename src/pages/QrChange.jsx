@@ -12,38 +12,40 @@ const QrChange = () => {
   const [checkingAuth,setCheckingAuth] = useState(true)
   const server = import.meta.env.VITE_SERVER
   const nav =  useNavigate()
+//   useEffect(() => {
+
+//   axios
+//     .get(`${server}/api/v1/auth/simple-verify`, {
+//       headers: {
+//         Authorization: `Bearer ${auth.token}`,
+//       },
+//     })
+//     .then((res) => {
+//       if (!res.data.success){
+//         nav("/login")
+//       }
+//       else if(res.data.success){
+//         setCheckingAuth(false)
+//       }
+//     })
+//     .catch((err) => {
+      
+//     });
+// }, [auth?.token]);
+
   useEffect(() => {
     if (!auth?.token) {
     nav("/login");
     return;
   }
   axios
-    .get(`${server}/api/v1/auth/simple-verify`, {
+    .get(`http://localhost:3009/data`, {
       headers: {
         Authorization: `Bearer ${auth.token}`,
       },
     })
     .then((res) => {
-      if (!res.data.success){
-        nav("/login")
-      }
-      else if(res.data.success){
-        setCheckingAuth(false)
-      }
-    })
-    .catch((err) => {
-      
-    });
-}, [auth?.token]);
-
-  useEffect(() => {
-  axios
-    .get(`${server}/data`, {
-      headers: {
-        Authorization: `Bearer ${auth.token}`,
-      },
-    })
-    .then((res) => {
+      setCheckingAuth(false)
       if (res.data.data.destination === "https://gdgcmjcet.in/login") {
         setShowPopUp(true);
       } else {
@@ -53,7 +55,7 @@ const QrChange = () => {
       }
     })
     .catch((err) => {
-      
+      nav('/login')
     });
 }, [destination ,currentUrl ]);
 if(checkingAuth){
