@@ -1,4 +1,4 @@
-import { useState,useContext,createContext } from 'react'
+import { useState,useContext } from 'react'
 import './App.css'
 // import {Navibar} from './components/Navbar'
 // import { HiringPage } from './pages/HiringPage'
@@ -35,6 +35,12 @@ import { AuthContext } from './context/AuthContext.js';
 import Socials from './pages/Socials.jsx';
 import { NavLink,useNavigate } from 'react-router-dom'
 import ChangePassword from './pages/ChangePassword.jsx';
+import HomePage from './pages/HomePage.jsx';
+import TechDebatePage from './pages/TechDebatePage.jsx';
+import EventsPage from './pages/EventsPage.jsx';
+import TeamPage from './pages/TeamPage.jsx';
+import GalleryPage from './pages/GalleryPage.jsx';
+import ContactUsPage from './pages/ContactUsPage.jsx';
 
 
 function App() {
@@ -54,7 +60,7 @@ function App() {
         }
       );
       setIsVerified(res.data.success);
-    } catch (err) {
+    } catch {
       setIsVerified(false);
     }
   };
@@ -215,9 +221,15 @@ function AppWithRouter() {
       <Routes>
         <Route path="/">
           {/* <Route index element={<HomePage/>} /> */}
-          <Route index element={<App />} />
+          {/* <Route index element={<App />} /> */}
           {/* <Route path="apply" element={<DyeFormPage/>} /> */}
+          <Route path="/" element={<HomePage />} />
           <Route path='initialsetup/:id' element={<InitialSetup/>}/>
+          <Route path="/techdebate" element={<TechDebatePage />} />
+          <Route path="/events" element={<EventsPage />} />
+          <Route path="/team-page" element={<TeamPage />} />
+          <Route path="/gallery" element={<GalleryPage />} />
+          <Route path="/contact" element={<ContactUsPage />} />
           <Route path="login" element={<LoginPage/>} />
           {/* <Route path="blog/welcome" element={<WelcomeBlog/>}/> */}
           <Route path="forgotpassword" element={<ForgotPassword/>} />
