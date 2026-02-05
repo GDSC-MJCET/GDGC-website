@@ -1,0 +1,105 @@
+import React from 'react'
+
+const About = () => {
+  return (
+    <div className='px-4 sm:px-8 md:px-12 lg:px-16 xl:px-18'>
+        <div className='space-y-6 sm:space-y-8 md:space-y-10 lg:space-y-12'>
+            <h2 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#cdf6c5]'>About</h2>
+            <p className='text-base sm:text-lg md:text-xl lg:text-2xl text-white font-light'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex.</p>
+        </div>
+        <div className='py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32 space-y-16 sm:space-y-20 md:space-y-24 lg:space-y-28 xl:space-y-32 flex flex-col justify-center items-center gap-6 sm:gap-8 md:gap-10 lg:gap-12'>
+            <div className="flex flex-col md:flex-row gap-6 sm:gap-8 md:gap-12 lg:gap-16 xl:gap-24 items-start w-full max-w-7xl px-4">
+                <div
+                    className="
+                    relative bg-[#111a29b0] text-white p-4 sm:p-5 md:p-6 min-h-48 sm:min-h-52 md:min-h-55
+                    flex flex-col w-full md:w-1/2 justify-between
+                    before:content-[''] before:absolute before:top-0 before:left-0
+                    before:w-8 before:h-8 sm:before:w-10 sm:before:h-10 md:before:w-12 md:before:h-12
+                    before:border-t-2 before:border-l-2 sm:before:border-t-[3px] sm:before:border-l-[3px] before:border-[#5ddb6e]
+
+                    after:content-[''] after:absolute after:top-0 after:right-0
+                    after:w-8 after:h-8 sm:after:w-10 sm:after:h-10 md:after:w-12 md:after:h-12
+                    after:border-t-2 after:border-r-2 sm:after:border-t-[3px] sm:after:border-r-[3px] after:border-[#5ddb6e]
+                    "
+                >
+                    <span className="absolute bottom-0 left-0 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 border-b-2 border-l-2 sm:border-b-[3px] sm:border-l-[3px] border-[#5ddb6e]" />
+                    <span className="absolute bottom-0 right-0 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 border-b-2 border-r-2 sm:border-b-[3px] sm:border-r-[3px] border-[#5ddb6e]" />
+
+                    <p className="text-xs sm:text-sm opacity-90">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua.
+                    </p>
+
+                    <button className="text-[#4286F5] text-xs sm:text-sm self-start mt-4 hover:underline">
+                    Read the Guidelines <span>→</span>
+                    </button>
+                </div>
+
+                <div
+                    className="
+                    relative bg-[#111a29b0] text-white p-4 sm:p-5 md:p-6 min-h-48 sm:min-h-52 md:min-h-55
+                    flex flex-col w-full md:w-1/2 justify-between
+                    md:translate-y-16   
+                    before:content-[''] before:absolute before:top-0 before:left-0
+                    before:w-8 before:h-8 sm:before:w-10 sm:before:h-10 md:before:w-12 md:before:h-12
+                    before:border-t-2 before:border-l-2 sm:before:border-t-[3px] sm:before:border-l-[3px] before:border-[#5ddb6e]
+
+                    after:content-[''] after:absolute after:top-0 after:right-0
+                    after:w-8 after:h-8 sm:after:w-10 sm:after:h-10 md:after:w-12 md:after:h-12
+                    after:border-t-2 after:border-r-2 sm:after:border-t-[3px] sm:after:border-r-[3px] after:border-[#5ddb6e]
+                    "
+                >
+                    <span className="absolute bottom-0 left-0 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 border-b-2 border-l-2 sm:border-b-[3px] sm:border-l-[3px] border-[#5ddb6e]" />
+                    <span className="absolute bottom-0 right-0 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 border-b-2 border-r-2 sm:border-b-[3px] sm:border-r-[3px] border-[#5ddb6e]" />
+
+                    <p className="text-xs sm:text-sm opacity-90">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua.
+                    </p>
+
+                    <button className="text-[#4286F5] text-xs sm:text-sm self-start mt-4 hover:underline">
+                    Read the Guidelines <span>→</span>
+                    </button>
+                </div>
+            </div>
+
+            <div
+                    className="
+                        relative bg-[#111a29b0] text-white p-4 sm:p-5 md:p-6 min-h-48 sm:min-h-52 md:min-h-55
+                        flex flex-col justify-between w-full md:w-110 max-w-xl
+                        before:content-[''] before:absolute before:top-0 before:left-0
+                        before:w-8 before:h-8 sm:before:w-10 sm:before:h-10 md:before:w-12 md:before:h-12
+                        before:border-t-2 before:border-l-2 sm:before:border-t-[3px] sm:before:border-l-[3px] before:border-[#5ddb6e]
+
+                        after:content-[''] after:absolute after:top-0 after:right-0
+                        after:w-8 after:h-8 sm:after:w-10 sm:after:h-10 md:after:w-12 md:after:h-12
+                        after:border-t-2 after:border-r-2 sm:after:border-t-[3px] sm:after:border-r-[3px] after:border-[#5ddb6e]
+                    "
+                >
+                    <span className="
+                        pointer-events-none absolute bottom-0 left-0
+                        w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12
+                        border-b-2 border-l-2 sm:border-b-[3px] sm:border-l-[3px] border-[#5ddb6e]
+                    " />
+
+                    <span className="
+                        pointer-events-none absolute bottom-0 right-0
+                        w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12
+                        border-b-2 border-r-2 sm:border-b-[3px] sm:border-r-[3px] border-[#5ddb6e]
+                    " />
+
+                    <p className="text-xs sm:text-sm leading-relaxed opacity-90 max-w-xl">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
+                    </p>
+
+                    <button className="text-[#4286F5] px-4 sm:px-5 py-2 text-xs sm:text-sm self-start mt-4 hover:underline">
+                        Read the Guidelines <span>→</span>
+                    </button>
+                </div>
+        </div>
+    </div>
+  )
+}
+
+export default About

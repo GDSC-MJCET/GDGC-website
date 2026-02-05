@@ -256,3 +256,45 @@
 .spin-slow {
   animation: spinSlow 12s linear infinite;
 }
+
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+
+.antonio-uniquifier {
+  font-family: "Antonio", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+}
+
+.outline-text {
+  color: transparent;
+  -webkit-text-stroke: 2px #f8d8d82b; 
+}
+
+.pill {
+  @apply text-xl px-12 py-2 rounded-2xl border border-white/80;
+}
+
