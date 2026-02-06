@@ -1,5 +1,5 @@
 import { IconArticle, IconBrandLine } from '@tabler/icons-react'
-import { ChevronDown, ChevronUp, Settings2, X } from 'lucide-react'
+import { ChevronDown, ChevronUp, Settings2, UserStar, VenetianMask, X } from 'lucide-react'
 import React, { useState } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import gdg from "../assets/gdg-logo.png" 
@@ -23,12 +23,54 @@ const SettingSubPanel = ({handleClickRedirect , clicked}) => {
     )
 }
 
+const AdminSubPanel = ({handleClickRedirect , clicked}) => {
+    return (
+        <div className='text-[12px] flex flex-col gap-2 pl-6 pt-2'>
+            {/* <span onClick={()=>handleClickRedirect("blogs","/team/blog/home" )} className={`${clicked == "blogs" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}>
+                {/* <Settings2 className='w-4'/> */}
+                {/* <Link to="/team/blog/home" className=' py-1 px-3 w-full rounded-md' >Blogs</Link>  */}
+                {/* <ChevronUp onClick={handleClickSetting} className='w-4'/> */}
+            {/* </span> */}
+            {/* // <span onClick={()=>handleClickRedirect("posts","/team/blog/posts" )} className={`${clicked == "posts" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}> */}
+                {/* <Settings2 className='w-4'/> */}
+                {/* <Link to="/team/blog/posts" className=' py-1 px-3 w-full rounded-md' >Posts</Link>  */}
+                {/* <ChevronUp onClick={handleClickSetting} className='w-4'/> */}
+            {/* </span> */} 
+            <span onClick={()=>handleClickRedirect("adminUsers","/team/admin/users" )} className={`${clicked == "adminUsers" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}>
+                <Link to="/team/admin/users" className=' py-1 px-3 w-full rounded-md' >Users</Link> 
+            </span>
+        </div>
+    )
+}
+
+const SuperAdminSubPanel = ({handleClickRedirect , clicked}) => {
+    return (
+        <div className='text-[12px] flex flex-col gap-2 pl-6 pt-2'>
+            <span onClick={()=>handleClickRedirect("superAdminDashboard","/team/superadmin" )} className={`${clicked == "superAdminDashboard" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}>
+                <Link to="/team/superadmin" className=' py-1 px-3 w-full rounded-md' >Dashboard</Link> 
+            </span>
+            <span onClick={()=>handleClickRedirect("superAdminUsers","/team/superadmin/users" )} className={`${clicked == "superAdminUsers" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}>
+                <Link to="/team/superadmin/users" className=' py-1 px-3 w-full rounded-md' >Users</Link> 
+            </span>
+        </div>
+    )
+}
+
+
 const SideBae = ({ isOpen, onClose }) => {
     const [clicked , setClicked] = useState("blog")
     const [openSettingPanel , setOpenSettingPanel] = useState(false)
+    const [openAdminPanel , setOpenAdminPanel] = useState(false)
+    const [openSuperAdminPanel , setOpenSuperAdminPanel] = useState(false)
     const navigate = useNavigate();
     function handleClickSettings() {
         setOpenSettingPanel(!openSettingPanel)
+    }
+    function handleClickAdmin() {
+        setOpenAdminPanel(!openAdminPanel)
+    }
+    function handleClickSuperAdmin() {
+        setOpenSuperAdminPanel(!openSuperAdminPanel)
     }
     function handleClickRedirect(item , redirect) {
         setClicked(item)
@@ -86,6 +128,28 @@ const SideBae = ({ isOpen, onClose }) => {
               }
             </span>
             {!openSettingPanel && <SettingSubPanel handleClickRedirect={handleClickRedirect} clicked={clicked} />}
+          </div>
+          <div>
+            <span onClick={handleClickAdmin} className='flex p-2 flex-row text-[13px] gap-3 items-center rounded-md cursor-pointer hover:bg-gray-800'>
+              <UserStar className='w-4 h-4 text-gray-400 flex-shrink-0'/>
+              <span className='flex-1'>Admin</span> 
+              {openAdminPanel ? 
+                <ChevronDown className='w-4 h-4 text-gray-400'/> :
+                <ChevronUp className='w-4 h-4 text-gray-400'/> 
+              }
+            </span>
+            {!openAdminPanel && <AdminSubPanel handleClickRedirect={handleClickRedirect} clicked={clicked} />}
+          </div>
+          <div>
+            <span onClick={handleClickSuperAdmin} className='flex p-2 flex-row text-[13px] gap-3 items-center rounded-md cursor-pointer hover:bg-gray-800'>
+              <VenetianMask className='w-4 h-4 text-gray-400 flex-shrink-0'/>
+              <span className='flex-1'>SuperAdmin</span> 
+              {openSuperAdminPanel ? 
+                <ChevronDown className='w-4 h-4 text-gray-400'/> :
+                <ChevronUp className='w-4 h-4 text-gray-400'/> 
+              }
+            </span>
+            {!openSuperAdminPanel && <SuperAdminSubPanel handleClickRedirect={handleClickRedirect} clicked={clicked} />}
           </div>
         </div>
       </div>
