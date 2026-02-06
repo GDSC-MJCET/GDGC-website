@@ -41,7 +41,11 @@ import EventsPage from './pages/EventsPage.jsx';
 import TeamPage from './pages/TeamPage.jsx';
 import GalleryPage from './pages/GalleryPage.jsx';
 import ContactUsPage from './pages/ContactUsPage.jsx';
-
+import NotFound from './pages/NotFound.jsx';
+import SuperAdminDashboard from './pages/SuperAdminDashboard.jsx';
+import SuperAdminUsers from './pages/SuperAdminUsers.jsx';
+import BlogPosts from './pages/BlogPosts.jsx';
+import AdminUsers from './pages/AdminUsers.jsx';
 
 function App() {
   const [isVerified, setIsVerified] = useState(null);
@@ -214,64 +218,56 @@ function AppWithRouter() {
   const [authState,setAuthState] = useState(initialAuthContext);
   
   return (
-  
-    <AuthContext.Provider value={{authState,setAuthState}}>
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <AuthContext.Provider value={{ authState, setAuthState }}>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <Router>
+          <Routes>
+            {/* Public pages */}
+            <Route path="/" element={<HomePage />} />
+            <Route path="initialsetup/:id" element={<InitialSetup />} />
+            <Route path="techdebate" element={<TechDebatePage />} />
+            <Route path="events" element={<EventsPage />} />
+            <Route path="team-page" element={<TeamPage />} />
+            <Route path="gallery" element={<GalleryPage />} />
+            <Route path="contact" element={<ContactUsPage />} />
+            <Route path="login" element={<LoginPage />} />
+            <Route path="forgotpassword" element={<ForgotPassword />} />
 
-    <Router>
-      <Routes>
-        <Route path="/">
-          {/* <Route index element={<HomePage/>} /> */}
-          {/* <Route index element={<App />} /> */}
-          {/* <Route path="apply" element={<DyeFormPage/>} /> */}
-          <Route path="/" element={<HomePage />} />
-          <Route path='initialsetup/:id' element={<InitialSetup/>}/>
-          <Route path="/techdebate" element={<TechDebatePage />} />
-          <Route path="/events" element={<EventsPage />} />
-          <Route path="/team-page" element={<TeamPage />} />
-          <Route path="/gallery" element={<GalleryPage />} />
-          <Route path="/contact" element={<ContactUsPage />} />
-          <Route path="login" element={<LoginPage/>} />
-          {/* <Route path="blog/welcome" element={<WelcomeBlog/>}/> */}
-          <Route path="forgotpassword" element={<ForgotPassword/>} />
+            {/* Team area (layout route) */}
+            <Route path="team" element={<TeamLayout />}>
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="customization">
+                <Route path="qrchange" element={<QrChange />} />
+                <Route path="socials" element={<Socials />} />
+                <Route path="changepassword" element={<ChangePassword />} />
+              </Route>
 
-          <Route path='team' element={<TeamLayout/>}>
-              <Route path='dashboard' element={<Dashboard/>} />
-              <Route path="blog/" element ={<BlogLand/>}>
-            <Route path='home' element={<BlogHome/>} />
-            <Route path="editor" element={<BlogWrite/>} />
-            <Route path="posts" element={<BlogPosts />} />
-            <Route path="posts/:postId" element={<SpecificBlog/>} />
-            <Route path="help" element={<BlogHelp/>} />
-          </Route>
+              <Route path="admin">
+                <Route path="users" element={<AdminUsers />} />
+              </Route>
 
+              <Route path="superadmin">
+                <Route index element={<SuperAdminDashboard />} />
+                <Route path="users" element={<SuperAdminUsers />} />
+              </Route>
+            </Route>
 
-        <Route path="team" element={<TeamLayout/>}>
-          <Route path="dashboard" element={<Dashboard/>} />
-          <Route path="customization">
-            <Route path="qrchange" element={<QrChange/>} />
-            <Route path="socials" element={<Socials/>} />
-            <Route path="changepassword" element={<ChangePassword/>} />
-          </Route>
+            {/* Blog routes (optional, currently unused)
+            <Route path="blog" element={<BlogLand />}>
+              <Route path="home" element={<BlogHome />} />
+              <Route path="editor" element={<BlogWrite />} />
+              <Route path="posts" element={<BlogPosts />} />
+              <Route path="posts/:postId" element={<SpecificBlog />} />
+              <Route path="help" element={<BlogHelp />} />
+            </Route>
+            */}
 
-          <Route path="admin">
-            <Route path="users" element={<AdminUsers />} />
-          </Route>
-
-          <Route path="superadmin">
-            <Route index element={<SuperAdminDashboard />} />
-            <Route path="users" element={<SuperAdminUsers />} />
-          </Route>
-        </Route>
-
-        {/* Catch-all 404 route */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </Router>
-
-    </ThemeProvider>
+            {/* Catch-all 404 route */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Router>
+      </ThemeProvider>
     </AuthContext.Provider>
-  
   )
 }
 
