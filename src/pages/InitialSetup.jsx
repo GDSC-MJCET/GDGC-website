@@ -18,7 +18,8 @@ export default function InitialSetup() {
   const [isLoading, setIsLoading] = useState(false);
   const { id} = useParams();
   const nav = useNavigate()
-  const [CheckingAuth, setCheckingAuth]=useState(true)
+  const [CheckingAuth, setCheckingAuth]=useState(true);
+  const [authMessage,setAuthMessage]=useState(false)
 
   // useEffect(()=>{
   //   let identifier = parseInt(id)/parseInt(import.meta.env.VITE_DIVISOR)
@@ -33,34 +34,41 @@ export default function InitialSetup() {
   // },[])
   const auth = JSON.parse(localStorage.getItem("AuthState"))
   useEffect(()=>{
-   
-    axios.get(import.meta.env.VITE_SERVER+"/api/v1/auth/simple-verify",{headers:{
-    Authorization:`Bearer ${auth?.token}`
-   }}).then((data)=>{
-     
-    if (data.data.success) {
-       nav("/team/dashboard")
-    }
-    else {
-        setCheckingAuth(false);
-      }
-    }).catch((err)=>{
-        setCheckingAuth(false)
-    })
     if(parseInt(id)%parseInt(import.meta.env.VITE_DIVISOR)!=0){
     
     toast.error("Unauthorized Page")
       
     }
-    else{
-      setCheckingAuth(false)
+    axios.get(import.meta.env.VITE_SERVER +`/api/v1/auth/initial-setup-check?id=${id}`,{headers:{
+    Authorization:`Bearer ${auth?.token}`
+   }}).then((data)=>{
+     
+    if (data.data.success) {
+       return setCheckingAuth(false)
     }
+    }).catch((err)=>{
+      if(err.response?.status==401){
+        if(err.response?.data.message=="user already exists"){
+          setCheckingAuth(false)
+          setAuthMessage(true)
+        }
+        else nav("/")
+      }
+        setCheckingAuth(false)
+    })
   },[])
   if(CheckingAuth){
     return <div className='bg-black'></div>
   }
+  if(authMessage){
+    return <div className='flex justify-center'>
+    <div className='bg-black lg:text-lg md:text-base text-white'>The user has signed up and their password has been sent in their mail</div>
+    </div>
+  }
+
 
   const handleSubmit = () => {
+    
     setError('');
     setIsLoading(true);
       if (!name?.trim()) {
@@ -75,7 +83,8 @@ export default function InitialSetup() {
     toast.error('Please enter a valid email address');
     return;
   }
-    const server = import.meta.env.VITE_SERVER || "http://localhost:3009"
+    const server = import.meta.env.VITE_SERVER || "http://localhost:3009";
+    console.log(name,email,id)
     axios.post(server+"/api/v1/auth/signup",{
       name,email,id
       }).then((data)=>{
