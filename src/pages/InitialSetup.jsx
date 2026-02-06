@@ -50,7 +50,7 @@ export default function InitialSetup() {
     if(parseInt(id)%parseInt(import.meta.env.VITE_DIVISOR)!=0){
     
     toast.error("Unauthorized Page")
-     nav("/") 
+      
     }
     else{
       setCheckingAuth(false)
