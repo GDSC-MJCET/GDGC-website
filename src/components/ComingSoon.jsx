@@ -1,12 +1,11 @@
 "use client";
 
 import React from "react";
-import { motion } from "motion/react";
 import Nav from "./Nav";
 import Background from "./Background";
 import Footer from "./Footer";
 
-const ComingSoon = ({ pageName = "Page" }) => {
+const ComingSoon = () => {
   return (
     <Background>
       <Nav />
