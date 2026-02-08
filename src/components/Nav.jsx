@@ -15,7 +15,6 @@ import { Link } from "react-router";
 
 const Nav = ({ bgColor = "#1e1e1e" }) => {
   const [open, setOpen] = useState(false);
-
   const links = [
     {
       title: "Instagram",
@@ -82,9 +81,9 @@ const Nav = ({ bgColor = "#1e1e1e" }) => {
             mobileClassName="text-neutral-400"
           />
 
-          <button className=" bg-[#5ddb6e] text-black py-2 px-8 rounded-full text-sm font-semibold">
+          <a target="_blank" rel="noopener noreferrer" href="https://gdg.community.dev/gdg-on-campus-muffakham-jah-college-of-engineering-and-technology-hyderabad-india/" className=" bg-[#5ddb6e] text-black py-2 px-8 rounded-full text-sm font-semibold">
             Join Us
-          </button>
+          </a>
         </div>
       </header>
 

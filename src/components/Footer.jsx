@@ -58,9 +58,9 @@ const Footer = ({ bgColor = "#272727" }) => {
               </p>
             </div>
 
-            <button className="mt-6 md:mt-12 w-fit bg-[#5ddb6e] text-black py-2 px-8 rounded-3xl font-semibold hover:bg-green-500 transition border border-white/60">
+            <a target="_blank" rel="noopener noreferrer" href="https://gdg.community.dev/gdg-on-campus-muffakham-jah-college-of-engineering-and-technology-hyderabad-india/" className="mt-6 md:mt-12 w-fit bg-[#5ddb6e] text-black py-2 px-8 rounded-3xl font-semibold hover:bg-green-500 transition border border-white/60">
               Join Us
-            </button>
+            </a>
           </div>
         </div>
 
