@@ -100,17 +100,17 @@ setShowMoreLeft(prev=>!prev)
         {/* LEFT TEAM */}
         <div className="flex flex-col items-center">
           <div>
-            <FaQuestion
+            {/* <FaQuestion
               className={selectedLeft === "" ? "" : "hidden"}
               size={150}
-            />
+            /> */}
 
             <img
               className={`h-55 w-55${selectedLeft === "" ? " hidden" : ""}`}
               src={
-                radios[
-                  radios.findIndex((item) => item.clubName === selectedLeft)
-                ]
+                
+                  radios.find((item) => item.clubName === selectedLeft)?.clubImageUrl ||''
+                
               }
               alt={selectedLeft || "left team"}
             />
@@ -119,7 +119,7 @@ setShowMoreLeft(prev=>!prev)
           </div>
 
           <div>
-            <div className="bg-white p-8 rounded-lg shadow-md w-[22vw] flex">
+            <div className=" p-8 rounded-lg shadow-md w-[22vw] flex">
               <h1>Left Team</h1>
 
               <div className="flex relative pr-5">
@@ -158,18 +158,19 @@ setShowMoreLeft(prev=>!prev)
         {/* RIGHT TEAM */}
         <div className="flex flex-col items-center">
           <div>
-            <FaQuestion
+            {/* <FaQuestion
               className={selectedRight === "" ? "" : "hidden"}
               size={150}
-            />
+            /> */}
 
             <img
               className={`h-55 w-55${selectedRight === "" ? " hidden" : ""}`}
-              src={
-                radios[
-                  radios.findIndex((item) => item.clubName === selectedRight)
-                ]
-              }
+              src=
+                // 'https://cydhrjohjxcunyxdlcay.supabase.co/storage/v1/object/public/tech-debate-clubs/club-image/file_1770661369303.jpg'
+                {
+                  radios.find((item) => item.clubName === selectedRight)?.clubImageUrl || ''
+                }
+              
               alt={selectedRight || "right team"}
             />
 
@@ -177,7 +178,7 @@ setShowMoreLeft(prev=>!prev)
           </div>
 
           <div>
-            <div className="bg-white p-8 rounded-lg shadow-md w-[22vw] flex">
+            <div className=" p-8 rounded-lg shadow-md w-[22vw] flex">
               <h1>Right Team</h1>
 
               <div className="flex relative pr-5">

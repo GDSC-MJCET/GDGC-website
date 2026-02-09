@@ -26,8 +26,9 @@ export default function ScorePage (){
             </div>
         </div>
         <img src={ipl} className="max-w-[85vw] ml-23" />
-       <LiveScoreCard/>
+       {/* <LiveScoreCard/> */}
        {/* <History/> some changes are needed here  */}
+        <History />
         
               <Footer bgColor="#0b0b0b" />
         
