@@ -49,6 +49,7 @@ import AdminUsers from './pages/AdminUsers.jsx';
 import ScorePage from './pages/ScorePage.jsx';
 import HrInterface from './pages/HrInterface.jsx';
 import HrControlInterface from './pages/HrControlInterface.jsx';
+import TDForm from './pages/TDForm.jsx';
 
 function App() {
   const [isVerified, setIsVerified] = useState(null);
@@ -236,6 +237,7 @@ function AppWithRouter() {
             <Route path="contact" element={<ContactUsPage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="forgotpassword" element={<ForgotPassword />} />
+            <Route path='techdebate/form' element={<TDForm/>}/>
 
             {/* Team area (layout route) */}
             <Route path="team" element={<TeamLayout />}>
