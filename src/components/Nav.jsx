@@ -19,22 +19,22 @@ const Nav = ({ bgColor = "#1e1e1e" }) => {
     {
       title: "Instagram",
       icon: <IconBrandInstagramFilled className="h-full w-full" />,
-      href: "#",
+      href: "https://www.instagram.com/gdgc.mjcet/",
     },
     {
       title: "LinkedIn",
       icon: <IconBrandLinkedinFilled className="h-full w-full" />,
-      href: "#",
+      href: "https://www.linkedin.com/company/gdgmjcet",
     },
     {
       title: "GitHub",
       icon: <IconBrandGithubFilled className="h-full w-full" />,
-      href: "#",
+      href: "https://github.com/GDSC-MJCET",
     },
     {
       title: "YouTube",
       icon: <IconBrandYoutubeFilled className="h-full w-full" />,
-      href: "#",
+      href: "https://www.youtube.com/@gdgcmjcet",
     },
   ];
 
