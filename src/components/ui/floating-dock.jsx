@@ -116,10 +116,11 @@ function IconContainer({
   const [hovered, setHovered] = useState(false);
 
   return (
-    <a href={href}>
+    <a href={href} target="_blank" rel="noopener noreferrer" >
       <motion.div
         ref={ref}
         style={{ width, height }}
+        
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         className="relative flex aspect-square items-center justify-center rounded-full bg-transparent ">

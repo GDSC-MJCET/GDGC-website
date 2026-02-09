@@ -50,46 +50,48 @@ const About = () => {
 
         <div className="flex justify-between mb-12 sm:mb-16 md:mb-20 lg:mb-24 gap-4">
           <motion.img
-            src="/ex.png"
+            src="/about1.png"
             alt=""
             style={{ y: imgY1 }}
             className="h-28 w-36 sm:h-32 sm:w-44 md:h-36 md:w-52 lg:h-44 lg:w-60 object-cover"
           />
 
           <motion.img
-            src="/ex.png"
+            src="/about2.png"
             alt=""
             style={{ y: imgY2 }}
-            className="h-32 w-40 sm:h-36 sm:w-48 md:h-40 md:w-56 lg:h-48 lg:w-68 object-cover"
+            className="h-32 w-40 sm:h-36 sm:w-48 md:h-40 md:w-56 lg:h-[250px] lg:w-[280px] object-cover"
           />
         </div>
 
         <div className="flex justify-center mb-12 sm:mb-16 md:mb-20 lg:mb-24">
           <motion.img
-            src="/ex.png"
+            src="/about3.webp"
             alt=""
             style={{ y: imgY3 }}
-            className="h-20 w-28 sm:h-24 sm:w-32 md:h-28 md:w-40 lg:h-32 lg:w-44 object-cover"
+            className="h-20 w-28 sm:h-24 sm:w-32 md:h-28 md:w-40 lg:h-[280px] lg:w-[280px] object-cover"
           />
         </div>
 
         <div className="flex justify-end pr-4 sm:pr-6 md:pr-8 lg:pr-12 mb-12 sm:mb-16 md:mb-20 lg:mb-24">
           <motion.img
-            src="/ex.png"
+            src="/about4.webp"
             alt=""
             style={{ y: imgY4 }}
-            className="h-24 w-32 sm:h-28 sm:w-36 md:h-32 md:w-44 lg:h-36 lg:w-48 object-cover"
+            className="h-32 w-32 sm:h-28 sm:w-36 md:h-32 md:w-44 lg:h-[280px] lg:w-[290px] object-cover"
           />
         </div>
 
         <div className="flex justify-start pl-4 sm:pl-6 md:pl-8 lg:pl-12">
           <motion.img
-            src="/ex.png"
+            src="/about5.JPG"
             alt=""
             style={{ y: imgY5 }}
-            className="h-28 w-40 sm:h-32 sm:w-48 md:h-36 md:w-56 lg:h-42 lg:w-68 object-cover"
+            className="h-28 w-40 sm:h-32 sm:w-48 md:h-36 md:w-56  lg:mt-[-20px] lg:h-[280px] lg:w-[290px] object-cover"
+
           />
         </div>
+        
 
       </div>
     </section>

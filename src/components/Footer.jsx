@@ -6,20 +6,21 @@ const Footer = ({ bgColor = "#272727" }) => {
       
       <div className="relative z-10 mt-12 flex justify-center gap-6 px-6 md:justify-around">
         <img
-          src="/idk-1.png"
+          src="/team-1.jpg"
           alt=""
           className="h-32 md:h-56 rounded-2xl rotate-12 shadow-xl"
         />
         <img
-          src="/idk-2.png"
+          src="/team-3.jpg"
+          alt=""
+          className="h-36 md:h-64 rounded-2xl  rotate-10 shadow-xl"
+        />
+        <img
+          src="/team-2.jpg"
           alt=""
           className="h-32 md:h-56 rounded-2xl -rotate-8 shadow-xl"
         />
-        <img
-          src="/idk-3.png"
-          alt=""
-          className="h-36 md:h-64 rounded-2xl grayscale rotate-10 shadow-xl"
-        />
+        
       </div>
 
       <div
@@ -43,9 +44,9 @@ const Footer = ({ bgColor = "#272727" }) => {
               BUSINESS INQUIRIES
             </h3>
             <div className="space-y-3 text-gray-300">
-              <p>Email: gdgcmjcet@gmail.com</p>
-              <p>Phone: +91 123456789</p>
-              <p>Phone: +91 987654321</p>
+              <p>Email: gdscmjcet@gmail.com</p>
+              <p>Abrar : +91 7842483580</p>
+              <p>Amaan : +91 8897079715</p>
             </div>
           </div>
 
@@ -58,9 +59,9 @@ const Footer = ({ bgColor = "#272727" }) => {
               </p>
             </div>
 
-            <button className="mt-6 md:mt-12 w-fit bg-[#5ddb6e] text-black py-2 px-8 rounded-3xl font-semibold hover:bg-green-500 transition border border-white/60">
+            <a target="_blank" rel="noopener noreferrer" href="https://gdg.community.dev/gdg-on-campus-muffakham-jah-college-of-engineering-and-technology-hyderabad-india/" className="mt-6 md:mt-12 w-fit bg-[#5ddb6e] text-black py-2 px-8 rounded-3xl font-semibold hover:bg-green-500 transition border border-white/60">
               Join Us
-            </button>
+            </a>
           </div>
         </div>
 

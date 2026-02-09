@@ -5,7 +5,7 @@ const About = () => {
     <div className='px-4 sm:px-8 md:px-12 lg:px-16 xl:px-18'>
         <div className='space-y-6 sm:space-y-8 md:space-y-10 lg:space-y-12'>
             <h2 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#cdf6c5]'>About</h2>
-            <p className='text-base sm:text-lg md:text-xl lg:text-2xl text-white font-light'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex.</p>
+            <p className='text-base sm:text-lg md:text-xl leading-10 lg:text-2xl text-white font-light'>Tech Face-Off: The Verdict is a high-intensity inter-chapter technical debate that brings together some of the most articulate and analytically sharp student chapters to deliberate on pressing and thought-provoking topics in technology. Designed to foster critical thinking, structured argumentation, and technical clarity, the event provides a competitive yet intellectually enriching platform where ideas are challenged, defended, and refined through discourse. With external judges and a knockout format, the debate promises an atmosphere of professionalism, fairness, and rigorous evaluation, making it a flagship intellectual event for the student tech community</p>
         </div>
         <div className='py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32 space-y-16 sm:space-y-20 md:space-y-24 lg:space-y-28 xl:space-y-32 flex flex-col justify-center items-center gap-6 sm:gap-8 md:gap-10 lg:gap-12'>
             <div className="flex flex-col md:flex-row gap-6 sm:gap-8 md:gap-12 lg:gap-16 xl:gap-24 items-start w-full max-w-7xl px-4">
@@ -26,13 +26,12 @@ const About = () => {
                     <span className="absolute bottom-0 right-0 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 border-b-2 border-r-2 sm:border-b-[3px] sm:border-r-[3px] border-[#5ddb6e]" />
 
                     <p className="text-xs sm:text-sm opacity-90">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua.
+                    Check out the YOCS website , thankyou for
                     </p>
 
-                    <button className="text-[#4286F5] text-xs sm:text-sm self-start mt-4 hover:underline">
-                    Read the Guidelines <span>→</span>
-                    </button>
+                    <a  href="https://www.yocs.in/" className="text-[#4286F5] text-xs sm:text-sm self-start mt-4 hover:underline">
+                   Visit the website <span></span>
+                    </a>
                 </div>
 
                 <div

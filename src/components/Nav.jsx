@@ -15,27 +15,26 @@ import { Link } from "react-router";
 
 const Nav = ({ bgColor = "#1e1e1e" }) => {
   const [open, setOpen] = useState(false);
-
   const links = [
     {
       title: "Instagram",
       icon: <IconBrandInstagramFilled className="h-full w-full" />,
-      href: "#",
+      href: "https://www.instagram.com/gdgc.mjcet/",
     },
     {
       title: "LinkedIn",
       icon: <IconBrandLinkedinFilled className="h-full w-full" />,
-      href: "#",
+      href: "https://www.linkedin.com/company/gdgmjcet",
     },
     {
       title: "GitHub",
       icon: <IconBrandGithubFilled className="h-full w-full" />,
-      href: "#",
+      href: "https://github.com/GDSC-MJCET",
     },
     {
       title: "YouTube",
       icon: <IconBrandYoutubeFilled className="h-full w-full" />,
-      href: "#",
+      href: "https://www.youtube.com/@gdgcmjcet",
     },
   ];
 
@@ -82,9 +81,9 @@ const Nav = ({ bgColor = "#1e1e1e" }) => {
             mobileClassName="text-neutral-400"
           />
 
-          <button className=" bg-[#5ddb6e] text-black py-2 px-8 rounded-full text-sm font-semibold">
+          <a target="_blank" rel="noopener noreferrer" href="https://gdg.community.dev/gdg-on-campus-muffakham-jah-college-of-engineering-and-technology-hyderabad-india/" className=" bg-[#5ddb6e] text-black py-2 px-8 rounded-full text-sm font-semibold">
             Join Us
-          </button>
+          </a>
         </div>
       </header>
 
