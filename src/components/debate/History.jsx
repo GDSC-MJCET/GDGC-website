@@ -1,4 +1,10 @@
-const History = ({rounds}) => {
+import axios from "axios"
+import { useEffect, useState } from "react"
+const History = () => {
+const [rounds,setRounds] = useState([])
+useEffect(() => {
+    
+},[])
   return (
         <div>
            { rounds.map(

@@ -33,19 +33,28 @@ export default function HrControlInterface() {
     if (!leftTeamName || !rightTeamName) return;
     setLoading(true);
     try {
-      // Example endpoint expecting leftTeam & rightTeam and returning both teams + their scores
-      const res = await axios.post(SERVER + "api/v1/techdebate/get-round-data", {
+      const res = await axios.get(SERVER + "api/v1/techdebate/get-score", {
         leftTeam: leftTeamName,
         rightTeam: rightTeamName,
       });
-      // adapt to your response shape:
-      // assume res.data = { success: true, leftTeam: {...}, rightTeam: {...}, leftScore: 2, rightScore: 3 }
+      
       const data = res.data;
+      console.log("fetchTeams response:", data);
       if (data.success) {
-        setLeftTeam(data.leftTeam || null);
-        setRightTeam(data.rightTeam || null);
-        setLeftScore(typeof data.leftScore === "number" ? data.leftScore : 0);
-        setRightScore(typeof data.rightScore === "number" ? data.rightScore : 0);
+        let leftTeamStr = {
+          clubName: data.sendingData.leftTeam || leftTeamName,
+          logoUrl: data.sendingData.leftLogo || null,
+          speakers: data.sendingData.speakersLeft|| [],
+        }
+        let rightTeamStr = {
+          clubName: data.sendingData.rightTeam || rightTeamName,
+          logoUrl: data.sendingData.rightLogo || null,
+          speakers: data.sendingData.speakersRight|| [],
+        }
+        setLeftTeam(leftTeamStr);
+        setRightTeam(rightTeamStr);
+        setLeftScore(typeof data.sendingData.leftScore === "number" ? data.sendingData.leftScore : 0);
+        setRightScore(typeof data.sendingData.rightScore === "number" ? data.sendingData.rightScore : 0);
       } else {
         console.warn("fetchTeams: backend responded with success=false", data);
       }
@@ -106,24 +115,18 @@ export default function HrControlInterface() {
     }
   };
 
-  // final submit: opens confirm modal; confirm triggers backend submit and redirect
+ 
   const handleConfirmSubmit = async () => {
     setFinalSubmitting(true);
     try {
-      // Example endpoint: /finalize-round { leftTeam, rightTeam, leftScore, rightScore }
-      const res = await axios.post(SERVER + "api/v1/techdebate/finalize-round", {
+      const res = await axios.post(SERVER + "api/v1/techdebate/end-debate", {
         leftTeam: leftTeamName,
-        rightTeam: rightTeamName,
-        leftScore,
-        rightScore,
+        rightTeam: rightTeamName
       });
 
       if (res.data.success) {
-        // collapse and redirect to home (or whatever route you want)
         nav("/", { replace: true });
-      } else {
-        throw new Error(res.data.error || "Final submit failed");
-      }
+      } 
     } catch (err) {
       console.error("Final submit error:", err);
       alert("Final submit failed: " + (err.message || "unknown"));
@@ -152,15 +155,18 @@ export default function HrControlInterface() {
         <div className="mt-4 w-full">
           <h3 className="text-sm font-medium mb-2">Speakers</h3>
           <ul className="space-y-1 max-h-40 overflow-auto">
-            {team?.speakers?.length ? (
-              team.speakers.map((s, i) => (
-                <li key={i} className="text-sm p-2 rounded border">
-                  {s.name} {s.role ? <span className="text-xs text-gray-500">— {s.role}</span> : null}
+            {
+              console.log("Rendering speakers for", side, team) ||
+              leftTeam && side === "left" ? leftTeam.speakers.map((speaker, index) => (
+                <li key={index} className="text-sm text-gray-700">
+                  {speaker.name}
                 </li>
-              ))
-            ) : (
-              <li className="text-sm text-gray-400">No speakers loaded</li>
-            )}
+              )) : rightTeam && side === "right" ? rightTeam.speakers.map((speaker, index) => (
+                <li key={index} className="text-sm text-gray-700">
+                  {speaker.name}
+                </li>
+              )) : <li className="text-sm text-gray-500">No speakers data</li>
+            }
           </ul>
         </div>
 

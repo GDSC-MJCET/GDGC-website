@@ -46,15 +46,21 @@ const [topic, setTopic] = useState("");
   useEffect(() => {
     axios.get(server + "api/v1/techdebate/get-clubs").then((data) => {
       setRadios(data.data.clubs);
-      console.log(data.data.clubs);
     });
   }, []);
 
   const handleTopicChange = (e) => {
     const val = e.target.value;
-    // enforce 200 char limit defensively
+    // enforce 200 char limit 
     if (val.length <= 200) setTopic(val);
   };
+  useEffect(() => {
+setShowMoreLeft(prev=>!prev)
+  }, [selectedLeft]);
+ 
+  useEffect(() => {
+    setShowMoreRight(prev=>!prev)
+  }, [selectedRight]);
 
   const handleStart = () => {
     const trimmedTopic = topic.trim();
@@ -67,9 +73,10 @@ const [topic, setTopic] = useState("");
       leftTeam: selectedLeft,
       rightTeam: selectedRight,
       Topic: trimmedTopic,
-    }).then((data) => {      
-      if (data.data.success) {
-        nav("/hr-control", {
+    }).then((data) => {  
+      console.log(data)    
+      if (data.data.Success) {
+        nav("/team/hr-control", {
           state: {
             left: selectedLeft,
             right: selectedRight,
