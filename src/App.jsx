@@ -242,8 +242,8 @@ function AppWithRouter() {
 
             {/* Team area (layout route) */}
             <Route path="team" element={<TeamLayout />}>
-              {/* <Route path="hr-interface" element={<HrInterface/>}/>
-              <Route path="hr-control" element={<HrControlInterface/>}/> */}
+              {/* <Route path="hr-interface" element={<HrInterface/>}/> */}
+              {/* <Route path="hr-control" element={<HrControlInterface/>}/> */}
               <Route index element={<Navigate to="/*"/>} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="customization">

@@ -32,7 +32,6 @@ export default function ScorePage (){
             <img src="/bracket-vertical.png" className="w-full" alt="Debate IPL" />
         </div>
        <LiveScoreCard/>
-       {/* <History/> some changes are needed here  */}
         <History />
         
               <Footer bgColor="#0b0b0b" />
