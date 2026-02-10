@@ -30,6 +30,8 @@ export default function HrInterface() {
   const [showStageDropdown, setShowStageDropdown] = useState(false);
   const stageOptions = ["League", "SemiFinal", "Final"];
   const nav = useNavigate()
+  const server = import.meta.env.VITE_SERVER;
+  const [radios, setRadios] = useState([]);
 
   const auth = JSON.parse(localStorage.getItem("AuthState"))
 
@@ -41,7 +43,7 @@ export default function HrInterface() {
 
     axios
       .get(
-        import.meta.env.VITE_SERVER||"http://localhost:3009" + "/api/v1/admin/verify-admin",
+        `${server}` + "/api/v1/admin/verify-admin",
         {
           headers: {
             Authorization: `Bearer ${auth?.token}`,
@@ -60,17 +62,21 @@ export default function HrInterface() {
         nav("/login")
       })
   }, [auth?.token])
- if(!checkingAuth){
-  return <div className="bg-black"></div>
- }
-  const server = import.meta.env.VITE_SERVER;
-  const [radios, setRadios] = useState([]);
 
   useEffect(() => {
-    axios.get(server + "api/v1/techdebate/get-clubs").then((data) => {
+    axios.get(server + "/api/v1/techdebate/get-clubs").then((data) => {
       setRadios(data.data.clubs);
     });
   }, []);
+
+  // Loading states check - handle early if not ready
+  if(!checkingAuth){
+    return <div className="bg-black min-h-screen"></div>
+  }
+
+  if ((loadMatch == false) &&(viewMode === "control")){
+    return <div className="bg-black min-h-screen"></div>
+  }
 
   const handleTopicChange = (e) => {
     const val = e.target.value;
@@ -82,7 +88,7 @@ export default function HrInterface() {
   const fetchTeams = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(server + "api/v1/techdebate/get-score");
+      const res = await axios.get(server + "/api/v1/techdebate/get-score");
       
       const data = res.data;
       console.log("fetchTeams response:", data);
@@ -131,7 +137,7 @@ export default function HrInterface() {
     else setRightScore((s) => s + 1);
 
     try {
-      const res = await axios.post(server + "api/v1/techdebate/increment-score", {
+      const res = await axios.post(server + "/api/v1/techdebate/increment-score", {
         leftTeam: selectedLeft,
         rightTeam: selectedRight,
         side,
@@ -160,7 +166,7 @@ export default function HrInterface() {
   const handleConfirmSubmit = async () => {
     setFinalSubmitting(true);
     try {
-      const res = await axios.post(server + "api/v1/techdebate/end-debate", {
+      const res = await axios.post(server + "/api/v1/techdebate/end-debate", {
         leftTeam: selectedLeft,
         rightTeam: selectedRight
       });
@@ -193,7 +199,7 @@ export default function HrInterface() {
       alert("Please choose both teams and enter a topic before starting.");
       return;
     }
-    axios.post(server + "api/v1/techdebate/start-round", {
+    axios.post(server + "/api/v1/techdebate/start-round", {
       leftTeam: selectedLeft,
       rightTeam: selectedRight,
       Topic: trimmedTopic,
@@ -510,9 +516,7 @@ export default function HrInterface() {
     </>
   );
   }
-if ((loadMatch == false) &&(viewMode === "control")){
-  return(<div className="bg-black"></div>)
-}
+
   // Render control view
   return (
     <section className="min-h-screen p-4 sm:p-6">
