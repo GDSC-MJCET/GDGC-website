@@ -225,7 +225,7 @@ function AppWithRouter() {
             {/* Public pages */}
             <Route path="/" element={<HomePage />} />
             <Route path="initialsetup/:id" element={<InitialSetup />} />
-            <Route path="techdebate" element={<TechDebatePage />} />
+            <Route path="techfaceoff" element={<TechDebatePage />} />
             <Route path="events" element={<EventsPage />} />
             <Route path="team-page" element={<TeamPage />} />
             <Route path="gallery" element={<GalleryPage />} />

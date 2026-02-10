@@ -25,11 +25,11 @@ const About = () => {
                     <span className="absolute bottom-0 left-0 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 border-b-2 border-l-2 sm:border-b-[3px] sm:border-l-[3px] border-[#5ddb6e]" />
                     <span className="absolute bottom-0 right-0 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 border-b-2 border-r-2 sm:border-b-[3px] sm:border-r-[3px] border-[#5ddb6e]" />
 
-                    <p className="text-xs sm:text-sm opacity-90">
-                    Check out the YOCS website , thankyou for
+                    <p className="text-xs sm:text-sm md:text-xl opacity-90">
+                        Young Orators' Club (est. 1969) is the oldest member-run club in Hyderabad dedicated to oratory and critical thinking. Check out the YOCS website — we sincerely thank them for serving as judges for the Tech Face-Off.
                     </p>
 
-                    <a  href="https://www.yocs.in/" className="text-[#4286F5] text-xs sm:text-sm self-start mt-4 hover:underline">
+                    <a  href="https://www.yocs.in/"  rel="noopener noreferrer" target="_blank" className="text-[#4286F5] text-xs sm:text-sm self-start mt-4 hover:underline">
                    Visit the website <span></span>
                     </a>
                 </div>
@@ -51,18 +51,16 @@ const About = () => {
                     <span className="absolute bottom-0 left-0 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 border-b-2 border-l-2 sm:border-b-[3px] sm:border-l-[3px] border-[#5ddb6e]" />
                     <span className="absolute bottom-0 right-0 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 border-b-2 border-r-2 sm:border-b-[3px] sm:border-r-[3px] border-[#5ddb6e]" />
 
-                    <p className="text-xs sm:text-sm opacity-90">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua.
-                    </p>
+                    <p className="text-xs sm:text-sm opacity-90 md:text-xl">
+                    Want to witness the debate live? Register as an audience member to attend Tech Face-Off: The Verdict at the Seminar Hall on 12th–13th February 2026</p>
 
-                    <button className="text-[#4286F5] text-xs sm:text-sm self-start mt-4 hover:underline">
-                    Read the Guidelines <span>→</span>
-                    </button>
+                    <a href='https://forms.gle/8zHnJmLDESzJp1ik6' rel="noopener noreferrer" target="_blank" className="text-[#4286F5] text-xs sm:text-sm self-start mt-4 hover:underline">
+                    Register as Audience <span>→</span>
+                    </a>
                 </div>
             </div>
 
-            <div
+            {/* <div
                     className="
                         relative bg-[#111a29b0] text-white p-4 sm:p-5 md:p-6 min-h-48 sm:min-h-52 md:min-h-55
                         flex flex-col justify-between w-full md:w-110 max-w-xl
@@ -92,10 +90,10 @@ const About = () => {
                         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
                     </p>
 
-                    <button className="text-[#4286F5] px-4 sm:px-5 py-2 text-xs sm:text-sm self-start mt-4 hover:underline">
+                    {/* <button className="text-[#4286F5] px-4 sm:px-5 py-2 text-xs sm:text-sm self-start mt-4 hover:underline">
                         Read the Guidelines <span>→</span>
-                    </button>
-                </div>
+                    </button> */}
+            {/* </div> */} 
         </div>
     </div>
   )

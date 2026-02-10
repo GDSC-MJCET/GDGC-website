@@ -38,7 +38,7 @@ const Nav = ({ bgColor = "#1e1e1e" }) => {
     },
   ];
 
-  const menuItems = {"Home" : "/", "Tech Debate" : "/techdebate" , "Events" : "/events", "Team" : "/team-page", "Gallery" : "/gallery", "Contact Us" : "/contact"};
+  const menuItems = {"Home" : "/", "Tech Faceoff" : "/techfaceoff" , "Events" : "/events", "Team" : "/team-page", "Gallery" : "/gallery", "Contact Us" : "/contact"};
 
   return (
     <>

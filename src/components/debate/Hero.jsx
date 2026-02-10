@@ -10,7 +10,7 @@ const Hero = () => {
             textShadow: "0 0 40px rgba(87, 203, 255, 0.4)",
           }}>TECH</span> <span className='text-[#5ddb6e]'  style={{
             textShadow: "0 0 40px rgba(93, 219, 110, 0.4)",
-          }}>DEBATE</span>
+          }}>FACEOFF</span>
         </h2>
         <button className='flex text-[#ffd428] justify-center items-center w-full mt-6 sm:mt-8 md:mt-10 lg:mt-12 text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl gap-1 sm:gap-2 tracking-tighter hover:gap-3 sm:hover:gap-4 transition-all'>
           <span className='text-center'>CHECK OUT THE LIVE SCOREBOARD</span> 
