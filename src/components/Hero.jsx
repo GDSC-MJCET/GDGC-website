@@ -39,7 +39,7 @@ const Hero = () => {
           className="absolute inset-0 flex flex-col items-center text-center text-white px-6 py-12 pointer-events-none will-change-transform translate-y-24 md:translate-y-35"
         >
           <h2 className="text-3xl md:text-6xl font-bold  max-w-2xl lg:max-w-5xl text-left">
-            A community built around learning , technology and collaboration
+            A community built around learning, technology and collaboration
           </h2>
 
           <p className="mt-4 text-base md:text-lg text-left max-w-2xl lg:max-w-5xl">
@@ -84,7 +84,7 @@ const Hero = () => {
                   <button onClick={()=>navigate("/techdebate")} className="bg-[#f9ac02] text-black px-6 py-2 rounded-full font-semibold border border-white/40 shadow-[0_0_6px_rgba(255,255,255,0.85)]">
                     Learn More 
                   </button>
-                  <button  className="bg-[#57cbff] text-black px-6 py-2 rounded-full font-semibold border border-white/40 shadow-[0_0_6px_rgba(255,255,255,0.85)]">
+                  <button  onClick={()=>navigate("/score")} className="bg-[#57cbff] text-black px-6 py-2 rounded-full font-semibold border border-white/40 shadow-[0_0_6px_rgba(255,255,255,0.85)]">
                     Live Scorecard
                   </button>
                 </div>

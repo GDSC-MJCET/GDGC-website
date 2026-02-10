@@ -1,5 +1,6 @@
 import { ArrowRight } from 'lucide-react'
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Hero = () => {
   return (
@@ -12,10 +13,15 @@ const Hero = () => {
             textShadow: "0 0 40px rgba(93, 219, 110, 0.4)",
           }}>FACEOFF</span>
         </h2>
-        <button className='flex text-[#ffd428] justify-center items-center w-full mt-6 sm:mt-8 md:mt-10 lg:mt-12 text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl gap-1 sm:gap-2 tracking-tighter hover:gap-3 sm:hover:gap-4 transition-all'>
+        {/* <Link > */}
+        
+        <Link to="/score">
+        <button className='cursor-pointer flex text-[#ffd428] justify-center items-center w-full mt-6 sm:mt-8 md:mt-10 lg:mt-12 text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl gap-1 sm:gap-2 tracking-tighter hover:gap-3 sm:hover:gap-4 transition-all'>
           <span className='text-center'>CHECK OUT THE LIVE SCOREBOARD</span> 
           <span>→</span>
         </button>
+        </Link>
+        {/* </Link> */}
         <div className='relative flex justify-center items-center w-full mt-4 sm:mt-6 md:mt-8'>
             <img src="/debateHero.png"  alt="hero" className='drop-shadow-2xl drop-shadow-gray-500  relative w-full max-w-6xl h-auto object-contain z-10' />
         </div>
