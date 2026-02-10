@@ -160,7 +160,7 @@ export default function LiveScoreCard() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start bg-[#0b0b0c] p-6 dm-mono">
+    <div className="flex flex-col items-center justify-start py-16 px-6 dm-mono">
       <div className="w-[920px] max-w-full flex flex-col items-center">
         <TopBadge debate={debate} />
 

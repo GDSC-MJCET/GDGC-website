@@ -22,7 +22,7 @@ const Idk = () => {
             </div>
         </div>
         <div className='flex justify-center items-center w-full px-6 sm:px-12 lg:px-22'>
-            <img src="idk-img-final-3.jpeg" alt="" className='h-[150px] sm:h-[30vh] md:h-[30vh] lg:h-[40vh] xl:h-[50vh] 2xl:h-[60vh] object-center w-full'/>
+            <img src="idk-img-final-3.jpeg" alt="" className='h-[150px] sm:h-[30vh] md:h-[30vh] lg:h-[40vh] xl:h-[50vh] 2xl:h-[60vh] object-cover w-full'/>
             
         </div>
         
