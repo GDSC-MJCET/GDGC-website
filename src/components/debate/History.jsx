@@ -62,27 +62,27 @@ const History = () => {
     const displayedRounds = showAll ? rounds : rounds.slice(0, 5)
 
     return (
-        <div className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 py-8">
+        <div className="px-4  sm:px-8 md:px-16 lg:px-24 xl:px-32 py-8">
            { displayedRounds.map(
             (round, index) => (
                 <div className="flex flex-col lg:flex-row w-full mb-8 lg:mb-0" key={index}>
-                        <div className="hidden lg:block flex-shrink-0">
-                            <div className='h-77.5 border-r border-[#57CBFF] border-dashed'>
-                                <div className='flex items-center'>
-                                    <button className='bg-[#18263D] text-white border border-[#57CBFF] h-14 w-50 rounded-xs text-sm'>
-                                        {round.match}
-                                    </button>
-                                    
-                                    <div className='bg-[#57CBFF] w-31.5 h-px'></div>
-                                    <div className='bg-[#57CBFF] w-2.5 h-2.5 rounded-2xl shadow-[0_0_16px_#57CBFF]'></div>
-                                </div>
-                                <div className='font-medium text-white w-44 text-[16px] pl-6 pt-9'>
-                                    {round.status}
-                                </div>
+                    <div className="hidden lg:block flex-shrink-0">
+                        <div className='h-77.5 border-r border-[#57CBFF] border-dashed'>
+                            <div className='flex items-center'>
+                                <button className='bg-[#18263D] text-white border border-[#57CBFF] h-14 w-50 rounded-xs text-sm'>
+                                    {round.match}
+                                </button>
+                                
+                                <div className='bg-[#57CBFF] w-31.5 h-px'></div>
+                                <div className='bg-[#57CBFF] w-2.5 h-2.5 rounded-2xl shadow-[0_0_16px_#57CBFF]'></div>
+                            </div>
+                            <div className='font-medium text-white w-44 text-[16px] pl-6 pt-9'>
+                                {round.status}
                             </div>
                         </div>
+                    </div>
                     
-                    <div className='px-0 sm:px-4 md:px-8 w-full min-h-[300px] lg:h-77.5 py-4 lg:py-0'>
+                    <div className='px-0  sm:px-4 md:px-8 w-full min-h-[300px] lg:h-77.5 py-4 lg:py-0'>
                             <p className='text-white text-sm sm:text-[16px] font-normal hidden lg:block'>Seminar Hall, MJCET BLOCK 4</p>
                             
                             {/* Mobile/Tablet layout */}
@@ -190,17 +190,17 @@ const History = () => {
                                </div>
                            </div>
 
-                       </div>
-                       </div>
+                    </div>
+                </div>
                 
             )
         )}
         
         {rounds.length > 5 && (
-            <div className='flex justify-center mt-6 sm:mt-8'>
+            <div className='flex  justify-center mt-6 sm:mt-8'>
                 <button 
                     onClick={() => setShowAll(!showAll)}
-                    className='bg-[#57CBFF] hover:bg-[#18263D] text-white border border-[#57CBFF] px-6 sm:px-8 py-2 sm:py-3 rounded-lg transition-colors duration-300 text-sm sm:text-base'
+                    className='bg-black/12  cursor-pointer text-white border border-white/12 px-6 sm:px-8 py-2 sm:py-3 rounded-lg transition-colors duration-300 text-sm sm:text-base'
                 >
                     {showAll ? 'Show Less' : 'Read More'}
                 </button>
