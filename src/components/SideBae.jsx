@@ -1,8 +1,10 @@
-import { IconArticle, IconBrandLine } from '@tabler/icons-react'
+import { IconArticle, IconBrandLine, IconTruckReturn } from '@tabler/icons-react'
 import { ChevronDown, ChevronUp, Settings2, UserStar, VenetianMask, X } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import gdg from "../assets/gdg-logo.png" 
+import axios from 'axios'
+
 
 const SettingSubPanel = ({handleClickRedirect , clicked}) => {
     return (
@@ -39,6 +41,9 @@ const AdminSubPanel = ({handleClickRedirect , clicked}) => {
             <span onClick={()=>handleClickRedirect("adminUsers","/team/admin/users" )} className={`${clicked == "adminUsers" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}>
                 <Link to="/team/admin/users" className=' py-1 px-3 w-full rounded-md' >Users</Link> 
             </span>
+            <span onClick={()=>handleClickRedirect("hr-interface","/team/admin/hr-interface" )} className={`${clicked == "hr-interface" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}>
+                <Link to="/team/admin/hr-interface" className=' py-1 px-3 w-full rounded-md' >Tech Debate</Link> 
+            </span>
         </div>
     )
 }
@@ -62,7 +67,52 @@ const SideBae = ({ isOpen, onClose }) => {
     const [openSettingPanel , setOpenSettingPanel] = useState(false)
     const [openAdminPanel , setOpenAdminPanel] = useState(false)
     const [openSuperAdminPanel , setOpenSuperAdminPanel] = useState(false)
+    const [isAdmin,setIsAdmin] = useState(false);
+    const [isSuperAdmin,setIsSuperAdmin] = useState(false)
     const navigate = useNavigate();
+    
+    const auth = JSON.parse(localStorage.getItem("AuthState"));
+    useEffect(() => {
+    if (!auth?.token) {
+      nav("/login")
+    }
+
+    axios.get(
+        `${import.meta.env.VITE_SERVER}` + "/api/v1/admin/verify-admin",
+        {
+          headers: {
+            Authorization: `Bearer ${auth?.token}`,
+          },
+        }
+      )
+      .then((data) => {
+        if(data.data.success){
+          setIsAdmin(true)
+        }
+        
+      })
+      .catch(() => {
+        return
+      })
+      axios.get(
+        `${import.meta.env.VITE_SERVER}` + "/api/v1/admin/verify-super-admin",
+        {
+          headers: {
+            Authorization: `Bearer ${auth?.token}`,
+          },
+        }
+      )
+      .then((data) => {
+        if(data.data.success){
+          
+          setIsSuperAdmin(true)
+        }
+        
+      })
+      .catch(() => {
+        return
+      })
+  }, [auth?.token])
     function handleClickSettings() {
         setOpenSettingPanel(!openSettingPanel)
     }
@@ -78,9 +128,74 @@ const SideBae = ({ isOpen, onClose }) => {
         // Close sidebar on mobile after navigation
         if (onClose) onClose()
     }
-  return (
-    <>
-      {/* Overlay for mobile */}
+  if(isAdmin && !isSuperAdmin){
+    return(<>{/* Overlay for mobile */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={onClose}
+        />
+      )}
+      
+      {/* Sidebar */}
+      <div className={`
+        fixed md:relative z-50 md:z-auto
+        w-[250px] md:w-[18%] md:min-w-[180px] 
+        h-screen flex-shrink-0 
+        border-r border-border 
+        bg-background
+        transform transition-transform duration-300 ease-in-out
+        ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+      `}>
+        <div className='flex flex-col bottom-1 items-center'>
+          <div className='border-b flex h-10 flex-row w-full justify-between items-center px-3'>
+            <img src={gdg} alt="" className='w-8 h-4' />
+            {/* Close button for mobile */}
+            <button 
+              onClick={onClose}
+              className='md:hidden p-1 hover:bg-gray-800 rounded'
+            >
+              <X className='w-5 h-5 text-gray-400' />
+            </button>
+          </div>
+        </div>
+        
+        {/* Navigation menu */}
+        <div className='flex flex-col text-[13px] p-5 gap-3'>
+          <span onClick={()=>handleClickRedirect("dash","/team/dashboard" )} className={`flex ${clicked == "dash" ? "bg-white text-black" : ""} p-2 rounded-md flex-row cursor-pointer gap-3 items-center`}>
+            <IconBrandLine className='w-4 h-4 text-gray-400 flex-shrink-0'/>
+            <p>Dashboard</p> 
+          </span>
+          
+          <div>
+            <span onClick={handleClickSettings} className='flex p-2 flex-row text-[13px] gap-3 items-center rounded-md cursor-pointer hover:bg-gray-800'>
+              <Settings2 className='w-4 h-4 text-gray-400 flex-shrink-0'/>
+              <span className='flex-1'>Settings</span> 
+              {openSettingPanel ? 
+                <ChevronDown className='w-4 h-4 text-gray-400'/> :
+                <ChevronUp className='w-4 h-4 text-gray-400'/> 
+              }
+            </span>
+            {!openSettingPanel && <SettingSubPanel handleClickRedirect={handleClickRedirect} clicked={clicked} />}
+          </div>
+          <div>
+            <span onClick={handleClickAdmin} className='flex p-2 flex-row text-[13px] gap-3 items-center rounded-md cursor-pointer hover:bg-gray-800'>
+              <UserStar className='w-4 h-4 text-gray-400 flex-shrink-0'/>
+              <span className='flex-1'>Admin</span> 
+              {openAdminPanel ? 
+                <ChevronDown className='w-4 h-4 text-gray-400'/> :
+                <ChevronUp className='w-4 h-4 text-gray-400'/> 
+              }
+            </span>
+            {!openAdminPanel && <AdminSubPanel handleClickRedirect={handleClickRedirect} clicked={clicked} />}
+          </div>
+        </div>
+      </div>
+    </>)
+  }
+  if(isSuperAdmin){
+    return (<>
+    {/* Overlay for mobile */}
       {isOpen && (
         <div 
           className="fixed inset-0 bg-black/50 z-40 md:hidden"
@@ -151,6 +266,61 @@ const SideBae = ({ isOpen, onClose }) => {
             </span>
             {!openSuperAdminPanel && <SuperAdminSubPanel handleClickRedirect={handleClickRedirect} clicked={clicked} />}
           </div>
+        </div>
+      </div></>)
+  }
+  return (
+    <>
+      {/* Overlay for mobile */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={onClose}
+        />
+      )}
+      
+      {/* Sidebar */}
+      <div className={`
+        fixed md:relative z-50 md:z-auto
+        w-[250px] md:w-[18%] md:min-w-[180px] 
+        h-screen flex-shrink-0 
+        border-r border-border 
+        bg-background
+        transform transition-transform duration-300 ease-in-out
+        ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+      `}>
+        <div className='flex flex-col bottom-1 items-center'>
+          <div className='border-b flex h-10 flex-row w-full justify-between items-center px-3'>
+            <img src={gdg} alt="" className='w-8 h-4' />
+            {/* Close button for mobile */}
+            <button 
+              onClick={onClose}
+              className='md:hidden p-1 hover:bg-gray-800 rounded'
+            >
+              <X className='w-5 h-5 text-gray-400' />
+            </button>
+          </div>
+        </div>
+        
+        {/* Navigation menu */}
+        <div className='flex flex-col text-[13px] p-5 gap-3'>
+          <span onClick={()=>handleClickRedirect("dash","/team/dashboard" )} className={`flex ${clicked == "dash" ? "bg-white text-black" : ""} p-2 rounded-md flex-row cursor-pointer gap-3 items-center`}>
+            <IconBrandLine className='w-4 h-4 text-gray-400 flex-shrink-0'/>
+            <p>Dashboard</p> 
+          </span>
+          
+          <div>
+            <span onClick={handleClickSettings} className='flex p-2 flex-row text-[13px] gap-3 items-center rounded-md cursor-pointer hover:bg-gray-800'>
+              <Settings2 className='w-4 h-4 text-gray-400 flex-shrink-0'/>
+              <span className='flex-1'>Settings</span> 
+              {openSettingPanel ? 
+                <ChevronDown className='w-4 h-4 text-gray-400'/> :
+                <ChevronUp className='w-4 h-4 text-gray-400'/> 
+              }
+            </span>
+            {!openSettingPanel && <SettingSubPanel handleClickRedirect={handleClickRedirect} clicked={clicked} />}
+          </div>
+          
         </div>
       </div>
     </>

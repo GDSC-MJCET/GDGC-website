@@ -15,7 +15,7 @@ const History = () => {
             
             setLoading(true)
             try {
-                const response = await axios.get('http://localhost:3009/api/v1/techdebate/get-history')
+                const response = await axios.get(`${import.meta.env.VITE_SERVER}/api/v1/techdebate/get-history`)
                 const data = response.data.history
                 
                 if (!isMounted) return // Don't update state if component unmounted
@@ -79,7 +79,7 @@ const History = () => {
                                     <div className='bg-[#57CBFF] w-2.5 h-2.5 rounded-2xl shadow-[0_0_16px_#57CBFF]'></div>
                                 </div>
                                 <div className='font-medium text-white w-44 text-[16px] pl-6 pt-9'>
-                                    Lorem ipsum dolor sit amet consectetur
+                                    {round.status}
                                 </div>
                             </div>
                         </div>

@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { FaSyncAlt, FaPlus, FaTimes, FaCheck, FaQuestionCircle } from "react-icons/fa";
 // import { AuthContext } from "../context/AuthContext"; // enable if you need auth
 
-const SERVER = "http://localhost:3009/"; // <-- replace with your server base
+const SERVER = import.meta.env.VITE_SERVER; // <-- replace with your server base
 
 export default function HrControlInterface() {
   const nav = useNavigate();
