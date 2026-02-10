@@ -144,13 +144,17 @@ export default function LiveScoreCard() {
                       className="w-16 h-16 object-contain rounded-md bg-[#0f0f10]"
                     />
 
-                    <div>
+                    <div className="flex-1">
                       <div className="dm-mono text-lg text-white">
                         {debate.leftTeam}
                       </div>
                       <div className="text-[#bdbdbd] text-sm">
                         For the Motion
                       </div>
+                    </div>
+
+                    <div className="dm-mono text-4xl font-bold text-white">
+                      {debate.leftScore || 0}
                     </div>
                   </div>
 
@@ -175,7 +179,11 @@ export default function LiveScoreCard() {
                   </div>
 
                   <div className="flex items-center justify-end gap-4">
-                    <div>
+                    <div className="dm-mono text-4xl font-bold text-white">
+                      {debate.rightScore || 0}
+                    </div>
+
+                    <div className="flex-1 text-right">
                       <div className="dm-mono text-lg text-white">
                         {debate.rightTeam}
                       </div>
