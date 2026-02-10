@@ -65,7 +65,7 @@ const Hero = () => {
             <div className="flex  flex-col md:flex-row justify-center items-center rounded-b-4xl border-2 border-white/40 shadow-[0_0_8px_rgba(255,255,255,0.85)] max-w-3xl mx-auto px-6 md:px-22 py-18 gap-10 md:gap-22 bg-[#1e1e1e]">
               <div>
                 <img
-                  src="/public/tech-face-off.jpeg"
+                  src="/tech-face-off.jpeg"
                   alt=""
                   className="rounded-sm scale-100 md:scale-150"
                 />
