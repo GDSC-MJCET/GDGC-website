@@ -207,7 +207,7 @@ const History = () => {
                     {showAll ? 'Show Less' : 'Read More'}
                 </button>
             </div>
-
+        )} 
             <div className="flex items-center gap-2">
               <div className="w-2.5 h-2.5 rounded-2xl bg-[#57CBFF] shadow-[0_0_12px_#57CBFF]" />
             </div>
