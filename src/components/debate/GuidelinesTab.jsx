@@ -28,21 +28,18 @@ export default function GuidelinesTab() {
   const [active, setActive] = useState("rules");
 
   const rules = [
-    "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
-    "Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
-    "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
-    "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.",
-    "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit.",
-    "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse."
+    "Each club may register one team of 5 members (3 active + 2 reserves) ,  cross-chapter teams are prohibited",
+    "⁠Only verified speakers with valid chapter proof may participate; others will be disqualified",
+    "Complete registration with verified speaker details is mandatory for final selection",
+    "⁠Teams must report 15 minutes early , late reporting may result in forfeiture or disqualification",
+    "⁠The event follows a single-elimination knockout format starting from the Round of 16",
+    "⁠Random and transparent draws for clubs , topics, stances, and time slots will be held on 10th February",
+    "⁠Each debate is 30 minutes , with strict time limits for all rounds ; penalties apply for overruns",
+    "⁠Rebuttals must address existing arguments only ; no new arguments are allowed"
   ];
 
   const judging = [
-    "Sed  perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
-    "Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
-    "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
-    "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.",
-    "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit.",
-    "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse."
+    "judging criteria will be annouced soon !!"
   ];
 
   return (
@@ -62,13 +59,18 @@ export default function GuidelinesTab() {
         />
       </div>
 
-      <ul className="text-white text-base sm:text-lg md:text-xl lg:text-2xl space-y-2 sm:space-y-2.5 md:space-y-3 list-disc list-inside">
+      <ul className="min-h-[300px] text-white text-base sm:text-lg md:text-xl lg:text-2xl space-y-2 sm:space-y-2.5 md:space-y-3 list-disc list-inside">
         {(active === "rules" ? rules : judging).map((item, i) => (
           <li key={i} className="leading-relaxed opacity-90">
             {item}
           </li>
         ))}
       </ul>
+      <div className="gap-4 flex flex-row">
+        <a target="_blank" rel="noopener noreferrer" href="https://drive.google.com/file/d/1ojSPsRsuG6zZ2yKYaSEmzmH6Cxfik0JL/view"  className="p-3 bg-[#111a29] hover:bg-white hover:text-[#111a29]  font-mono text-white">Download Rule Book</a>
+        
+        <button className="p-3 bg-[#111a29]  hover:bg-white hover:text-[#111a29] font-mono text-white">Download Judging Criteria</button>
+      </div>
     </div>
   );
 }

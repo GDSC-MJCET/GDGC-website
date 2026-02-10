@@ -46,7 +46,11 @@ import SuperAdminDashboard from './pages/SuperAdminDashboard.jsx';
 import SuperAdminUsers from './pages/SuperAdminUsers.jsx';
 import BlogPosts from './pages/BlogPosts.jsx';
 import AdminUsers from './pages/AdminUsers.jsx';
+import ScorePage from './pages/ScorePage.jsx';
+import HrInterface from './pages/HrInterface.jsx';
+import HrControlInterface from './pages/HrControlInterface.jsx';
 import TDForm from './pages/TDForm.jsx';
+import { Navigate } from 'react-router-dom';
 
 function App() {
   const [isVerified, setIsVerified] = useState(null);
@@ -227,6 +231,7 @@ function AppWithRouter() {
             <Route path="/" element={<HomePage />} />
             <Route path="initialsetup/:id" element={<InitialSetup />} />
             <Route path="techdebate" element={<TechDebatePage />} />
+            <Route path='score' element={<ScorePage/>}/>
             <Route path="events" element={<EventsPage />} />
             <Route path="team-page" element={<TeamPage />} />
             <Route path="gallery" element={<GalleryPage />} />
@@ -237,6 +242,9 @@ function AppWithRouter() {
 
             {/* Team area (layout route) */}
             <Route path="team" element={<TeamLayout />}>
+              {/* <Route path="hr-interface" element={<HrInterface/>}/>
+              <Route path="hr-control" element={<HrControlInterface/>}/> */}
+              <Route index element={<Navigate to="/*"/>} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="customization">
                 <Route path="qrchange" element={<QrChange />} />
@@ -246,6 +254,7 @@ function AppWithRouter() {
 
               <Route path="admin">
                 <Route path="users" element={<AdminUsers />} />
+                <Route path="hr-interface" element={<HrInterface/>}/>
               </Route>
 
               <Route path="superadmin">

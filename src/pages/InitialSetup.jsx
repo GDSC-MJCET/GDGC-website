@@ -37,7 +37,7 @@ export default function InitialSetup() {
     if(parseInt(id)%parseInt(import.meta.env.VITE_DIVISOR)!=0){
     
     toast.error("Unauthorized Page")
-     nav("/") 
+      
     }
     axios.get(import.meta.env.VITE_SERVER +`/api/v1/auth/initial-setup-check?id=${id}`,{headers:{
     Authorization:`Bearer ${auth?.token}`
