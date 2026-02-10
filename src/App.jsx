@@ -50,6 +50,7 @@ import ScorePage from './pages/ScorePage.jsx';
 import HrInterface from './pages/HrInterface.jsx';
 import HrControlInterface from './pages/HrControlInterface.jsx';
 import TDForm from './pages/TDForm.jsx';
+import { Navigate } from 'react-router-dom';
 
 function App() {
   const [isVerified, setIsVerified] = useState(null);
@@ -241,8 +242,9 @@ function AppWithRouter() {
 
             {/* Team area (layout route) */}
             <Route path="team" element={<TeamLayout />}>
-              <Route path="hr-interface" element={<HrInterface/>}/>
-              <Route path="hr-control" element={<HrControlInterface/>}/>
+              {/* <Route path="hr-interface" element={<HrInterface/>}/>
+              <Route path="hr-control" element={<HrControlInterface/>}/> */}
+              <Route index element={<Navigate to="/*"/>} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="customization">
                 <Route path="qrchange" element={<QrChange />} />
@@ -252,6 +254,7 @@ function AppWithRouter() {
 
               <Route path="admin">
                 <Route path="users" element={<AdminUsers />} />
+                <Route path="hr-interface" element={<HrInterface/>}/>
               </Route>
 
               <Route path="superadmin">

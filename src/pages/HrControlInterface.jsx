@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { FaSyncAlt, FaPlus, FaTimes, FaCheck, FaQuestionCircle } from "react-icons/fa";
 // import { AuthContext } from "../context/AuthContext"; // enable if you need auth
 
-const SERVER = "http://localhost:3009/"; // <-- replace with your server base
+const SERVER = import.meta.env.VITE_SERVER; // <-- replace with your server base
 
 export default function HrControlInterface() {
   const nav = useNavigate();
@@ -139,7 +139,7 @@ export default function HrControlInterface() {
   // small presentational helpers
   const TeamCard = ({ team, side }) => {
     return (
-      <div className="w-[40%] min-h-[320px] flex flex-col items-center bg-white rounded-lg p-6 shadow-md">
+      <div className="w-[40%] min-h-[320px] flex flex-col items-center rounded-lg p-6 shadow-md">
         <div className="flex flex-col items-center">
           <div className="w-28 h-28 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
             {team?.logoUrl ? (
@@ -148,21 +148,21 @@ export default function HrControlInterface() {
               <FaQuestionCircle size={32} />
             )}
           </div>
-          <h2 className="mt-3 text-lg font-semibold">{team?.clubName || (side === "left" ? leftTeamName : rightTeamName)}</h2>
-          <p className="text-sm text-gray-500">{team?.description || ""}</p>
+          <h2 className="mt-3 text-lg text-white font-semibold">{team?.clubName || (side === "left" ? leftTeamName : rightTeamName)}</h2>
+          <p className="text-sm text-white">{team?.description || ""}</p>
         </div>
 
         <div className="mt-4 w-full">
-          <h3 className="text-sm font-medium mb-2">Speakers</h3>
-          <ul className="space-y-1 max-h-40 overflow-auto">
+          <h3 className="text-sm text-white font-medium mb-2">Speakers</h3>
+          <ul className="space-y-1 text-white max-h-40 overflow-auto">
             {
               console.log("Rendering speakers for", side, team) ||
               leftTeam && side === "left" ? leftTeam.speakers.map((speaker, index) => (
-                <li key={index} className="text-sm text-gray-700">
+                <li key={index} className="text-sm text-white">
                   {speaker.name}
                 </li>
               )) : rightTeam && side === "right" ? rightTeam.speakers.map((speaker, index) => (
-                <li key={index} className="text-sm text-gray-700">
+                <li key={index} className="text-sm text-white">
                   {speaker.name}
                 </li>
               )) : <li className="text-sm text-gray-500">No speakers data</li>
@@ -189,7 +189,7 @@ export default function HrControlInterface() {
   };
 
   return (
-    <section className="min-h-screen bg-gray-50 p-6">
+    <section className="min-h-screen p-6">
       {/* Header */}
       <header className="max-w-5xl mx-auto flex items-center justify-between mb-8">
         <h1 className="text-2xl font-semibold">HR — Debate Control</h1>

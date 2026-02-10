@@ -46,6 +46,8 @@ function TopBadge({ debate }) {
 
 export default function LiveScoreCard() {
   const [debate, setDebate] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [noLiveMatch, setNoLiveMatch] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -53,16 +55,24 @@ export default function LiveScoreCard() {
     const fetchDebate = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:3009/api/v1/techdebate/get-score"
+          `${import.meta.env.VITE_SERVER}/api/v1/techdebate/get-score`
         );
-        if (mounted) setDebate(res.data.sendingData);
+        if (mounted) {
+          setDebate(res.data.sendingData);
+          setLoading(false);
+          setNoLiveMatch(false);
+        }
       } catch (err) {
         console.error("fetch debate error", err);
+        if (mounted) {
+          setLoading(false);
+          setNoLiveMatch(true);
+        }
       }
     };
 
     fetchDebate();
-    const interval = setInterval(fetchDebate, 600);
+    const interval = setInterval(fetchDebate, 30000);
 
     return () => {
       mounted = false;
@@ -70,10 +80,20 @@ export default function LiveScoreCard() {
     };
   }, []);
 
-  if (!debate) {
+  if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-white">
+      <div className="min-h-screen flex items-center justify-center text-white bg-[#0b0b0c] dm-mono">
         Loading...
+      </div>
+    );
+  }
+
+  if (noLiveMatch || !debate) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-white bg-[#0b0b0c] dm-mono">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold">No Live Match right now</h2>
+        </div>
       </div>
     );
   }
