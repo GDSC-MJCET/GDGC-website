@@ -1,6 +1,6 @@
 import React from "react";
 
-const Footer = ({ bgColor = "#272727" }) => {
+const Footer = ({ bgColor = "#000000" }) => {
   return (
     <footer className="relative mt-20 overflow-hidden">
       

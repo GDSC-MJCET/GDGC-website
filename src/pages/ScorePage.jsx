@@ -16,12 +16,12 @@ export default function ScorePage (){
             >
 
         <Nav bgColor='#0b0b0b'/>
-        <div className="text-white dm-mono flex flex-col sm:flex-row px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 w-full py-6 sm:py-8">
-            <div className="flex">
-                <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#57CBFF]">Score</p>
-                <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#5DDB6E]">board</p>
+        <div className="text-white dm-mono   px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 w-full py-6 sm:py-8">
+            <div className="flex items-center justify-center">
+                <p className="text-4xl sm:text-4xl md:text-6xl lg:text-8xl text-[#57CBFF]">Score</p>
+                <p className="text-4xl sm:text-4xl md:text-6xl lg:text-8xl text-[#5DDB6E]">board</p>
             </div>
-            <div className="sm:ml-auto pt-2 sm:pt-8">
+            <div className="sm:ml-auto pt-2 sm:pt-8 flex justify-center">
                 <p className="text-[#FFD428] text-base sm:text-lg md:text-xl">Learn about Tech Debate</p>
             </div>
         </div>
