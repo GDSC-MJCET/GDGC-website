@@ -4,7 +4,7 @@ import Nav from "../components/Nav";
 
 const NotFound = () => {
   return (
-    <Background>
+    <Background bgColor="#000000">
       <Nav />
       <div className="min-h-screen flex flex-col items-center justify-center px-4 py-20 text-center text-white">
         <img src="/logo.svg" alt="GDGC Logo" className="w-32 h-32 mb-6" />

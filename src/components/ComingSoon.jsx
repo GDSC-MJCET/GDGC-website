@@ -5,7 +5,7 @@ import Footer from "./Footer";
 import { motion } from "motion/react"
 const ComingSoon = () => {
   return (
-    <Background>
+    <Background bgColor="#000000">
       <Nav />
       <div className="relative min-h-screen flex flex-col items-center justify-center px-4 py-20">
         <div className="text-center max-w-4xl mx-auto">

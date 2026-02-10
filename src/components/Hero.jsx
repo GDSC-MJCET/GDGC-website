@@ -81,7 +81,7 @@ const Hero = () => {
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 justify-center md:justify-start">
-                  <button onClick={()=>navigate("/techdebate")} className="bg-[#f9ac02] text-black px-6 py-2 rounded-full font-semibold border border-white/40 shadow-[0_0_6px_rgba(255,255,255,0.85)]">
+                  <button onClick={()=>navigate("/techfaceoff")} className="bg-[#f9ac02] text-black px-6 py-2 rounded-full font-semibold border border-white/40 shadow-[0_0_6px_rgba(255,255,255,0.85)]">
                     Learn More 
                   </button>
                   <button  onClick={()=>navigate("/score")} className="bg-[#57cbff] text-black px-6 py-2 rounded-full font-semibold border border-white/40 shadow-[0_0_6px_rgba(255,255,255,0.85)]">
