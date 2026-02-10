@@ -192,21 +192,21 @@ export default function LiveScoreCard() {
               <div className="grid grid-cols-2 gap-6">
                 {/* Left Team Section */}
                 <div className="space-y-6">
-                  <div>
+                  <div className="">
                     <div className="text-[11px] text-white inter">TOPIC</div>
                     <div className="text-[#fbd34f] dm-mono text-base mt-2">
                       {debate.Topic}
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-4">
+                  <div className="flex flex-col md:flex-row items-center gap-4">
                     <img
                       src={debate.leftLogo}
                       alt="left logo"
-                      className="w-16 h-16 object-contain rounded-md bg-[#0f0f10]"
+                      className="w-fit max-w-16 h-16 rounded-md bg-[#0f0f10]"
                     />
 
-                    <div className="flex-1">
+                    <div className="text-center md:text-left flex-1">
                       <div className="dm-mono text-lg text-white">
                         {debate.leftTeam}
                       </div>
@@ -215,9 +215,9 @@ export default function LiveScoreCard() {
                       </div>
                     </div>
 
-                    <div className="dm-mono text-4xl font-bold text-white">
+                    {/* <div className="dm-mono text-4xl font-bold text-white">
                       {debate.leftScore}
-                    </div>
+                    </div> */}
                   </div>
 
                   <div>
@@ -232,36 +232,36 @@ export default function LiveScoreCard() {
                 </div>
 
                 {/* Right Team Section */}
-                <div className="space-y-6 text-right">
+                <div className="space-y-4 md:space-y-6 text-right">
                   <div>
                     <div className="text-[11px] text-[#8b8b8b]">VENUE</div>
                     <div className="dm-mono text-sm text-white mt-2">
-                      Seminar Hall, MJCET BLOCK 4
+                      Seminar Hall
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-end gap-4">
-                    <div className="dm-mono text-4xl font-bold text-white">
+                  <div className=" flex flex-col-reverse md:flex-row  items-center  gap-4">
+                    {/* <div className="dm-mono text-4xl font-bold text-white">
                       {debate.rightScore}
-                    </div>
-
-                    <div className="flex-1 text-right">
+                    </div> */}
+                    <div className="flex-1 text-center md:text-right">
                       <div className="dm-mono text-lg text-white">
                         {debate.rightTeam}
                       </div>
                       <div className="text-[#bdbdbd] text-sm">
-                        Against the Motion
+                        Against the motion
                       </div>
                     </div>
-
                     <img
                       src={debate.rightLogo}
                       alt="right logo"
-                      className="w-16 h-16 object-contain rounded-md bg-[#0f0f10]"
+                      className="w-fit max-w-16 h-16 rounded-md bg-[#0f0f10]"
                     />
+
+                    
                   </div>
 
-                  <div>
+                  <div className=" mt-[-px]">
                     <div className="text-[11px] text-[#8b8b8b]">Speakers</div>
                     <ul className="mt-2 space-y-1 dm-mono text-sm text-[#cbd1c7]">
                       {Array.isArray(debate.speakersRight) &&
@@ -344,40 +344,40 @@ export default function LiveScoreCard() {
         </div>
 
         {/* Vote Buttons Outside the Card */}
-        <div className="w-full mt-6 grid grid-cols-2 gap-6">
+        <div className="w-full flex flex-row  mt-6 justify-between gap-4 sm:gap-6">
           {/* Left Team Vote Button */}
-          <div className="flex justify-start">
+          <div className="flex justify-center sm:justify-start">
             <button
               onClick={() => handleVote('left')}
-              className="py-3 px-8 bg-transparent border border-[#fbd34f] text-[#fbd34f] 
-                       hover:bg-[#fbd34f] hover:text-black transition-all duration-300 
-                       rounded-lg dm-mono text-sm font-medium flex items-center justify-center gap-2
-                       disabled:opacity-50 disabled:cursor-not-allowed min-w-[200px]"
+              className="w-full sm:w-auto py-3 px-6 sm:px-8 
+                       bg-white/5 backdrop-blur-md border border-[#fbd34f]/50 text-[#fbd34f] 
+                       hover:bg-[#fbd34f]/20 hover:border-[#fbd34f] hover:shadow-[0_0_20px_rgba(251,211,79,0.3)]
+                       transition-all duration-300 
+                       rounded-xl dm-mono text-xs sm:text-sm font-medium flex items-center justify-center gap-2
+                       disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <>
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
-                Vote for {debate.leftTeam}
-              </>
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+              <span className="truncate">Vote for {debate.leftTeam}</span>
             </button>
           </div>
 
           {/* Right Team Vote Button */}
-          <div className="flex justify-end">
+          <div className="flex justify-center sm:justify-end">
             <button
               onClick={() => handleVote('right')}
-              className="py-3 px-8 bg-transparent border border-[#fbd34f] text-[#fbd34f] 
-                       hover:bg-[#fbd34f] hover:text-black transition-all duration-300 
-                       rounded-lg dm-mono text-sm font-medium flex items-center justify-center gap-2
-                       disabled:opacity-50 disabled:cursor-not-allowed min-w-[200px]"
+              className="w-full sm:w-auto py-3 px-6 sm:px-8 
+                       bg-white/5 backdrop-blur-md border border-[#fbd34f]/50 text-[#fbd34f] 
+                       hover:bg-[#fbd34f]/20 hover:border-[#fbd34f] hover:shadow-[0_0_20px_rgba(251,211,79,0.3)]
+                       transition-all duration-300 
+                       rounded-xl dm-mono text-xs sm:text-sm font-medium flex items-center justify-center gap-2
+                       disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <>
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
-                Vote for {debate.rightTeam}
-              </>
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+              <span className="truncate">Vote for {debate.rightTeam}</span>
             </button>
           </div>
         </div>
