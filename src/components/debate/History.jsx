@@ -15,7 +15,7 @@ const History = () => {
             
             setLoading(true)
             try {
-                const response = await axios.get(`${import.meta.env.VITE_SERVER}/api/v1/techdebate/get-history`)
+                const response = await axios.get(`${import.meta.env.VITE_SERVER}`+`/api/v1/techdebate/get-history`)
                 const data = response.data.history
                 
                 if (!isMounted) return // Don't update state if component unmounted
