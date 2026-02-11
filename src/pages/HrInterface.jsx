@@ -260,11 +260,23 @@ export default function HrInterface() {
   };
 
   const handleConfirmSubmit = async () => {
+      console.log(leftScore , rightScore)
+
+    if ( leftScore ==  rightScore ){
+        toast.error("One should be greater than another")
+    }
+    console.log("daahahhhhhhh")
     setFinalSubmitting(true);
     try {
+      console.log(leftScore , rightScore)
+      if ( leftScore ==  rightScore ){
+        toast.error("One should be greater than another")
+        return 
+      } 
+      console.log(selectedLeft , selectedRight)
       const res = await axios.post(server + "/api/v1/techdebate/end-debate", {
-        leftTeam: selectedLeft,
-        rightTeam: selectedRight
+        leftTeam: leftTeam,
+        rightTeam: rightTeam,
       });
       console.log(res.data.message)
       
