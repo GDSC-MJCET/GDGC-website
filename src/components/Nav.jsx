@@ -38,7 +38,7 @@ const Nav = ({ bgColor = "#000000" }) => {
     },
   ];
 
-  const menuItems = {"Home" : "/", "Tech Faceoff" : "/techfaceoff" , "Events" : "/events", "Team" : "/team-page", "Gallery" : "/gallery", "Contact Us" : "/contact"};
+  const menuItems = {"Home" : "/", "Tech Face-off" : "/techfaceoff" , "Events" : "/events", "Team" : "/team-page", "Gallery" : "/gallery", "Contact Us" : "/contact"};
 
   return (
     <div className="shadow-xl shadow-gray-900/70">
