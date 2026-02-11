@@ -38,18 +38,18 @@ const Hero = () => {
           style={{ y: contentY }}
           className="absolute inset-0 flex flex-col items-center text-center text-white px-6 py-12 pointer-events-none will-change-transform translate-y-24 md:translate-y-35"
         >
-          <h2 className="text-3xl md:text-6xl font-bold  max-w-2xl lg:max-w-5xl text-left">
+          <h2 className="text-3xl text-center md:text-6xl font-bold  max-w-2xl lg:max-w-5xl md:text-left">
             A community built around learning, technology and collaboration
           </h2>
 
-          <p className="mt-4 text-base md:text-lg text-left max-w-2xl lg:max-w-5xl">
+          <p className="mt-4 text-base text-center md:text-lg md:text-left max-w-2xl lg:max-w-5xl">
            GDGC MJCET brings students together to learn with intent , build strong fundamentals, and collaborate on real-world problems, creating a student-driven ecosystem rooted in consistency, mentorship, and meaningful growth
           </p>
         </motion.div>
 
         <motion.div style={{ y: contentY }} className="mt-24 md:mt-22 pt-12">
           <div>
-            <div className="bg-[#1e1e1e] border-2 border-white/40 shadow-[0_0_8px_rgba(255,255,255,0.85)] rounded-full px-4 md:px-6 py-4 flex items-center justify-between max-w-4xl h-auto md:h-16 mx-auto gap-4">
+            <div className="bg-[#000000] border-2 border-white/40 shadow-[0_0_8px_rgba(255,255,255,0.85)] rounded-full px-4 md:px-6 py-4 flex items-center justify-between max-w-4xl h-auto md:h-16 mx-auto gap-4">
               <img src="/globe-blue.svg" className="h-10 md:h-16" />
               <img src="/hash-yellow.svg" className="h-6 md:h-9" />
               <img src="/globe-red.svg" className="h-10 md:h-16" />
@@ -62,7 +62,7 @@ const Hero = () => {
               <img src="/circles-pink.svg" className="h-10 md:h-16" />
             </div>
 
-            <div className="flex  flex-col md:flex-row justify-center items-center rounded-b-4xl border-2 border-white/40 shadow-[0_0_8px_rgba(255,255,255,0.85)] max-w-3xl mx-auto px-6 md:px-22 py-18 gap-10 md:gap-22 bg-[#1e1e1e]">
+            <div className="flex  bg-[#000000] flex-col md:flex-row justify-center items-center rounded-b-4xl border-2 border-white/40 shadow-[0_0_8px_rgba(255,255,255,0.85)] max-w-3xl mx-auto px-6 md:px-22 py-18 gap-10 md:gap-22">
               <div>
                 <img
                   src="/tech-face-off.jpeg"
@@ -81,7 +81,7 @@ const Hero = () => {
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 justify-center md:justify-start">
-                  <button onClick={()=>navigate("/techdebate")} className="bg-[#f9ac02] text-black px-6 py-2 rounded-full font-semibold border border-white/40 shadow-[0_0_6px_rgba(255,255,255,0.85)]">
+                  <button onClick={()=>navigate("/techfaceoff")} className="bg-[#f9ac02] text-black px-6 py-2 rounded-full font-semibold border border-white/40 shadow-[0_0_6px_rgba(255,255,255,0.85)]">
                     Learn More 
                   </button>
                   <button  onClick={()=>navigate("/score")} className="bg-[#57cbff] text-black px-6 py-2 rounded-full font-semibold border border-white/40 shadow-[0_0_6px_rgba(255,255,255,0.85)]">

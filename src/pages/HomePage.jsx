@@ -10,7 +10,7 @@ import Footer from "../components/Footer";
 
 const HomePage = () => {
   return (
-    <Background>
+    <Background bgColor="#000000">
       <Nav />
       <Hero />
       <Events />

@@ -6,28 +6,38 @@ const Guidelines = () => {
         <div className="relative overflow-hidden w-full">
             <div className="flex gap-2 sm:gap-3 md:gap-4 text-white whitespace-nowrap animate-marquee">
                 <span className="pill">SAE</span>
-                <span className="pill">OPTIMUS</span>
-                <span className="pill">GDGC</span>
+                <span className="pill">EDS</span>
+                <span className="pill">GRSS</span>
                 <span className="pill">ACM</span>
                 <span className="pill">CSI</span>
                 <span className="pill">CIS</span>
-                <span className="pill">CS</span>
                 <span className="pill">HORIZON</span>
                 <span className="pill">SMC</span>
                 <span className="pill">AWS</span>
-                <span className="pill">IEEE</span>
+                <span className="pill">TRM</span>
+                <span className="pill">MJ-ESPORTS</span>
+                <span className="pill">ICI</span>
+                <span className="pill">WIE</span>
+                <span className="pill">MSS</span>
+                <span className="pill">ORATORS</span>
+                <span className="pill">GDGC</span>
 
-                <span className="pill">SAE</span>
-                <span className="pill">OPTIMUS</span>
-                <span className="pill">GDGC</span>
+                 <span className="pill">SAE</span>
+                <span className="pill">EDS</span>
+                <span className="pill">GRSS</span>
                 <span className="pill">ACM</span>
                 <span className="pill">CSI</span>
                 <span className="pill">CIS</span>
-                <span className="pill">CS</span>
                 <span className="pill">HORIZON</span>
                 <span className="pill">SMC</span>
                 <span className="pill">AWS</span>
-                <span className="pill">IEEE</span>
+                <span className="pill">TRM</span>
+                <span className="pill">MJ-ESPORTS</span>
+                <span className="pill">ICI</span>
+                <span className="pill">WIE</span>
+                <span className="pill">MSS</span>
+                <span className="pill">ORATORS</span>
+                <span className="pill">GDGC</span>
             </div>
         </div>
         <div className="relative inline-block mt-2 sm:mt-3 md:mt-4 overflow-hidden w-full ">

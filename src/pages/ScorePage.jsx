@@ -1,6 +1,5 @@
 import Nav from "../components/Nav";
 import Background from "@/components/Background";
-import ipl from "../../public/Debate-ipl.png"
 import LiveScoreCard from "../components/debate/LiveScore";
 import Footer from "@/components/Footer";
 import History from "../components/debate/History";
@@ -18,15 +17,21 @@ export default function ScorePage (){
             >
 
         <Nav bgColor='#0b0b0b'/>
-        <div  className="text-white dm-mono flex ml-32 w-[76vw]">
-            <div  className="flex">
-                <p className="text-6xl text-[#57CBFF]" >Score</p><p className="text-6xl text-[#5DDB6E]">board</p>
+        <div className="text-white dm-mono   px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 w-full py-6 sm:py-8">
+            <div className="flex items-center justify-center">
+                <p className="text-4xl sm:text-4xl md:text-6xl lg:text-8xl text-[#57CBFF]">Score</p>
+                <p className="text-4xl sm:text-4xl md:text-6xl lg:text-8xl text-[#5DDB6E]">board</p>
             </div>
             <div className="ml-auto pt-8 " >
                 <Link to="/techfaceoff"><p className="text-[#FFD428] text-xl " >Learn about Tech Debate</p></Link>
             </div>
         </div>
-        <img src={ipl} className="max-w-[85vw] ml-23" />
+        <div className="px-4 sm:px-8 md:px-12 lg:px-16 hidden md:block">
+            <img src="/bracket-horizontal.png" className="w-full" alt="Debate IPL" />
+        </div>
+        <div className=" px-4 sm:px-6 md:hidden">
+            <img src="/bracket-vertical.png" className="w-full" alt="Debate IPL" />
+        </div>
        <LiveScoreCard/>
         <History />
         

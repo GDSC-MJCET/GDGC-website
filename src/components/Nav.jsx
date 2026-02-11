@@ -13,7 +13,7 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 import { Link } from "react-router";
 
-const Nav = ({ bgColor = "#1e1e1e" }) => {
+const Nav = ({ bgColor = "#000000" }) => {
   const [open, setOpen] = useState(false);
   const links = [
     {
@@ -38,13 +38,14 @@ const Nav = ({ bgColor = "#1e1e1e" }) => {
     },
   ];
 
-  const menuItems = {"Home" : "/", "Tech Faceoff" : "/techfaceoff" , "Events" : "/events", "Team" : "/team-page", "Gallery" : "/gallery", "Contact Us" : "/contact"};
+  const menuItems = {"Home" : "/", "Tech Face-off" : "/techfaceoff" , "Events" : "/events", "Team" : "/team-page", "Gallery" : "/gallery", "Contact Us" : "/contact"};
 
   return (
-    <>
+    <div className="shadow-xl shadow-gray-900/70">
       <header
+
         style={{ backgroundColor: bgColor }}
-        className="relative z-100 shadow-xl"
+        className="relative z-100 shadow-xl "
       >
         <div className="flex items-center justify-between px-6 md:px-20 py-4">
           <img src="/logo.svg" alt="Logo" className="h-9" />
@@ -141,7 +142,7 @@ const Nav = ({ bgColor = "#1e1e1e" }) => {
           </>
         )}
       </AnimatePresence>
-    </>
+    </div>
   );
 };
 
