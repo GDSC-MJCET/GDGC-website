@@ -1,8 +1,8 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import { FaCaretUp, FaCaretDown, FaQuestion, FaSyncAlt, FaPlus, FaTimes, FaCheck } from "react-icons/fa";
+import { FaCaretUp, FaCaretDown, FaQuestion, FaSyncAlt, FaPlus, FaTimes, FaCheck, FaPause, FaPlay } from "react-icons/fa";
 import { FaQuestionCircle } from "react-icons/fa";
 import {Toaster,toast} from "react-hot-toast"
 
@@ -32,51 +32,38 @@ export default function HrInterface() {
   const nav = useNavigate()
   const server = import.meta.env.VITE_SERVER;
   const [radios, setRadios] = useState([]);
-
+  const [paused,setPaused] = useState(false)
   const auth = JSON.parse(localStorage.getItem("AuthState"))
-
-  // Auth code (commented for testing, should be enabled in production)
-  useEffect(() => {
-    if (!AuthContext) {
-      nav("/login")
-    }
-
-    axios
-      .get(
-        `${server}` + "/api/v1/admin/verify-admin",
-        {
-          headers: {
-            Authorization: `Bearer ${auth?.token}`,
-          },
-        }
-      )
-      .then((data) => {
-        if(data.data.success){
-          setCheckingAuth(true)
-        }
-        if (!data.data.success) {
-          nav("/login")
-        }
-      })
-      .catch(() => {
-        nav("/login")
-      })
-  }, [auth?.token])
+  const [already,setAlready] = useState(false)
 
   useEffect(() => {
+    axios.get(server + "/api/v1/techdebate/get-score").then((data) => {
+      if(data.data.success){
+        setAlready(true)
+        setViewMode("control")
+        let leftTeamStr = {
+          clubName: data.data.sendingData.leftTeam || selectedLeft, 
+          logoUrl: data.data.sendingData.leftLogo || null,
+          speakers: data.data.sendingData.speakersLeft || [],
+        }
+        let rightTeamStr = {
+          clubName: data.data.sendingData.rightTeam || selectedRight,
+          logoUrl: data.data.sendingData.rightLogo || null,
+          speakers: data.data.sendingData.speakersRight || [],
+        }
+        setLeftTeam(leftTeamStr);
+        setRightTeam(rightTeamStr);
+        setLeftScore(typeof data.data.sendingData.leftScore === "number" ? data.data.sendingData.leftScore : 0);
+        setRightScore(typeof data.data.sendingData.rightScore === "number" ? data.data.sendingData.rightScore : 0);
+        data.data.sendingData.break ? setPaused(true) : setPaused(false)
+      }
+      }).catch((err) => {
+        console.log("No live debate, starting fresh.")
+      })
     axios.get(server + "/api/v1/techdebate/get-clubs").then((data) => {
       setRadios(data.data.clubs);
     });
   }, []);
-
-  // Loading states check - handle early if not ready
-  if(!checkingAuth){
-    return <div className="bg-black min-h-screen"></div>
-  }
-
-  if ((loadMatch == false) &&(viewMode === "control")){
-    return <div className="bg-black min-h-screen"></div>
-  }
 
   const handleTopicChange = (e) => {
     const val = e.target.value;
@@ -106,6 +93,7 @@ export default function HrInterface() {
         }
         setLeftTeam(leftTeamStr);
         setRightTeam(rightTeamStr);
+        data.sendingData.break ? setPaused(true) : setPaused(false)
         setLeftScore(typeof data.sendingData.leftScore === "number" ? data.sendingData.leftScore : 0);
         setRightScore(typeof data.sendingData.rightScore === "number" ? data.sendingData.rightScore : 0);
       } else {
@@ -125,6 +113,54 @@ export default function HrInterface() {
       await fetchTeams();
     } finally {
       setRefreshing(false);
+    }
+  };
+
+  // pause/resume handler — made robust to use leftTeam/rightTeam names if selected strings are empty
+  const handleClickPause = async () => {
+    // choose best available team names
+    const leftName = leftTeam?.clubName || selectedLeft;
+    const rightName = rightTeam?.clubName || selectedRight;
+
+    if (!leftName || !rightName) {
+      alert("Cannot toggle pause: team names are missing.");
+      return;
+    }
+
+    if (paused) {
+      // currently paused -> resume
+      try{
+        const res = await axios.post(server + "/api/v1/techdebate/resume", {
+          leftTeam: leftName,
+          rightTeam: rightName,
+        })
+        if(res.data.success){
+          setPaused(false)
+          toast.success("Debate resumed");
+        } else {
+          throw new Error(res.data.error || "Failed to resume debate")
+        }
+      } catch(err){
+        console.error("Resume error:", err);
+        alert("Failed to resume debate: " + (err.message || "unknown error"))
+      }
+    } else {
+      // currently running -> pause
+      try {
+        const res = await axios.post(server + "/api/v1/techdebate/pause", {
+          leftTeam: leftName,
+          rightTeam: rightName,
+        });
+        if (res.data.success) {
+          setPaused(res.data.paused ?? true);
+          toast.success("Debate paused");
+        } else {
+          throw new Error(res.data.error || "Failed to toggle pause");
+        }
+      } catch (err) {
+        console.error("Toggle pause error:", err);
+        alert("Failed to toggle pause: " + (err.message || "unknown error"));
+      }
     }
   };
 
@@ -228,7 +264,6 @@ export default function HrInterface() {
 
   const startDisabled = !selectedLeft || !selectedRight || topic.trim().length === 0|| !stage;
 
-  // Control interface - Team Card component
   const TeamCard = ({ team, side }) => {
     return (
       <div className="w-full lg:w-[40%] min-h-[320px] flex flex-col items-center rounded-lg p-6 shadow-md border border-white/10 bg-[#111111]">
@@ -535,6 +570,16 @@ export default function HrInterface() {
             aria-label="Refresh"
           >
             <FaSyncAlt className={refreshing ? "animate-spin" : ""} />
+          </button>
+
+          {/* Pause / Resume toggle button */}
+          <button
+            onClick={handleClickPause}
+            title={paused ? "Resume debate" : "Pause debate"}
+            className="p-2 rounded-md hover:bg-gray-800 text-white"
+            aria-label={paused ? "Resume" : "Pause"}
+          >
+            {paused ? <FaPlay /> : <FaPause />}
           </button>
 
           <button
