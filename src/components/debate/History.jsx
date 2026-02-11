@@ -8,6 +8,20 @@ const History = () => {
     const [loading, setLoading] = useState(false)
     const hoverTimeoutRef = useRef(null)
 
+    // helper: format like "Feb 26, 6:26"
+    const formatDateTime = (iso) => {
+        if (!iso) return ""
+        const d = new Date(iso)
+        if (isNaN(d)) return ""
+        const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+        const month = months[d.getMonth()]
+        const day = d.getDate()
+        let hour = d.getHours() // 0-23
+        const displayHour = hour % 12 === 0 ? 12 : hour % 12 // 12-hour without AM/PM
+        const minute = d.getMinutes().toString().padStart(2, "0")
+        return `${month} ${day}, ${displayHour}:${minute}`
+    }
+
     useEffect(() => {
         let isMounted = true
         
@@ -39,7 +53,10 @@ const History = () => {
                     rightScore: debate.rightScore,
                     isAWinner: debate.winner?.clubName === debate.leftTeam.name,
                     isLive: debate.isLive,
-                    status: debate.status
+                    status: debate.status,
+                    // NEW: start and end formatted for quick display
+                    startAt: formatDateTime(debate.startDate),
+                    endAt: formatDateTime(debate.endDate)
                 }))
                 
                 setRounds(mappedRounds)
@@ -58,7 +75,7 @@ const History = () => {
             isMounted = false
             if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current)
         }
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     const displayedRounds = showAll ? rounds : rounds.slice(0, 5)
 
@@ -169,6 +186,12 @@ const History = () => {
                                             </div>
                                         )}
                                     </div>
+
+                                    {/* NEW: start/end times for mobile (small, subtle) */}
+                                    <div className="w-full mt-2 flex justify-end gap-4">
+                                        {round.startAt && <span className="text-[#686868] text-xs">{`Started at ${round.startAt}`}</span>}
+                                        {round.endAt && <span className="text-[#686868] text-xs">{`Ended at ${round.endAt}`}</span>}
+                                    </div>
                             </div>
 
                             {/* ===== DESKTOP: Venue + Speakers & Topic on same row (above grey line) ===== */}
@@ -248,10 +271,18 @@ const History = () => {
                                    </div>
                                </div>
                             </div>
+
+                            {/* NEW: start/end times for desktop (neat, right-aligned at bottom of the card) */}
+                            <div className="w-full hidden lg:flex justify-end mt-4">
+                                <div className="flex gap-6 items-center">
+                                    {round.startAt && <span className="text-[#686868] text-sm">{`Started at ${round.startAt}`}</span>}
+                                    {round.endAt && <span className="text-[#686868] text-sm">{`Ended at ${round.endAt}`}</span>}
+                                </div>
+                            </div>
                     </div>
                 </div>
             )
-        )}
+        )} 
         
         {rounds.length > 5 && (
             <div className='flex  justify-center mt-6 sm:mt-8'>
