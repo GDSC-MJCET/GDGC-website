@@ -23,7 +23,7 @@ export default function ScorePage (){
                 <p className="text-4xl sm:text-4xl md:text-6xl lg:text-8xl text-[#5DDB6E]">board</p>
             </div>
             <div className="ml-auto pt-8 " >
-                <Link to="/techfaceoff"><p className="text-[#FFD428] text-xl " >Learn about Tech Debate</p></Link>
+                <Link to="/techfaceoff"><p className="text-[#FFD428] text-xl text-center" >Learn about Tech Debate</p></Link>
             </div>
         </div>
         <div className="px-4 sm:px-8 md:px-12 lg:px-16 hidden md:block">
