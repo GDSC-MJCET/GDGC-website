@@ -11,7 +11,7 @@ const Hero = () => {
             textShadow: "0 0 40px rgba(87, 203, 255, 0.4)",
           }}>TECH</span> <span className='text-[#5ddb6e]'  style={{
             textShadow: "0 0 40px rgba(93, 219, 110, 0.4)",
-          }}>Face-off</span>
+          }}>FACEOFF</span>
         </h2>
         {/* <Link > */}
         
