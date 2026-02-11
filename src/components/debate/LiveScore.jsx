@@ -34,7 +34,7 @@ function TopBadge({ debate }) {
             }`}
           />
           <div className="dm-mono text-sm text-white">
-            {debate?.isLive && !debate.break ? "LIVE" : "PAUSED"}
+            {debate?.isLive && !debate.break ? "LIVE" : "BREAK"}
           </div>
         </div>
 
