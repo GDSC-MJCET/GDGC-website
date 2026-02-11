@@ -36,32 +36,32 @@ export default function HrInterface() {
   const auth = JSON.parse(localStorage.getItem("AuthState"))
 
   // Auth code (commented for testing, should be enabled in production)
-  // useEffect(() => {
-  //   if (!AuthContext) {
-  //     nav("/login")
-  //   }
+  useEffect(() => {
+    if (!AuthContext) {
+      nav("/login")
+    }
 
-  //   axios
-  //     .get(
-  //       `${server}` + "/api/v1/admin/verify-admin",
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${auth?.token}`,
-  //         },
-  //       }
-  //     )
-  //     .then((data) => {
-  //       if(data.data.success){
-  //         setCheckingAuth(true)
-  //       }
-  //       if (!data.data.success) {
-  //         nav("/login")
-  //       }
-  //     })
-  //     .catch(() => {
-  //       nav("/login")
-  //     })
-  // }, [auth?.token])
+    axios
+      .get(
+        `${server}` + "/api/v1/admin/verify-admin",
+        {
+          headers: {
+            Authorization: `Bearer ${auth?.token}`,
+          },
+        }
+      )
+      .then((data) => {
+        if(data.data.success){
+          setCheckingAuth(true)
+        }
+        if (!data.data.success) {
+          nav("/login")
+        }
+      })
+      .catch(() => {
+        nav("/login")
+      })
+  }, [auth?.token])
 
   useEffect(() => {
     axios.get(server + "/api/v1/techdebate/get-clubs").then((data) => {
@@ -69,14 +69,14 @@ export default function HrInterface() {
     });
   }, []);
 
-  // Loading states check - handle early if not ready
-  // if(!checkingAuth){
-  //   return <div className="bg-black min-h-screen"></div>
-  // }
+  Loading states check - handle early if not ready
+  if(!checkingAuth){
+    return <div className="bg-black min-h-screen"></div>
+  }
 
-  // if ((loadMatch == false) &&(viewMode === "control")){
-  //   return <div className="bg-black min-h-screen"></div>
-  // }
+  if ((loadMatch == false) &&(viewMode === "control")){
+    return <div className="bg-black min-h-screen"></div>
+  }
 
   const handleTopicChange = (e) => {
     const val = e.target.value;
