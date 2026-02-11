@@ -4,6 +4,7 @@ import ipl from "../../public/Debate-ipl.png"
 import LiveScoreCard from "../components/debate/LiveScore";
 import Footer from "@/components/Footer";
 import History from "../components/debate/History";
+import { Link } from "react-router-dom";
 
 export default function ScorePage (){
 
@@ -22,7 +23,7 @@ export default function ScorePage (){
                 <p className="text-6xl text-[#57CBFF]" >Score</p><p className="text-6xl text-[#5DDB6E]">board</p>
             </div>
             <div className="ml-auto pt-8 " >
-                <p className="text-[#FFD428] text-xl " >Learn about Tech Debate</p>
+                <Link to="/techfaceoff"><p className="text-[#FFD428] text-xl " >Learn about Tech Debate</p></Link>
             </div>
         </div>
         <img src={ipl} className="max-w-[85vw] ml-23" />

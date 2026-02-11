@@ -50,9 +50,11 @@ export default function LiveScoreCard() {
   const [noLiveMatch, setNoLiveMatch] = useState(false);
   const [voteCountLeft, setVoteCountLeft] = useState(0);
   const [voteCountRight, setVoteCountRight] = useState(0);
-
+  const [disable,setDisable] = useState(false)
   // Function to handle audience voting
   const handleVote = async (side) => {
+    if (disable) return; // Prevent multiple votes
+    setDisable(true)
     try {
       // Make API call to backend FIRST
       console.log("Submitting vote for side:", side, debate.leftTeam, debate.rightTeam);
@@ -349,10 +351,10 @@ export default function LiveScoreCard() {
           <div className="flex justify-start">
             <button
               onClick={() => handleVote('left')}
-              className="py-3 px-8 bg-transparent border border-[#fbd34f] text-[#fbd34f] 
+              className={`py-3 px-8 bg-transparent border border-[#fbd34f] text-[#fbd34f] 
                        hover:bg-[#fbd34f] hover:text-black transition-all duration-300 
                        rounded-lg dm-mono text-sm font-medium flex items-center justify-center gap-2
-                       disabled:opacity-50 disabled:cursor-not-allowed min-w-[200px]"
+                       disabled:opacity-50 disabled:cursor-not-allowed min-w-[200px] ${disable ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               <>
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -367,10 +369,10 @@ export default function LiveScoreCard() {
           <div className="flex justify-end">
             <button
               onClick={() => handleVote('right')}
-              className="py-3 px-8 bg-transparent border border-[#fbd34f] text-[#fbd34f] 
+              className={`py-3 px-8 bg-transparent border border-[#fbd34f] text-[#fbd34f] 
                        hover:bg-[#fbd34f] hover:text-black transition-all duration-300 
                        rounded-lg dm-mono text-sm font-medium flex items-center justify-center gap-2
-                       disabled:opacity-50 disabled:cursor-not-allowed min-w-[200px]"
+                       disabled:opacity-50 disabled:cursor-not-allowed min-w-[200px] ${disable ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               <>
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
