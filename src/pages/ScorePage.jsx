@@ -3,6 +3,7 @@ import Background from "@/components/Background";
 import LiveScoreCard from "../components/debate/LiveScore";
 import Footer from "@/components/Footer";
 import History from "../components/debate/History";
+import { Link } from "react-router-dom";
 
 export default function ScorePage (){
 
@@ -21,8 +22,8 @@ export default function ScorePage (){
                 <p className="text-4xl sm:text-4xl md:text-6xl lg:text-8xl text-[#57CBFF]">Score</p>
                 <p className="text-4xl sm:text-4xl md:text-6xl lg:text-8xl text-[#5DDB6E]">board</p>
             </div>
-            <div className="sm:ml-auto pt-2 sm:pt-8 flex justify-center">
-                <p className="text-[#FFD428] text-base sm:text-lg md:text-xl">Learn about Tech Debate</p>
+            <div className="ml-auto pt-8 " >
+                <Link to="/techfaceoff"><p className="text-[#FFD428] text-xl " >Learn about Tech Debate</p></Link>
             </div>
         </div>
         <div className="px-4 sm:px-8 md:px-12 lg:px-16 hidden md:block">

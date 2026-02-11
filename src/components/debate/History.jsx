@@ -1,26 +1,26 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 
 const History = () => {
     const [rounds, setRounds] = useState([])
     const [showAll, setShowAll] = useState(false)
     const [hoveredRound, setHoveredRound] = useState(null)
     const [loading, setLoading] = useState(false)
+    const hoverTimeoutRef = useRef(null)
 
     useEffect(() => {
         let isMounted = true
         
         const fetchDebateHistory = async () => {
-            if (loading) return // Prevent multiple simultaneous requests
+            if (loading) return
             
             setLoading(true)
             try {
                 const response = await axios.get(`${import.meta.env.VITE_SERVER}`+`/api/v1/techdebate/get-history`)
                 const data = response.data.history
                 
-                if (!isMounted) return // Don't update state if component unmounted
+                if (!isMounted) return
                 
-                // Map the response to the rounds format
                 const mappedRounds = data.map(debate => ({
                     match: debate.leftTeam.name + ' vs ' + debate.rightTeam.name,
                     date: new Date(debate.date).toLocaleDateString('en-US', { 
@@ -39,7 +39,7 @@ const History = () => {
                     rightScore: debate.rightScore,
                     isAWinner: debate.winner?.clubName === debate.leftTeam.name,
                     isLive: debate.isLive,
-                    status:debate.status
+                    status: debate.status
                 }))
                 
                 setRounds(mappedRounds)
@@ -55,11 +55,23 @@ const History = () => {
         fetchDebateHistory()
         
         return () => {
-            isMounted = false // Cleanup function
+            isMounted = false
+            if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current)
         }
     }, [])
 
     const displayedRounds = showAll ? rounds : rounds.slice(0, 5)
+
+    const handleMouseEnter = (index) => {
+        if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current)
+        setHoveredRound(index)
+    }
+
+    const handleMouseLeave = () => {
+        hoverTimeoutRef.current = setTimeout(() => {
+            setHoveredRound(null)
+        }, 200) // 200ms grace period to move mouse into the card
+    }
 
     return (
         <div className="px-4  sm:px-8 md:px-16 lg:px-24 xl:px-32 py-8">
@@ -83,11 +95,10 @@ const History = () => {
                     </div>
                     
                     <div className='px-0  sm:px-4 md:px-8 w-full min-h-[300px] lg:h-77.5 py-4 lg:py-0'>
-                            <p className='text-white text-sm sm:text-[16px] font-normal hidden lg:block'>Seminar Hall, MJCET BLOCK 4</p>
-                            
-                            {/* Mobile/Tablet layout */}
+                            {/* ===== VENUE LINE REMOVED – no duplicate ===== */}
+
+                            {/* Mobile/Tablet layout (unchanged) */}
                             <div className='lg:hidden flex flex-col items-center justify-center w-full mb-4 space-y-4 rounded-xl p-4 sm:p-6 border border-[#57CBFF]/20'>
-                                    {/* Match info at top */}
                                     <button className='bg-[#18263D] text-white border border-[#57CBFF] h-12 sm:h-14 px-4 sm:px-6 rounded-xs text-xs sm:text-sm text-center'>
                                         {round.match}
                                     </button>
@@ -97,7 +108,6 @@ const History = () => {
                                     <p className='text-white text-xs sm:text-sm font-normal'>Seminar Hall, MJCET BLOCK 4</p>
                                     <span className='text-[#686868] text-sm sm:text-[16px] font-normal'>{round.date}</span>
                                     
-                                    {/* Club images side by side - LARGER */}
                                     <div className='flex items-center justify-center gap-3 sm:gap-6 md:gap-10 py-4 w-full'>
                                         <div className='flex flex-col items-center flex-1'>
                                             <p className={`${round.isAWinner ? 'visible' : 'invisible'} text-[#5DDB6E] text-xs sm:text-sm mb-2`}>WINNER</p>
@@ -118,8 +128,8 @@ const History = () => {
                                     
                                     <div 
                                         className='relative'
-                                        onMouseEnter={() => setHoveredRound(index)}
-                                        onMouseLeave={() => setHoveredRound(null)}
+                                        onMouseEnter={() => handleMouseEnter(index)}
+                                        onMouseLeave={handleMouseLeave}
                                         onClick={() => setHoveredRound(hoveredRound === index ? null : index)}
                                     >
                                         <span className='text-[#FFD428] text-sm sm:text-[16px] font-normal cursor-pointer'>Speakers & Topic →</span>
@@ -160,11 +170,62 @@ const History = () => {
                                         )}
                                     </div>
                             </div>
-                           <hr className='border-px border-[#686868] mb-4 sm:mb-6 lg:mb-8 lg:block hidden' />
 
-                           {/* Teams section - desktop only */}
-                           <div className='w-full hidden lg:flex flex-row items-center justify-start'>
+                            {/* ===== DESKTOP: Venue + Speakers & Topic on same row (above grey line) ===== */}
+                            <div className="hidden lg:flex items-center justify-between w-full mb-4">
+                                <p className='text-white text-sm sm:text-[16px] font-normal'>
+                                    Seminar Hall, MJCET BLOCK 4
+                                </p>
+                                
+                                {/* Speakers & Topic trigger – hover handlers moved to outer container */}
+                                <div 
+                                    className="relative hidden lg:block mb-4 px-0 sm:px-4 md:px-8"
+                                    onMouseEnter={() => handleMouseEnter(index)}
+                                    onMouseLeave={handleMouseLeave}
+                                >
+                                    <div className="inline-block">
+                                        <span className='text-[#FFD428] text-[16px] font-normal cursor-pointer'>Speakers & Topic →</span>
+                                    </div>
+                                    {hoveredRound === index && (
+                                        <div className="absolute -top-24 right-8 bg-[#18263D] border border-[#57CBFF] rounded-lg p-6 z-50 w-96 shadow-lg">
+                                            <h3 className='text-[#FFD428] text-[18px] font-semibold mb-4'>Topic</h3>
+                                            <p className='text-white text-[14px] mb-6'>{round.topic}</p>
+                                            <div className='flex justify-between gap-4'>
+                                                <div className='flex-1'>
+                                                    <h4 className='text-[#57CBFF] text-[16px] font-semibold mb-3'>{round.teamA}</h4>
+                                                    <p className='text-[#686868] text-[12px] mb-2'>For the Motion</p>
+                                                    <ul className='space-y-2'>
+                                                        {round.leftMembers?.map((member, idx) => (
+                                                            <li key={idx} className='text-white text-[14px] flex items-center gap-2'>
+                                                                {member.isLeader && <span className='text-[#FFD428]'>👑</span>}
+                                                                {member.name}
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                                <div className='flex-1'>
+                                                    <h4 className='text-[#57CBFF] text-[16px] font-semibold mb-3'>{round.teamB}</h4>
+                                                    <p className='text-[#686868] text-[12px] mb-2'>Against the Motion</p>
+                                                    <ul className='space-y-2'>
+                                                        {round.rightMembers?.map((member, idx) => (
+                                                            <li key={idx} className='text-white text-[14px] flex items-center gap-2'>
+                                                                {member.isLeader && <span className='text-[#FFD428]'>👑</span>}
+                                                                {member.name}
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
 
+                            {/* Grey line – untouched, now below the row above */}
+                            <hr className='border-px border-[#686868] mb-4 sm:mb-6 lg:mb-8 lg:block hidden' />
+
+                            {/* Teams section - desktop only (unchanged) */}
+                            <div className='w-full hidden lg:flex flex-row items-center justify-start'>
                                <div className='flex flex-col items-start'>
                                    <p className={`${round.isAWinner ? 'visible' : 'invisible'} text-[#5DDB6E] text-sm pl-28 mb-1`}>WINNER</p>
                                    <div className='flex flex-row items-center'>
@@ -175,9 +236,7 @@ const History = () => {
                                        </div>
                                    </div>
                                </div>
-
                                <span className='text-[#FFD428] font-normal text-[16px] px-8'>VS</span>
-
                                <div className='flex flex-col items-start'>
                                    <p className={`${!(round.isAWinner) ? 'visible' : 'invisible'} text-[#5DDB6E] text-sm mb-1`}>WINNER</p>
                                    <div className='flex flex-row items-center'>
@@ -188,11 +247,9 @@ const History = () => {
                                        <img src={round.coverB} className='h-24 w-24 object-cover rounded-lg' alt="" />
                                    </div>
                                </div>
-                           </div>
-
+                            </div>
                     </div>
                 </div>
-                
             )
         )}
         
@@ -207,9 +264,7 @@ const History = () => {
             </div>
         )}
         </div>
-        
-    
-  )
+    )
 }
 
 export default History
