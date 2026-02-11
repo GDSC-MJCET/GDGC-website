@@ -1,10 +1,50 @@
 import axios from "axios";
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
+import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { FaCaretUp, FaCaretDown, FaQuestion, FaSyncAlt, FaPlus, FaTimes, FaCheck, FaPause, FaPlay } from "react-icons/fa";
 import { FaQuestionCircle } from "react-icons/fa";
 import {Toaster,toast} from "react-hot-toast"
+
+// Portal-based dropdown that escapes overflow-hidden/scroll containers
+function PortalDropdown({ triggerRef, isOpen, children }) {
+  const [pos, setPos] = useState({ top: 0, left: 0, width: 0 });
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const updatePos = () => {
+      if (!triggerRef.current) return;
+      const rect = triggerRef.current.getBoundingClientRect();
+      setPos({
+        top: rect.bottom + 8,
+        left: rect.left,
+        width: rect.width,
+      });
+    };
+
+    updatePos();
+    window.addEventListener("scroll", updatePos, true);
+    window.addEventListener("resize", updatePos);
+    return () => {
+      window.removeEventListener("scroll", updatePos, true);
+      window.removeEventListener("resize", updatePos);
+    };
+  }, [isOpen, triggerRef]);
+
+  if (!isOpen) return null;
+
+  return createPortal(
+    <div
+      className="fixed bg-[#1f1f1f] border border-white/10 rounded-lg shadow-2xl max-h-60 overflow-y-auto"
+      style={{ top: pos.top, left: pos.left, width: pos.width, zIndex: 9999 }}
+    >
+      {children}
+    </div>,
+    document.body
+  );
+}
 
 export default function HrInterface() {
   const [selectedLeft, setSelectedLeft] = useState("");
@@ -32,37 +72,57 @@ export default function HrInterface() {
   const nav = useNavigate()
   const server = import.meta.env.VITE_SERVER;
   const [radios, setRadios] = useState([]);
+  const [clubsLoading, setClubsLoading] = useState(true);
+  const [clubsError, setClubsError] = useState("");
   const [paused,setPaused] = useState(false)
   const auth = JSON.parse(localStorage.getItem("AuthState"))
   const [already,setAlready] = useState(false)
 
+  // refs for portal dropdown positioning
+  const leftBtnRef = useRef(null);
+  const rightBtnRef = useRef(null);
+
   useEffect(() => {
-    axios.get(server + "/api/v1/techdebate/get-score").then((data) => {
-      if(data.data.success){
-        setAlready(true)
-        setViewMode("control")
-        let leftTeamStr = {
-          clubName: data.data.sendingData.leftTeam || selectedLeft, 
-          logoUrl: data.data.sendingData.leftLogo || null,
-          speakers: data.data.sendingData.speakersLeft || [],
+    const init = async () => {
+      try {
+        const scoreRes = await axios.get(server + "/api/v1/techdebate/get-score");
+        if (scoreRes.data.success) {
+          const { sendingData } = scoreRes.data;
+          setAlready(true);
+          setViewMode("control");
+          setLeftTeam({
+            clubName: sendingData.leftTeam || selectedLeft,
+            logoUrl: sendingData.leftLogo || null,
+            speakers: sendingData.speakersLeft || [],
+          });
+          setRightTeam({
+            clubName: sendingData.rightTeam || selectedRight,
+            logoUrl: sendingData.rightLogo || null,
+            speakers: sendingData.speakersRight || [],
+          });
+          setLeftScore(typeof sendingData.leftScore === "number" ? sendingData.leftScore : 0);
+          setRightScore(typeof sendingData.rightScore === "number" ? sendingData.rightScore : 0);
+          setPaused(!!sendingData.break);
         }
-        let rightTeamStr = {
-          clubName: data.data.sendingData.rightTeam || selectedRight,
-          logoUrl: data.data.sendingData.rightLogo || null,
-          speakers: data.data.sendingData.speakersRight || [],
-        }
-        setLeftTeam(leftTeamStr);
-        setRightTeam(rightTeamStr);
-        setLeftScore(typeof data.data.sendingData.leftScore === "number" ? data.data.sendingData.leftScore : 0);
-        setRightScore(typeof data.data.sendingData.rightScore === "number" ? data.data.sendingData.rightScore : 0);
-        data.data.sendingData.break ? setPaused(true) : setPaused(false)
+      } catch (err) {
+        console.log("No live debate, starting fresh.");
       }
-      }).catch((err) => {
-        console.log("No live debate, starting fresh.")
-      })
-    axios.get(server + "/api/v1/techdebate/get-clubs").then((data) => {
-      setRadios(data.data.clubs);
-    });
+
+      try {
+        setClubsLoading(true);
+        setClubsError("");
+        const clubsRes = await axios.get(server + "/api/v1/techdebate/get-clubs");
+        setRadios(Array.isArray(clubsRes.data?.clubs) ? clubsRes.data.clubs : []);
+      } catch (err) {
+        console.error("Failed to fetch clubs:", err);
+        setRadios([]);
+        setClubsError(err?.response?.data?.error || err?.message || "Failed to load teams");
+      } finally {
+        setClubsLoading(false);
+      }
+    };
+
+    init();
   }, []);
 
   const handleTopicChange = (e) => {
@@ -207,6 +267,7 @@ export default function HrInterface() {
         rightTeam: selectedRight
       });
       console.log(res.data.message)
+      
       if (res.data.message === "success") {
         toast.success("Match finished successfully")
         // Reset to selection view
@@ -219,7 +280,9 @@ export default function HrInterface() {
         setRightScore(0);
         setShowConfirm(false);
         setViewMode("selection");
-      } 
+      } else if (res.status == 408) {
+        toast.error("One should be greater than another")
+      }
     } catch (err) {
       console.error("Final submit error:", err);
       alert("Final submit failed: " + (err.message || "unknown"));
@@ -266,7 +329,7 @@ export default function HrInterface() {
 
   const TeamCard = ({ team, side }) => {
     return (
-      <div className="w-full lg:w-[40%] min-h-[320px] flex flex-col items-center rounded-lg p-6 shadow-md border border-white/10 bg-[#111111]">
+      <div className="w-full lg:w-[40%] min-h-[320px] flex flex-col items-center rounded-lg p-6 shadow-md border border-white/10 ">
         <div className="flex flex-col items-center">
           <div className="w-28 h-28 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
             {team?.logoUrl ? (
@@ -317,10 +380,10 @@ export default function HrInterface() {
     return (
       <>
       <Toaster />
-    <section className="min-h-screen overflow-x-hidden bg-[#0b0b0c] relative noto-sans-mono">
+    <section className="min-h-screen  bg-[#0b0b0c] relative noto-sans-mono">
       {/* Subtle background pattern */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_500px_at_50%_200px,#ffffff,transparent)]" />
+       <div className="absolute inset-0 bg-[radial-gradient(circle_500px_at_50%_200px,#ffffff,transparent)]" />
       </div>
 
       {/* Header */}
@@ -363,16 +426,28 @@ export default function HrInterface() {
                 {/* Dropdown */}
                 <div className="relative">
                   <button
-                    onClick={() => setShowMoreLeft((prev) => !prev)}
+                    ref={leftBtnRef}
+                    onClick={() => {
+                      setShowMoreLeft((prev) => !prev);
+                      setShowMoreRight(false);
+                      setShowStageDropdown(false);
+                    }}
+                    aria-expanded={showMoreLeft}
                     className="w-full bg-transparent border border-white/20 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 flex items-center justify-between hover:border-white/40"
                   >
                     <span className="text-sm">SELECT TEAM</span>
                     {showMoreLeft ? <FaCaretUp className="text-lg" /> : <FaCaretDown className="text-lg" />}
                   </button>
 
-                  {showMoreLeft && (
-                    <div className="absolute z-[100] w-full mt-2 bg-[#1f1f1f] border border-white/10 rounded-lg overflow-hidden shadow-2xl max-h-60 overflow-y-auto">
-                      {radios.map((item) => (
+                  <PortalDropdown triggerRef={leftBtnRef} isOpen={showMoreLeft}>
+                    {clubsLoading ? (
+                      <div className="px-4 py-3 text-sm text-white/70">Loading teams…</div>
+                    ) : clubsError ? (
+                      <div className="px-4 py-3 text-sm text-red-300">{clubsError}</div>
+                    ) : radios.length === 0 ? (
+                      <div className="px-4 py-3 text-sm text-white/70">No teams available.</div>
+                    ) : (
+                      radios.map((item) => (
                         <div
                           key={item._id}
                           onClick={() => {
@@ -393,9 +468,9 @@ export default function HrInterface() {
                           <span className="font-semibold">{item.clubName}</span>
                           {item.clubName === selectedLeft && <span className="ml-auto text-lg">●</span>}
                         </div>
-                      ))}
-                    </div>
-                  )}
+                      ))
+                    )}
+                  </PortalDropdown>
                 </div>
               </div>
             </div>
@@ -441,16 +516,28 @@ export default function HrInterface() {
                 {/* Dropdown */}
                 <div className="relative">
                   <button
-                    onClick={() => setShowMoreRight((prev) => !prev)}
+                    ref={rightBtnRef}
+                    onClick={() => {
+                      setShowMoreRight((prev) => !prev);
+                      setShowMoreLeft(false);
+                      setShowStageDropdown(false);
+                    }}
+                    aria-expanded={showMoreRight}
                     className="w-full bg-transparent border border-white/20 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 flex items-center justify-between hover:border-white/40"
                   >
                     <span className="text-sm">SELECT TEAM</span>
                     {showMoreRight ? <FaCaretUp className="text-lg" /> : <FaCaretDown className="text-lg" />}
                   </button>
 
-                  {showMoreRight && (
-                    <div className="absolute z-[100] w-full mt-2 bg-[#1f1f1f] border border-white/10 rounded-lg overflow-hidden shadow-2xl max-h-60 overflow-y-auto">
-                      {radios.map((item) => (
+                  <PortalDropdown triggerRef={rightBtnRef} isOpen={showMoreRight}>
+                    {clubsLoading ? (
+                      <div className="px-4 py-3 text-sm text-white/70">Loading teams…</div>
+                    ) : clubsError ? (
+                      <div className="px-4 py-3 text-sm text-red-300">{clubsError}</div>
+                    ) : radios.length === 0 ? (
+                      <div className="px-4 py-3 text-sm text-white/70">No teams available.</div>
+                    ) : (
+                      radios.map((item) => (
                         <div
                           key={item._id}
                           onClick={() => {
@@ -471,9 +558,9 @@ export default function HrInterface() {
                           <span className="font-semibold">{item.clubName}</span>
                           {item.clubName === selectedRight && <span className="ml-auto text-lg">●</span>}
                         </div>
-                      ))}
-                    </div>
-                  )}
+                      ))
+                    )}
+                  </PortalDropdown>
                 </div>
               </div>
             </div>
@@ -557,6 +644,7 @@ export default function HrInterface() {
     <section className="min-h-screen p-4 sm:p-6">
       <Toaster/>
       {/* Header */}
+      <p></p>
       <header className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4">
         <h1 className="text-xl sm:text-2xl font-semibold text-white">HR — Debate Control</h1>
 

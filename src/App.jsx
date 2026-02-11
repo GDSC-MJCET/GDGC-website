@@ -1,4 +1,4 @@
-import { useState,useContext } from 'react'
+import { useState,useContext, useRef } from 'react'
 import './App.css'
 // import {Navibar} from './components/Navbar'
 // import { HiringPage } from './pages/HiringPage'
@@ -51,6 +51,7 @@ import HrInterface from './pages/HrInterface.jsx';
 import HrControlInterface from './pages/HrControlInterface.jsx';
 import TDForm from './pages/TDForm.jsx';
 import { Navigate } from 'react-router-dom';
+import { createPortal } from 'react-dom';
 
 function App() {
   const [isVerified, setIsVerified] = useState(null);
@@ -99,13 +100,55 @@ function App() {
   );
 }
 
-function PopUpMenu({name , email,closePopup}) {
+function PopUpMenu({ name, email, closePopup, triggerRef }) {
   const {authState,setAuthState} = useContext(AuthContext)
   const nav = useNavigate()
+  const menuRef = useRef(null);
+  const [pos, setPos] = useState({ top: 0, right: 0 });
+
   useEffect(()=>{
     localStorage.setItem("AuthState",JSON.stringify(authState))
 
   },[authState])
+
+  // Position + outside click/escape handling (portal so it won't be clipped by overflow-hidden)
+  useEffect(() => {
+    const updatePos = () => {
+      const el = triggerRef?.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      setPos({
+        top: rect.bottom + 8,
+        right: Math.max(8, window.innerWidth - rect.right),
+      });
+    };
+
+    updatePos();
+    window.addEventListener("scroll", updatePos, true);
+    window.addEventListener("resize", updatePos);
+
+    const onPointerDown = (e) => {
+      const target = e.target;
+      if (!(target instanceof Node)) return;
+      if (menuRef.current?.contains(target)) return;
+      if (triggerRef?.current?.contains(target)) return;
+      closePopup();
+    };
+
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") closePopup();
+    };
+
+    document.addEventListener("pointerdown", onPointerDown, true);
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      window.removeEventListener("scroll", updatePos, true);
+      window.removeEventListener("resize", updatePos);
+      document.removeEventListener("pointerdown", onPointerDown, true);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [closePopup, triggerRef]);
   
   const handleLogout = () => {
     setAuthState({token:" ",loggedIn:false})
@@ -117,9 +160,13 @@ function PopUpMenu({name , email,closePopup}) {
     nav(route)
   }
   
-  return (
-    <div className="absolute right-7 top-11 lg:w-50 lg:h-60">
-      <div className="absolute right-0 mt-2 w-56 rounded-xl border bg-[#1E1E1E] shadow-lg p-2 text-sm text-gray-200">
+  return createPortal(
+    <div
+      ref={menuRef}
+      className="fixed z-[9999]"
+      style={{ top: pos.top, right: pos.right }}
+    >
+      <div className="w-56 rounded-xl border border-white/10 bg-[#1E1E1E] shadow-lg p-2 text-sm text-gray-200">
         <div className="px-3 py-2">
           <p className="font-semibold">{name}</p>
           <p className="text-gray-400 text-xs">{email}</p>
@@ -137,7 +184,8 @@ function PopUpMenu({name , email,closePopup}) {
           <MenuItem label="Log out"  danger  />
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 function MenuItem({ label, shortcut, active, danger }) {
@@ -158,6 +206,7 @@ function TeamLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [userEmail , setUserEmail] = useState("")
   const [userName , setUserName] = useState("")
+  const avatarBtnRef = useRef(null);
   const handleOpenPopup = () => {
     setopenPopup(!openPopup)
   }
@@ -193,11 +242,25 @@ function TeamLayout() {
               {/* Spacer for desktop */}
               <div className='hidden md:block'></div>
               
-              <span className='rounded-full bg-red-50 cursor-pointer'  onClick={handleOpenPopup}>
+              <button
+                ref={avatarBtnRef}
+                type="button"
+                aria-haspopup="menu"
+                aria-expanded={openPopup}
+                className='rounded-full bg-red-50 cursor-pointer'
+                onClick={handleOpenPopup}
+              >
                 <img src={gdg} className='h-9 w-9 rounded-full' alt="" />
-              </span>
+              </button>
               {/* this is the popup component */}
-              {openPopup && <PopUpMenu name={userName} email={userEmail} closePopup={() => setopenPopup(false)}/>}
+              {openPopup && (
+                <PopUpMenu
+                  name={userName}
+                  email={userEmail}
+                  closePopup={() => setopenPopup(false)}
+                  triggerRef={avatarBtnRef}
+                />
+              )}
             </div>
             
             <div className='flex-1 overflow-y-auto'>
