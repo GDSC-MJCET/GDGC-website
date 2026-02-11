@@ -93,7 +93,7 @@ const About = () => {
 
                     </p>
 
-                    <a href='https://drive.google.com/file/d/1FOAQ0SOpTxcK7vSL7Z9MC9W9NF9T4XoO/view?usp=sharing' rel="noopener noreferrer" target="_blank" className="text-[#4286F5] text-xs sm:text-sm self-start mt-4 hover:underline">
+                    <a href='https://drive.google.com/file/d/1bIfsck5Fj82EalLUvGM-N21Agdj0tyXn/view?usp=sharing' rel="noopener noreferrer" target="_blank" className="text-[#4286F5] text-xs sm:text-sm self-start mt-4 hover:underline">
                         View Debate Motions  <span>→</span>
                     </a>
              </div> 

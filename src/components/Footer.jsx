@@ -32,7 +32,7 @@ const Footer = ({ bgColor = "#000000" }) => {
           <div className="flex flex-col space-y-4">
             <img src="/logo.svg" alt="Logo" className="w-40 md:w-full" />
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.492450109216!2d78.46720307510536!3d17.406602388066857!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb937f4b3f0d91%3A0x362e2e1c845e9f7b!2sMuffakham%20Jah%20College%20of%20Engineering%20and%20Technology!5e0!3m2!1sen!2sin!4v1706949370000!5m2!1sen!2sin"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.656328647182!2d78.442908!3d17.428273000000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb90cd7708dfd7%3A0x77482b7aa8b696f3!2sMuffakham%20Jah%20College%20of%20Engineering%20%26%20Technology%20(MJCET)!5e0!3m2!1sen!2sin!4v1770832956626!5m2!1sen!2sin"
               height="200"
               className="w-full rounded-lg border-0"
               loading="lazy"
