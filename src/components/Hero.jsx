@@ -55,7 +55,7 @@ const Hero = () => {
               <img src="/globe-red.svg" className="h-10 md:h-16" />
 
               <h2 className="font-medium text-xl md:text-5xl text-center bg-linear-to-r from-[#F8D8D8] to-[#CDF6C5] bg-clip-text text-transparent">
-                Live Event
+                Live Event 
               </h2>
 
               <img src="/pinpoint-green.svg" className="h-10 md:h-16" />

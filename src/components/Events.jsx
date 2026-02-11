@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
-
+import { useNavigate } from "react-router-dom";
 export default function Events() {
   const cards = [
     // {
@@ -83,8 +83,8 @@ export default function Events() {
       </div>
 
       <div className="mt-16 flex flex-col md:flex-row gap-6 justify-between items-center max-w-6xl mx-auto px-6">
-        <ActionButton label="Live Events" color="#5ddb6e" />
-        <ActionButton label="Past Events" color="#ffe7a5" />
+          <ActionButton label="Live Events" link={'/techfaceoff'} color="#5ddb6e" />  
+        <ActionButton label="Past Events"  color="#ffe7a5" />
       </div>
     </section>
   );
@@ -127,9 +127,11 @@ function EventCard({ card, mobile = false }) {
   );
 }
 
-function ActionButton({ label, color }) {
+function ActionButton({ label, color , link="/"}) {
+  const navigate = useNavigate()
   return (
     <button
+      onClick={()=>navigate(link)}
       style={{ backgroundColor: color }}
       className="flex items-center gap-3 text-black font-bold px-4 py-2 rounded-full"
     >
