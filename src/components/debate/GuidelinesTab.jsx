@@ -39,13 +39,14 @@ export default function GuidelinesTab() {
   ];
 
   const judging = [
-    "Accuracy matters most – All facts, data, and claims must be from recognized and authentic sources",
-    "Depth over surface-level arguments – Engage deeply with the motion, don't stay generic",
-    "Logical coherence – Arguments must flow clearly and consistently without contradictions",
-    "Strong rebuttals win rounds – Directly challenge opponents with clarity and structure",
-    "Professional delivery – Confident tone, good body language, proper time management",
-    "Strict debate etiquette – No personal attacks, no interruptions, no digital devices during debate",
-    "To read all detailed rules, rubrics, time signals, fact-checking process, tie-breaking, and ethical standards – Download the full judging criteria document"
+    "Arguments must be supported by reliable, well-verified evidence; incorrect or unsupported claims will be penalized.",
+    "Teams should address key aspects of the motion with meaningful and well-developed insights, avoiding shallow treatment of the topic.",
+    "Arguments must be clear, structured, and internally consistent, without contradictions or deviation from the motion.",
+    "Speakers must take a clear stance and directly address the core issue of the debate throughout their presentation.",
+    "Confident speaking, appropriate pace, clear articulation, and composed body language are essential for effective communication.",
+    "Teams should thoughtfully engage with opposing arguments and respond with logical, well-structured counters.",
+    "Participants must effectively perform their assigned role within the debate format and time structure.",
+    "Respectful conduct is mandatory; interruptions, personal attacks, or unprofessional behavior may result in penalties."
   ];
 
   return (
@@ -67,7 +68,7 @@ export default function GuidelinesTab() {
 
       <ul className="min-h-[300px] text-white text-base sm:text-lg md:text-xl lg:text-2xl space-y-2 sm:space-y-2.5 md:space-y-3 list-disc list-inside">
         {(active === "rules" ? rules : judging).map((item, i) => (
-          <li key={i} className="leading-relaxed opacity-90">
+          <li key={i} className="leading-relaxed items-center opacity-90">
             {item}
           </li>
         ))}
