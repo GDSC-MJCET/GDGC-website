@@ -13,7 +13,7 @@ function TopBadge({ debate }) {
       dateDisplay = `${day} ${month}, ${year}`;
     }
   }
-
+  console.log("TopBadge render with debate:", debate);
   return (
     <div className="w-[99%] max-w-full z-10">
       <div
@@ -30,11 +30,11 @@ function TopBadge({ debate }) {
         <div className="flex items-center gap-3">
           <span
             className={`w-3 h-3 rounded-full ${
-              debate?.isLive ? "bg-[#2de05b]" : "bg-[#fbd34f]"
+              debate?.isLive && !debate.break ? "bg-[#2de05b]" : "bg-[#fbd34f]"
             }`}
           />
           <div className="dm-mono text-sm text-white">
-            {debate?.isLive ? "LIVE" : "SOON"}
+            {debate?.isLive && !debate.break ? "LIVE" : "PAUSED"}
           </div>
         </div>
 
