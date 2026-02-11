@@ -52,10 +52,10 @@ const Footer = ({ bgColor = "#000000" }) => {
 
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-[#686868]">ADDRESS</h3>
-            <div className="text-gray-300 space-y-3">
+            <div className="text-gray-300 space-y-3 mb-10">
               <p>Muffakham Jah College of Engineering and Technology</p>
               <p>
-                Road No. 9, Banjara Hills, Hyderabad, Telangana, India
+                Mount Pleasant, 8-2-249, Rd Number 3, Venkateshwara Hills, Banjara Hills, Hyderabad, Telangana 500082
               </p>
             </div>
 

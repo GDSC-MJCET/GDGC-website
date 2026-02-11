@@ -28,7 +28,7 @@ export default function HrInterface() {
   const [checkingAuth,setCheckingAuth] = useState(false)
   const [loadMatch,setLoadMatch] = useState(false)
   const [showStageDropdown, setShowStageDropdown] = useState(false);
-  const stageOptions = ["League", "SemiFinal", "Final"];
+  const stageOptions = ["League", "SemiFinal", "Final","QuaraterFinal"];
   const nav = useNavigate()
   const server = import.meta.env.VITE_SERVER;
   const [radios, setRadios] = useState([]);
