@@ -39,7 +39,13 @@ export default function GuidelinesTab() {
   ];
 
   const judging = [
-    "judging criteria will be annouced soon !!"
+    "Accuracy matters most – All facts, data, and claims must be from recognized and authentic sources",
+    "Depth over surface-level arguments – Engage deeply with the motion, don't stay generic",
+    "Logical coherence – Arguments must flow clearly and consistently without contradictions",
+    "Strong rebuttals win rounds – Directly challenge opponents with clarity and structure",
+    "Professional delivery – Confident tone, good body language, proper time management",
+    "Strict debate etiquette – No personal attacks, no interruptions, no digital devices during debate",
+    "To read all detailed rules, rubrics, time signals, fact-checking process, tie-breaking, and ethical standards – Download the full judging criteria document"
   ];
 
   return (
@@ -69,7 +75,7 @@ export default function GuidelinesTab() {
       <div className="gap-4 flex flex-row">
         <a target="_blank" rel="noopener noreferrer" href="https://drive.google.com/file/d/1ojSPsRsuG6zZ2yKYaSEmzmH6Cxfik0JL/view"  className="p-3 bg-[#111a29] hover:bg-white hover:text-[#111a29]  font-mono text-white">Download Rule Book</a>
         
-        <button className="p-3 bg-[#111a29]  hover:bg-white hover:text-[#111a29] font-mono text-white">Download Judging Criteria</button>
+        <a target="_blank" rel="noopener noreferrer" href="https://drive.google.com/file/d/1ttSvVrdAinuJdjOz2N2mVTmCHw-Jmupb/view?usp=sharing" className="p-3 bg-[#111a29]  hover:bg-white hover:text-[#111a29] font-mono text-white">Download Judging Criteria</a>
       </div>
     </div>
   );
