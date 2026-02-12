@@ -86,7 +86,7 @@ export default function HrInterface() {
     const init = async () => {
       try {
         const scoreRes = await axios.get(server + "/api/v1/techdebate/get-score");
-        console.log(scoreRes , "this is score ")
+        // console.log(scoreRes , "this is score ")
         if (scoreRes.data.success) {
           const { sendingData } = scoreRes.data;
           setAlready(true);
