@@ -82,21 +82,29 @@ export default function HrInterface() {
   const leftBtnRef = useRef(null);
   const rightBtnRef = useRef(null);
 
+  // Debug: log state after it actually updates
+  useEffect(() => {
+    console.log("selectedLeft:", selectedLeft, "selectedRight:", selectedRight);
+  }, [selectedLeft, selectedRight]);
+
   useEffect(() => {
     const init = async () => {
       try {
         const scoreRes = await axios.get(server + "/api/v1/techdebate/get-score");
+        // console.log(scoreRes , "this is score ")
         if (scoreRes.data.success) {
           const { sendingData } = scoreRes.data;
-          setAlready(true);
+          // setAlready(true);
           setViewMode("control");
+          setSelectedLeft(sendingData.leftTeam || "");
+          setSelectedRight(sendingData.rightTeam || "");
           setLeftTeam({
-            clubName: sendingData.leftTeam || selectedLeft,
+            clubName: sendingData.leftTeam ,
             logoUrl: sendingData.leftLogo || null,
             speakers: sendingData.speakersLeft || [],
           });
           setRightTeam({
-            clubName: sendingData.rightTeam || selectedRight,
+            clubName: sendingData.rightTeam,
             logoUrl: sendingData.rightLogo || null,
             speakers: sendingData.speakersRight || [],
           });
@@ -112,6 +120,7 @@ export default function HrInterface() {
         setClubsLoading(true);
         setClubsError("");
         const clubsRes = await axios.get(server + "/api/v1/techdebate/get-clubs");
+        console.log(clubsRes)
         setRadios(Array.isArray(clubsRes.data?.clubs) ? clubsRes.data.clubs : []);
       } catch (err) {
         console.error("Failed to fetch clubs:", err);
@@ -141,19 +150,23 @@ export default function HrInterface() {
       console.log("fetchTeams response:", data);
       if (data.success) {
         setLoadMatch(true)
+        const leftName = data.sendingData.leftTeam || selectedLeft;
+        const rightName = data.sendingData.rightTeam || selectedRight;
+        setSelectedLeft(leftName);
+        setSelectedRight(rightName);
         let leftTeamStr = {
-          clubName: data.sendingData.leftTeam || selectedLeft,
+          clubName: leftName,
           logoUrl: data.sendingData.leftLogo || null,
           speakers: data.sendingData.speakersLeft|| [],
         }
         let rightTeamStr = {
-          clubName: data.sendingData.rightTeam || selectedRight,
+          clubName: rightName,
           logoUrl: data.sendingData.rightLogo || null,
           speakers: data.sendingData.speakersRight|| [],
         }
         setLeftTeam(leftTeamStr);
         setRightTeam(rightTeamStr);
-        data.sendingData.break ? setPaused(true) : setPaused(false)
+        setPaused(!!data.sendingData.break);
         setLeftScore(typeof data.sendingData.leftScore === "number" ? data.sendingData.leftScore : 0);
         setRightScore(typeof data.sendingData.rightScore === "number" ? data.sendingData.rightScore : 0);
       } else {
@@ -231,11 +244,14 @@ export default function HrInterface() {
     // optimistic update
     if (side === "left") setLeftScore((s) => s + 1);
     else setRightScore((s) => s + 1);
-
+    console.log(selectedLeft , selectedRight , side)
+    console.log(selectedLeft , selectedRight)
+    const leftName = selectedLeft || leftTeam?.clubName;
+    const rightName = selectedRight || rightTeam?.clubName;
     try {
       const res = await axios.post(server + "/api/v1/techdebate/increment-score", {
-        leftTeam: selectedLeft,
-        rightTeam: selectedRight,
+        leftTeam: leftName,
+        rightTeam: rightName,
         side,
       });
 
@@ -464,6 +480,7 @@ export default function HrInterface() {
                           key={item._id}
                           onClick={() => {
                             setSelectedLeft(item.clubName);
+                            console.log(item.clubName)
                             setShowMoreLeft(false);
                           }}
                           className={`px-4 py-3 cursor-pointer transition-all duration-200 flex items-center gap-3 text-sm ${

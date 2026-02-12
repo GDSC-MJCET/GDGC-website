@@ -78,7 +78,7 @@ const History = () => {
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     const displayedRounds = showAll ? rounds : rounds.slice(0, 5)
-
+    console.log(displayedRounds)
     const handleMouseEnter = (index) => {
         if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current)
         setHoveredRound(index)
@@ -120,6 +120,7 @@ const History = () => {
                                         {round.match}
                                     </button>
                                     <div className='font-medium text-white text-sm sm:text-[16px] text-center'>
+                                        
                                         {round.status}
                                     </div>
                                     <p className='text-white text-xs sm:text-sm font-normal'>Seminar Hall, MJCET BLOCK 4</p>

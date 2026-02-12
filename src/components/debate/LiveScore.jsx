@@ -40,6 +40,7 @@ function TopBadge({ debate }) {
 
         <div className="dm-mono text-sm text-white">{dateDisplay}</div>
       </div>
+      
     </div>
   );
 }
@@ -169,19 +170,19 @@ export default function LiveScoreCard() {
         <div className="w-full z-20 -mt-10">
           <div className="bg-[#171717] rounded-2xl shadow-[0_8px_24px_rgba(0,0,0,0.6)] overflow-hidden relative">
             <div className="absolute inset-0 pointer-events-none z-0">
-              <div
+              {/* <div
                 className="absolute left-8 right-8"
                 style={{
                   top: "55%",
                   height: "1px",
                   background: "rgba(255,255,255,0.18)",
                 }}
-              />
+              /> */}
               <div
                 className="absolute"
                 style={{
-                  top: "22%",
-                  bottom: "22%",
+                  top: "34%",
+                  bottom: "18%",
                   left: "50%",
                   width: "1px",
                   transform: "translateX(-50%)",
@@ -191,15 +192,16 @@ export default function LiveScoreCard() {
             </div>
 
             <div className="relative z-10 px-8 py-6 pt-14">
-              <div className="grid grid-cols-2 gap-6">
-                {/* Left Team Section */}
-                <div className="space-y-6">
-                  <div className="">
+              <div className="">
                     <div className="text-[11px] text-white inter">TOPIC</div>
                     <div className="text-[#fbd34f] dm-mono text-base mt-2">
                       {debate.Topic}
                     </div>
                   </div>
+              <div className="grid grid-cols-2 gap-6">
+                {/* Left Team Section */}
+                <div className="space-y-6 mt-4">
+                  
 
                   <div className="flex flex-col md:flex-row items-center gap-4">
                     <img
@@ -235,14 +237,9 @@ export default function LiveScoreCard() {
 
                 {/* Right Team Section */}
                 <div className="space-y-4 md:space-y-6 text-right">
-                  <div>
-                    <div className="text-[11px] text-[#8b8b8b]">VENUE</div>
-                    <div className="dm-mono text-sm text-white mt-2">
-                      Seminar Hall
-                    </div>
-                  </div>
+                  
 
-                  <div className=" flex flex-col-reverse md:flex-row  items-center  gap-4">
+                  <div className=" flex flex-col-reverse md:flex-row  items-center mt-4 gap-4">
                     {/* <div className="dm-mono text-4xl font-bold text-white">
                       {debate.rightScore}
                     </div> */}
