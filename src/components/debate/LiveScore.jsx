@@ -13,7 +13,7 @@ function TopBadge({ debate }) {
       dateDisplay = `${day} ${month}, ${year}`;
     }
   }
-  console.log("TopBadge render with debate:", debate);
+  // console.log("TopBadge render with debate:", debate);
   return (
     <div className="w-[99%] max-w-full z-10">
       <div

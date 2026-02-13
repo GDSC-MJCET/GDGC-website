@@ -32,7 +32,6 @@ const History = () => {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_SERVER}`+`/api/v1/techdebate/get-history`)
                 const data = response.data.history
-                
                 if (!isMounted) return
                 
                 const mappedRounds = data.map(debate => ({
@@ -51,10 +50,11 @@ const History = () => {
                     rightMembers: debate.rightTeam.members,
                     leftScore: debate.leftScore,
                     rightScore: debate.rightScore,
-                    isAWinner: debate.winner?.clubName === debate.leftTeam.name,
+                    // FIX: debate.winner is now just a string (clubName)
+                    isAWinner: debate.winner === debate.leftTeam.name,
+                    isBWinner: debate.winner === debate.rightTeam.name,
                     isLive: debate.isLive,
                     status: debate.status,
-                    // NEW: start and end formatted for quick display
                     startAt: formatDateTime(debate.startDate),
                     endAt: formatDateTime(debate.endDate)
                 }))
@@ -78,7 +78,7 @@ const History = () => {
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     const displayedRounds = showAll ? rounds : rounds.slice(0, 5)
-    console.log(displayedRounds)
+    // console.log(displayedRounds)
     const handleMouseEnter = (index) => {
         if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current)
         setHoveredRound(index)
