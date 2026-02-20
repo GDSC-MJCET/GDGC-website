@@ -1,4 +1,4 @@
-# GDGC - google developer groups on campus Website
+# GDGC - google developer 
 
 A modern, responsive website for Google Developer Group Community (GDGC) built with React and Vite.
 
