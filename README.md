@@ -1,4 +1,3 @@
-# GDGC Website
 
 A modern, responsive website for Google Developer Group Community (GDGC) built with React and Vite.
 
@@ -21,6 +20,7 @@ A modern, responsive website for Google Developer Group Community (GDGC) built w
 - **Animations**: Framer Motion
 - **Icons**: Lucide React
 - **UI Components**: Custom resizable navbar components
+- Demo
 
 ## 📁 Project Structure
 
