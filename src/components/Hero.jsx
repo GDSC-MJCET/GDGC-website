@@ -38,11 +38,11 @@ const Hero = () => {
           style={{ y: contentY }}
           className="absolute inset-0 flex flex-col items-center text-center text-white px-6 py-12 pointer-events-none will-change-transform translate-y-24 md:translate-y-35"
         >
-          <h2 className="text-3xl text-center md:text-6xl font-bold  max-w-2xl lg:max-w-5xl md:text-left">
+          <h2 className="text-3xl text-center md:text-6xl font-bold  max-w-2xl lg:max-w-5xl ">
             A community built around learning, technology and collaboration
           </h2>
 
-          <p className="mt-4 text-base text-center md:text-lg md:text-left max-w-2xl lg:max-w-5xl">
+          <p className="mt-4 text-base text-center md:text-lg max-w-2xl lg:max-w-5xl">
            GDGC MJCET brings students together to learn with intent , build strong fundamentals, and collaborate on real-world problems, creating a student-driven ecosystem rooted in consistency, mentorship, and meaningful growth
           </p>
         </motion.div>
