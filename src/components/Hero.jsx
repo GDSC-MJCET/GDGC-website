@@ -1,11 +1,11 @@
 "use client";
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
   const sectionRef = useRef(null);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
@@ -38,11 +38,11 @@ const Hero = () => {
           style={{ y: contentY }}
           className="absolute inset-0 flex flex-col items-center text-center text-white px-6 py-12 pointer-events-none will-change-transform translate-y-24 md:translate-y-35"
         >
-          <h2 className="text-3xl text-center md:text-6xl font-bold  max-w-2xl lg:max-w-5xl md:text-left">
+          <h2 className="text-3xl text-center md:text-6xl font-bold  max-w-2xl lg:max-w-5xl ">
             A community built around learning, technology and collaboration
           </h2>
 
-          <p className="mt-4 text-base text-center md:text-lg md:text-left max-w-2xl lg:max-w-5xl">
+          <p className="mt-4 text-base text-center md:text-lg max-w-2xl lg:max-w-5xl">
            GDGC MJCET brings students together to learn with intent , build strong fundamentals, and collaborate on real-world problems, creating a student-driven ecosystem rooted in consistency, mentorship, and meaningful growth
           </p>
         </motion.div>
@@ -65,28 +65,29 @@ const Hero = () => {
             <div className="flex  bg-[#000000] flex-col md:flex-row justify-center items-center rounded-b-4xl border-2 border-white/40 shadow-[0_0_8px_rgba(255,255,255,0.85)] max-w-3xl mx-auto px-6 md:px-22 py-18 gap-10 md:gap-22">
               <div>
                 <img
-                  src="/tech-face-off.jpeg"
-                  alt=""
+                  src="/donation-drive.jpeg"
+                  alt="donation"
                   className="rounded-sm scale-100 md:scale-150"
                 />
               </div>
 
               <div className="flex flex-col gap-6 text-center md:text-left">
                 <h2 className="text-2xl md:text-3xl font-bold text-white">
-                  TECH FACE OFF : The Verdict
+                  RAMADAN DONATION DRIVE
                 </h2>
 
                 <p className="text-white text-base md:text-lg">
-                  Tech Face-Off: The Verdict is where chapters go head-to-head in a high-stakes technical debate, judged, challenged, and decided with zero bias and full intensity. This isn’t about who speaks louder, it’s about who thinks deeper and defends better.
+                  The Ramadan Donation Drive is a community initiative dedicated to spreading compassion and support during the holy month of Ramadan. Through this drive essential supplies to help underprivileged families observe Ramadan with dignity and ease. Every contribution plays a meaningful role in bringing relief and joy to those in need.
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 justify-center md:justify-start">
-                  <button onClick={()=>navigate("/techfaceoff")} className="bg-[#f9ac02] text-black px-6 py-2 rounded-full font-semibold border border-white/40 shadow-[0_0_6px_rgba(255,255,255,0.85)]">
+                  {/* <button onClick={()=>navigate("/techfaceoff")} className="bg-[#f9ac02] text-black px-6 py-2 rounded-full font-semibold border border-white/40 shadow-[0_0_6px_rgba(255,255,255,0.85)]">
                     Learn More 
                   </button>
                   <button  onClick={()=>navigate("/score")} className="bg-[#57cbff] text-black px-6 py-2 rounded-full font-semibold border border-white/40 shadow-[0_0_6px_rgba(255,255,255,0.85)]">
                     Live Scorecard
-                  </button>
+                  </button> */}
+                  <span className='px-6 py-1 rounded-full border border-white shadow-sm shadow-white text-center'><a href="https://ramadan-donation-drive.netlify.app/">Know More</a></span>
                 </div>
               </div>
             </div>

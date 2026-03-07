@@ -6,22 +6,22 @@ import Hero from '@/components/debate/Hero'
 import Footer from '@/components/Footer'
 import Nav from '@/components/Nav'
 import WinnerPopup from '@/components/WinnerPopup'
-import React, { useState, useEffect } from 'react'
+// import React, { useState, useEffect } from 'react'
 
 const TechDebatePage = () => {
-  const [showPopup, setShowPopup] = useState(false);
+  // const [showPopup, setShowPopup] = useState(false);
 
-  useEffect(() => {
-    const dismissed = sessionStorage.getItem("winner-popup-dismissed");
-    if (!dismissed) {
-      setShowPopup(true);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const dismissed = sessionStorage.getItem("winner-popup-dismissed");
+  //   if (!dismissed) {
+  //     setShowPopup(true);
+  //   }
+  // }, []);
 
-  const handleClosePopup = () => {
-    setShowPopup(false);
-    sessionStorage.setItem("winner-popup-dismissed", "true");
-  };
+  // const handleClosePopup = () => {
+  //   setShowPopup(false);
+  //   sessionStorage.setItem("winner-popup-dismissed", "true");
+  // };
 
   return (
     <Background
@@ -30,7 +30,7 @@ const TechDebatePage = () => {
       dotColor="rgba(87,203,255,0.6)"
       dotGlowColor="rgba(87,203,255,0.9)"
     >
-      {showPopup && <WinnerPopup onClose={handleClosePopup} />}
+      {/* {showPopup && <WinnerPopup onClose={handleClosePopup} />} */}
       <Nav bgColor='#0b0b0b'/>
       <Hero />
       <About />
