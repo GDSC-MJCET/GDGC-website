@@ -6,17 +6,17 @@ import Hero from '@/components/debate/Hero'
 import Footer from '@/components/Footer'
 import Nav from '@/components/Nav'
 import WinnerPopup from '@/components/WinnerPopup'
-import React, { useState, useEffect } from 'react'
+// import React, { useState, useEffect } from 'react'
 
 const TechDebatePage = () => {
   // const [showPopup, setShowPopup] = useState(false);
 
-  useEffect(() => {
-    const dismissed = sessionStorage.getItem("winner-popup-dismissed");
-    if (!dismissed) {
-      setShowPopup(true);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const dismissed = sessionStorage.getItem("winner-popup-dismissed");
+  //   if (!dismissed) {
+  //     setShowPopup(true);
+  //   }
+  // }, []);
 
   // const handleClosePopup = () => {
   //   setShowPopup(false);
