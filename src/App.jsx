@@ -326,7 +326,7 @@ function AppWithRouter() {
               </Route>
             </Route>
 
-            {/* Blog routes (optional, currently unused)
+            {/* Blog routes (optional, currently unused) */}
             <Route path="blog" element={<BlogLand />}>
               <Route path="home" element={<BlogHome />} />
               <Route path="editor" element={<BlogWrite />} />
@@ -334,7 +334,7 @@ function AppWithRouter() {
               <Route path="posts/:postId" element={<SpecificBlog />} />
               <Route path="help" element={<BlogHelp />} />
             </Route>
-            */}
+           
 
             {/* Catch-all 404 route */}
             <Route path="*" element={<NotFound />} />

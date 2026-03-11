@@ -1,63 +1,439 @@
 "use client";
-import React from "react";
-import ScrollLines from "../components/scroll-component";
-import { Outlet, redirect, useLocation, useParams } from "react-router-dom";
-import BlogNavbar from "../components/blog-navbar";
-import { useEffect } from "react";
+import React, { useEffect, useRef, useState, useCallback, memo } from "react";
+import { FaComment, FaArrowUp, FaReply } from "react-icons/fa";
 import axios from "axios";
-import { useState } from "react";
-import { FaArrowUp} from "react-icons/fa";
 
 const BlogHome = () => {
-  const blogStructure = {
-    title: "blog title",
-    content: "amazing blog content ",
-    banner: "https://res.cloudinary.com/demo/image/upload/v1312461204/sample.jpg",
-    des: "blog description",
-    upvotes:"5",
-    redirectLink:"/blog/"
-  }
-  const location = useLocation()
-  const [locations,setLocation] = useState(true)
-  const [blogs,setBlogs] = useState([blogStructure])
-  // const server = import.meta.env.VITE_SERVER || "http://localhost:"
-    // useEffect(()=>{
-    //     try {
-    //       axios.get(server+"/api/v1/blog/get-blogs").then(data=>{
-    //         setBlogs(data.data.blogs).catch(err=>console.log(err))
-    //       })
-    //     } catch (error) {
-    //       console.log(error)
-    //     } //get blogs for home pages
-        // commenting out for testing purposes
-    // },[])
+  const [openCommentsId, setOpenCommentsId] = useState(null);
+  const [commentInputs, setCommentInputs] = useState({});
+  const [replyInputs, setReplyInputs] = useState({});
+  const [replyVisible, setReplyVisible] = useState({});
+  const [blogs, setBlogs] = useState([]);
+  const [liked, setLiked] = useState([]);
+  const [name, setName] = useState("");
+  const server = import.meta.env.VITE_SERVER;
+  const authRaw = typeof window !== "undefined" ? localStorage.getItem("AuthState") : null;
+  const auth = authRaw ? JSON.parse(authRaw) : null;
+
+   //this array stores all parent comment ids whose children replies are visible 
+  // refs to keep DOM nodes for reply inputs stable and to restore focus
+  const replyInputRefs = useRef({});
+
+  useEffect(() => {
+    if (!auth?.token) return;
+    axios
+      .get(server + "/api/v1/blog/get-blogs", {
+        headers: { Authorization: `Bearer ${auth.token}` },
+      })
+      .then((res) => {
+         const blogs = res?.data?.BlogArray || [];
+  // Initialize showReplies for all comments
+  const blogsWithShowReplies = blogs.map(blog => ({
+    ...blog,
+    comments: (blog.comments || []).map(c => ({ ...c, showReplies: false }))
+  }));
+  setBlogs(blogsWithShowReplies);
+        const arr = res?.data?.LikedArray?.map((i) => String(i._id)) || [];
+        setLiked(arr);
+        setName(res?.data?.Name || "");
+      })
+      .catch((err) => console.error("fetch blogs:", err));
+  }, [server, auth?.token]);
+
+  // collapse reply inputs when clicking outside (but not when clicking the reply toggle)
+useEffect(() => {
+  const handleClickOutside = (e) => {
+    const clickedInsideReplyBox = e.target.closest(".reply-box");
+    const clickedReplyToggle = e.target.closest(".reply-toggle");
+    const clickedShowReplies = e.target.closest(".show-replies-toggle");
+    if (!clickedInsideReplyBox && !clickedReplyToggle && !clickedShowReplies) {
+      setReplyVisible({});
+    }
+  };
+  document.addEventListener("mousedown", handleClickOutside);
+  return () => document.removeEventListener("mousedown", handleClickOutside);
+}, []);
+
+  // focus-preserving effect:
+  // when a reply input is visible and not focused, focus it and restore caret to end
+  useEffect(() => {
+    Object.keys(replyVisible).forEach((id) => {
+      if (!replyVisible[id]) return;
+      const el = replyInputRefs.current[id];
+      if (!el) return;
+      if (document.activeElement !== el) {
+        try {
+          el.focus();
+          const val = replyInputs[id] || "";
+          if (typeof el.setSelectionRange === "function") {
+            el.setSelectionRange(val.length, val.length);
+          }
+        } catch (e) {
+          // noop
+        }
+      }
+    });
+  }, [replyVisible, replyInputs]);
+
+  // IMMUTABLE like/unlike handlers
+  const handleLike = async (blog_id) => {
+    if (!auth?.token) return;
+    try {
+      const { data } = await axios.post(
+        server + "/api/v1/blog/like-blog",
+        { _id: blog_id },
+        { headers: { Authorization: `Bearer ${auth.token}` } }
+      );
+
+      if (data?.message === "You have already upvoted this blog") {
+        return handleUnlike(blog_id);
+      }
+
+      setLiked((prev) => (prev.includes(String(blog_id)) ? prev : [...prev, String(blog_id)]));
+      setBlogs((prev) =>
+        prev.map((b) =>
+          b._id === blog_id
+            ? {
+                ...b,
+                activity: {
+                  ...(b.activity || {}),
+                  total_upvotes: (b.activity?.total_upvotes || 0) + 1,
+                },
+              }
+            : b
+        )
+      );
+    } catch (err) {
+      console.error("like error:", err);
+    }
+  };
+
+  const handleUnlike = async (blog_id) => {
+    if (!auth?.token) return;
+    try {
+      await axios.post(
+        server + "/api/v1/blog/unlike-blog",
+        { _id: blog_id },
+        { headers: { Authorization: `Bearer ${auth.token}` } }
+      );
+
+      setLiked((prev) => prev.filter((id) => id !== String(blog_id)));
+      setBlogs((prev) =>
+        prev.map((b) =>
+          b._id === blog_id
+            ? {
+                ...b,
+                activity: {
+                  ...(b.activity || {}),
+                  total_upvotes: Math.max(0, (b.activity?.total_upvotes || 0) - 1),
+                },
+              }
+            : b
+        )
+      );
+    } catch (err) {
+      console.error("unlike error:", err);
+    }
+  };
+
+  const toggleComments = (blogId) => {
+    setOpenCommentsId((cur) => (cur === blogId ? null : blogId));
+  };
+
+  const handleCommentChange = (blogId, value) => {
+    setCommentInputs((prev) => ({ ...prev, [String(blogId)]: value }));
+  };
+
+  const handleReplyChange = (commentId, value) => {
+    const key = String(commentId);
+    setReplyInputs((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const toggleReplyVisible = (commentId) => {
+    const key = String(commentId);
+    setReplyVisible((prev) => ({ ...prev, [key]: !prev[key] }));
+    // ensure a ref entry exists so effect can focus after re-render
+    if (!replyInputRefs.current[key]) replyInputRefs.current[key] = null;
+  };
+
+  // Safe helper to replace or append returned comment
+  const replaceOrAppendComment = (prevBlogs, blogId, tempId, realComment) =>
+    prevBlogs.map((b) => {
+      if (b._id !== blogId) return b;
+      const comments = Array.isArray(b.comments) ? b.comments.slice() : [];
+      const found = comments.some((c) => String(c._id) === String(tempId));
+      const updatedComments = found
+        ? comments.map((c) => (String(c._id) === String(tempId) ? realComment : c))
+        : [...comments, realComment];
+      return { ...b, comments: updatedComments };
+    });
+
+  // Add a top-level comment
+  const handleAddComment = async (blogId) => {
+    const text = (commentInputs[String(blogId)] || "").trim();
+    if (!text) return;
+
+    const tempId = String(Date.now());
+    const newComment = {
+      _id: tempId,
+      text,
+      commentedBy: { name: name || "You" },
+      level: 0,
+      replyTo: null,
+      createdAt: new Date().toISOString(),
+    };
+
+    // optimistic update
+    setBlogs((prev) =>
+      prev.map((blog) =>
+        blog._id === blogId
+          ? {
+              ...blog,
+              comments: [...(Array.isArray(blog.comments) ? blog.comments : []), newComment],
+              activity: {
+                ...(blog.activity || {}),
+                total_comments: (blog.activity?.total_comments || 0) + 1,
+              },
+            }
+          : blog
+      )
+    );
+
+    setCommentInputs((prev) => ({ ...prev, [String(blogId)]: "" }));
+
+    try {
+      const res = await axios.post(
+        server + "/api/v1/blog/add-comment",
+        { _id: blogId, text, level: 0, replyTo: null, isReply: false },
+        { headers: { Authorization: `Bearer ${auth?.token}` } }
+      );
+
+      const realComment = res?.data?.comment;
+      if (realComment) {
+        setBlogs((prev) => replaceOrAppendComment(prev, blogId, tempId, realComment));
+      } else {
+        console.warn("add-comment: server did not return comment");
+      }
+    } catch (err) {
+      console.error("add-comment failed:", err);
+    }
+  };
+
+  // Add a reply
+  const handleAddReply = async (blogId, parentComment) => {
+    const parentIdStr = String(parentComment._id);
+    const text = (replyInputs[parentIdStr] || "").trim();
+    if (!text) return;
+
+    const tempId = String(Date.now()) + "-reply";
+    const newReply = {
+      _id: tempId,
+      text,
+      commentedBy: { name: name || "You" },
+      level: (parentComment.level || 0) + 1,
+      replyTo: parentComment._id,
+      createdAt: new Date().toISOString(),
+    };
+
+    setBlogs((prev) =>
+      prev.map((blog) =>
+        blog._id === blogId
+          ? {
+              ...blog,
+              comments: [...(Array.isArray(blog.comments) ? blog.comments : []), newReply],
+              activity: {
+                ...(blog.activity || {}),
+                total_comments: (blog.activity?.total_comments || 0) + 1,
+              },
+            }
+          : blog
+      )
+    );
+
+    // clear input AND collapse after submit
+    setReplyInputs((prev) => ({ ...prev, [parentIdStr]: "" }));
+    setReplyVisible((prev) => ({ ...prev, [parentIdStr]: false }));
+
+    try {
+      const res = await axios.post(
+        server + "/api/v1/blog/add-comment",
+        {
+          _id: blogId,
+          text,
+          level: parentComment.level + 1,
+          replyTo: parentComment._id,
+          isReply: true,
+        },
+        { headers: { Authorization: `Bearer ${auth?.token}` } }
+      );
+
+      const realReply = res?.data?.comment;
+      if (realReply) {
+        setBlogs((prev) => replaceOrAppendComment(prev, blogId, tempId, realReply));
+      } else {
+        console.warn("add-reply: server did not return comment");
+      }
+    } catch (err) {
+      console.error("add-reply failed:", err);
+    }
+  };
+
+  // Build comment tree safely
+  const buildCommentTree = (comments) => {
+    if (!Array.isArray(comments) || comments.length === 0) return [];
+    const commentMap = new Map();
+    const roots = [];
+
+    comments.forEach((c) => commentMap.set(String(c._id), { ...c, replies: [] }));
+
+    commentMap.forEach((c) => {
+      if (c.replyTo && commentMap.has(String(c.replyTo))) {
+        commentMap.get(String(c.replyTo)).replies.push(c);
+      } else {
+        roots.push(c);
+      }
+    });
+
+    return roots;
+  };
+
+  // Memoized CommentItem to reduce re-renders/remounts
+  const CommentItem = memo(function CommentItem({ comment, blogId }) {
+    const idStr = String(comment._id);
+    const visible = Boolean(replyVisible[idStr]);
+
+    // assign ref for focus management
+    const assignRef = useCallback((el) => {
+      replyInputRefs.current[idStr] = el;
+    }, []);
+
+    return (
+      <div className="mb-3" style={{ marginLeft: comment.level > 0 ? "1.5rem" : 0 }}>
+        <div className="bg-gray-800 p-2 rounded">
+          <div className="flex justify-between items-start">
+            <span className="font-bold text-green-400 text-sm">
+              {comment.commentedBy?.name || "Anonymous"}
+            </span>
+            <span className="text-xs text-gray-500">{new Date(comment.createdAt).toLocaleString()}</span>
+          </div>
+          <p className="text-gray-200 text-sm mt-1">{comment.text}</p>
+          <p className={"text-xs text-gray-400 cursor-pointer hover:text-green-400 mt-1 flex items-center gap-1 show-replies-toggle " +  (comment.replies ? " " : " hidden")} onClick = {() => {
+            console.log("hiii")
+            setBlogs((prev) => prev.map((b) => {
+              if (b._id !== blogId) return b;
+              const comments = Array.isArray(b.comments) ? b.comments.slice() : [];
+              const updatedComments = comments.map((c) => String(c._id) === idStr ? { ...c, showReplies: !comment.showReplies } : c);
+              return { ...b, comments: updatedComments };
+            }))
+          }}>
+            Previous Replies
+          </p>
+          <button
+            onClick={() => toggleReplyVisible(idStr)}
+            className="reply-toggle text-xs text-gray-400 hover:text-green-400 mt-1 flex items-center gap-1"
+          >
+            <FaReply size={10} /> Reply
+          </button>
+        </div>
+
+        {visible && (
+          <div className="reply-box flex gap-2 mt-2 ml-4">
+            <input
+              ref={assignRef}
+              type="text"
+              value={replyInputs[idStr] || ""}
+              onChange={(e) => handleReplyChange(idStr, e.target.value)}
+              placeholder="Write a reply."
+              className="flex-1 bg-gray-900 text-white border border-gray-700 rounded px-3 py-1 text-sm focus:outline-none"
+            />
+            <button
+              onClick={() => handleAddReply(blogId, comment)}
+              className="px-3 py-1 bg-green-600 text-white rounded text-xs hover:bg-green-700 transition cursor-pointer"
+            >
+              Post
+            </button>
+          </div>
+        )}
+
+        {comment.replies && comment.replies.length > 0 && comment.showReplies && (
+          <div className={"mt-2"  }>
+            {comment.replies.map((reply) => (
+              <CommentItem key={String(reply._id)} comment={reply} blogId={blogId} />
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  });
 
   return (
-    <div className="relative h-full w-full bg-black">
-{<div>
-    <div
-    className="absolute bottom-0 left-0 right-0 top-0 z-0  bg-[linear-gradient(to_right,#ffffff20_1px,transparent_1px),linear-gradient(to_bottom,#ffffff20_1px,transparent_1px)]  bg-[size:12px_12px]  "
-  />
-  
-   <section className="grid grid-cols-1 md:grid-cols-3 relative z-10  pt-18" >
-    {
-      blogs.map((blog,index)=>(
-        <div key={index} className="m-4 p-4 border border-white rounded-lg">
-          <h2 className="text-2xl font-bold text-white mb-2">{blog.title}</h2>  
-          <img src={blog.banner} alt="Blog Banner" className="w-full h-auto mb-4 rounded"/>
-          <p className="text-white mb-4">{blog.des}</p>
-         
-            <button className="text-gray-400 text-sm flex gap-2 relative"> <FaArrowUp  className="absolute -translate-y-1/2 top-1/2 " /> <span className="pl-5" >{blog.upvotes || 0}</span></button>
+    <div className="relative h-full w-full bg-black pt-16">
+      <section className="grid grid-cols-1 md:grid-cols-3 relative z-10 pt-18 font-mono">
+        {blogs.map((blog) => (
+          <div
+            key={String(blog._id)}
+            className="m-4 p-4 border border-white rounded-lg transition hover:border-green-400 hover:shadow-[0_0_10px_#4ade80]"
+          >
+            <h2 className="text-2xl font-bold text-white mb-2">{blog.title}</h2>
+            {blog.banner && <img src={blog.banner} alt="Blog Banner" className="w-full h-auto mb-4 rounded" />}
+            <p className="text-white mb-4">{blog.des}</p>
 
-          
-        </div>
-      ))
-    }
-   </section>
+            <div className="flex gap-4 items-center">
+              <button
+                className={`text-gray-400 text-sm flex gap-2 items-center ${
+                  liked.includes(String(blog._id)) ? "text-green-400" : ""
+                }`}
+                onClick={() => handleLike(blog._id)}
+              >
+                <FaArrowUp className="cursor-pointer" />
+                <span>{blog.activity?.total_upvotes || 0}</span>
+              </button>
 
-   
-</div>}
-</div>
+              <button
+                className="text-gray-400 text-sm flex gap-2 items-center hover:text-green-400 transition"
+                onClick={() => toggleComments(blog._id)}
+              >
+                <FaComment className="cursor-pointer" />
+                <span>
+                  {blog.activity?.total_comments || (Array.isArray(blog.comments) ? blog.comments.length : 0)}
+                </span>
+              </button>
+            </div>
+
+            {openCommentsId === blog._id && (
+              <div className="mt-4 pt-4 border-t border-gray-700">
+                {Array.isArray(blog.comments) && blog.comments.length > 0 ? (
+                  <div className="mb-4 space-y-2 max-h-96 overflow-y-auto">
+                    {buildCommentTree(blog.comments).map((rootComment) => (
+                      <CommentItem key={String(rootComment._id)} comment={rootComment} blogId={blog._id} />
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-gray-500 text-sm mb-2">No comments yet.</p>
+                )}
+
+                <div className="flex gap-2 mt-2">
+                  <input
+                    type="text"
+                    value={commentInputs[String(blog._id)] || ""}
+                    onChange={(e) => handleCommentChange(blog._id, e.target.value)}
+                    placeholder="Add a comment."
+                    className="flex-1 bg-gray-900 text-white border border-gray-700 rounded px-3 py-2 text-sm focus:outline-none"
+                  />
+                  <button
+                    onClick={() => handleAddComment(blog._id)}
+                    className="px-4 py-2 bg-green-600 text-white rounded text-sm hover:bg-green-700 transition cursor-pointer"
+                  >
+                    Post
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+      </section>
+    </div>
   );
 };
-export default BlogHome 
+
+export default BlogHome;
