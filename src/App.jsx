@@ -25,8 +25,7 @@ import SideBae from './components/SideBae.jsx'
 import BlogWrite from './pages/BlogWrite.jsx'
 import { Card, CardHeader } from './components/ui/card.jsx'
 import BlogHome from './pages/BlogHomePage.jsx';
-import WelcomeBlog from './pages/WelcomeBlogPage.jsx';
-import { SpecificBlog } from './pages/SpecificBlogPage.jsx';
+import  SpecificBlog  from './pages/SpecificBlogPage.jsx';
 import BlogHelp from './pages/BlogHelp.jsx';
 import BlogLand from './pages/BlogLand.jsx';
 import { useEffect } from 'react';
@@ -331,7 +330,7 @@ function AppWithRouter() {
               <Route path="home" element={<BlogHome />} />
               <Route path="editor" element={<BlogWrite />} />
               <Route path="posts" element={<BlogPosts />} />
-              <Route path="posts/:postId" element={<SpecificBlog />} />
+              <Route path="blog/:blogId" element={<SpecificBlog />} />
               <Route path="help" element={<BlogHelp />} />
             </Route>
            

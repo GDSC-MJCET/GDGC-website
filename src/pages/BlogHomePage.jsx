@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState, useCallback, memo } from "react";
 import { FaComment, FaArrowUp, FaReply } from "react-icons/fa";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const BlogHome = () => {
   const [openCommentsId, setOpenCommentsId] = useState(null);
@@ -365,6 +366,11 @@ useEffect(() => {
       </div>
     );
   });
+  const nav = useNavigate();
+  const handleBlogOnClick = (blogId) => {
+    console.log("navigating to blog:", blogId);
+    nav(`/blog/blog/${blogId}`);
+  }
 
   return (
     <div className="relative h-full w-full bg-black pt-16">
@@ -374,7 +380,7 @@ useEffect(() => {
             key={String(blog._id)}
             className="m-4 p-4 border border-white rounded-lg transition hover:border-green-400 hover:shadow-[0_0_10px_#4ade80]"
           >
-            <h2 className="text-2xl font-bold text-white mb-2">{blog.title}</h2>
+            <h2 className="text-2xl font-bold text-white mb-2" onClick={() => handleBlogOnClick(blog._id)} >{blog.title}</h2>
             {blog.banner && <img src={blog.banner} alt="Blog Banner" className="w-full h-auto mb-4 rounded" />}
             <p className="text-white mb-4">{blog.des}</p>
 
