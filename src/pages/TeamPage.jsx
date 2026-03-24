@@ -1,8 +1,19 @@
 import React from "react";
-import ComingSoon from "../components/ComingSoon";
+import TeamTimeline from "../components/team/TeamTimeline";
+import Nav from "../components/Nav";
+import Background from "../components/Background";
+import Footer from "../components/Footer";
 
 const TeamPage = () => {
-  return <ComingSoon pageName="Team" />;
+  return (
+    <Background bgColor="#000000">
+      <div>
+        <Nav />
+        <TeamTimeline />
+        <Footer />
+      </div>
+    </Background>
+  );
 };
 
 export default TeamPage;
