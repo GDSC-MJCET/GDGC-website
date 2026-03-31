@@ -77,9 +77,6 @@ export default function LoginPage() {
         
 
       }
-<<<<<<< HEAD
-    }).catch((error)=>  toast.error(server+error.message))
-=======
     }).catch((error)=>{
       setIsLoading(false)
       toast.dismiss()
@@ -89,22 +86,18 @@ export default function LoginPage() {
       } 
       toast.error(server+error.message)
       })
->>>>>>> af70768180f49c31cd5dfec40d7930a277a6cd45
   };
 
  return (
  
     <div className="min-h-screen flex items-center justify-center p-4">
    <Toaster/>
-<<<<<<< HEAD
-=======
     <div className="
       w-full max-w-md rounded-lg p-[2px]
       bg-gradient-to-r
       from-blue-500 via-green-400 via-red-500 via-orange-400 to-yellow-400
       animate-gradient
     ">
->>>>>>> af70768180f49c31cd5dfec40d7930a277a6cd45
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">
