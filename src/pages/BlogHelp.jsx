@@ -1,4 +1,4 @@
-import image from "../../public/visualise.ai.png";
+const image = "/visualise.ai.png";
 
 export default function BlogHelp() {
   return (
