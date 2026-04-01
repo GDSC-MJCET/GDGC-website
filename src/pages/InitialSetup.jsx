@@ -56,6 +56,15 @@ export default function InitialSetup() {
       }
         setCheckingAuth(false)
     })
+    let identifier = parseInt(id)/parseInt(import.meta.env.VITE_DIVISOR)
+    const server = import.meta.env.VITE_SERVER || "http://localhost:3009"
+    axios.post(server+"/api/v1/auth/confirm",{
+      identifier
+    }).then((data)=>{
+      if (data.data.success) {
+         nav("/login")
+      }
+    }).catch((err)=>console.error(err))
   },[])
   if(CheckingAuth){
     return <div className='bg-black'></div>
@@ -90,6 +99,14 @@ export default function InitialSetup() {
       }).then((data)=>{
         console.log(data)
         
+    const server = import.meta.env.VITE_SERVER || "http://localhost:3009"
+    
+    const ID = id
+     axios.post(server+"/api/v1/auth/signup",{
+      name,email,id:ID
+    }).then((data)=>{
+     
+      
         if (data.data.success) {
           
           toast.success("Password Sent to your Email")
@@ -100,7 +117,7 @@ export default function InitialSetup() {
 
       setIsLoading(false)
     }) //sigup is the route which sends user an email with the password
-  };
+  });
 
   return (
  <div
@@ -251,4 +268,4 @@ export default function InitialSetup() {
 
 
   );
-}
+}}
