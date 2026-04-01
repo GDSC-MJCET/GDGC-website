@@ -63,11 +63,11 @@ const Hero = () => {
             </div>
 
             <div className="flex  bg-[#000000] flex-col md:flex-row justify-center items-center rounded-b-4xl border-2 border-white/40 shadow-[0_0_8px_rgba(255,255,255,0.85)] max-w-3xl mx-auto px-6 md:px-22 py-18 gap-10 md:gap-22">
-              <div >
+              <div className="w-full md:scale-150">
                 <img
                   src="/info-session-26.jpeg"
                   alt="Info Session"
-                  className="rounded-sm"
+                  className="rounded-sm "
                 />
               </div>
 
