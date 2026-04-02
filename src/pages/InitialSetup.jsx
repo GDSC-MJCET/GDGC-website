@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react';
+import { useEffect,useState } from 'react';
 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -37,8 +37,8 @@ export default function InitialSetup() {
     if(parseInt(id)%parseInt(import.meta.env.VITE_DIVISOR)!=0){
     
     toast.error("Unauthorized Page")
-      
-    }
+    nav("/")
+    } 
     axios.get(import.meta.env.VITE_SERVER +`/api/v1/auth/initial-setup-check?id=${id}`,{headers:{
     Authorization:`Bearer ${auth?.token}`
    }}).then((data)=>{
@@ -64,7 +64,9 @@ export default function InitialSetup() {
       if (data.data.success) {
          nav("/login")
       }
-    }).catch((err)=>console.error(err))
+    }).catch((err)=>{
+      
+    })
   },[])
   if(CheckingAuth){
     return <div className='bg-black'></div>
@@ -76,54 +78,49 @@ export default function InitialSetup() {
   }
 
 
-  const handleSubmit = () => {
-    
+  const handleSubmit = async () => {
     setError('');
-    setIsLoading(true);
-      if (!name?.trim()) {
-    toast.error('Name is required');
-    return;
-  }
-  if (!email?.trim()) {
-    toast.error('Email is required');
-    return;
-  }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    toast.error('Please enter a valid email address');
-    return;
-  }
-    const server = import.meta.env.VITE_SERVER || "http://localhost:3009";
-    console.log(name,email,id)
-    axios.post(server+"/api/v1/auth/signup",{
-      name,email,id
-      }).then((data)=>{
-        console.log(data)
-        
-    const server = import.meta.env.VITE_SERVER || "http://localhost:3009"
-    
-    const ID = id
-     axios.post(server+"/api/v1/auth/signup",{
-      name,email,id:ID
-    }).then((data)=>{
-     
-      
-        if (data.data.success) {
-          
-          toast.success("Password Sent to your Email")
-          nav("/login")
-        }
-    }).finally(()=>{
-      
+    if (!name?.trim()) {
+      toast.error('Name is required');
+      return;
+    }
 
-      setIsLoading(false)
-    }) //sigup is the route which sends user an email with the password
-  });
+    if (!email?.trim()) {
+      toast.error('Email is required');
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+
+    setIsLoading(true);
+    const server = import.meta.env.VITE_SERVER || "http://localhost:3009";
+
+    try {
+      const data = await axios.post(server + "/api/v1/auth/signup", {
+        name,
+        email,
+        id,
+      });
+
+      if (data?.data?.success) {
+        toast.success("Password Sent to your Email");
+        nav("/login");
+      }
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Unable to complete signup");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
  <div
   id="ayan"
   className="min-h-screen flex items-center justify-center bg-black p-4"
->
+> 
   <Toaster />
 
   {/* Gradient shell */}
@@ -268,4 +265,4 @@ export default function InitialSetup() {
 
 
   );
-}}
+}
