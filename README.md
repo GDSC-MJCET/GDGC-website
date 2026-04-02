@@ -1,4 +1,4 @@
-# GDGC Website
+# GDGC - google developer 
 
 A modern, responsive website for Google Developer Group Community (GDGC) built with React and Vite.
 
@@ -62,10 +62,6 @@ src/
    npm install
    ```
 
-3. **Start the development server**
-   ```bash
-   npm run dev
-   ```
 
 4. **Open your browser**
    Navigate to `http://localhost:5173` (or the port shown in terminal)
