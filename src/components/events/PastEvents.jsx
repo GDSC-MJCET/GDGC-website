@@ -16,7 +16,7 @@ export const eventsByYear = {
     bg: "#4ade80"
   },
   {
-    title: "CYBERSECURITY",
+    title: "From Protection to Response",
     date: "27th",
     month: "November, 2025",
     desc: "From Protection to Response — an industry-oriented cybersecurity session by IEEE CS and GDGC MJCET, focused on real-world threats and how modern defense systems respond to them.",
