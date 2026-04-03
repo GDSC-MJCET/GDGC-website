@@ -6,12 +6,13 @@ import { Switch } from "@/components/ui/switch";
 
 const SuperAdminUsers = () => {
   const [users, setUsers] = useState([]);
+  const [stats, setStats] = useState({ totalUsers: 0, totalAdmins: 0, totalSuperAdmins: 0 });
   const [loading, setLoading] = useState(true);
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [confirmState, setConfirmState] = useState({
     open: false,
     user: null,
-    role: "admin", // "admin" | "superadmin"
+    role: "admin",
     make: false,
     loading: false,
   });
@@ -20,58 +21,57 @@ const SuperAdminUsers = () => {
   const auth = JSON.parse(localStorage.getItem("AuthState"));
   const server = import.meta.env.VITE_SERVER;
 
+  const fetchStats = async () => {
+    try {
+      const res = await axios.get(`${server}/api/v1/admin/stats`, {
+        headers: { Authorization: `Bearer ${auth.token}` },
+      });
+      if (res.data.success) setStats(res.data.stats);
+    } catch {
+      // silently fail — stats are non-critical
+    }
+  };
+
   useEffect(() => {
     if (!auth?.token) {
       nav("/login");
       return;
     }
 
-    const fetchUsers = async () => {
+    const fetchAll = async () => {
       try {
-        const res = await axios.get(
-          `${server}/api/v1/admin/get-all-users`,
-          {
-            headers: {
-              Authorization: `Bearer ${auth.token}`,
-            },
-          }
-        );
+        const [usersRes, statsRes] = await Promise.all([
+          axios.get(`${server}/api/v1/admin/get-all-users`, {
+            headers: { Authorization: `Bearer ${auth.token}` },
+          }),
+          axios.get(`${server}/api/v1/admin/stats`, {
+            headers: { Authorization: `Bearer ${auth.token}` },
+          }),
+        ]);
 
-        const data = res.data;
-        const list =
-          data?.users ??
-          data?.data ??
-          (Array.isArray(data) ? data : []);
-
+        const data = usersRes.data;
+        const list = data?.users ?? data?.data ?? (Array.isArray(data) ? data : []);
         setUsers(list);
+
+        if (statsRes.data.success) setStats(statsRes.data.stats);
+
         setCheckingAuth(false);
         setLoading(false);
       } catch {
-        // If unauthorized or any error, send back to login
         nav("/login");
       }
     };
 
-    fetchUsers();
+    fetchAll();
   }, [auth?.token, nav, server]);
 
-  if (checkingAuth) {
-    return <div className="bg-black min-h-screen" />;
-  }
+  if (checkingAuth) return <div className="bg-black min-h-screen" />;
 
-  const openConfirm = (user, role, make) => {
-    setConfirmState({
-      open: true,
-      user,
-      role,
-      make,
-      loading: false,
-    });
-  };
+  const openConfirm = (user, role, make) =>
+    setConfirmState({ open: true, user, role, make, loading: false });
 
-  const closeConfirm = () => {
+  const closeConfirm = () =>
     setConfirmState({ open: false, user: null, make: false });
-  };
 
   const handleConfirm = async () => {
     const { user, role, make } = confirmState;
@@ -79,57 +79,39 @@ const SuperAdminUsers = () => {
 
     let endpoint = "";
     if (role === "admin") {
-      endpoint = make
-        ? "/api/v1/admin/create-admin"
-        : "/api/v1/admin/remove-admin";
+      endpoint = make ? "/api/v1/admin/create-admin" : "/api/v1/admin/remove-admin";
     } else {
-      endpoint = make
-        ? "/api/v1/admin/create-super-admin"
-        : "/api/v1/admin/remove-super-admin";
+      endpoint = make ? "/api/v1/admin/create-super-admin" : "/api/v1/admin/remove-super-admin";
     }
 
     try {
       setConfirmState((prev) => ({ ...prev, loading: true }));
+
       const workDone = await axios.post(
         `${server}${endpoint}`,
-        {
-          id: user._id,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${auth.token}`,
-          },
-        }
+        { id: user._id },
+        { headers: { Authorization: `Bearer ${auth.token}` } }
       );
-      if(workDone.data.success) {
+
+      if (workDone.data.success) {
         setUsers((prev) =>
           prev.map((u) =>
             u._id === user._id
               ? {
                   ...u,
-                  admin:
-                    role === "admin" ? make : u.admin,
-                  superadmin:
-                    role === "superadmin" ? make : u.superadmin,
+                  admin: role === "admin" ? make : u.admin,
+                  superadmin: role === "superadmin" ? make : u.superadmin,
                 }
               : u
           )
         );
 
-        if (role === "admin") {
-          toast.success(
-            make
-              ? "User promoted to admin."
-              : "User removed from admin."
-          );
-        } else {
-          toast.success(
-            make
-              ? "User promoted to superadmin."
-              : "User removed from superadmin."
-          );
-        }
+        // Re-fetch stats from backend to reflect accurate DB counts
+        await fetchStats();
 
+        toast.success(
+          make ? `User promoted to ${role}.` : `User removed from ${role}.`
+        );
       } else {
         toast.error(workDone.data.message);
       }
@@ -141,19 +123,58 @@ const SuperAdminUsers = () => {
     }
   };
 
+  const statCards = [
+    {
+      label: "Total Users",
+      value: stats.totalUsers,
+      color: "text-white",
+      border: "border-white/10",
+      bg: "bg-white/5",
+    },
+    {
+      label: "Admins",
+      value: stats.totalAdmins,
+      color: "text-white",
+      border: "border-white/20",
+      bg: "bg-white/5",
+    },
+    {
+      label: "SuperAdmins",
+      value: stats.totalSuperAdmins,
+      color: "text-purple-300",
+      border: "border-purple-500/20",
+      bg: "bg-purple-500/5",
+    },
+  ];
+
   return (
     <div className="min-h-[70vh] flex flex-col items-center px-4 py-10">
       <Toaster />
 
       <div className="w-full max-w-5xl">
         <div className="space-y-2 mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-white">
-            Users Preview
-          </h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-white">Users Preview</h1>
           <p className="text-gray-400 text-sm md:text-base max-w-xl">
             Preview of all registered users on the platform. You can toggle their admin
             access from here.
           </p>
+        </div>
+
+        {/* Stats Row */}
+        <div className="grid grid-cols-3 gap-3 mb-8">
+          {statCards.map(({ label, value, color, border, bg }) => (
+            <div
+              key={label}
+              className={`rounded-xl border ${border} ${bg} px-4 py-4 flex flex-col gap-1`}
+            >
+              {loading ? (
+                <span className="text-2xl font-bold text-gray-600">—</span>
+              ) : (
+                <span className={`text-2xl font-bold ${color}`}>{value}</span>
+              )}
+              <span className="text-xs text-gray-500">{label}</span>
+            </div>
+          ))}
         </div>
 
         {loading ? (
@@ -179,18 +200,12 @@ const SuperAdminUsers = () => {
                     <p className="text-white font-medium">
                       {user.name || user.fullName || "Unnamed User"}
                     </p>
-                    <p className="text-gray-400 text-sm">
-                      {user.email || "No email"}
-                    </p>
+                    <p className="text-gray-400 text-sm">{user.email || "No email"}</p>
                     <p className="text-xs text-gray-500">
                       ID: {user._id || user.id || "-"}
                     </p>
                     <p className="text-xs text-gray-400">
-                      {isSuperAdmin
-                        ? "SuperAdmin"
-                        : isAdmin
-                        ? "Admin"
-                        : "User"}
+                      {isSuperAdmin ? "SuperAdmin" : isAdmin ? "Admin" : "User"}
                     </p>
                   </div>
 
@@ -205,44 +220,29 @@ const SuperAdminUsers = () => {
                             : "bg-gray-500/10 text-gray-400 border border-gray-500/40"
                         }`}
                       >
-                        {isSuperAdmin
-                          ? "SuperAdmin"
-                          : isAdmin
-                          ? "Admin"
-                          : "User"}
+                        {isSuperAdmin ? "SuperAdmin" : isAdmin ? "Admin" : "User"}
                       </span>
                     </div>
 
                     <div className="flex flex-col gap-2 items-end">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs text-gray-400">
-                          Admin
-                        </span>
+                        <span className="text-xs text-gray-400">Admin</span>
                         <Switch
                           checked={isAdmin}
                           disabled={isSuperAdmin}
                           onCheckedChange={(value) => {
-                            if (value !== isAdmin) {
-                              openConfirm(user, "admin", value);
-                            }
+                            if (value !== isAdmin) openConfirm(user, "admin", value);
                           }}
                         />
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-xs text-gray-400">
-                          SuperAdmin
-                        </span>
+                        <span className="text-xs text-gray-400">SuperAdmin</span>
                         <Switch
                           checked={isSuperAdmin}
                           disabled={!isAdmin}
                           onCheckedChange={(value) => {
-                            if (value !== isSuperAdmin) {
-                              openConfirm(
-                                user,
-                                "superadmin",
-                                value
-                              );
-                            }
+                            if (value !== isSuperAdmin)
+                              openConfirm(user, "superadmin", value);
                           }}
                         />
                       </div>
@@ -258,14 +258,12 @@ const SuperAdminUsers = () => {
       {confirmState.open && confirmState.user && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
           <div className="w-full max-w-md rounded-2xl bg-[#111111] border border-white/15 p-6 space-y-4">
-            <h2 className="text-lg font-semibold text-white">
-              Change user role?
-            </h2>
+            <h2 className="text-lg font-semibold text-white">Change user role?</h2>
             <p className="text-sm text-gray-300">
               You are about to{" "}
               {confirmState.make
                 ? `promote this user to ${confirmState.role}.`
-                : `remove this user&apos;s ${confirmState.role} access.`}{" "}
+                : `remove this user's ${confirmState.role} access.`}{" "}
               This action affects what they can do on the platform.
             </p>
             <p className="text-xs text-gray-500">
