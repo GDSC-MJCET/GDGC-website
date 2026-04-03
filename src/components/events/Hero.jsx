@@ -23,16 +23,18 @@ const Hero = () => {
         <div className='overflow-hidden px-4 sm:px-8 md:px-16 lg:px-24'>
       <p className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-wide mb-6 sm:mb-8 md:mb-10 lg:mb-12'>Live Event</p>
       <div className='rounded-2xl px-4 sm:px-6 py-4 sm:py-6 flex flex-col gap-4 sm:gap-6 w-full border border-white/40 shadow-[0_0_8px_rgba(255,255,255,0.85)]'>
-        <img src="/poster.png" alt="event" className='w-full h-40 sm:h-52 md:h-62 rounded-2xl object-cover'/>
-        <h2 className='text-xl sm:text-2xl md:text-3xl mb-2 sm:mb-3 md:mb-4'>Pixel X: Frontend Mastery</h2>
-        <p className='text-left text-sm sm:text-base md:text-lg max-w-2xl'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut cum porro minima. Commodi dolor rem repudiandae repellendus facere omnis labore. Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, incidunt.</p>
+        <img src="/info-session-26.jpeg" alt="event" className='w-full h-40 sm:h-52 md:h-62 rounded-2xl object-cover'/>
+        <h2 className='text-xl sm:text-2xl md:text-3xl mb-2 sm:mb-3 md:mb-4'>Google Solutions Challenge Info Session</h2>
+        <p className='text-left text-sm sm:text-base md:text-lg max-w-2xl'>This session is your roadmap to developing, refining, and positioning your project for a national-level platform — with direct insights from 2025 National Winners on exactly what it takes to succeed.</p>
         <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 justify-center md:justify-start">
-          <button className="w-full sm:w-auto bg-[#f9ac02] text-black px-6 py-2 rounded-full font-semibold border border-white/40 shadow-[0_0_6px_rgba(255,255,255,0.85)]">
+          <a href="https://chat.whatsapp.com/I5JsIVcZrGFJHLsGCpPHx0" target="_blank" rel="noopener noreferrer">
+          <button className="w-full sm:w-auto bg-[#f9ac02] hover:cursor-pointer text-black px-6 py-2 rounded-full font-semibold border border-white/40 shadow-[0_0_6px_rgba(255,255,255,0.85)]">
             Learn More
-          </button>
-          <button className="w-full sm:w-auto bg-[#57cbff] text-black px-6 py-2 rounded-full font-semibold border border-white/40 shadow-[0_0_6px_rgba(255,255,255,0.85)]">
+          </button></a>
+          <a href="https://gdg.community.dev/events/details/google-gdg-on-campus-muffakham-jah-college-of-engineering-and-technology-hyderabad-india-presents-google-solution-challenge-2026-info-session/cohost-gdg-on-campus-muffakham-jah-college-of-engineering-and-technology-hyderabad-india/" target="_blank" rel="noopener noreferrer">
+          <button className="w-full sm:w-auto bg-[#57cbff] text-black px-6 py-2 hover:cursor-pointer rounded-full font-semibold border border-white/40 shadow-[0_0_6px_rgba(255,255,255,0.85)]">
             Register Now
-          </button>
+          </button></a>
         </div>
       </div>
     </div>
