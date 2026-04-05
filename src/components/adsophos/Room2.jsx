@@ -144,7 +144,7 @@ const Room2 = () => {
             </h2>
           </div>
 
-          <div className='flex justify-between gap-22 items-center max-w-4xl'>
+          <div className='flex  justify-between gap-22 items-center max-w-4xl'>
             <div className="w-full max-w-3xl flex flex-col justify-between items-left gap-6 ">
               <h2 className="room1-title text-6xl font-bold text-transparent bg-gradient-to-b from-[#ffffff] via-[#686868] to-[#ffffff] bg-clip-text shrink-0">
                 HEIST

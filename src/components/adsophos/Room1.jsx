@@ -100,10 +100,10 @@ const Room1 = () => {
         .r1-btn:hover { transform: scale(1.08) !important; }
       `}</style>
 
-      <div className="relative w-full overflow-hidden">
+      <div className="w-full bg-[url('/ads-game-1-bg.png')] bg-contain bg-center overflow-hidden ">
 
         {/* Background — covers the full height of content */}
-        <img
+        {/* <img
           src="/ads-game-1-bg.png"
           alt=""
           className="absolute inset-0 w-full h-full object-cover z-0 r1-bg-drift"
@@ -112,13 +112,13 @@ const Room1 = () => {
             transition: 'transform 0.13s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
             willChange: 'transform',
           }}
-        />
+        /> */}
 
         {/* Dark scrim so text stays readable */}
         <div className="absolute inset-0 mb-8 pb-6 z-10" />
 
         {/* All content in normal flow — determines section height */}
-        <div className="relative z-20 flex flex-col items-center px-6 pt-24 pb-0">
+        <div className="z-20 flex flex-col pt-44 items-center">
 
           {/* Title badge */}
           <div className="flex justify-center mb-16">

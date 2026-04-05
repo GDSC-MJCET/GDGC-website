@@ -1,19 +1,21 @@
 import { motion } from "framer-motion";
+import "./adsophos.css";
 
 const Hero = () => {
   return (
-    <div className="relative  w-full h-screen overflow-hidden">
+    <div className="h-screen w-full bg-[url('/adsophos-hero.png')] bg-cover bg-no-repeat bg-center">
+  {/* Your content */}
+
       {/* Background Image */}
       <motion.div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/adsophos-hero.png')" }}
+        // style={{ backgroundImage: "url('/ad-hero.jpg')"  }}
         initial={{ scale: 1.08, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 1.6, ease: [0.25, 0.46, 0.45, 0.94] }}
       />
 
       <motion.div
-        className="absolute inset-0 bg-black"
+        className="absolute inset-0 "
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.45 }}
         transition={{ duration: 1.8, ease: "easeOut" }}
@@ -34,17 +36,24 @@ const Hero = () => {
 
         {/* Main Heading */}
         <motion.h1
-          className="text-transparent bg-clip-text bg-linear-to-b from-[#f19ed3] via-[#ff00a2] to-[#f19ed3] text-center font-black tracking-[0.18em] uppercase leading-none select-none"
+          className="text-transparent adsophos-container bg-clip-text bg-linear-to-b from-[#ffffff] to-[#ff00a2] text-center font-black tracking-[0.18em] uppercase leading-none select-none"
           style={{
-            fontFamily: "'Georgia', 'Times New Roman', serif",
-            fontSize: "clamp(3.5rem, 10vw, 9rem)",
-            textShadow: "0 4px 40px rgba(0,0,0,0.5)",
+            // fontFamily: "'Georgia', 'Times New Roman', serif",
+            // fontSize: "clamp(3.5rem, 8vw, 9rem)",
+            fontSize: "8vw",
+            background: "linear-gradient(180deg, #FFF 0%, #FF00A2 100%)",
+  backgroundClip: "text",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+  WebkitTextStrokeWidth: "0px",
+  WebkitTextStrokeColor: "#000",
+  textShadow: "0 42px 107px rgba(229, 0, 92, 0.34), 0 24.721px 32.257px rgba(255, 255, 255, 0.19), 0 10.268px 13.398px rgba(229, 0, 92, 0.22), 0 3.714px 4.846px rgba(229, 0, 92, 0.15), 0 0 0 #F8EAF0, 0 0 0 #FFF",
           }}
           initial={{ opacity: 0, y: 36, letterSpacing: "0.35em" }}
           animate={{ opacity: 1, y: 0, letterSpacing: "0.18em" }}
           transition={{ duration: 1.1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
-          ADSOPHOS <br /> 2026
+          <div className="mb-8">ADSOPHOS</div> 2026
         </motion.h1>
 
         {/* Year — lighter weight, wider tracking */}

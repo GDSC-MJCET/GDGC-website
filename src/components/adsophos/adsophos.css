@@ -1,0 +1,13 @@
+/* src/index.css */
+@font-face {
+  font-family: 'MyCustomFont';
+  src: url('/src/assets/fonts/Arcade\ Rounded\ Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+.adsophos-container {
+  font-family: 'MyCustomFont', sans-serif;
+  /* background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 8px; */
+}
