@@ -34,7 +34,7 @@ const Hero = () => {
 
         {/* Main Heading */}
         <motion.h1
-          className="text-white text-center font-black tracking-[0.18em] uppercase leading-none select-none"
+          className="text-transparent bg-clip-text bg-linear-to-b from-[#f19ed3] via-[#ff00a2] to-[#f19ed3] text-center font-black tracking-[0.18em] uppercase leading-none select-none"
           style={{
             fontFamily: "'Georgia', 'Times New Roman', serif",
             fontSize: "clamp(3.5rem, 10vw, 9rem)",
@@ -44,7 +44,7 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0, letterSpacing: "0.18em" }}
           transition={{ duration: 1.1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
-          ADSOPHOS
+          ADSOPHOS <br /> 2026
         </motion.h1>
 
         {/* Year — lighter weight, wider tracking */}
@@ -55,7 +55,7 @@ const Hero = () => {
           animate={{ opacity: 0.8, y: 0 }}
           transition={{ duration: 1, delay: 0.85, ease: "easeOut" }}
         >
-          2026
+          
         </motion.span>
 
         {/* Thin rule below */}
