@@ -1,27 +1,29 @@
 import { motion } from "framer-motion";
 import "./adsophos.css";
+import PixelSkyline from "./PixelSkyline";
 
 const Hero = () => {
   return (
-    <div className="h-screen w-full bg-[url('/adsophos-hero.png')] bg-cover bg-no-repeat bg-center">
+    <div className="relative h-screen w-full bg-[url('/adsophos-hero.png')] bg-cover bg-no-repeat bg-center overflow-hidden">
   {/* Your content */}
 
-      {/* Background Image */}
+      {/* Background Image Overlay */}
       <motion.div
         // style={{ backgroundImage: "url('/ad-hero.jpg')"  }}
+        className="absolute inset-0 z-0"
         initial={{ scale: 1.08, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 1.6, ease: [0.25, 0.46, 0.45, 0.94] }}
       />
 
       <motion.div
-        className="absolute inset-0 "
+        className="absolute inset-0 z-0"
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.45 }}
         transition={{ duration: 1.8, ease: "easeOut" }}
       />
 
-      <div className="absolute inset-0 opacity-20 pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgZmlsdGVyPSJ1cmwoI25vaXNlKSIgb3BhY2l0eT0iMSIvPjwvc3ZnPg==')]" />
+      <div className="absolute inset-0 opacity-20 pointer-events-none z-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgZmlsdGVyPSJ1cmwoI25vaXNlKSIgb3BhY2l0eT0iMSIvPjwvc3ZnPg==')]" />
 
       {/* Centered Content */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full gap-4">
@@ -74,6 +76,11 @@ const Hero = () => {
           animate={{ scaleX: 1, opacity: 0.6 }}
           transition={{ duration: 0.8, delay: 1.05, ease: "easeOut" }}
         />
+      </div>
+
+      {/* Animated Pixel Skyline Overlay */}
+      <div className="absolute bottom-0 w-full z-20">
+        <PixelSkyline />
       </div>
     </div>
   );

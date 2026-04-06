@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import './adsophos.css'
 
 const Final = () => {
   const [hovered, setHovered] = useState(null);
@@ -105,7 +106,7 @@ const Final = () => {
 
       <div
         ref={containerRef}
-        className="relative w-full  min-h-screen overflow-hidden flex flex-col items-center justify-start"
+        className="relative w-full adsophos-container min-h-screen overflow-hidden flex flex-col items-center justify-start"
       >
 
         {/* Cloud Background */}
@@ -121,17 +122,17 @@ const Final = () => {
         />
 
         {/* Top Content */}
-        <div className="relative z-20 flex flex-col items-center mt-20">
+        <div className="relative z-20 flex flex-col items-center mt-12 md:mt-24 px-4 text-center">
 
           {/* Title */}
           <h1
-            className={`text-6xl md:text-8xl font-bold text-transparent bg-clip-text bg-linear-to-b from-[#f19ad1] via-[#ff00a2] to-[#f19ad1] mb-12 tracking-wide title-animated`}
+            className={`footer font-bold text-transparent bg-clip-text mb-8 md:mb-12 tracking-wide title-animated`}
           >
-            START <br /> EVENT
+             <div className="text-[#ff00a2]">START</div> <div className="text-[#ff00a2]">EVENT</div> 
           </h1>
 
           {/* Buttons */}
-          <div className="flex flex-col gap-6 text-xl">
+          <div className="flex flex-col gap-4 md:gap-6 text-lg md:text-xl">
             {buttons.map((btn, i) => (
               <div
                 key={i}
@@ -160,23 +161,23 @@ const Final = () => {
         </div>
 
         {/* Grass Bottom */}
-         <div className="absolute bottom-0 w-full z-20">
+        <div className="absolute bottom-0 w-full z-20">
 
-  {/* Grass */}
-  <img
-    src="/final-grass-ads.png"
-    alt=""
-    className="w-full h-30"
-  />
+          {/* Grass */}
+          <img
+            src="/final-grass-ads.png"
+            alt="Grass"
+            className="w-full h-20 md:h-32 object-cover"
+          />
 
-  {/* Mario */}
-  <img
-    src="/mario.png"
-    alt=""
-    className="absolute right-10 bottom-full mb-[-20px] w-[120px]"
-  />
+          {/* Mario */}
+          <img
+            src="/mario.png"
+            alt="Mario"
+            className="absolute right-5 md:right-10 bottom-full mb-[-10px] md:mb-[-20px] w-[80px] md:w-[120px] mario-float"
+          />
 
-</div>
+        </div>
       </div>
     </>
   );

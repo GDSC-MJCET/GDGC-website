@@ -1,13 +1,87 @@
 /* src/index.css */
 @font-face {
   font-family: 'MyCustomFont';
-  src: url('/src/assets/fonts/Arcade\ Rounded\ Regular.ttf') format('truetype');
+  src: url('../../assets/fonts/Arcade\ Rounded\ Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
+
 .adsophos-container {
   font-family: 'MyCustomFont', sans-serif;
   /* background-color: #f5f5f5;
   padding: 20px;
   border-radius: 8px; */
+}
+
+.product-sans {
+  font-family: 'Product Sans', sans-serif;
+}
+
+.btn {
+  background: url('../../assets/fonts/button.svg') no-repeat center / contain;
+  width: 220px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  font-weight: 600;
+  padding: 0;
+  overflow: visible;
+  /* Ensure shadows aren't clipped */
+}
+
+.booth {
+  text-shadow: 0 4px 12px rgba(234, 67, 54, 0.3), 0 0 15px rgba(255, 255, 255, 0.1);
+  -webkit-text-stroke-width: 0.1px;
+  -webkit-text-stroke-color: #000;
+  font-size: clamp(32px, 9vw, 56px);
+  font-style: normal;
+  font-weight: 900;
+  line-height: normal;
+  background: linear-gradient(180deg, #FFFFFF 15%, #EA4336 85%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: block;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.btn-lg {
+  width: 280px !important;
+  height: 60px !important;
+  font-size: 1.25rem !important;
+  font-weight: 800 !important;
+}
+
+.btn2{
+  display: inline-flex;
+padding: 11px 51.988px 11px 42.012px;
+color: white;
+align-items: center;
+border-radius: 100px;
+background: linear-gradient(0deg, var(--Colors-secondary-red, #FF7DAF) 0%, var(--Colors-secondary-red, #FF7DAF) 100%), var(--Colors-button-glow-1, rgba(255, 255, 255, 0.10));
+background-blend-mode: normal, plus-lighter;
+box-shadow: -6px -10.2px 48px -12px rgba(0, 0, 0, 0.15), -1px -1.7px 12px -8px rgba(0, 0, 0, 0.15), 1.2px 2.04px 9.6px 0 rgba(255, 255, 255, 0.27) inset, 0.7px 1.19px 4.8px 0 rgba(255, 255, 255, 0.13) inset;
+backdrop-filter: blur(5px);
+}
+
+.footer{
+  text-align: center;
+text-shadow: 0 42px 107px rgba(229, 0, 92, 0.14), 0 10.268px 13.398px rgba(229, 0, 92, 0.22), 0 3.714px 4.846px rgba(229, 0, 92, 0.15), 0 0 0 #F8EAF0, 0 0 0 #FFF;
+-webkit-text-stroke-width: 1px;
+-webkit-text-stroke-color: #000;
+font-size: clamp(48px, 12vw, 86px);
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+background: linear-gradient(180deg, #FFF 0%, #FF00A2 100%);
+background-clip: text;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
 }
