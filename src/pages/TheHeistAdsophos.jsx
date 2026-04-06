@@ -11,16 +11,12 @@ import bgMobile from "../../public/ali-bg-mobile.png"; // <-- rename to match yo
 export default function TheHeistAdsophos() {
   return (
     <>
-      {/* ─────────────────────────────────────────
-          MOBILE LAYOUT  (shown below md breakpoint)
-      ───────────────────────────────────────── */}
+     
       <div className="block md:hidden">
         <MobileLayout />
       </div>
 
-      {/* ─────────────────────────────────────────
-          DESKTOP LAYOUT  (shown at md and above)
-      ───────────────────────────────────────── */}
+     
       <div className="hidden md:flex flex-col">
 
         {/* SECTION 1 — Hero */}
@@ -95,46 +91,27 @@ export default function TheHeistAdsophos() {
   );
 }
 
-/* ─────────────────────────────────────────────────────────────
-   MOBILE LAYOUT COMPONENT
-   The single mobile image covers both hero + section 2.
-   We use a tall container with the image as background so it
-   can scroll naturally. Overlays are positioned with absolute
-   % values that match the visual positions in the image.
-───────────────────────────────────────────────────────────── */
 function MobileLayout() {
   return (
-    <div style={{ overflowX: "hidden" }}>
+    <div style={{ overflowX: "hidden" }} className="bg-[#1E1E1E] ">
 
-      {/* ── Mobile combined section 1+2 ── */}
-      {/*
-        The mobile image is portrait (~9:16 ish). We let it
-        define the height naturally via padding-top trick so
-        text overlays stay locked to the right visual spots
-        regardless of screen width.
-
-        Measured from your screenshot:
-          - Register button: ~56% from top
-          - White box starts: ~72% from top, ends ~97%
-          - White box left edge: ~20%, right edge: ~88%
-      */}
       <div
         className="relative w-full"
         style={{
-          // Maintain the image's aspect ratio (your image is 828 × 1792 px → ~216%)
+         
           paddingTop: "216%",
-          backgroundImage: `url('/ali-bg-mobile.png')`, // <-- update path if needed
+          backgroundImage: `url('/ali-bg-mobile.png')`, 
           backgroundSize: "100% 100%",
           backgroundPosition: "center top",
           backgroundRepeat: "no-repeat",
         }}
       >
-        {/* Nav — floated at top */}
+       
         <div className="absolute top-0 left-0 right-0 z-10">
           <Nav />
         </div>
 
-        {/* ── REGISTER NOW button ── sits just below "THE HEIST" title */}
+       
         <div
           className="absolute left-1/2 -translate-x-1/2"
           style={{ top: "56%" }}
@@ -160,20 +137,13 @@ function MobileLayout() {
           </button>
         </div>
 
-        {/* ── White box text overlay ── */}
-        {/*
-          The white window box in the mobile image occupies roughly:
-            top: 68%  bottom: 97%
-            left: 22% right: 85%
-          We place a div there and fill it with scrollable text.
-        */}
         <div
           className="absolute"
           style={{
             top: "69%",
             left: "22%",
             right: "14%",
-            bottom: "4%",
+            bottom: "6%",
             overflowY: "auto",
             padding: "4% 5%",
             // Webkit scrollbar hidden for clean look
@@ -246,11 +216,11 @@ function MobileLayout() {
 
       {/* ── Section 3 on mobile ── */}
       <div className="w-full">
-        <img src={bgiii} className="w-full h-auto" alt="bg3" />
+        <img src={bgiii} className="w-full h-auto " alt="bg3" />
       </div>
 
       {/* ── Section 4 on mobile ── */}
-      <div className="bg-[#1E1E1E] ">
+      <div className="bg-[#1E1E1E]  ">
         <Final />
       </div>
     </div>
