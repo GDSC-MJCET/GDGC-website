@@ -96,7 +96,7 @@ const Booth = () => {
         <img
           src="/Frame-container.svg"
           alt=""
-          className="absolute inset-0 w-full h-full top-[20px] max-x-[20px] object-cover md:object-cover z-20 bg-drift"
+          className="absolute inset-0 w-full  top-[20px] max-x-[20px] object-cover md:object-cover z-20 bg-drift"
           style={{
             transform: `translateX(${bgParallaxX}px) translateY(${bgParallaxY}px) scale(1.08)`,
             transition: 'transform 0.14s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
@@ -126,7 +126,7 @@ const Booth = () => {
             <span className="font-bold">Register Now!</span>
           </button>
 
-          <div className="relative z-10 w-full  flex items-center justify-center ">
+          {/* <div className="relative z-10 w-full  flex items-center justify-center ">
             <div
               className="relative w-[94%] max-w-[1140px] booth-image pt-5 "
               style={{
@@ -156,7 +156,26 @@ const Booth = () => {
             </div>
 
             
-          </div>
+          </div> */}
+      <div className="flex items-center justify-center w-full">
+  <div className="relative w-full max-w-[1140px] pt-5">
+    {/* Background Image */}
+    <img src="/Frame-board.svg" alt="Board" className="w-full" />
+
+
+    <div className="absolute top-0 mt-30 md:mt-40 md:pt-10 text-[#1E1E1E] max-h-[20%] max-w-[60%] overflow-y-auto left-1/2 w-[70%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+      <div>
+
+      <h1 className="text-2xl font-bold text-start mb-3">hello</h1>
+      <p className="text-[1rem] font-sans text-start">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit nobis natus harum dolorum, 
+        distinctio fuga animi earum est dicta consectetur vel.
+      </p>
+      </div>
+    </div>
+  </div>
+</div>
+
         </div>
       </div>
     </>

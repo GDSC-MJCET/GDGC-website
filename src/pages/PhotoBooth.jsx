@@ -59,7 +59,7 @@ const [activePalette, setActivePalette] = useState(['#EA4335', '#FF00A2']);
 
       
 
-      <div id="final-section" className='mt-16'>
+      <div id="final-section" className=''>
         <Final />
       </div>
 

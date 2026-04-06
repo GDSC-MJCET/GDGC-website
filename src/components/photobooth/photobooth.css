@@ -100,3 +100,7 @@ background-clip: text;
   font-size: clamp(10px, 0.95vw, 13px);
   line-height: 1.28;
 }
+
+.m{
+  background-image: url(/public/Frame-board.svg);
+}
