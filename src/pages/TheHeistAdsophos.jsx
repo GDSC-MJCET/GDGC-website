@@ -4,7 +4,7 @@ import Nav from "../components/adsophos/nav";
 import Final from "../components/adsophos/Final";
 
 import bgii from "../../public/ali-bg-ii.jpeg";
-import bgiii from "../../public/ali-bg-iii.jpeg";
+import bgiii from "../../public/ali-bg-iii.png";
 // Import your mobile image:
 import bgMobile from "../../public/ali-bg-mobile.png"; // <-- rename to match your actual filename
 
