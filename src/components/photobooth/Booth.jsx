@@ -118,45 +118,27 @@ const Booth = () => {
               PHOTOBOOTH
             </h1>
           </div>
-
+          
           <button
             type="button"
-            className="relative z-40 booth-btn mb-5 sm:mb-7 md:mb-20 md:mt-20 flex items-center gap-3 border-2 border-[#ffffff] bg-gradient-to-b from-[#f6a2a2] via-[#EA4336] to-[#f6a2a2] px-6 sm:px-8 md:px-10 py-2 sm:py-3 text-sm sm:text-base md:text-lg text-[#ffffff] rounded-lg shadow-[0_6px_18px_rgba(234,67,54,0.35)]"
+            className="relative isolate z-40 booth-btn m-5 sm:m-10  md:mb-20 md:mt-20 flex min-w-[240px] sm:min-w-[300px] md:min-w-[360px] items-center justify-center border-2 border-[#ffffff] bg-gradient-to-b from-[#f6a2a2] via-[#EA4336] to-[#f6a2a2] px-6 sm:px-8 md:px-10 py-2 sm:py-3 text-sm sm:text-base md:text-lg text-[#ffffff] rounded-lg shadow-[0_6px_18px_rgba(234,67,54,0.35)] overflow-visible"
+            style={{ background: 'radial-gradient(circle at 50% 42%, #EA4335 48%, #ea4336 100%)' }}
           >
-            <span className="font-bold">Register Now!</span>
+            <img
+              className="pointer-events-none absolute left-[-1.5rem] sm:left-[-1.9rem] md:left-[-2.2rem] top-1/2 z-0 w-[2.75rem] sm:w-[3.5rem] md:w-[4rem] -translate-y-1/2"
+              src="/heart.svg"
+              alt=""
+              aria-hidden="true"
+            />
+            <img
+              className="pointer-events-none absolute right-[-2.1rem] sm:right-[-2.6rem] md:right-[-3.2rem] top-1/2 z-0 w-[4.5rem] sm:w-[5.5rem] md:w-[8rem] -translate-y-1/2 rotate-[8deg]"
+              src="/camera.svg"
+              alt=""
+              aria-hidden="true"
+            />
+            <span className="relative z-10 font-bold tracking-wide">Register Now!</span>
           </button>
 
-          {/* <div className="relative z-10 w-full  flex items-center justify-center ">
-            <div
-              className="relative w-[94%] max-w-[1140px] booth-image pt-5 "
-              style={{
-                transform: `translateX(${imageParallaxX}px) translateY(${imageParallaxY}px)`,
-                transition: 'transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                willChange: 'transform',
-              }}
-            >
-              <img
-                src="/Frame-board.svg"
-                alt="Photobooth frame"
-                className="w-full h-auto object-cover"
-              />
-
-              <div className="absolute top-50 left-50  sans-serif z-1000 h-[1000px] w-[70%] text-[#1E1E1E]">
-                <h3 className="booth-panel-heading mb-6 sm:mb-6 tracking-tight">MAKE TONS OF MEMORIES!</h3>
-                <p className="booth-panel-copy mb-3 sm:mb-4 text-lg/500">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias, odio labore! Ipsam impedit temporibus illo. Enim magni excepturi sint mollitia dolore molestiae. Sequi unde tenetur amet esse excepturi numquam facere veniam repellat, officiis praesentium fuga maxime voluptas, quibusdam sint alias.
-                </p>
-                <h4 className="booth-panel-heading mb-2">WHAT YOU&apos;LL RECEIVE</h4>
-                <ul className="booth-panel-copy list-disc pl-5 space-y-0.5 sm:space-y-1">
-                  <li>High-quality digital photobooth pictures</li>
-                  <li>Instant sharing-ready snapshots</li>
-                  <li>A creative keepsake from GDGC PhotoBooth</li>
-                </ul>
-              </div>
-            </div>
-
-            
-          </div> */}
       <div className="flex items-center justify-center w-full">
   <div className="relative w-full max-w-[1140px] pt-5">
     {/* Background Image */}
