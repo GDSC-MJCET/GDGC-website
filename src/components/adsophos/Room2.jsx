@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import './adsophos.css';
 
 const Room2 = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -104,9 +105,8 @@ const Room2 = () => {
         .room1-btn {
           animation:
             fadeSlideUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.65s both,
-            btnFlare 3.2s ease-in-out 1.5s infinite;
-          transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
-                      box-shadow 0.22s ease;
+            btnFlare ease-in-out;
+          transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .room1-btn:hover { transform: scale(1.08) !important; }
         .room1-image {
@@ -116,7 +116,7 @@ const Room2 = () => {
         }
       `}</style>
 
-      <div ref={sectionRef} className="relative w-full overflow-hidden">
+      <div ref={sectionRef} className="relative w-full adsophos-container overflow-hidden">
 
         {/* Background — covers the full height of content */}
         <img
@@ -134,47 +134,47 @@ const Room2 = () => {
         <div className="absolute inset-0 z-10" />
 
         {/* All content in normal flow — determines section height */}
-        <div className="relative z-20 flex flex-col items-center px-6 pt-24 pb-0">
+        <div className="relative z-20 flex flex-col items-center px-6 pt-24 md:pb-30">
 
           {/* Title badge */}
-          <div className="flex justify-center mb-16">
-            <h2 className="room1-badge px-10 py-2 bg-[#1e1e1e] drop-shadow-2xl text-4xl font-bold">
+          <div className="flex justify-center mb-8 md:mb-16">
+            <h2 className="room1-badge adsophos-container px-6 md:px-10 py-3 md:py-4 bg-[#1e1e1e] drop-shadow-2xl text-2xl sm:text-3xl md:text-4xl font-bold">
               MYSTERY ROOM:{" "}
               <span className="font-medium text-[#ffffff]">GAME 2</span>
             </h2>
           </div>
 
-          <div className='flex justify-between gap-22 items-center max-w-4xl'>
-            <div className="w-full max-w-3xl flex flex-col justify-between items-left gap-6 ">
-              <h2 className="room1-title text-6xl font-bold text-transparent bg-gradient-to-b from-[#ffffff] via-[#686868] to-[#ffffff] bg-clip-text shrink-0">
+          <div className='flex flex-wrap md:flex-nowrap justify-between gap-22 items-center max-w-4xl'>
+            <div className="w-full max-w-3xl flex flex-col justify-between items-start gap-4 md:gap-6 ">
+              <h2 className="room1-title text-4xl sm:text-5xl md:text-6xl font-bold text-transparent bg-gradient-to-b from-[#ffffff] via-[#686868] to-[#ffffff] bg-clip-text shrink-0">
                 HEIST
               </h2>
 
-              <p className="room1-para max-w-sm text-base leading-relaxed text-white/80">
+              <p className="room1-para product-sans max-w-sm text-base leading-relaxed text-white/80">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis
                 repellendus vitae, enim nihil atque hic quas ipsa placeat. Lorem ipsum
                 dolor sit amet consectetur adipisicing elit. Quis repellendus vitae,
                 enim nihil atque hic quas ipsa placeat.
               </p>
-              <button className="room1-btn border-2 border-[#363434] bg-gradient-to-r from-[#686868] to-[#1e1e1e] px-10 py-3 text-lg text-[#ffffff] rounded-lg hover:scale-105 transition-transform">
+              <button className="room1-btn btn btn-lg product-sans text-lg transition-transform">
                 Register Now!
               </button>
             </div>
 
-            <div className="w-screen flex justify-center ">
-              <div className="w-full max-w-4xl flex justify-around items-start gap-12 py-16">
-                <img
-                  src="/room-1-img.png"
-                  alt=""
-                  className="room1-image w-[520px] object-contain"
-                  style={{
-                    transform: `translateX(${imgParallaxX}px) translateY(${imgParallaxY}px)`,
-                    transition: 'transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                    willChange: 'transform',
-                  }}
-                />
-              </div>
+            <div className="w-full flex justify-center ">
+              <div className="w-full max-w-4xl flex justify-around items-start gap-12 py-8 md:py-16">
+              <img
+                src="/spiral.png"
+                alt=""
+                className="room1-image w-[280px] sm:w-[400px] md:w-[520px] object-contain"
+                style={{
+                  transform: `translateX(${imgParallaxX}px) translateY(${imgParallaxY}px)`,
+                  transition: 'transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                  willChange: 'transform',
+                }}
+              />
             </div>
+          </div>
           </div>
 
         </div>
