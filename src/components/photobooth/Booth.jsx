@@ -163,14 +163,27 @@ const Booth = () => {
     <img src="/Frame-board.svg" alt="Board" className="w-full" />
 
 
-    <div className="absolute top-0 mt-30 md:mt-40 md:pt-10 text-[#1E1E1E] max-h-[20%] max-w-[60%] overflow-y-auto left-1/2 w-[70%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-      <div>
+    <div className="absolute top-0 mt-25 sm:mt-38 md:mt-38 lg:mt-60 xl-mt-40 md:pt-10 text-[#1E1E1E] max-h-[20%] max-w-[60%]  left-1/2 w-[70%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+      <div className='flex flex-col items-center'>
 
-      <h1 className="text-2xl font-bold text-start mb-3">hello</h1>
-      <p className="text-[1rem] font-sans text-start">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit nobis natus harum dolorum, 
-        distinctio fuga animi earum est dicta consectetur vel.
+      <h1 className="text-[0.5rem] sm:text-[1.2rem] md:text-[1.28rem] lg:text-[1.75rem] font-bold text-start mb-1 ">Make tons of memories!</h1>
+      <p className="text-[0.38rem] sm:text-[0.5rem] md:text-[0.8rem] lg:text-[1.35rem] mb-2 font-sans text-start">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+            enim ad minim veniam, quis nostrud exercitation ullamco laboris
+            nisi ut aliquip ex ea commodo consequat. Duis aute irure.
       </p>
+      
+      <h1 className='text-[0.5rem] sm:text-[1.2rem] md:text-[1.28rem] lg:text-[1.75rem] font-bold text-start mb-1 '>     
+                 What you'll recieve
+        </h1>
+            <ul className='text-[0.38rem] sm:text-[0.5rem] md:text-[0.8rem] lg:text-[1.35rem] font-sans text-start'>
+                <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+                <li>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
+                <li>Ut enim ad minim veniam, quis nostrud exercitation.</li>
+                <li>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
+                <li>Duis aute irure.</li>
+              </ul>
       </div>
     </div>
   </div>
