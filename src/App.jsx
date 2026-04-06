@@ -54,7 +54,7 @@ import { Navigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import EventDetails from './components/events/EventDetails.jsx';
 import Adsophos from './pages/Adsophos.jsx';
-
+import { PhotoBooth } from './pages/PhotoBooth.jsx';
 function App() {
   const [isVerified, setIsVerified] = useState(null);
   const auth = JSON.parse(localStorage.getItem("AuthState"));
@@ -305,7 +305,7 @@ function AppWithRouter() {
             <Route path="login" element={<LoginPage />} />
             <Route path="forgotpassword" element={<ForgotPassword />} />
             <Route path='adsophos' element={<Adsophos/>}/>
-            
+            <Route path='photobooth' element={<PhotoBooth/>}/>
             {/* Team area (layout route) */}
             <Route path="team" element={<TeamLayout />}>
               {/* <Route path="hr-interface" element={<HrInterface/>}/> */}
