@@ -90,7 +90,7 @@ const Booth = () => {
         }
       `}</style>
 
-      <div ref={sectionRef} className="relative adsophos-container w-full overflow-hidden">
+      <div ref={sectionRef} className="relative adsophos-container w-full overflow-visible">
 
         {/* Background — covers the full height of content */}
         <img
@@ -121,14 +121,14 @@ const Booth = () => {
 
           <button
             type="button"
-            className="relative z-40 booth-btn mb-5 sm:mb-7 md:mb-8 flex items-center gap-3 border-2 border-[#ffffff] bg-gradient-to-b from-[#f6a2a2] via-[#EA4336] to-[#f6a2a2] px-6 sm:px-8 md:px-10 py-2 sm:py-3 text-sm sm:text-base md:text-lg text-[#ffffff] rounded-lg shadow-[0_6px_18px_rgba(234,67,54,0.35)]"
+            className="relative z-40 booth-btn mb-5 sm:mb-7 md:mb-20 md:mt-20 flex items-center gap-3 border-2 border-[#ffffff] bg-gradient-to-b from-[#f6a2a2] via-[#EA4336] to-[#f6a2a2] px-6 sm:px-8 md:px-10 py-2 sm:py-3 text-sm sm:text-base md:text-lg text-[#ffffff] rounded-lg shadow-[0_6px_18px_rgba(234,67,54,0.35)]"
           >
             <span className="font-bold">Register Now!</span>
           </button>
 
-          <div className="relative z-10 w-full  flex items-center justify-center mt-[-2px] sm:mt-[-6px] md:mt-[-8px]">
+          <div className="relative z-10 w-full  flex items-center justify-center ">
             <div
-              className="relative w-[94%] max-w-[1140px] booth-image"
+              className="relative w-[94%] max-w-[1140px] booth-image pt-5 "
               style={{
                 transform: `translateX(${imageParallaxX}px) translateY(${imageParallaxY}px)`,
                 transition: 'transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94)',

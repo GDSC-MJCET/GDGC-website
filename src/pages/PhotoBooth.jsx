@@ -53,7 +53,7 @@ const [activePalette, setActivePalette] = useState(['#EA4335', '#FF00A2']);
        <div id="hero-section" className="relative z-10">
         <Hero />
       </div>
-      <div id="booth-section">
+      <div id="booth-section" className='mt-20'>
         <Booth/>
       </div>
 
