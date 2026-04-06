@@ -7,9 +7,12 @@ import { EditorContext } from "../pages/EditorPage"
 import { tools } from "./tools"
 import logo from "../assets/gdg-logo.png"
 import defaultBanner from "../assets/random.png"
+import Background from "./Background"
+import { FaHome } from "react-icons/fa";
 
-const BlogEditor = () => {
+const BlogEditor = ({ }) => {
     const { blog, blog: { title, content, des, banner }, setBlog, textEditor, setTextEditor } = useContext(EditorContext)
+    const [confirmed, setConfirmed] = useState(false)
     const [isDragging, setIsDragging] = useState(false)
     const nav = useNavigate()
     useEffect(() => {
@@ -71,7 +74,8 @@ const BlogEditor = () => {
             textEditor.save().then(data => {
                 if (data.blocks.length) {
                     setBlog({ ...blog, content: data })
-                    
+                    console.log(blog);
+                    toast.success("Content saved! Click publish again to submit.")
                 } else {
                     toast.error("Please write some content")
                 }
@@ -99,33 +103,46 @@ const BlogEditor = () => {
         setIsDragging(false)
         imageUploadHandler(e)
     }
+      
+    const handleHomeOnclick = () => {
+
+        setConfirmed(true)
+       
+     }
+     useEffect(() => {
+        setBlog({ ...blog, content: textEditor.isReady ? textEditor : content })
+     }, [textEditor])
+ 
+    useEffect(() => {console.log(blog)}, [blog])
 
     return (
-        <>
-            <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 py-4">
+        <div className="bg-black" >
+
+            <nav className="sticky top-0 z-50   px-6 py-4">
                 <div className="max-w-7xl mx-auto flex items-center justify-between">
                     <Link to="/" className="flex items-center gap-3 group">
-                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 p-1.5 group-hover:scale-105 transition-transform">
-                            <img src={logo} alt="GDGC" className="w-full h-full object-contain filter brightness-0 invert" />
+                        <div className="w-10 h-10 rounded-lg  p-1.5 group-hover:scale-105 transition-transform">
+                            <img src={logo} alt="GDGC" className="w-full h-full object-contain " />
                         </div>
-                        <span className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
-                            GDGC Blog Editor
+                        <span className="text-2xl text-white font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+                            Bluuge
                         </span>
                     </Link>
 
                     <div className="flex items-center gap-6">
                         <div className="hidden md:block">
-                            <p className="text-sm text-gray-600 font-medium">
+                            <p className="text-white font-medium text-2xl">
                                 {title ? title : 'Untitled Blog'}
                             </p>
                         </div>
                         <button
                             onClick={handlePublish}
-                            className="relative overflow-hidden px-6 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200"
+                            className="relative overflow-hidden px-6 py-2.5 rounded-lg  text-white font-semibold shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 text-2xl"
                         >
-                            <span className="relative z-10">Publish</span>
+                            <span className="relative z-10 ">Publish</span>
                             <div className="absolute inset-0 bg-white/20 -translate-x-full hover:translate-x-full transition-transform duration-500" />
                         </button>
+                <p className="text-white text-3xl cursor-pointer " onClick={handleHomeOnclick} ><FaHome/></p>
                     </div>
                 </div>
             </nav>
@@ -142,8 +159,41 @@ const BlogEditor = () => {
                     },
                 }}
             />
+            <main className={(confirmed ? "  " : "hidden")} > 
+                
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+      <div className="w-[90%] max-w-md rounded-xl bg-[#111] border border-gray-700 p-6 shadow-xl">
+        
+        <h2 className="text-lg font-semibold text-white mb-3">
+          Danger
+        </h2>
 
-            <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <p className="text-gray-300 mb-6">
+          Changes you made won't be saved if you leave. Are you sure you want to go back to home?
+        </p>
+
+        <div className="flex justify-end gap-3">
+          <p
+            onClick={() => setConfirmed(false)}
+            className="px-4 py-2 rounded-lg text-gray-700 text-white hover:text-gray-200 cursor-pointer transition"
+          >
+            Cancel
+          </p>
+
+          <Link to={"/blog"}
+           
+            className="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition"
+          >
+            Confirm
+          </Link>
+        </div>
+
+      </div>
+    </div>
+  
+                
+                 </main>
+            <main className={"max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8" + (confirmed ? " hidden " : "")}>
                 {/* Banner Upload Area */}
                 <div 
                     className={`relative group cursor-pointer rounded-2xl overflow-hidden border-2 border-dashed transition-all duration-300 ${
@@ -181,41 +231,41 @@ const BlogEditor = () => {
                     />
                     <label htmlFor="uploadBanner" className="absolute inset-0 cursor-pointer" />
                 </div>
-
-                {/* Description Input */}
-                <input 
-                    value={des} 
-                    placeholder="Write a compelling description..." 
-                    onChange={(e) => setBlog({...blog, des: e.target.value})}
-                    className="mt-6 w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 font-medium"
-                />
-
                 {/* Title Input */}
                 <div className="mt-8">
                     <textarea
-                        placeholder="title:Yap Yap Yap ...."
+                        placeholder="Title"
                         onKeyDown={handleKeyDown}
                         onChange={handleTitleOnChange}
                         defaultValue={title}
-                        className="w-full line-clamp-1 text-5xl md:text-6xl font-bold text-gray-900 placeholder-gray-300 resize-none outline-none leading-tight tracking-tight min-h-[3rem] focus:placeholder-gray-400 transition-colors duration-200 bg-transparent"
+                        className="w-full line-clamp-1 text-5xl md:text-6xl font-bold text-white placeholder-gray-300 resize-none outline-none leading-tight tracking-tight min-h-[3rem] focus:placeholder-gray-400 transition-colors duration-200 bg-transparent"
                         rows={1}
                     />
                     <div className="mt-3 h-1 w-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full" />
                 </div>
 
+                {/* Description Input */}
+                <input 
+                    value={des} 
+                    placeholder="Description " 
+                    onChange={(e) => setBlog({...blog, des: e.target.value})}
+                    className="mt-6 w-full px-4 py-3  rounded-lg text-white placeholder-gray-400   transition-all duration-200 font-medium focus:outline-none"
+                />
+
+
                 {/* Editor Container */}
-                <div className="mt-10">
-                    <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-                        <div className="px-6 py-4 bg-gray-50 border-b border-gray-100 flex items-center gap-2">
-                            <div className="w-3 h-3 rounded-full bg-red-400" />
-                            <div className="w-3 h-3 rounded-full bg-yellow-400" />
-                            <div className="w-3 h-3 rounded-full bg-green-400" />
-                        </div>
-                        <div id="textEditor" className="min-h-[500px] p-6" />
-                    </div>
-                </div>
+<div className="mt-10">
+  
+
+    <div
+      id="textEditor"
+      className="min-h-[500px] p-6 text-white "
+    />
+  
+</div>
             </main>
-        </>
+            
+        </div>
     )
 }
 
