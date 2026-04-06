@@ -116,10 +116,10 @@ const Room1 = () => {
         /> */}
 
         {/* Dark scrim so text stays readable */}
-        <div className="absolute inset-0 mb-8 pb-6 z-10" />
+        <div className="absolute inset-0 mb-8 pb-6 z-10 pointer-events-none" />
 
         {/* All content in normal flow — determines section height */}
-        <div className="z-20 flex flex-col  items-center">
+        <div className="relative z-20 flex flex-col items-center">
 
           {/* Title badge */}
           <div className="flex justify-center mb-16">
@@ -146,17 +146,19 @@ const Room1 = () => {
             </h2>
 
             <p
-              className="r1-para product-sans max-w-sm text-sm sm:text-base leading-relaxed text-white/80"
+              className="r1-para product-sans max-w-sm  mx-auto md:mx-0 text-center md:text-left text-base text-xl font-medium leading-relaxed text-white/80"
               style={{
                 transform: `translateY(${paraParallaxY}px)`,
                 transition: 'transform 0.18s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                 willChange: 'transform',
               }}
             >
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis
-              repellendus vitae, enim nihil atque hic quas ipsa placeat. Lorem ipsum
-              dolor sit amet consectetur adipisicing elit. Quis repellendus vitae,
-              enim nihil atque hic quas ipsa placeat.
+              Diamond Heist puts your team inside a high-risk casino robbery led by
+              the mysterious Architect, with one mission: steal the legendary Black
+              Diamond from a heavily secured vault. Work through security systems and
+              timed challenges, make smart decisions under pressure, and coordinate
+              every move with your crew. One mistake can trigger a full lockdown, so
+              speed, strategy, and teamwork are the keys to escaping with the prize.
             </p>
           </div>
 
@@ -173,7 +175,7 @@ const Room1 = () => {
                   willChange: 'transform',
                 }}
               />
-              <button className="room1-btn  border mb-16 md:mb-0  border-white bg-gradient-to-r from-[#2fd7d2] to-[#0debff] px-6 md:px-10 py-2 md:py-3 text-sm sm:text-base md:text-lg text-[#1e1e1e] rounded-lg hover:scale-105 transition-transform">
+              <button className="room1-btn cursor-pointer border mb-16 md:mb-0  border-white bg-gradient-to-r from-[#2fd7d2] to-[#0debff] px-6 md:px-10 py-2 md:py-3 text-sm sm:text-base md:text-lg text-[#1e1e1e] rounded-lg hover:scale-105 transition-transform">
                 Register Now!
               </button>
             </div>
