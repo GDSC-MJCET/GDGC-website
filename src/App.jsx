@@ -53,6 +53,7 @@ import { Navigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import EventDetails from './components/events/EventDetails.jsx';
 import Adsophos from './pages/Adsophos.jsx';
+import TheHeistAdsophos from './pages/TheHeistAdsophos.jsx';
 
 function App() {
   const [isVerified, setIsVerified] = useState(null);
@@ -303,7 +304,9 @@ function AppWithRouter() {
             <Route path="contact" element={<ContactUsPage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="forgotpassword" element={<ForgotPassword />} />
-            <Route path='adsophos' element={<Adsophos/>}/>
+            <Route path='adsophos' element={<Adsophos/>}>
+            </Route>
+            <Route path='heist' element={<TheHeistAdsophos/>} />
             
             {/* Team area (layout route) */}
             <Route path="team" element={<TeamLayout />}>
