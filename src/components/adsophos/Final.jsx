@@ -9,7 +9,8 @@ const Final = () => {
   const containerRef = useRef(null);
 
   const buttons = [
-    "Register for Mystery Rooms",
+    "Register for Loop 13",
+    "Register for Diamond Heist",
     "Register for Photobooth",
   ];
 
@@ -31,8 +32,8 @@ const Final = () => {
     };
   }, []);
 
-  const cloudParallaxX = mousePos.x * -18;
-  const cloudParallaxY = mousePos.y * -10 - scrollY * 0.25;
+  const cloudParallaxX = mousePos.x * -10;
+  const cloudParallaxY = mousePos.y * -4 - scrollY * 0.08;
   const grassParallaxY = scrollY * 0.08;
   const marioParallaxX = mousePos.x * 8;
 
@@ -106,23 +107,23 @@ const Final = () => {
 
       <div
         ref={containerRef}
-        className="relative w-full adsophos-container min-h-screen overflow-hidden flex flex-col items-center justify-start"
+        className="relative w-full adsophos-container min-h-[560px] md:min-h-screen overflow-hidden flex flex-col items-center justify-start"
       >
 
         {/* Cloud Background */}
         <img
           src="/final-cloud-ads.png"
           alt=""
-          className="absolute inset-0 w-full h-full object-cover z-0 cloud-idle"
+          className="absolute inset-0 w-full h-full object-contain md:object-cover object-center z-0 cloud-idle pointer-events-none"
           style={{
-            transform: `translateX(${cloudParallaxX}px) translateY(${cloudParallaxY}px) scale(1.08)`,
+            transform: `translateX(${cloudParallaxX}px) translateY(${cloudParallaxY}px) scale(1.02)`,
             transition: "transform 0.12s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
             willChange: "transform",
           }}
         />
 
         {/* Top Content */}
-        <div className="relative z-20 flex flex-col items-center mt-12 md:mt-24 px-4 text-center">
+        <div className="relative z-20 flex flex-col items-center mt-4 sm:mt-6 md:mt-24 px-4 text-center">
 
           {/* Title */}
           <h1

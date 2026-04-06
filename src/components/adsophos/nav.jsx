@@ -115,11 +115,12 @@ const Nav = () => {
 
                         <div className="links hidden lg:flex">
                             <ul className='flex gap-10 justify-center items-center font-medium'>
-                                <li><a href="#" className="hover:text-red-500 transition-colors">Home</a></li>
-                                <li><a href="#" className="hover:text-red-500 transition-colors">Events</a></li>
-                                <li><a href="#" className="hover:text-red-500 transition-colors">Team</a></li>
-                                <li><a href="#" className="hover:text-red-500 transition-colors">Gallery</a></li>
-                                <li><a href="#" className="hover:text-red-500 transition-colors">Contact Us</a></li>
+                                <li><a href="/" className="hover:text-red-500 transition-colors">Home</a></li>
+                                <li><a href="/techfaceoff" className="hover:text-red-500 transition-colors">Tech Face-off</a></li>
+                                <li><a href="/events" className="hover:text-red-500 transition-colors">Events</a></li>
+                                <li><a href="/team-page" className="hover:text-red-500 transition-colors">Team</a></li>
+                                <li><a href="/gallery" className="hover:text-red-500 transition-colors">Gallery</a></li>
+                                <li><a href="/contact" className="hover:text-red-500 transition-colors">Contact Us</a></li>
                             </ul>
                         </div>
                     </div>
@@ -176,19 +177,26 @@ const Nav = () => {
 
                             {/* Menu Links */}
                             <motion.ul className="flex flex-col gap-6 text-4xl font-black text-white mb-16 adsophos-container">
-                                {['Home', 'Events', 'Team', 'Gallery', 'Contact Us'].map((item) => (
+                                {[
+                                    { name: 'Home', path: '/' },
+                                    { name: 'Tech Face-off', path: '/techfaceoff' },
+                                    { name: 'Events', path: '/events' },
+                                    { name: 'Team', path: '/team-page' },
+                                    { name: 'Gallery', path: '/gallery' },
+                                    { name: 'Contact Us', path: '/contact' },
+                                ].map((item) => (
                                     <motion.li 
-                                        key={item}
+                                        key={item.name}
                                         variants={itemVariants}
                                         whileHover={{ x: 10, color: '#ff00a2' }}
                                         className="transition-colors border-b border-white/5 last:border-0 pb-4"
                                     >
                                         <a 
-                                            href="#" 
+                                            href={item.path} 
                                             onClick={() => setIsMenuOpen(false)}
                                             className="uppercase tracking-tighter"
                                         >
-                                            {item}
+                                            {item.name}
                                         </a>
                                     </motion.li>
                                 ))}
