@@ -19,7 +19,8 @@
 
 .btn {
   background: url('../../assets/fonts/button.svg') no-repeat center / contain;
-  width: 220px;
+  background-size: 100% auto;
+  width: 280px;
   height: 48px;
   display: inline-flex;
   align-items: center;
@@ -27,6 +28,7 @@
   color: #ffffff;
   border: none;
   background-color: transparent;
+  
   cursor: pointer;
   transition: transform 0.2s ease;
   font-weight: 600;
@@ -37,6 +39,7 @@
 
 .booth {
   text-shadow: 0 4px 12px rgba(234, 67, 54, 0.3), 0 0 15px rgba(255, 255, 255, 0.1);
+  background-size: 100% 100%;
   -webkit-text-stroke-width: 0.1px;
   -webkit-text-stroke-color: #000;
   font-size: clamp(32px, 9vw, 56px);
@@ -53,9 +56,9 @@
 }
 
 .btn-lg {
-  width: 280px !important;
+  width: 300px !important;
   height: 60px !important;
-  font-size: 1.25rem !important;
+  font-size: 0.9rem !important;
   font-weight: 800 !important;
 }
 
