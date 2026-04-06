@@ -53,13 +53,10 @@ import { Navigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import EventDetails from './components/events/EventDetails.jsx';
 import Adsophos from './pages/Adsophos.jsx';
-<<<<<<< fix/initialSetup
 import { PhotoBooth } from './pages/PhotoBooth.jsx';
-=======
 import TheHeistAdsophos from './pages/TheHeistAdsophos.jsx';
 import Loop13 from './pages/Loop_13.jsx';
 
->>>>>>> temp
 function App() {
   const [isVerified, setIsVerified] = useState(null);
   const auth = JSON.parse(localStorage.getItem("AuthState"));
@@ -309,17 +306,13 @@ function AppWithRouter() {
             <Route path="contact" element={<ContactUsPage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="forgotpassword" element={<ForgotPassword />} />
-<<<<<<< fix/initialSetup
-            <Route path='adsophos' element={<Adsophos/>}/>
-            <Route path='photobooth' element={<PhotoBooth/>}/>
-=======
             <Route path='adsophos' element={<Adsophos/>}>
           </Route>
+            <Route path='photobooth' element={<PhotoBooth/>}/>
             <Route path='heist' element={<TheHeistAdsophos/>} />
             <Route path='loop13' element={<Loop13/>}/>
             
             
->>>>>>> temp
             {/* Team area (layout route) */}
             <Route path="team" element={<TeamLayout />}>
               {/* <Route path="hr-interface" element={<HrInterface/>}/> */}
