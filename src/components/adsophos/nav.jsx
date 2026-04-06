@@ -13,13 +13,19 @@ const Nav = () => {
         if (isMenuOpen) {
             document.body.style.overflow = 'hidden';
         } else {
-            document.body.style.overflow = 'unset';
+            document.body.style.overflow = '';
         }
     }, [isMenuOpen]);
 
     useEffect(() => {
+        const SCROLL_DELTA = 6;
+
         const handleScroll = () => {
-            const currentScrollY = window.scrollY;
+            const currentScrollY = Math.max(
+                0,
+                window.pageYOffset || document.documentElement.scrollTop || 0
+            );
+            const delta = currentScrollY - lastScrollY.current;
 
             // Handle scroll background/contrast (same as before)
             if (currentScrollY > 50) {
@@ -28,22 +34,24 @@ const Nav = () => {
                 setIsScrolled(false);
             }
 
-            // Handle visibility (Hide on scroll down, show on scroll up)
+            // Safari-safe visibility logic: ignore tiny jitter/bounce deltas.
             if (currentScrollY < 10) {
-                // Always show at top
                 setIsVisible(true);
-            } else if (currentScrollY > lastScrollY.current) {
-                // Scrolling down
+            } else if (delta > SCROLL_DELTA) {
                 if (!isMenuOpen) setIsVisible(false);
-            } else {
-                // Scrolling up
+            } else if (delta < -SCROLL_DELTA) {
                 setIsVisible(true);
             }
 
             lastScrollY.current = currentScrollY;
         };
 
-        window.addEventListener('scroll', handleScroll);
+        lastScrollY.current = Math.max(
+            0,
+            window.pageYOffset || document.documentElement.scrollTop || 0
+        );
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, [isMenuOpen]);
 
@@ -78,11 +86,19 @@ const Nav = () => {
     return (
         <>
             <div 
+                style={
+                    isScrolled && isVisible
+                        ? {
+                              backgroundColor: 'rgba(0, 0, 0, 0.72)',
+                              borderBottomColor: 'rgba(255, 255, 255, 0.10)',
+                          }
+                        : undefined
+                }
                 className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ease-in-out ${
                     isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
                 } ${
-                    isScrolled 
-                    ? 'bg-black/40 backdrop-blur-lg border-b border-white/10 text-white py-2 shadow-2xl' 
+                    isScrolled && isVisible
+                    ? 'border-b text-white py-2 shadow-2xl' 
                     : 'bg-transparent text-[#1e1e1e] py-0'
                 }`}
             >
