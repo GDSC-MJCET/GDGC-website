@@ -53,9 +53,9 @@ import { Navigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import EventDetails from './components/events/EventDetails.jsx';
 import Adsophos from './pages/Adsophos.jsx';
-import { PhotoBooth } from './pages/PhotoBooth.jsx';
-import TheHeistAdsophos from './pages/TheHeistAdsophos.jsx';
-import Loop13 from './pages/Loop_13.jsx';
+import { PhotoBooth } from './gdgc-modules/photobooth/PhotoBooth.jsx';
+import TheHeistAdsophos from './gdgc-modules/heist/TheHeistAdsophos.jsx';
+import Loop13 from './gdgc-modules/loop13/Loop_13.jsx';
 
 function App() {
   const [isVerified, setIsVerified] = useState(null);
