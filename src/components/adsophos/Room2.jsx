@@ -138,25 +138,29 @@ const Room2 = () => {
 
           {/* Title badge */}
           <div className="flex justify-center mb-8 md:mb-16">
-            <h2 className="room1-badge adsophos-container px-6 md:px-10 py-3 md:py-4 bg-[#1e1e1e] drop-shadow-2xl text-2xl sm:text-3xl md:text-4xl font-bold">
-              MYSTERY ROOM:{" "}
-              <span className="font-medium text-[#ffffff]">GAME 2</span>
+            <h2 className="room1-badge adsophos-container md:mt-30 px-6  md:px-10 py-3 md:py-4 bg-[#1e1e1e] drop-shadow-2xl text-2xl sm:text-3xl md:text-4xl font-bold">
+              <span className="inline md:inline">MYSTERY ROOM:</span>
+              <br className="md:hidden" />
+              <span className="font-medium text-[#ffffff] block md:inline text-center md:text-left">GAME 2</span>
             </h2>
           </div>
 
-          <div className='flex flex-wrap md:flex-nowrap justify-between gap-22 items-center max-w-4xl'>
-            <div className="w-full max-w-3xl flex flex-col justify-between items-start gap-4 md:gap-6 ">
-              <h2 className="room1-title text-4xl sm:text-5xl md:text-6xl font-bold text-transparent bg-gradient-to-b from-[#ffffff] via-[#686868] to-[#ffffff] bg-clip-text shrink-0">
-                HEIST
+          <div className=' flex flex-wrap md:flex-nowrap  justify-between gap-22 items-center max-w-4xl'>
+            <div className=" w-full max-w-2xl  flex flex-col justify-between items-start gap-4 md:gap-6 ">
+              <h2 className="room1-title w-full  md:w-auto text-center md:text-left text-4xl sm:text-5xl md:text-6xl font-bold text-transparent bg-gradient-to-b from-[#ffffff] via-[#686868] to-[#ffffff] bg-clip-text shrink-0">
+                LOOP 13
               </h2>
 
-              <p className="room1-para product-sans max-w-sm text-base leading-relaxed text-white/80">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis
-                repellendus vitae, enim nihil atque hic quas ipsa placeat. Lorem ipsum
-                dolor sit amet consectetur adipisicing elit. Quis repellendus vitae,
-                enim nihil atque hic quas ipsa placeat.
+              <p className="room1-para product-sans max-w-sm mx-auto md:mx-0 text-center md:text-left text-xl font-medium leading-relaxed text-white/80">
+                Loop 13 traps your team inside CryoLab-7, where the KRONOS machine
+                resets reality every 20 minutes and forces you to relive the same
+                collapse again and again. Follow clues left by your past attempts,
+                avoid the obvious path, and uncover the hidden kill switch instead of
+                rushing for a fake escape. With time constantly running out and pressure
+                rising each cycle, only fast thinking and tight teamwork can break the
+                loop for good.
               </p>
-              <button className="room1-btn btn btn-lg product-sans text-lg transition-transform">
+              <button className="btn btn-lg text-md transition-transform self-center md:self-start">
                 Register Now!
               </button>
             </div>

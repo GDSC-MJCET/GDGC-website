@@ -125,7 +125,7 @@ const Booth = () => {
             <img
               src="/photo-booth.png"
               alt=""
-              className="h-[300px] sm:h-[450px] md:h-[620px] w-auto object-contain md:-mt-22 booth-image"
+              className="w-[800px] max-h-[600px] object-contain md:-mt-22 booth-image"
               style={{
                 transform: `translateX(${imageParallaxX}px) translateY(${imageParallaxY}px)`,
                 transition: 'transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
@@ -135,12 +135,11 @@ const Booth = () => {
 
             {/* Content */}
             <div className="flex flex-col justify-start items-center md:items-start text-center md:text-left max-w-lg">
-              <p className="mb-8 booth-text text-[#ffffff] text-sm sm:text-base leading-relaxed">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestiae harum porro ipsum fuga nisi aliquam. Aliquam quod, dolorum iure asperiores cupiditate dolore.
-              </p>
+              <p className="mb-8 product-sans text-[#ffffff] text-base sm:text-xl font-medium leading-relaxed">
+              Step into our Photo Booth and capture moments that last beyond the event. With a DSLR setup, aesthetic backdrops, and Polaroid-style prints, take home a memory that’s uniquely yours.              </p>
 
-              <button className="booth-btn border-2 border-[#ffffff] bg-gradient-to-b from-[#f6a2a2] via-[#ea4336] to-[#f6a2a2] px-8 md:px-10 py-2 md:py-3 text-sm sm:text-base md:text-lg text-[#ffffff] rounded-lg hover:scale-105 transition-transform">
-                Register Now!
+              <button className="booth-btn  border-2 border-[#ffffff] bg-gradient-to-b from-[#f6a2a2] via-[#ea4336] to-[#f6a2a2] px-8 md:px-10 py-2 md:py-3 text-sm sm:text-base md:text-lg text-[#ffffff] rounded-lg">
+                Get Your Photo!
               </button>
             </div>
           </div>
