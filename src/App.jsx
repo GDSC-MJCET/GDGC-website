@@ -25,8 +25,7 @@ import SideBae from './components/SideBae.jsx'
 import BlogWrite from './pages/BlogWrite.jsx'
 import { Card, CardHeader } from './components/ui/card.jsx'
 import BlogHome from './pages/BlogHomePage.jsx';
-import WelcomeBlog from './pages/WelcomeBlogPage.jsx';
-import { SpecificBlog } from './pages/SpecificBlogPage.jsx';
+import  SpecificBlog  from './pages/SpecificBlogPage.jsx';
 import BlogHelp from './pages/BlogHelp.jsx';
 import BlogLand from './pages/BlogLand.jsx';
 import { useEffect } from 'react';
@@ -54,7 +53,8 @@ import { Navigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import EventDetails from './components/events/EventDetails.jsx';
 import Adsophos from './pages/Adsophos.jsx';
-import Loop13 from './pages/Loop_13.jsx';
+import TheHeistAdsophos from './pages/TheHeistAdsophos.jsx';
+import Loop13 from './pages/Loop_13.jsx';=
 
 function App() {
   const [isVerified, setIsVerified] = useState(null);
@@ -305,8 +305,11 @@ function AppWithRouter() {
             <Route path="contact" element={<ContactUsPage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="forgotpassword" element={<ForgotPassword />} />
-            <Route path='adsophos' element={<Adsophos/>}/>
+            <Route path='adsophos' element={<Adsophos/>}>
+            <Route path='heist' element={<TheHeistAdsophos/>} />
             <Route path='loop13' element={<Loop13/>}/>
+            </Route>
+            
             
             {/* Team area (layout route) */}
             <Route path="team" element={<TeamLayout />}>
@@ -331,15 +334,15 @@ function AppWithRouter() {
               </Route>
             </Route>
 
-            {/* Blog routes (optional, currently unused)
+            {/* Blog routes (optional, currently unused) */}
             <Route path="blog" element={<BlogLand />}>
               <Route path="home" element={<BlogHome />} />
               <Route path="editor" element={<BlogWrite />} />
               <Route path="posts" element={<BlogPosts />} />
-              <Route path="posts/:postId" element={<SpecificBlog />} />
+              <Route path="blog/:blogId" element={<SpecificBlog />} />
               <Route path="help" element={<BlogHelp />} />
             </Route>
-            */}
+           
 
             {/* Catch-all 404 route */}
             <Route path="*" element={<NotFound />} />
