@@ -11,12 +11,12 @@ import bgMobile from "../../public/ali-bg-mobile.png"; // <-- rename to match yo
 export default function TheHeistAdsophos() {
   return (
     <>
-     
+
       <div className="block md:hidden">
         <MobileLayout />
       </div>
 
-     
+
       <div className="hidden md:flex flex-col">
 
         {/* SECTION 1 — Hero */}
@@ -98,20 +98,20 @@ function MobileLayout() {
       <div
         className="relative w-full"
         style={{
-         
+
           paddingTop: "216%",
-          backgroundImage: `url('/ali-bg-mobile.png')`, 
+          backgroundImage: `url('/ali-bg-mobile.png')`,
           backgroundSize: "100% 100%",
           backgroundPosition: "center top",
           backgroundRepeat: "no-repeat",
         }}
       >
-       
+
         <div className="absolute top-0 left-0 right-0 z-10">
           <Nav />
         </div>
 
-       
+
         <div
           className="absolute left-1/2 -translate-x-1/2"
           style={{ top: "56%" }}

@@ -54,7 +54,7 @@ import { createPortal } from 'react-dom';
 import EventDetails from './components/events/EventDetails.jsx';
 import Adsophos from './pages/Adsophos.jsx';
 import TheHeistAdsophos from './pages/TheHeistAdsophos.jsx';
-import Loop13 from './pages/Loop_13.jsx';=
+import Loop13 from './pages/Loop_13.jsx';
 
 function App() {
   const [isVerified, setIsVerified] = useState(null);
@@ -293,7 +293,7 @@ function AppWithRouter() {
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <Router>
           <Routes>
-            {/* Public pages */}
+            {/* Public   pages */}
             <Route path="/" element={<HomePage />} />
             <Route path="initialsetup/:id" element={<InitialSetup />} />
             <Route path="techfaceoff" element={<TechDebatePage />} />
@@ -306,9 +306,9 @@ function AppWithRouter() {
             <Route path="login" element={<LoginPage />} />
             <Route path="forgotpassword" element={<ForgotPassword />} />
             <Route path='adsophos' element={<Adsophos/>}>
+          </Route>
             <Route path='heist' element={<TheHeistAdsophos/>} />
             <Route path='loop13' element={<Loop13/>}/>
-            </Route>
             
             
             {/* Team area (layout route) */}
