@@ -2,14 +2,17 @@ import { motion } from "framer-motion";
 import "../components/adsophos/adsophos.css";
 import eyes from "../../public/eyes.svg";
 import Final from "../components/adsophos/Final.jsx";
-import PixelSkyline from "../components/adsophos/PixelSkyline.jsx";
+import PixelSkyline from "../components/photobooth/PixelSkyline.jsx";
 
 const equipmentItems = [
-  "Placeholder reward or item one goes here.",
-  "Add a short sentence for the second item.",
-  "Describe what players receive after registering.",
-  "Use this line for event perks or kit details.",
-  "Replace this with your final equipment copy.",
+  "Lab Coat",
+  "Envelope",
+  "ID cards/badges",
+];
+
+const noteLines = [
+  "Note: equipment will be provided by organizers and must be returned back in the same condition. If any damages occur the party involved will be held responsible.",
+  "Note: Any damage to the room or its belonging by the participants will be charged for.",
 ];
 
 const Loop13 = () => {
@@ -99,25 +102,29 @@ const Loop13 = () => {
 
             <div className="absolute bottom-[18.6%] left-[14.3%] right-[14.7%] top-[21.7%] overflow-hidden text-[#232323]">
               <div className="loop13-panel-copy h-full overflow-y-auto pr-1 text-left sm:pr-2">
-                <h2 className="adsophos-container text-[clamp(0.7rem,1.6vw,1.65rem)] font-bold uppercase leading-none tracking-[0.03em]">
+                <h2 className="adsophos-container text-[clamp(0.86rem,1.95vw,2rem)] font-bold uppercase leading-none tracking-[0.03em]">
                   Mission Brief
                 </h2>
 
-                <p className="mt-[clamp(0.28rem,0.9vw,0.8rem)] font-sans text-[clamp(0.34rem,0.98vw,0.86rem)] leading-[1.42] text-[#2f2f2f]">
-                  Placeholder copy for the mission goes here. Use this space to
-                  describe the challenge, set the scene, and tell participants
-                  what kind of mystery they are stepping into.
+                <p className="mt-[clamp(0.4rem,1vw,0.95rem)] font-sans text-[clamp(0.46rem,1.16vw,1.02rem)] leading-[1.46] text-[#2f2f2f]">
+                  Step into CryoLab-7, where a failed experiment has trapped you in a 20-minute time loop that keeps resetting. With only notes from your past attempts to guide you, you must stop chasing the exit and uncover the truth behind KRONOS. Find the hidden kill switch before time runs out—or be forced to relive it all over again.
                 </p>
 
-                <h2 className="adsophos-container mt-[clamp(0.68rem,1.7vw,1.45rem)] text-[clamp(0.7rem,1.6vw,1.65rem)] font-bold uppercase leading-none tracking-[0.03em]">
+                <h2 className="adsophos-container mt-[clamp(0.85rem,1.9vw,1.75rem)] text-[clamp(0.86rem,1.95vw,2rem)] font-bold uppercase leading-none tracking-[0.03em]">
                   Time Travel Equipment
                 </h2>
 
-                <ul className="mt-[clamp(0.35rem,0.95vw,0.9rem)] list-disc pl-[clamp(0.65rem,1.7vw,1.2rem)] font-sans text-[clamp(0.31rem,0.96vw,0.84rem)] leading-[1.38] text-[#2f2f2f]">
+                <ul className="mt-[clamp(0.45rem,1.05vw,1rem)] list-disc pl-[clamp(0.85rem,1.9vw,1.35rem)] font-sans text-[clamp(0.43rem,1.1vw,0.96rem)] leading-[1.42] text-[#2f2f2f]">
                   {equipmentItems.map((item) => (
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
+
+                <div className="mt-[clamp(0.75rem,1.2vw,1.15rem)] space-y-[0.35rem] font-sans text-[clamp(0.32rem,0.76vw,0.66rem)] leading-[1.55] text-[#2f2f2f]">
+                  {noteLines.map((line) => (
+                    <p key={line}>{line}</p>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

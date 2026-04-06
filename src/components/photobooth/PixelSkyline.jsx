@@ -9,7 +9,7 @@ const PixelSkyline = () => {
   ];
 
   return (
-    <div className="hidden md:flex relative w-full overflow-hidden items-end bg-transparent pointer-events-none">
+    <div className="relative w-full overflow-hidden items-end bg-transparent pointer-events-none flex">
       
       {/* Static Pattern Container — Repeating to fill screen width */}
       <div className="flex items-end gap-0 w-full">
@@ -19,8 +19,8 @@ const PixelSkyline = () => {
               <div
                 key={rIdx}
                 style={{
-                  width: '56px',
-                  height: '56px',
+                  width: 'clamp(20px, 5vw, 56px)',
+                  height: 'clamp(20px, 5vw, 56px)',
                   backgroundColor: cell === 1 ? '#1e1e1e' : 'transparent',
                 }}
               />

@@ -8,6 +8,11 @@ import bgiii from "../../public/ali-bg-iii.png";
 // Import your mobile image:
 import bgMobile from "../../public/ali-bg-mobile.png"; // <-- rename to match your actual filename
 
+const noteLines = [
+  "Note: equipment will be provided by organizers and must be returned back in the same condition. If any damages occur the party involved will be held responsible.",
+  "Note: Any damage to the room or its belonging by the participants will be charged for.",
+];
+
 export default function TheHeistAdsophos() {
   return (
     <>
@@ -49,30 +54,42 @@ export default function TheHeistAdsophos() {
         {/* SECTION 2 — Pixel window with text */}
         <div className="relative h-screen w-full">
           <img src={bgii} alt="bg" className="h-full w-full object-cover" />
-          <div className="absolute inset-0 flex items-center justify-center">
+          <div className="absolute inset-0">
             <div
-              className="relative"
-              style={{ width: "48%", marginTop: "6%", marginLeft: "2%" }}
+              className="absolute top-[27%] bottom-[14%] left-[27%] right-[17%] overflow-hidden text-[#1E1E1E]"
             >
-              <h2 style={{ fontFamily: "'Press Start 2P', monospace", fontSize: "clamp(10px, 1.4vw, 20px)", color: "#1a1a1a", marginBottom: "0.6em", letterSpacing: "0.05em" }}>
-                MISSION BRIEF
-              </h2>
-              <p style={{ fontFamily: "'Press Start 2P', monospace", fontSize: "clamp(6px, 0.55vw, 10px)", color: "#1a1a1a", lineHeight: "2", marginBottom: "1.2em" }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure.
-              </p>
-              <h2 style={{ fontFamily: "'Press Start 2P', monospace", fontSize: "clamp(10px, 1.4vw, 20px)", color: "#1a1a1a", marginBottom: "0.6em", letterSpacing: "0.05em" }}>
-                HEIST EQUIPMENT
-              </h2>
-              <ul style={{ fontFamily: "'Press Start 2P', monospace", fontSize: "clamp(6px, 0.55vw, 10px)", color: "#1a1a1a", lineHeight: "2.2", paddingLeft: "1.2em", listStyleType: "disc" }}>
-                <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-                <li>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-                <li>Ut enim ad minim veniam, quis nostrud exercitation.</li>
-                <li>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
-                <li>Duis aute irure.</li>
-              </ul>
+              <style>{`
+                  .heist-panel-copy::-webkit-scrollbar {
+                    display: none;
+                  }
+                `}
+              </style>
+              <div className="heist-panel-copy mt-30 flex flex-col items-start overflow-y-auto pr-2 text-start">
+                <h2 style={{ fontFamily: "'Press Start 2P', monospace", fontSize: "clamp(0.7rem, 1.55vw, 1.6rem)", color: "#1a1a1a", marginBottom: "0.65em", letterSpacing: "0.05em" }}>
+                  MISSION BRIEF
+                </h2>
+                <p style={{ fontFamily: "'Product Sans', sans-serif", fontSize: "clamp(0.59rem, 0.82vw, 0.76rem)", color: "#1a1a1a", lineHeight: "1.82", marginBottom: "1.15em" }}>
+                  Enter the Diamond Casino as part of an elite crew on a mission to steal the legendary Black Diamond. With security closing in and time slipping away, you must solve challenges, break into the vault, and escape before lockdown. One perfect heist—that’s all you get.
+                </p>
+                <h2 style={{ fontFamily: "'Press Start 2P', monospace", fontSize: "clamp(0.7rem, 1.55vw, 2.6rem)", color: "#1a1a1a", marginBottom: "0.65em", letterSpacing: "0.05em" }}>
+                  HEIST EQUIPMENT
+                </h2>
+                <ul style={{ fontFamily: "'Product Sans', sans-serif", fontSize: "clamp(0.9rem, 0.82vw, 5.76rem)", color: "#1a1a1a", lineHeight: "1.95", paddingLeft: "1.2em", listStyleType: "disc", marginBottom: "1.1em" }}>
+                  <li>robber mask</li>
+                  <li>walkie talkie</li>
+                  <li>bags to steal money</li>
+                  <li>folder</li>
+                  <li>player profiles on paper</li>
+                  <li>list</li>
+                </ul>
+                <div style={{ fontFamily: "'Product Sans', sans-serif", fontSize: "clamp(0.87rem, 0.8vw, 0.5rem)", color: "#1a1a1a", lineHeight: "1.65", maxWidth: "72%" }}>
+                  {noteLines.map((line, index) => (
+                    <p key={line} style={{ marginBottom: index === 0 ? "0.5em" : 0 }}>
+                      {line}
+                    </p>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -159,9 +176,9 @@ function MobileLayout() {
             <h2
               style={{
                 fontFamily: "'Press Start 2P', monospace",
-                fontSize: "clamp(7px, 2.8vw, 13px)",
+                fontSize: "clamp(8.5px, 3.35vw, 16px)",
                 color: "#1a1a1a",
-                marginBottom: "0.5em",
+                marginBottom: "0.55em",
                 letterSpacing: "0.04em",
               }}
             >
@@ -169,26 +186,23 @@ function MobileLayout() {
             </h2>
             <p
               style={{
-                fontFamily: "'Press Start 2P', monospace",
-                fontSize: "clamp(5px, 1.8vw, 8px)",
+                fontFamily: "'Product Sans', sans-serif",
+                fontSize: "clamp(6px, 2.15vw, 9.6px)",
                 color: "#1a1a1a",
-                lineHeight: "2",
-                marginBottom: "1em",
+                lineHeight: "2.02",
+                marginBottom: "1.15em",
               }}
             >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure.
+              Enter the Diamond Casino as part of an elite crew on a mission to steal the legendary Black Diamond. With security closing in and time slipping away, you must solve challenges, break into the vault, and escape before lockdown. One perfect heist—that’s all you get.
             </p>
 
             {/* HEIST EQUIPMENT */}
             <h2
               style={{
                 fontFamily: "'Press Start 2P', monospace",
-                fontSize: "clamp(7px, 2.8vw, 13px)",
+                fontSize: "clamp(8.5px, 3.35vw, 16px)",
                 color: "#1a1a1a",
-                marginBottom: "0.5em",
+                marginBottom: "0.55em",
                 letterSpacing: "0.04em",
               }}
             >
@@ -196,20 +210,29 @@ function MobileLayout() {
             </h2>
             <ul
               style={{
-                fontFamily: "'Press Start 2P', monospace",
-                fontSize: "clamp(5px, 1.8vw, 8px)",
+                fontFamily: "'Product Sans', sans-serif",
+                fontSize: "clamp(6px, 2.15vw, 9.6px)",
                 color: "#1a1a1a",
                 lineHeight: "2.2",
-                paddingLeft: "1em",
+                paddingLeft: "1.1em",
                 listStyleType: "disc",
+                marginBottom: "1.15em",
               }}
             >
-              <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-              <li>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-              <li>Ut enim ad minim veniam, quis nostrud exercitation.</li>
-              <li>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
-              <li>Duis aute irure.</li>
+              <li>robber mask</li>
+              <li>walkie talkie</li>
+              <li>bags to steal money</li>
+              <li>folder</li>
+              <li>player profiles on paper (DIY)</li>
+              <li>list</li>
             </ul>
+            <div style={{ fontFamily: "'Product Sans', sans-serif", fontSize: "clamp(5.2px, 1.85vw, 8.2px)", color: "#1a1a1a", lineHeight: "1.65" }}>
+              {noteLines.map((line, index) => (
+                <p key={line} style={{ marginBottom: index === 0 ? "0.5em" : 0 }}>
+                  {line}
+                </p>
+              ))}
+            </div>
           </div>
         </div>
       </div>
