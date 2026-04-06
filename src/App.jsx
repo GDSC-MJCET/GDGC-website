@@ -48,9 +48,11 @@ import AdminUsers from './pages/AdminUsers.jsx';
 import ScorePage from './pages/ScorePage.jsx';
 import HrInterface from './pages/HrInterface.jsx';
 import HrControlInterface from './pages/HrControlInterface.jsx';
-import TDForm from './pages/TDForm.jsx';
+// import TDForm from './pages/TDForm.jsx';
 import { Navigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
+import EventDetails from './components/events/EventDetails.jsx';
+import Adsophos from './pages/Adsophos.jsx';
 
 function App() {
   const [isVerified, setIsVerified] = useState(null);
@@ -295,13 +297,14 @@ function AppWithRouter() {
             <Route path="techfaceoff" element={<TechDebatePage />} />
             <Route path='score' element={<ScorePage/>}/>
             <Route path="events" element={<EventsPage />} />
+            <Route path="event-details" element={<EventDetails />} />
             <Route path="team-page" element={<TeamPage />} />
             <Route path="gallery" element={<GalleryPage />} />
             <Route path="contact" element={<ContactUsPage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="forgotpassword" element={<ForgotPassword />} />
-            <Route path='techdebate/form' element={<TDForm/>}/>
-
+            <Route path='adsophos' element={<Adsophos/>}/>
+            
             {/* Team area (layout route) */}
             <Route path="team" element={<TeamLayout />}>
               {/* <Route path="hr-interface" element={<HrInterface/>}/> */}

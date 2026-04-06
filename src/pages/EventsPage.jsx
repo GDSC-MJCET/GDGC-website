@@ -1,11 +1,20 @@
 import React from "react";
-import ComingSoon from "../components/ComingSoon";
+import Nav from "../components/Nav";
+import Background from "../components/Background";
+import Hero from "../components/events/Hero";
+import PastEvents from "../components/events/PastEvents";
+import Footer from "../components/Footer";
 
 const EventsPage = () => {
   return ( 
-    <div>      
-      <ComingSoon pageName="Events" /> 
-    </div>
+    <Background bgColor="#000000">
+      <div> 
+        <Nav />     
+        <Hero />
+        <PastEvents />
+        <Footer />
+      </div>
+    </Background>
   );
 };
 
