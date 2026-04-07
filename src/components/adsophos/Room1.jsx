@@ -175,8 +175,10 @@ const Room1 = () => {
                   willChange: 'transform',
                 }}
               />
-              <button className="room1-btn cursor-pointer border mb-16 md:mb-0  border-white bg-gradient-to-r from-[#2fd7d2] to-[#0debff] px-6 md:px-10 py-2 md:py-3 text-sm sm:text-base md:text-lg text-[#1e1e1e] rounded-lg hover:scale-105 transition-transform">
-                Register Now!
+              <button 
+              onClick={() => (window.location.href = "https://www.adsophos.com/register?event=Diamond%20Heist")}
+              className="room1-btn cursor-pointer border mb-16 md:mb-0  border-white bg-gradient-to-r from-[#2fd7d2] to-[#0debff] px-6 md:px-10 py-2 md:py-3 text-sm sm:text-base md:text-lg text-[#1e1e1e] rounded-lg hover:scale-105 transition-transform">
+                 Register Now! 
               </button>
             </div>
           </div>

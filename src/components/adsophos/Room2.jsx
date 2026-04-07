@@ -160,8 +160,10 @@ const Room2 = () => {
                 rising each cycle, only fast thinking and tight teamwork can break the
                 loop for good.
               </p>
-              <button className="btn btn-lg text-md transition-transform self-center md:self-start">
-                Register Now!
+              <button 
+              onClick={() => (window.location.href = "https://www.adsophos.com/register?event=Loop13")}
+              className="btn btn-lg text-md transition-transform self-center md:self-start">
+                 Register Now! 
               </button>
             </div>
 

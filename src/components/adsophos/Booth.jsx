@@ -138,8 +138,10 @@ const Booth = () => {
               <p className="mb-8 product-sans text-[#ffffff] text-base sm:text-xl font-medium leading-relaxed">
               Step into our Photo Booth and capture moments that last beyond the event. With a DSLR setup, aesthetic backdrops, and Polaroid-style prints, take home a memory that’s uniquely yours.              </p>
 
-              <button className="booth-btn  border-2 border-[#ffffff] bg-gradient-to-b from-[#f6a2a2] via-[#ea4336] to-[#f6a2a2] px-8 md:px-10 py-2 md:py-3 text-sm sm:text-base md:text-lg text-[#ffffff] rounded-lg">
-                Get Your Photo!
+              <button 
+              onClick={() => (window.location.href = "https://www.adsophos.com/register?event=PhotoBooth")}
+              className="booth-btn  border-2 border-[#ffffff] bg-gradient-to-b from-[#f6a2a2] via-[#ea4336] to-[#f6a2a2] px-8 md:px-10 py-2 md:py-3 text-sm sm:text-base md:text-lg text-[#ffffff] rounded-lg">
+                 Get Your Photo!
               </button>
             </div>
           </div>

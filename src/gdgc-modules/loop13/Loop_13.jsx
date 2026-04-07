@@ -85,10 +85,11 @@ const Loop13 = () => {
             />
 
             <button
+              onClick={() => (window.location.href = "https://www.adsophos.com/register?event=Loop13")}
               className="relative z-10 rounded-[0.85rem] border border-white/15 bg-[linear-gradient(180deg,#959ca6_0%,#5d616a_42%,#1b1d22_100%)] px-8 py-3 text-[1.1rem] font-semibold text-white shadow-[inset_0_1px_12px_rgba(255,255,255,0.55),0_12px_28px_rgba(0,0,0,0.65)] transition-transform hover:scale-[1.02] sm:px-12 sm:py-3.5 sm:text-[1.55rem]"
               type="button"
             >
-              Register Now!
+Register Now
             </button>
           </div>
         </section>

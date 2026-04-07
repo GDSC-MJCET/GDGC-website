@@ -28,7 +28,7 @@ export default function TheHeistAdsophos() {
           <div className="relative h-screen w-full bg-[url('/ali-bg-i.png')] bg-cover bg-no-repeat bg-center overflow-hidden">
             <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
               <button
-                onClick={() => (window.location.href = "/register")}
+                onClick={() => (window.location.href = "https://www.adsophos.com/register?event=Diamond%20Heist")}
                 style={{
                   fontFamily: "'Press Start 2P', monospace",
                   fontSize: "clamp(9px, 1vw, 14px)",
