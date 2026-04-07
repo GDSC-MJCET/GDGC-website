@@ -3,7 +3,8 @@ import "./styles/adsophos.css";
 import eyes from "./public/eyes.svg";
 import Final from "../photobooth/components/Final.jsx";
 import PixelSkyline from "../photobooth/components/PixelSkyline.jsx";
-
+import clocker from "./public/clocker.svg";
+import timetraveler from "./public/time_travel.svg"
 const equipmentItems = [
   "Lab Coat",
   "Envelope",
@@ -23,7 +24,7 @@ const Loop13 = () => {
           display: none;
         }
       `}</style>
-      <div className="relative h-[28vh] min-h-[190px] w-full overflow-hidden bg-[url('/adsophos-hero.png')] bg-cover bg-center bg-no-repeat sm:h-[34vh] sm:min-h-[230px] md:h-[42vh] lg:h-[50vh]">
+      <div className="relative h-[28vh] min-h-[190px] w-full overflow-hidden bg-[url('../photobooth/public/adsophos-hero.png')] bg-cover bg-center bg-no-repeat sm:h-[34vh] sm:min-h-[230px] md:h-[42vh] lg:h-[50vh]">
         <motion.div
           className="absolute inset-0 z-0"
           initial={{ scale: 1.08, opacity: 0 }}
@@ -49,7 +50,7 @@ const Loop13 = () => {
 
         <img
           src="./public/stars.svg"
-          alt=""
+          alt="starss"
           className="pointer-events-none absolute left-1/2 top-0 z-0 w-[92vw] max-w-[66rem] -translate-x-1/2 opacity-55 sm:w-[88vw]"
         />
 
@@ -95,7 +96,7 @@ const Loop13 = () => {
         <section className="relative z-10 mt-10 flex flex-col items-center sm:mt-12">
           <div className="relative w-full max-w-[54rem]">
             <img
-              src="/time_travel.svg"
+              src={timetraveler}
               alt="Loop 13 mission panel"
               className="block w-full"
             />
@@ -130,7 +131,7 @@ const Loop13 = () => {
           </div>
 
           <img
-            src="./public/clocker.svg"
+            src={clocker}
             alt="Hanging time machine clock"
             className="mt-[-2.25rem] w-[74%] max-w-[28rem] object-contain opacity-90 sm:mt-[-2rem] sm:w-[56%] md:mt-[-2.5rem]"
           />

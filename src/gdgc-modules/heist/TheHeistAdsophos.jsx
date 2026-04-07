@@ -24,7 +24,7 @@ export default function TheHeistAdsophos() {
       <div className="hidden md:flex flex-col">
 
         {/* SECTION 1 — Hero */}
-        <div className="bg-[url('/adsophos-hero.png')]">
+        <div className="bg-[url('../photobooth/public/adsophos-hero.png')]">
           <div className="relative h-screen w-full bg-[url('/ali-bg-i.png')] bg-cover bg-no-repeat bg-center overflow-hidden">
             <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
               <button
