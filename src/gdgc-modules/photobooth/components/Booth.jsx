@@ -164,6 +164,7 @@ const Booth = () => {
 
           {/* Register button */}
           <button
+            onClick={() => (window.location.href = "https://www.adsophos.com/register?event=PhotoBooth")}
             type="button"
             className="relative isolate z-40 booth-btn m-5 sm:m-10 md:mb-20 md:mt-20 flex min-w-[240px] sm:min-w-[300px] md:min-w-[360px] items-center justify-center border-2 border-[#ffffff] px-6 sm:px-8 md:px-10 py-2 sm:py-3 text-sm sm:text-base md:text-lg text-[#ffffff] rounded-lg shadow-[0_6px_18px_rgba(234,67,54,0.35)] overflow-visible"
             style={{ background: 'radial-gradient(circle at 50% 42%, #EA4335 48%, #ea4336 100%)' }}
