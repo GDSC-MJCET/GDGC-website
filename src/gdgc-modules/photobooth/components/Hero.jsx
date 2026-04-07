@@ -4,7 +4,7 @@ import PixelSkyline from "./PixelSkyline";
 
 const Hero = () => {
   return (
-    <div className="relative h-[50vh] w-full bg-[url('/adsophos-hero.png')] bg-cover bg-no-repeat bg-center overflow-hidden">
+    <div className="relative h-[50vh] w-full bg-[url('./public/adsophos-hero.png')] bg-cover bg-no-repeat bg-center overflow-hidden">
       {/* Your content */}
 
       {/* Background Image Overlay */}

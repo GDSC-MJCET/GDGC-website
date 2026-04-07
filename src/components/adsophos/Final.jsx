@@ -7,7 +7,7 @@ const Final = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [mounted, setMounted] = useState(false);
   const containerRef = useRef(null);
-
+  
   const buttons = [
     "Register for Loop 13",
     "Register for Diamond Heist",
