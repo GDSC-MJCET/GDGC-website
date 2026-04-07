@@ -9,9 +9,9 @@ const Final = () => {
   const containerRef = useRef(null);
 
   const buttons = [
-    "Register for Loop 13",
-    "Register for Diamond Heist",
-    "Register for Photobooth",
+    { text: "Register for Loop 13", link: "/loop13" },
+    { text: "Register for Diamond Heist", link: "/heist" },
+    { text: "Register for Photobooth", link: "/photobooth" },
   ];
 
   useEffect(() => {
@@ -135,11 +135,12 @@ const Final = () => {
           {/* Buttons */}
           <div className="flex flex-col gap-4 md:gap-6 text-lg md:text-xl">
             {buttons.map((btn, i) => (
-              <div
+              <a
                 key={i}
+                href={btn.link}
                 onMouseEnter={() => setHovered(i)}
                 onMouseLeave={() => setHovered(null)}
-                className={`flex items-center gap-3 cursor-pointer group btn-animated-${i}`}
+                className={`flex items-center gap-3 cursor-pointer group btn-animated-${i} no-underline`}
               >
                 {/* Arrow */}
                 <span
@@ -153,9 +154,9 @@ const Final = () => {
 
                 {/* Text */}
                 <span className="text-[#ff5700] font-extrabold group-hover:translate-x-1 group-hover:text-[#e5005c] transition-transform btn-text">
-                  {btn}
+                  {btn.text}
                 </span>
-              </div>
+              </a>
             ))}
           </div>
         </div>
