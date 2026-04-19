@@ -57,6 +57,9 @@ const SuperAdminSubPanel = ({handleClickRedirect , clicked}) => {
             <span onClick={()=>handleClickRedirect("superAdminUsers","/team/superadmin/users" )} className={`${clicked == "superAdminUsers" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}>
                 <Link to="/team/superadmin/users" className=' py-1 px-3 w-full rounded-md' >Users</Link> 
             </span>
+            <span onClick={()=>handleClickRedirect("superAdminContacts","/team/superadmin/contacts" )} className={`${clicked == "superAdminContacts" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}>
+                <Link to="/team/superadmin/contacts" className=' py-1 px-3 w-full rounded-md' >Contact Submissions</Link> 
+            </span>
         </div>
     )
 }

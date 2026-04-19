@@ -54,6 +54,7 @@ import { Navigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import EventDetails from './components/events/EventDetails.jsx';
 import Adsophos from './pages/Adsophos.jsx';
+import SuperAdminContacts from './pages/SuperAdminContacts.jsx';
 
 function App() {
   const [isVerified, setIsVerified] = useState(null);
@@ -326,6 +327,7 @@ function AppWithRouter() {
               <Route path="superadmin">
                 <Route index element={<SuperAdminDashboard />} />
                 <Route path="users" element={<SuperAdminUsers />} />
+                <Route path="contacts" element={<SuperAdminContacts />} />
               </Route>
             </Route>
 
