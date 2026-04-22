@@ -1,4 +1,4 @@
-import { useState,useContext, useRef } from 'react'
+import { useState, useContext, useRef } from 'react'
 import './App.css'
 // import {Navibar} from './components/Navbar'
 // import { HiringPage } from './pages/HiringPage'
@@ -25,14 +25,14 @@ import SideBae from './components/SideBae.jsx'
 import BlogWrite from './pages/BlogWrite.jsx'
 import { Card, CardHeader } from './components/ui/card.jsx'
 import BlogHome from './pages/BlogHomePage.jsx';
-import  SpecificBlog  from './pages/SpecificBlogPage.jsx';
+import SpecificBlog from './pages/SpecificBlogPage.jsx';
 import BlogHelp from './pages/BlogHelp.jsx';
 import BlogLand from './pages/BlogLand.jsx';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from './context/AuthContext.js';
 import Socials from './pages/Socials.jsx';
-import { NavLink,useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import ChangePassword from './pages/ChangePassword.jsx';
 import HomePage from './pages/HomePage.jsx';
 import TechDebatePage from './pages/TechDebatePage.jsx';
@@ -53,33 +53,34 @@ import { Navigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import EventDetails from './components/events/EventDetails.jsx';
 import Adsophos from './pages/Adsophos.jsx';
-import TheHeistAdsophos from './pages/TheHeistAdsophos.jsx';
-import MyBlogs from './pages/MyBlogs.jsx';
+import { PhotoBooth } from './gdgc-modules/photobooth/PhotoBooth.jsx';
+import TheHeistAdsophos from './gdgc-modules/heist/TheHeistAdsophos.jsx';
+import Loop13 from './gdgc-modules/loop13/Loop_13.jsx';
 
 function App() {
   const [isVerified, setIsVerified] = useState(null);
   const auth = JSON.parse(localStorage.getItem("AuthState"));
   const nav = useNavigate();
   useEffect(() => {
-  const verifyUser = async () => {
-    try {
-      const res = await axios.get(
-        (import.meta.env.VITE_SERVER) +
+    const verifyUser = async () => {
+      try {
+        const res = await axios.get(
+          (import.meta.env.VITE_SERVER) +
           "/api/v1/auth/simple-verify",
-        {
-          headers: {
-            Authorization: `Bearer ${auth?.token}`,
-          },
-        }
-      );
-      setIsVerified(res.data.success);
-    } catch {
-      setIsVerified(false);
-    }
-  };
-  verifyUser();
-}, [auth?.token]);
-  if(isVerified==null){
+          {
+            headers: {
+              Authorization: `Bearer ${auth?.token}`,
+            },
+          }
+        );
+        setIsVerified(res.data.success);
+      } catch {
+        setIsVerified(false);
+      }
+    };
+    verifyUser();
+  }, [auth?.token]);
+  if (isVerified == null) {
     return <div className='bg-black'></div>
   }
 
@@ -87,8 +88,8 @@ function App() {
     <div className=" min-h-screen w-full bg-black flex flex-col items-center justify-center px-4">
       <div className="fixed top-4 right-4 z-10">
         {isVerified ?
-        <button className="border-none text-white px-2 py-1 shadow text-base md:text-lg hover:bg-white hover:text-black hover:border hover:rounded-xl" onClick={()=>{nav("/team/dashboard")}}>Dashboard</button>
-        :<button className="border-none text-white px-2 py-1 shadow text-base md:text-lg hover:bg-white hover:text-black hover:border hover:rounded-xl" onClick={()=>{nav("/login")}}>Login</button>
+          <button className="border-none text-white px-2 py-1 shadow text-base md:text-lg hover:bg-white hover:text-black hover:border hover:rounded-xl" onClick={() => { nav("/team/dashboard") }}>Dashboard</button>
+          : <button className="border-none text-white px-2 py-1 shadow text-base md:text-lg hover:bg-white hover:text-black hover:border hover:rounded-xl" onClick={() => { nav("/login") }}>Login</button>
         }
       </div>
       <div className="text-center space-y-6">
@@ -104,15 +105,15 @@ function App() {
 }
 
 function PopUpMenu({ name, email, closePopup, triggerRef }) {
-  const {authState,setAuthState} = useContext(AuthContext)
+  const { authState, setAuthState } = useContext(AuthContext)
   const nav = useNavigate()
   const menuRef = useRef(null);
   const [pos, setPos] = useState({ top: 0, right: 0 });
 
-  useEffect(()=>{
-    localStorage.setItem("AuthState",JSON.stringify(authState))
+  useEffect(() => {
+    localStorage.setItem("AuthState", JSON.stringify(authState))
 
-  },[authState])
+  }, [authState])
 
   // Position + outside click/escape handling (portal so it won't be clipped by overflow-hidden)
   useEffect(() => {
@@ -152,17 +153,17 @@ function PopUpMenu({ name, email, closePopup, triggerRef }) {
       document.removeEventListener("keydown", onKeyDown);
     };
   }, [closePopup, triggerRef]);
-  
+
   const handleLogout = () => {
-    setAuthState({token:" ",loggedIn:false})
+    setAuthState({ token: " ", loggedIn: false })
     nav("/login")
   }
-  
+
   const handleNavigate = (route) => {
     closePopup()
     nav(route)
   }
-  
+
   return createPortal(
     <div
       ref={menuRef}
@@ -175,16 +176,16 @@ function PopUpMenu({ name, email, closePopup, triggerRef }) {
           <p className="text-gray-400 text-xs">{email}</p>
         </div>
 
-        <div onClick={()=>handleNavigate("/team/customization/qrchange")} className="mt-2 space-y-1 border-t pt-2">
-          <MenuItem label="Change Qr"/>
+        <div onClick={() => handleNavigate("/team/customization/qrchange")} className="mt-2 space-y-1 border-t pt-2">
+          <MenuItem label="Change Qr" />
           {/* <MenuItem label="New Team" /> */}
         </div>
-        <div onClick={()=>handleNavigate("/team/customization/changepassword")} className="mt-2 space-y-1 border-t pt-2">
-          <MenuItem label="Change Password"/>
+        <div onClick={() => handleNavigate("/team/customization/changepassword")} className="mt-2 space-y-1 border-t pt-2">
+          <MenuItem label="Change Password" />
           {/* <MenuItem label="New Team" /> */}
         </div>
         <div onClick={handleLogout} className="mt-2 border-t border-gray-700 pt-2">
-          <MenuItem label="Log out"  danger  />
+          <MenuItem label="Log out" danger />
         </div>
       </div>
     </div>,
@@ -205,99 +206,101 @@ function MenuItem({ label, shortcut, active, danger }) {
 }
 
 function TeamLayout() {
-  const [openPopup , setopenPopup] = useState(false)
+  const [openPopup, setopenPopup] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [userEmail , setUserEmail] = useState("")
-  const [userName , setUserName] = useState("")
+  const [userEmail, setUserEmail] = useState("")
+  const [userName, setUserName] = useState("")
   const avatarBtnRef = useRef(null);
   const handleOpenPopup = () => {
     setopenPopup(!openPopup)
   }
-  const auth =  JSON.parse(localStorage.getItem("AuthState"))
+  const auth = JSON.parse(localStorage.getItem("AuthState"))
 
   const getDataAboutUser = async () => {
-      const response = await axios.get(import.meta.env.VITE_SERVER + '/api/v1/dashboard/get-dashboard' , {headers:{
-      Authorization: `Bearer ${auth?.token}`
-      }})
+    const response = await axios.get(import.meta.env.VITE_SERVER + '/api/v1/dashboard/get-dashboard', {
+      headers: {
+        Authorization: `Bearer ${auth?.token}`
+      }
+    })
     setUserEmail(response.data.user.email)
     setUserName(response.data.user.name)
   }
-  useEffect(()=>{
+  useEffect(() => {
     getDataAboutUser()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[])
+  }, [])
   return (
     <div className='relative noto-sans-mono flex flex-row h-screen overflow-hidden bg-background'>
-        <SideBae isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-        <div className='flex-1 flex flex-col bg-background border-white overflow-hidden'>
-            {/* this will be out nav bar with the account stuff and all */}
-            <div className='flex h-15 items-center w-full justify-between px-5 flex-row p-2 border-b border-border text-foreground text-md flex-shrink-0'>
-              {/* Hamburger menu button for mobile */}
-              <button 
-                onClick={() => setSidebarOpen(true)}
-                className='md:hidden p-2 hover:bg-gray-800 rounded-lg'
-              >
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </button>
-              
-              {/* Spacer for desktop */}
-              <div className='hidden md:block'></div>
-              
-              <button
-                ref={avatarBtnRef}
-                type="button"
-                aria-haspopup="menu"
-                aria-expanded={openPopup}
-                className='rounded-full bg-red-50 cursor-pointer'
-                onClick={handleOpenPopup}
-              >
-                <img src={gdg} className='h-9 w-9 rounded-full' alt="" />
-              </button>
-              {/* this is the popup component */}
-              {openPopup && (
-                <PopUpMenu
-                  name={userName}
-                  email={userEmail}
-                  closePopup={() => setopenPopup(false)}
-                  triggerRef={avatarBtnRef}
-                />
-              )}
-            </div>
-            
-            <div className='flex-1 overflow-y-auto'>
-              <Outlet/>
-            </div>
+      <SideBae isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <div className='flex-1 flex flex-col bg-background border-white overflow-hidden'>
+        {/* this will be out nav bar with the account stuff and all */}
+        <div className='flex h-15 items-center w-full justify-between px-5 flex-row p-2 border-b border-border text-foreground text-md flex-shrink-0'>
+          {/* Hamburger menu button for mobile */}
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className='md:hidden p-2 hover:bg-gray-800 rounded-lg'
+          >
+            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+
+          {/* Spacer for desktop */}
+          <div className='hidden md:block'></div>
+
+          <button
+            ref={avatarBtnRef}
+            type="button"
+            aria-haspopup="menu"
+            aria-expanded={openPopup}
+            className='rounded-full bg-red-50 cursor-pointer'
+            onClick={handleOpenPopup}
+          >
+            <img src={gdg} className='h-9 w-9 rounded-full' alt="" />
+          </button>
+          {/* this is the popup component */}
+          {openPopup && (
+            <PopUpMenu
+              name={userName}
+              email={userEmail}
+              closePopup={() => setopenPopup(false)}
+              triggerRef={avatarBtnRef}
+            />
+          )}
         </div>
+
+        <div className='flex-1 overflow-y-auto'>
+          <Outlet />
+        </div>
+      </div>
     </div>
   )
 }
 
 
 function AppWithRouter() {
-  const initialAuthContext={
-    loggedIn:false,
-    token:"nothing"
+  const initialAuthContext = {
+    loggedIn: false,
+    token: "nothing"
   }
-  useEffect(()=>{
+  useEffect(() => {
     const initLogged = JSON.parse(localStorage.getItem("AuthState"))
-    if(initLogged && initLogged.loggedIn){
+    if (initLogged && initLogged.loggedIn) {
       setAuthState(initLogged)
     }
-  },[])
-  const [authState,setAuthState] = useState(initialAuthContext);
-  
+  }, [])
+  const [authState, setAuthState] = useState(initialAuthContext);
+
   return (
     <AuthContext.Provider value={{ authState, setAuthState }}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <Router>
           <Routes>
-            {/* Public pages */}
+            {/* Public   pages */}
             <Route path="/" element={<HomePage />} />
             <Route path="initialsetup/:id" element={<InitialSetup />} />
             <Route path="techfaceoff" element={<TechDebatePage />} />
-            <Route path='score' element={<ScorePage/>}/>
+            <Route path='score' element={<ScorePage />} />
             <Route path="events" element={<EventsPage />} />
             <Route path="event-details" element={<EventDetails />} />
             <Route path="team-page" element={<TeamPage />} />
@@ -305,15 +308,18 @@ function AppWithRouter() {
             <Route path="contact" element={<ContactUsPage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="forgotpassword" element={<ForgotPassword />} />
-            <Route path='adsophos' element={<Adsophos/>}>
+            <Route path='adsophos' element={<Adsophos />}>
             </Route>
-            <Route path='heist' element={<TheHeistAdsophos/>} />
-            
+            <Route path='photobooth' element={<PhotoBooth />} />
+            <Route path='heist' element={<TheHeistAdsophos />} />
+            <Route path='loop13' element={<Loop13 />} />
+
+
             {/* Team area (layout route) */}
             <Route path="team" element={<TeamLayout />}>
               {/* <Route path="hr-interface" element={<HrInterface/>}/> */}
               {/* <Route path="hr-control" element={<HrControlInterface/>}/> */}
-              <Route index element={<Navigate to="/*"/>} />
+              <Route index element={<Navigate to="/*" />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="customization">
                 <Route path="qrchange" element={<QrChange />} />
@@ -323,7 +329,7 @@ function AppWithRouter() {
 
               <Route path="admin">
                 <Route path="users" element={<AdminUsers />} />
-                <Route path="hr-interface" element={<HrInterface/>}/>
+                <Route path="hr-interface" element={<HrInterface />} />
               </Route>
 
               <Route path="superadmin">
@@ -341,7 +347,7 @@ function AppWithRouter() {
               <Route path="blog/:blogId" element={<SpecificBlog />} />
               <Route path="help" element={<BlogHelp />} />
             </Route>
-           
+
 
             {/* Catch-all 404 route */}
             <Route path="*" element={<NotFound />} />

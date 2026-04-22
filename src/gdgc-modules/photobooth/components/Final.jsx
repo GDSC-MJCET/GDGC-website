@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import './adsophos.css'
+import '../../loop13/styles/adsophos.css'
 
 const Final = () => {
   const [hovered, setHovered] = useState(null);
@@ -7,7 +7,7 @@ const Final = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [mounted, setMounted] = useState(false);
   const containerRef = useRef(null);
-  
+
   const buttons = [
     { text: "Register for Loop 13", link: "/loop13" },
     { text: "Register for Diamond Heist", link: "/heist" },
@@ -129,7 +129,7 @@ const Final = () => {
           <h1
             className={`footer font-bold text-transparent bg-clip-text mb-8 md:mb-12 tracking-wide title-animated`}
           >
-             <div className="text-[#ff00a2]">START</div> <div className="text-[#ff00a2]">EVENT</div> 
+            <div className="text-[#ff00a2]">START</div> <div className="text-[#ff00a2]">EVENT</div>
           </h1>
 
           {/* Buttons */}
@@ -144,11 +144,10 @@ const Final = () => {
               >
                 {/* Arrow */}
                 <span
-                  className={`transition-all duration-200 text-[#ff5700] ${
-                    hovered === i
-                      ? `opacity-100 translate-x-0 arrow-hovered`
-                      : "opacity-0 -translate-x-3"
-                  }`}
+                  className={`transition-all duration-200 text-[#ff5700] ${hovered === i
+                    ? `opacity-100 translate-x-0 arrow-hovered`
+                    : "opacity-0 -translate-x-3"
+                    }`}
                 >
                   &gt;
                 </span>

@@ -44,12 +44,12 @@ const Hero = () => {
             // fontSize: "clamp(3.5rem, 8vw, 9rem)",
             fontSize: "8vw",
             background: "linear-gradient(180deg, #FFF 0%, #FF00A2 100%)",
-  backgroundClip: "text",
-  WebkitBackgroundClip: "text",
-  WebkitTextFillColor: "transparent",
-  WebkitTextStrokeWidth: "0px",
-  WebkitTextStrokeColor: "#000",
-  textShadow: "0 42px 107px rgba(229, 0, 92, 0.34), 0 24.721px 32.257px rgba(255, 255, 255, 0.19), 0 10.268px 13.398px rgba(229, 0, 92, 0.22), 0 3.714px 4.846px rgba(229, 0, 92, 0.15), 0 0 0 #F8EAF0, 0 0 0 #FFF",
+            backgroundClip: "text",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            WebkitTextStrokeWidth: "0px",
+            WebkitTextStrokeColor: "#000",
+            textShadow: "0 42px 107px rgba(229, 0, 92, 0.34), 0 24.721px 32.257px rgba(255, 255, 255, 0.19), 0 10.268px 13.398px rgba(229, 0, 92, 0.22), 0 3.714px 4.846px rgba(229, 0, 92, 0.15), 0 0 0 #F8EAF0, 0 0 0 #FFF",
           }}
           initial={{ opacity: 0, y: 36, letterSpacing: "0.35em" }}
           animate={{ opacity: 1, y: 0, letterSpacing: "0.18em" }}

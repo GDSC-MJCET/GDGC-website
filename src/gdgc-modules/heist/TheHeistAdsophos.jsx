@@ -1,12 +1,11 @@
 import { useEffect, useRef } from "react";
-import PixelSkyline from "../components/adsophos/PixelSkyline";
-import Nav from "../components/adsophos/nav";
-import Final from "../components/adsophos/Final";
+import PixelSkyline from "../photobooth/components/PixelSkyline";
+import Final from "../photobooth/components/Final";
 
-import bgii from "../../public/ali-bg-ii.jpeg";
-import bgiii from "../../public/ali-bg-iii.png";
+import bgii from "./public/ali-bg-ii.jpeg";
+import bgiii from "./public/ali-bg-iii.png";
 // Import your mobile image:
-import bgMobile from "../../public/ali-bg-mobile.png"; // <-- rename to match your actual filename
+import bgMobile from "./public/ali-bg-mobile.png"; // <-- rename to match your actual filename
 
 const noteLines = [
   "Note: equipment will be provided by organizers and must be returned back in the same condition. If any damages occur the party involved will be held responsible.",
@@ -25,12 +24,11 @@ export default function TheHeistAdsophos() {
       <div className="hidden md:flex flex-col">
 
         {/* SECTION 1 — Hero */}
-        <div className="bg-[url('/adsophos-hero.png')]">
+        <div className="bg-[url('../photobooth/public/adsophos-hero.png')]">
           <div className="relative h-screen w-full bg-[url('/ali-bg-i.png')] bg-cover bg-no-repeat bg-center overflow-hidden">
-            <Nav />
             <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
               <button
-                onClick={() => (window.location.href = "/register")}
+                onClick={() => (window.location.href = "https://www.adsophos.com/register?event=Diamond%20Heist")}
                 style={{
                   fontFamily: "'Press Start 2P', monospace",
                   fontSize: "clamp(9px, 1vw, 14px)",
@@ -124,9 +122,6 @@ function MobileLayout() {
         }}
       >
 
-        <div className="absolute top-0 left-0 right-0 z-10">
-          <Nav />
-        </div>
 
 
         <div
