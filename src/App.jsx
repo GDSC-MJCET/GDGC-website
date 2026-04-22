@@ -343,6 +343,7 @@ function AppWithRouter() {
               <Route path="home" element={<BlogHome />} />
               <Route path="editor" element={<BlogWrite />} />
               <Route path="posts" element={<BlogPosts />} />
+              <Route path="myblogs" element={<MyBlogs/>}/>
               <Route path="blog/:blogId" element={<SpecificBlog />} />
               <Route path="help" element={<BlogHelp />} />
             </Route>

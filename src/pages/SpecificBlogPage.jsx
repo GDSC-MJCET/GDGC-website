@@ -30,7 +30,6 @@ const SpecificBlog = () => {
       )
       .then((res) => {
         const b = res?.data || null;
-        console.log("Received blog data:", b);
         if (!b) return console.warn("get-blog returned nothing");
         const comments = (b.comments || []).map((c) => ({ ...c, showReplies: !!c.showReplies }));
         setBlog({ ...b, comments });
@@ -256,7 +255,7 @@ const SpecificBlog = () => {
               onClick={() => toggleShowReplies(comment._id)}
               className={`text-xs text-gray-400 hover:text-green-400 show-replies-toggle ${
                 comment.showReplies ? "text-green-400" : ""
-              }`}
+              }`+  (comment.replies.length>0 ? " " : " hidden") }
             >
               Previous Replies
             </button>
@@ -334,13 +333,37 @@ const SpecificBlog = () => {
               <span className="h-2 w-2 rounded-full bg-green-400" />
               Content
             </div>
-            <div
-              className="prose prose-invert max-w-none 
-                prose-p:leading-8 
-                prose-img:rounded-xl 
-                prose-img:my-6"
-              dangerouslySetInnerHTML={{ __html: blog.content }}
-            />
+         
+
+<div className="prose prose-invert max-w-none">
+  {blog.content?.[0].blocks?.map((block, index) => {
+    
+    if (block.type === "paragraph") {
+      return (
+        <p key={index} dangerouslySetInnerHTML={{ __html: block.data.text }} />
+      );
+    }
+
+    if (block.type === "header") {
+      return (
+        <h2 key={index} dangerouslySetInnerHTML={{ __html: block.data.text }} />
+      );
+    }
+
+    if (block.type === "image") {
+      return (
+        <img
+          key={index}
+          src={block.data.file.url}
+          alt={block.data.caption || "blog image"}
+          className="rounded-xl my-6"
+        />
+      );
+    }
+
+    return null;
+  })}
+</div>
           </article>
 
           {/* ACTIONS */}
@@ -386,7 +409,7 @@ const SpecificBlog = () => {
               ))}
             </div>
           ) : (
-            <p className="text-gray-500 mb-6">No comments yet — be the first to comment.</p>
+            <p className="text-gray-500 mb-6">No comments yet, be the first to comment.</p>
           )}
 
           <div className="flex gap-3">

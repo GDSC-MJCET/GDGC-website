@@ -4,7 +4,7 @@ import { FaComment, FaArrowUp, FaReply } from "react-icons/fa";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const BlogHome = () => {
+const MyBlogs = () => {
   const [openCommentsId, setOpenCommentsId] = useState(null);
   const [commentInputs, setCommentInputs] = useState({});
   const [replyInputs, setReplyInputs] = useState({});
@@ -12,50 +12,63 @@ const BlogHome = () => {
   const [blogs, setBlogs] = useState([]);
   const [liked, setLiked] = useState([]);
   const [name, setName] = useState("");
+  const [error, setError] = useState("");
   const server = import.meta.env.VITE_SERVER;
   const authRaw = typeof window !== "undefined" ? localStorage.getItem("AuthState") : null;
   const auth = authRaw ? JSON.parse(authRaw) : null;
 
-   //this array stores all parent comment ids whose children replies are visible 
-  // refs to keep DOM nodes for reply inputs stable and to restore focus
   const replyInputRefs = useRef({});
 
+  // Fetch user's own blogs
   useEffect(() => {
     if (!auth?.token) return;
+    setError("");
     axios
-      .get(server + "/api/v1/blog/get-blogs", {
+      .get(server + "/api/v1/blog/my-blogs", {
         headers: { Authorization: `Bearer ${auth.token}` },
       })
       .then((res) => {
-         const blogs = res?.data?.BlogArray || [];
-  const blogsWithShowReplies = blogs.map(blog => ({
-    ...blog,
-    comments: (blog.comments || []).map(c => ({ ...c, showReplies: false }))
-  }));
-  setBlogs(blogsWithShowReplies);
+        console.log("fetched my-blogs:", res.data);
+        if (res.data.error) {
+          setError(res.data.error);
+          setBlogs([]);
+          return;
+        }
+        const blogsArr = res?.data?.BlogArray || [];
+        // Initialize showReplies for all comments (same as original)
+        const blogsWithShowReplies = blogsArr.map((blog) => ({
+          ...blog,
+          comments: (blog.comments || []).map((c) => ({ ...c, showReplies: false })),
+        }));
+        setBlogs(blogsWithShowReplies);
         const arr = res?.data?.LikedArray?.map((i) => String(i._id)) || [];
         setLiked(arr);
-        setName(res?.data?.Name || "");
+        // Set name: prefer response Name, fallback to auth user name, then empty
+        const userName = res?.data?.Name || auth?.name || auth?.user?.name || "";
+        setName(userName);
       })
-      .catch((err) => console.error("fetch blogs:", err));
+      .catch((err) => {
+        console.error("fetch my-blogs error:", err);
+        setError("Failed to load your blogs. Please try again later.");
+        setBlogs([]);
+      });
   }, [server, auth?.token]);
 
-  // collapse reply inputs when clicking outside (but not when clicking the reply toggle)
-useEffect(() => {
-  const handleClickOutside = (e) => {
-    const clickedInsideReplyBox = e.target.closest(".reply-box");
-    const clickedReplyToggle = e.target.closest(".reply-toggle");
-    const clickedShowReplies = e.target.closest(".show-replies-toggle");
-    if (!clickedInsideReplyBox && !clickedReplyToggle && !clickedShowReplies) {
-      setReplyVisible({});
-    }
-  };
-  document.addEventListener("mousedown", handleClickOutside);
-  return () => document.removeEventListener("mousedown", handleClickOutside);
-}, []);
+  // Collapse reply inputs when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      const clickedInsideReplyBox = e.target.closest(".reply-box");
+      const clickedReplyToggle = e.target.closest(".reply-toggle");
+      const clickedShowReplies = e.target.closest(".show-replies-toggle");
+      if (!clickedInsideReplyBox && !clickedReplyToggle && !clickedShowReplies) {
+        setReplyVisible({});
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-  // focus-preserving effect:
-  // when a reply input is visible and not focused, focus it and restore caret to end
+  // Focus-preserving effect for reply inputs
   useEffect(() => {
     Object.keys(replyVisible).forEach((id) => {
       if (!replyVisible[id]) return;
@@ -69,13 +82,13 @@ useEffect(() => {
             el.setSelectionRange(val.length, val.length);
           }
         } catch (e) {
-          // noop
+          // ignore
         }
       }
     });
   }, [replyVisible, replyInputs]);
 
-  //  like/unlike handlers
+  // Like / Unlike handlers (identical to original)
   const handleLike = async (blog_id) => {
     if (!auth?.token) return;
     try {
@@ -152,11 +165,9 @@ useEffect(() => {
   const toggleReplyVisible = (commentId) => {
     const key = String(commentId);
     setReplyVisible((prev) => ({ ...prev, [key]: !prev[key] }));
-    // ensure a ref entry exists so effect can focus after re-render
     if (!replyInputRefs.current[key]) replyInputRefs.current[key] = null;
   };
 
-  // Safe helper to replace or append returned comment
   const replaceOrAppendComment = (prevBlogs, blogId, tempId, realComment) =>
     prevBlogs.map((b) => {
       if (b._id !== blogId) return b;
@@ -168,7 +179,6 @@ useEffect(() => {
       return { ...b, comments: updatedComments };
     });
 
-  // Add a top-level comment
   const handleAddComment = async (blogId) => {
     const text = (commentInputs[String(blogId)] || "").trim();
     if (!text) return;
@@ -183,7 +193,6 @@ useEffect(() => {
       createdAt: new Date().toISOString(),
     };
 
-    // optimistic update
     setBlogs((prev) =>
       prev.map((blog) =>
         blog._id === blogId
@@ -219,7 +228,6 @@ useEffect(() => {
     }
   };
 
-  // Add a reply
   const handleAddReply = async (blogId, parentComment) => {
     const parentIdStr = String(parentComment._id);
     const text = (replyInputs[parentIdStr] || "").trim();
@@ -250,7 +258,6 @@ useEffect(() => {
       )
     );
 
-    // clear input AND collapse after submit
     setReplyInputs((prev) => ({ ...prev, [parentIdStr]: "" }));
     setReplyVisible((prev) => ({ ...prev, [parentIdStr]: false }));
 
@@ -278,7 +285,6 @@ useEffect(() => {
     }
   };
 
-  // Build comment tree safely
   const buildCommentTree = (comments) => {
     if (!Array.isArray(comments) || comments.length === 0) return [];
     const commentMap = new Map();
@@ -297,18 +303,16 @@ useEffect(() => {
     return roots;
   };
 
-  // Memoized CommentItem to reduce re-renders/remounts
   const CommentItem = memo(function CommentItem({ comment, blogId }) {
     const idStr = String(comment._id);
     const visible = Boolean(replyVisible[idStr]);
 
-    // assign ref for focus management
     const assignRef = useCallback((el) => {
       replyInputRefs.current[idStr] = el;
     }, []);
 
     return (
-      <div className="mb-3 " style={{ marginLeft: comment.level > 0 ? "1.5rem" : 0 }}>
+      <div className="mb-3" style={{ marginLeft: comment.level > 0 ? "1.5rem" : 0 }}>
         <div className="bg-gray-800 p-2 rounded">
           <div className="flex justify-between items-start">
             <span className="font-bold text-green-400 text-sm">
@@ -317,15 +321,24 @@ useEffect(() => {
             <span className="text-xs text-gray-500">{new Date(comment.createdAt).toLocaleString()}</span>
           </div>
           <p className="text-gray-200 text-sm mt-1">{comment.text}</p>
-          <p className={"text-xs text-gray-400 cursor-pointer hover:text-green-400 mt-1 flex items-center gap-1 show-replies-toggle " +  (comment.replies.length>0 ? " " : " hidden")} onClick = {() => {
-            
-            setBlogs((prev) => prev.map((b) => {
-              if (b._id !== blogId) return b;
-              const comments = Array.isArray(b.comments) ? b.comments.slice() : [];
-              const updatedComments = comments.map((c) => String(c._id) === idStr ? { ...c, showReplies: !comment.showReplies } : c);
-              return { ...b, comments: updatedComments };
-            }))
-          }}>
+          <p
+            className={
+              "text-xs text-gray-400 cursor-pointer hover:text-green-400 mt-1 flex items-center gap-1 show-replies-toggle " +
+              (comment.replies.length > 0 ? "" : " hidden")
+            }
+            onClick={() => {
+              setBlogs((prev) =>
+                prev.map((b) => {
+                  if (b._id !== blogId) return b;
+                  const comments = Array.isArray(b.comments) ? b.comments.slice() : [];
+                  const updatedComments = comments.map((c) =>
+                    String(c._id) === idStr ? { ...c, showReplies: !comment.showReplies } : c
+                  );
+                  return { ...b, comments: updatedComments };
+                })
+              );
+            }}
+          >
             Previous Replies
           </p>
           <button
@@ -356,7 +369,7 @@ useEffect(() => {
         )}
 
         {comment.replies && comment.replies.length > 0 && comment.showReplies && (
-          <div className={"mt-2"  }>
+          <div className="mt-2">
             {comment.replies.map((reply) => (
               <CommentItem key={String(reply._id)} comment={reply} blogId={blogId} />
             ))}
@@ -365,9 +378,29 @@ useEffect(() => {
       </div>
     );
   });
+
   const nav = useNavigate();
   const handleBlogOnClick = (blogId) => {
     nav(`/blog/blog/${blogId}`);
+  };
+
+  // Empty state or error message
+  if (error) {
+    return (
+      <div className="relative h-full w-full bg-black pt-16">
+        <div className="text-center text-red-400 font-mono mt-20">{error}</div>
+      </div>
+    );
+  }
+
+  if (blogs.length === 0 && !error) {
+    return (
+      <div className="relative h-full w-full bg-black pt-16">
+        <div className="text-center text-gray-300 font-mono mt-20">
+          You haven't uploaded any blogs yet.
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -378,7 +411,12 @@ useEffect(() => {
             key={String(blog._id)}
             className="m-4 p-4 border border-white rounded-lg transition hover:border-green-400 hover:shadow-[0_0_10px_#4ade80]"
           >
-            <h2 className="text-2xl font-bold text-white mb-2" onClick={() => handleBlogOnClick(blog._id)} >{blog.title}</h2>
+            <h2
+              className="text-2xl font-bold text-white mb-2 cursor-pointer"
+              onClick={() => handleBlogOnClick(blog._id)}
+            >
+              {blog.title}
+            </h2>
             {blog.banner && <img src={blog.banner} alt="Blog Banner" className="w-full h-auto mb-4 rounded" />}
             <p className="text-white mb-4">{blog.des}</p>
 
@@ -440,4 +478,4 @@ useEffect(() => {
   );
 };
 
-export default BlogHome;
+export default MyBlogs;

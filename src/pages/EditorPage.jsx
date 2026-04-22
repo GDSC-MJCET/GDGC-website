@@ -18,20 +18,23 @@ const EditorPage = () =>{
     const nav = useNavigate ()
      const handleSubmit=async()=>{
         let auth = JSON.parse(localStorage.getItem("AuthState"))
-        console.log(blog,"this si the blog being sent");
-        
-        const tl = toast.loading ("Submitting...")
+        const tl = toast.loading ("Submitting blog...")
+        const content = await textEditor.save()
+        const blogtosent = {
+            ...blog,content
+        }
         try {
-            const res =  await axios.post(import.meta.env.VITE_SERVER+"/api/v1/blog/publish-blog",{blog},{headers:{
+            
+            const res =  await axios.post(import.meta.env.VITE_SERVER+"/api/v1/blog/publish-blog",{blog:blogtosent},{headers:{
                 Authorization : `Bearer ${auth.token}`
             }})
              if (res.data.success) {
                 toast.dismiss (tl)
                 toast.success ("Blog submitted")
-                 nav ("/home")
+                 return nav("/blog/home")
              }else{
                 toast.dismiss (tl)
-                toast.error (res.data.error)
+                toast.error(res.data.error)
              }
         } catch (error) {
             toast.dismiss (tl)
