@@ -54,6 +54,7 @@ import { createPortal } from 'react-dom';
 import EventDetails from './components/events/EventDetails.jsx';
 import Adsophos from './pages/Adsophos.jsx';
 import TheHeistAdsophos from './pages/TheHeistAdsophos.jsx';
+import MyBlogs from './pages/MyBlogs.jsx';
 
 function App() {
   const [isVerified, setIsVerified] = useState(null);
@@ -336,6 +337,7 @@ function AppWithRouter() {
               <Route path="home" element={<BlogHome />} />
               <Route path="editor" element={<BlogWrite />} />
               <Route path="posts" element={<BlogPosts />} />
+              <Route path="myblogs" element={<MyBlogs/>}/>
               <Route path="blog/:blogId" element={<SpecificBlog />} />
               <Route path="help" element={<BlogHelp />} />
             </Route>

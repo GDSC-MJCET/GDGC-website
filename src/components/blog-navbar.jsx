@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 /* enum-like nav keys */
 const NAV = {
-  FEED: "FEED",
+  FEED: "HOME",
   PUBLISH: "PUBLISH",
   MYBLOGS: "MYBLOGS",
   HELP: "HELP",
@@ -18,15 +18,16 @@ const navItems = [
 ];
 
 const BlogNavbar = ({removeNavbar, setRemoveNavbar}) => {
-  const [active, setActive] = useState(NAV.FEED);
+  const [active, setActive] = useState(window.location.pathname.toUpperCase().split("/")[2] || NAV.FEED);
+  console.log("Active nav item:", active);
   const navigate = useNavigate();
 
   const handleNav = (item) => {
     setActive(item.key);
     navigate(item.route);
   };
-  
-    if (window.location.pathname=="/blog/editor") {
+  const pathname = window.location.pathname
+    if (pathname=="/blog/editor") {
       setRemoveNavbar(true)
     }else{
       setRemoveNavbar(false)
