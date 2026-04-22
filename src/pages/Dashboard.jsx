@@ -6,10 +6,47 @@ import SideBae from '../components/SideBae'
 import axios from 'axios'
 import { NavLink } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
+import { useState } from "react";
+import SocialsPopup from "../components/SocialsPopup";
 
 const Dashboard = () => {
+
+  const [socials, setSocials]= useState(null);
+  const [showPopUp, setShowPopUp]= useState(false);//initially false ie closedd
+
+
   const auth =  JSON.parse(localStorage.getItem("AuthState"))
   
+
+
+  useEffect(()=>{
+    
+    axios.get(import.meta.env.VITE_SERVER+"/api/v1/socials/me",{
+      headers:{
+        Authorization: `Bearer ${auth?.token}`
+
+      }
+    })
+    .then((res) =>{
+      console.log("socilas dattaaaaa::",res.data.data);
+      const data = res.data.data;
+      const isEmpty =!data.linkedin &&!data.github &&!data.instagram &&!data.twitter &&!data.leetcode;
+
+      if (!data || isEmpty) {
+        console.log("NO SOCIALS FILLED → OPEN POPUP");
+        setShowPopUp(true);
+      } else {
+        setSocials(data);
+      }
+    
+    })
+    .catch((err)=>{
+      console.log("ERROR:",err);
+    });
+  },[]);
+
+  
+
   const nav = useNavigate()
   useEffect(()=>{
     if(!AuthContext){
@@ -29,6 +66,16 @@ const Dashboard = () => {
   },[])
  
   return (
+
+    <>
+    {/* FOR SOCIALSSS */}
+    <SocialsPopup
+      showPopUp={showPopUp}
+      setShowPopUp={setShowPopUp}
+      auth={auth}
+      initialData={socials}
+    />
+
     <div className="min-h-[70vh] flex flex-col items-center justify-center px-4">
       <div className="text-center space-y-4">
         <h1 className="text-3xl md:text-4xl font-bold text-white">
@@ -55,8 +102,16 @@ const Dashboard = () => {
             </svg>
           </NavLink>
         </div>
+
+
+        {/* socials buttton: */}
+        <br />
+        <button onClick={()=>setShowPopUp(true)} className="cursor-pointer inline-flex items-center gap-2 px-5 py-2.5 bg-white text-black text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors">
+          Edit Socials
+          </button>
       </div>
     </div>
+    </>
   )
 }
 
