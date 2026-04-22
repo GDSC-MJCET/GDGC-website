@@ -33,7 +33,6 @@ const Dashboard = () => {
       const isEmpty =!data.linkedin &&!data.github &&!data.instagram &&!data.twitter &&!data.leetcode;
 
       if (!data || isEmpty) {
-        console.log("NO SOCIALS FILLED → OPEN POPUP");
         setShowPopUp(true);
       } else {
         setSocials(data);
