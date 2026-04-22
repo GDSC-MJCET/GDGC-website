@@ -112,9 +112,6 @@ const BlogEditor = ({ }) => {
      useEffect(() => {
         setBlog({ ...blog, content: textEditor.isReady ? textEditor : content })
      }, [textEditor])
- 
-    useEffect(() => {console.log(blog)}, [blog])
-
     return (
         <div className="bg-black" >
 

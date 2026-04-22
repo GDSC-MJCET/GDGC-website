@@ -22,25 +22,65 @@ const uploadImageByUrl = async(e)=>{
         }
     })
 }
-const uploadImageByFile = async(file)=>{
-           
-            if (!file) return;
-            let form = new FormData();
-            form.append("image",file)
-            
-            const {data} = await axios.post(import.meta.env.VITE_SERVER_PATH+"/editor",form,{
-                headers : {
-                    "Content-Type" : "multipart/form-data"
-                }
-            });
-            let url = data.publicUrl;
-            
+const uploadImageByFile = async (file) => {
+    // 1. Guard clause: return early if no file is provided
+    if (!file) {
+        return {
+            success: 0,
+            message: "No file provided"
+        };
+    }
+
+    // 2. Prepare the FormData with required fields for Cloudinary
+    const form = new FormData();
+    form.append("file", file);
+    // ⚠️ Important: Replace this with your actual upload preset name from Cloudinary
+    form.append("upload_preset", import.meta.env.VITE_CLOUDINARY_PRESET);
+
+    try {
+        // 3. Make the request to Cloudinary
+        const { data } = await axios.post(
+            import.meta.env.VITE_CLOUDINARY_URL,
+            form
+        );
+
+        // 4. Check for a successful upload and a valid URL
+        if (data?.secure_url) {
             return {
                 success: 1,
-                file: { url }
-            }
+                file: { url: data.secure_url }
+            };
+        } else {
+            // This case shouldn't happen with a successful Cloudinary response,
+            // but it's good to have a fallback.
+            console.error("Cloudinary upload succeeded but no URL was returned", data);
+            return {
+                success: 0,
+                message: "Upload succeeded, but no URL was returned by Cloudinary"
+            };
+        }
+    } catch (error) {
+        // 5. Comprehensive error handling for network or Cloudinary issues
+        console.error("Cloudinary upload failed", error);
+        
+        // Provide a more specific error message if possible
+        let errorMessage = "Upload failed. Please try again.";
+        if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            errorMessage = error.response.data?.error?.message || 
+                          `Server error: ${error.response.status}`;
+        } else if (error.request) {
+            // The request was made but no response was received
+            errorMessage = "Network error. Please check your connection.";
+        }
 
-}
+        return {
+            success: 0,
+            message: errorMessage
+        };
+    }
+};
 export const tools = {
     embed : Embed,
     inlineCode:InlineCode,
