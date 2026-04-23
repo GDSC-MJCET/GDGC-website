@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState, useCallback, memo } from "react";
-import { FaComment, FaArrowUp, FaReply } from "react-icons/fa";
+import { FaComment, FaArrowUp, FaReply, FaTrash } from "react-icons/fa";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -11,13 +11,11 @@ const BlogHome = () => {
   const [replyVisible, setReplyVisible] = useState({});
   const [blogs, setBlogs] = useState([]);
   const [liked, setLiked] = useState([]);
+  const [ownerIds, setOwnerIds] = useState([]); // Store IDs of blogs owned by current user
   const [name, setName] = useState("");
+  const [confirmingBlogId, setConfirmingBlogId] = useState(null); // For delete confirmation
   const server = import.meta.env.VITE_SERVER;
-  const authRaw = typeof window !== "undefined" ? localStorage.getItem("AuthState") : null;
-  const auth = authRaw ? JSON.parse(authRaw) : null;
-
-   //this array stores all parent comment ids whose children replies are visible 
-  // refs to keep DOM nodes for reply inputs stable and to restore focus
+const auth = JSON.parse(localStorage.getItem("AuthState") );
   const replyInputRefs = useRef({});
 
   useEffect(() => {
@@ -27,35 +25,37 @@ const BlogHome = () => {
         headers: { Authorization: `Bearer ${auth.token}` },
       })
       .then((res) => {
-         const blogs = res?.data?.BlogArray || [];
-  const blogsWithShowReplies = blogs.map(blog => ({
-    ...blog,
-    comments: (blog.comments || []).map(c => ({ ...c, showReplies: false }))
-  }));
-  setBlogs(blogsWithShowReplies);
+        const blogs = res?.data?.BlogArray || [];
+        console.log("Fetched blogs:", blogs);
+        const blogsWithShowReplies = blogs.map(blog => ({
+          ...blog,
+          comments: (blog.comments || []).map(c => ({ ...c, showReplies: false }))
+        }));
+        setBlogs(blogsWithShowReplies);
         const arr = res?.data?.LikedArray?.map((i) => String(i._id)) || [];
         setLiked(arr);
+        const ownerArr = res?.data?.OwnerArray || [];
+        setOwnerIds(ownerArr);
         setName(res?.data?.Name || "");
       })
       .catch((err) => console.error("fetch blogs:", err));
   }, [server, auth?.token]);
 
-  // collapse reply inputs when clicking outside (but not when clicking the reply toggle)
-useEffect(() => {
-  const handleClickOutside = (e) => {
-    const clickedInsideReplyBox = e.target.closest(".reply-box");
-    const clickedReplyToggle = e.target.closest(".reply-toggle");
-    const clickedShowReplies = e.target.closest(".show-replies-toggle");
-    if (!clickedInsideReplyBox && !clickedReplyToggle && !clickedShowReplies) {
-      setReplyVisible({});
-    }
-  };
-  document.addEventListener("mousedown", handleClickOutside);
-  return () => document.removeEventListener("mousedown", handleClickOutside);
-}, []);
+  // Collapse reply inputs when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      const clickedInsideReplyBox = e.target.closest(".reply-box");
+      const clickedReplyToggle = e.target.closest(".reply-toggle");
+      const clickedShowReplies = e.target.closest(".show-replies-toggle");
+      if (!clickedInsideReplyBox && !clickedReplyToggle && !clickedShowReplies) {
+        setReplyVisible({});
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-  // focus-preserving effect:
-  // when a reply input is visible and not focused, focus it and restore caret to end
+  // Focus-preserving effect for reply inputs
   useEffect(() => {
     Object.keys(replyVisible).forEach((id) => {
       if (!replyVisible[id]) return;
@@ -75,7 +75,7 @@ useEffect(() => {
     });
   }, [replyVisible, replyInputs]);
 
-  //  like/unlike handlers
+  // Like / unlike handlers
   const handleLike = async (blog_id) => {
     if (!auth?.token) return;
     try {
@@ -152,11 +152,9 @@ useEffect(() => {
   const toggleReplyVisible = (commentId) => {
     const key = String(commentId);
     setReplyVisible((prev) => ({ ...prev, [key]: !prev[key] }));
-    // ensure a ref entry exists so effect can focus after re-render
     if (!replyInputRefs.current[key]) replyInputRefs.current[key] = null;
   };
 
-  // Safe helper to replace or append returned comment
   const replaceOrAppendComment = (prevBlogs, blogId, tempId, realComment) =>
     prevBlogs.map((b) => {
       if (b._id !== blogId) return b;
@@ -168,7 +166,6 @@ useEffect(() => {
       return { ...b, comments: updatedComments };
     });
 
-  // Add a top-level comment
   const handleAddComment = async (blogId) => {
     const text = (commentInputs[String(blogId)] || "").trim();
     if (!text) return;
@@ -183,7 +180,6 @@ useEffect(() => {
       createdAt: new Date().toISOString(),
     };
 
-    // optimistic update
     setBlogs((prev) =>
       prev.map((blog) =>
         blog._id === blogId
@@ -219,7 +215,6 @@ useEffect(() => {
     }
   };
 
-  // Add a reply
   const handleAddReply = async (blogId, parentComment) => {
     const parentIdStr = String(parentComment._id);
     const text = (replyInputs[parentIdStr] || "").trim();
@@ -250,7 +245,6 @@ useEffect(() => {
       )
     );
 
-    // clear input AND collapse after submit
     setReplyInputs((prev) => ({ ...prev, [parentIdStr]: "" }));
     setReplyVisible((prev) => ({ ...prev, [parentIdStr]: false }));
 
@@ -278,7 +272,27 @@ useEffect(() => {
     }
   };
 
-  // Build comment tree safely
+  // Delete handler with confirmation
+ const handleDeleteBlog = async (blogId) => {
+    if (!auth?.token) return;
+    console.log("Attempting to delete blog with ID:", blogId,auth.token);
+    try {
+      await axios.delete(server + "/api/v1/blog/delete-blog", {
+  data: { _id: blogId },
+  headers: { Authorization: `Bearer ${auth.token}` }
+});
+      // Remove blog from state
+      setBlogs((prev) => prev.filter((blog) => blog._id !== blogId));
+      // Also remove from liked array if present
+      setLiked((prev) => prev.filter((id) => id !== String(blogId)));
+    } catch (err) {
+      console.error("delete blog error:", err);
+      
+    } finally {
+      setConfirmingBlogId(null); // Reset confirmation state
+    }
+  };
+
   const buildCommentTree = (comments) => {
     if (!Array.isArray(comments) || comments.length === 0) return [];
     const commentMap = new Map();
@@ -297,18 +311,16 @@ useEffect(() => {
     return roots;
   };
 
-  // Memoized CommentItem to reduce re-renders/remounts
   const CommentItem = memo(function CommentItem({ comment, blogId }) {
     const idStr = String(comment._id);
     const visible = Boolean(replyVisible[idStr]);
 
-    // assign ref for focus management
     const assignRef = useCallback((el) => {
       replyInputRefs.current[idStr] = el;
     }, []);
 
     return (
-      <div className="mb-3 " style={{ marginLeft: comment.level > 0 ? "1.5rem" : 0 }}>
+      <div className="mb-3" style={{ marginLeft: comment.level > 0 ? "1.5rem" : 0 }}>
         <div className="bg-gray-800 p-2 rounded">
           <div className="flex justify-between items-start">
             <span className="font-bold text-green-400 text-sm">
@@ -317,8 +329,7 @@ useEffect(() => {
             <span className="text-xs text-gray-500">{new Date(comment.createdAt).toLocaleString()}</span>
           </div>
           <p className="text-gray-200 text-sm mt-1">{comment.text}</p>
-          <p className={"text-xs text-gray-400 cursor-pointer hover:text-green-400 mt-1 flex items-center gap-1 show-replies-toggle " +  (comment.replies.length>0 ? " " : " hidden")} onClick = {() => {
-            
+          <p className={"text-xs text-gray-400 cursor-pointer hover:text-green-400 mt-1 flex items-center gap-1 show-replies-toggle " + (comment.replies.length > 0 ? "" : " hidden")} onClick={() => {
             setBlogs((prev) => prev.map((b) => {
               if (b._id !== blogId) return b;
               const comments = Array.isArray(b.comments) ? b.comments.slice() : [];
@@ -356,7 +367,7 @@ useEffect(() => {
         )}
 
         {comment.replies && comment.replies.length > 0 && comment.showReplies && (
-          <div className={"mt-2"  }>
+          <div className="mt-2">
             {comment.replies.map((reply) => (
               <CommentItem key={String(reply._id)} comment={reply} blogId={blogId} />
             ))}
@@ -365,6 +376,7 @@ useEffect(() => {
       </div>
     );
   });
+
   const nav = useNavigate();
   const handleBlogOnClick = (blogId) => {
     nav(`/blog/blog/${blogId}`);
@@ -378,7 +390,7 @@ useEffect(() => {
             key={String(blog._id)}
             className="m-4 p-4 border border-white rounded-lg transition hover:border-green-400 hover:shadow-[0_0_10px_#4ade80]"
           >
-            <h2 className="text-2xl font-bold text-white mb-2" onClick={() => handleBlogOnClick(blog._id)} >{blog.title}</h2>
+            <h2 className="text-2xl font-bold text-white mb-2 cursor-pointer" onClick={() => handleBlogOnClick(blog._id)}>{blog.title}</h2>
             {blog.banner && <img src={blog.banner} alt="Blog Banner" className="w-full h-auto mb-4 rounded" />}
             <p className="text-white mb-4">{blog.des}</p>
 
@@ -402,7 +414,39 @@ useEffect(() => {
                   {blog.activity?.total_comments || (Array.isArray(blog.comments) ? blog.comments.length : 0)}
                 </span>
               </button>
+
+              {/* Delete button - only visible if blog is owned by current user */}
+              {ownerIds.includes(String(blog._id)) && (
+                <button
+                  className="text-red-400 text-sm flex gap-2 items-center hover:text-red-600 transition ml-auto"
+                  onClick={() => setConfirmingBlogId(blog._id)}
+                >
+                  <FaTrash className="cursor-pointer" />
+                  <span>Delete</span>
+                </button>
+              )}
             </div>
+
+            {/* Delete confirmation UI */}
+            {confirmingBlogId === blog._id && (
+              <div className="mt-4 p-3 bg-red-900/50 border border-red-500 rounded-md">
+                <p className="text-white text-sm mb-2">Are you sure you want to delete this blog?</p>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => handleDeleteBlog(blog._id)}
+                    className="px-3 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700 transition cursor-pointer"
+                  >
+                    Yes, Delete
+                  </button>
+                  <button
+                    onClick={() => setConfirmingBlogId(null)}
+                    className="px-3 py-1 bg-gray-600 text-white rounded text-xs hover:bg-gray-700 transition cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
 
             {openCommentsId === blog._id && (
               <div className="mt-4 pt-4 border-t border-gray-700">

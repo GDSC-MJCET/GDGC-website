@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState, useCallback, memo } from "react";
-import { FaComment, FaArrowUp, FaReply } from "react-icons/fa";
+import { FaComment, FaArrowUp, FaReply, FaTrash } from "react-icons/fa";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -13,9 +13,10 @@ const MyBlogs = () => {
   const [liked, setLiked] = useState([]);
   const [name, setName] = useState("");
   const [error, setError] = useState("");
+  const [confirmingBlogId, setConfirmingBlogId] = useState(null); // State for delete confirmation
   const server = import.meta.env.VITE_SERVER;
-  const authRaw = typeof window !== "undefined" ? localStorage.getItem("AuthState") : null;
-  const auth = authRaw ? JSON.parse(authRaw) : null;
+ const auth = JSON.parse(localStorage.getItem("AuthState") ) || {};
+
 
   const replyInputRefs = useRef({});
 
@@ -285,6 +286,26 @@ const MyBlogs = () => {
     }
   };
 
+  // Delete handler with confirmation
+  const handleDeleteBlog = async (blogId) => {
+    if (!auth?.token) return;
+    try {
+      await axios.delete(server + "/api/v1/blog/delete-blog", {
+  data: { _id: blogId },
+  headers: { Authorization: `Bearer ${auth.token}` }
+});
+      // Remove blog from state
+      setBlogs((prev) => prev.filter((blog) => blog._id !== blogId));
+      // Also remove from liked array if present
+      setLiked((prev) => prev.filter((id) => id !== String(blogId)));
+    } catch (err) {
+      console.error("delete blog error:", err);
+      
+    } finally {
+      setConfirmingBlogId(null); // Reset confirmation state
+    }
+  };
+
   const buildCommentTree = (comments) => {
     if (!Array.isArray(comments) || comments.length === 0) return [];
     const commentMap = new Map();
@@ -404,8 +425,8 @@ const MyBlogs = () => {
   }
 
   return (
-    <div className="relative min-h-screen w-full bg-black pt-16">
-      <section className="grid grid-cols-1 md:grid-cols-3 relative z-10 pt-18 font-mono">
+    <div className="relative pt-16">
+      <section className=" grid grid-cols-1 md:grid-cols-3 relative z-10 pt-18 font-mono">
         {blogs.map((blog) => (
           <div
             key={String(blog._id)}
@@ -440,7 +461,37 @@ const MyBlogs = () => {
                   {blog.activity?.total_comments || (Array.isArray(blog.comments) ? blog.comments.length : 0)}
                 </span>
               </button>
+
+              {/* Delete Button */}
+              <button
+                className="text-red-400 text-sm flex gap-2 items-center hover:text-red-600 transition ml-auto"
+                onClick={() => setConfirmingBlogId(blog._id)}
+              >
+                <FaTrash className="cursor-pointer" />
+                <span>Delete</span>
+              </button>
             </div>
+
+            {/* Confirmation UI */}
+            {confirmingBlogId === blog._id && (
+              <div className="mt-4 p-3 bg-red-900/50 border border-red-500 rounded-md">
+                <p className="text-white text-sm mb-2">Are you sure you want to delete this blog?</p>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => handleDeleteBlog(blog._id)}
+                    className="px-3 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700 transition cursor-pointer"
+                  >
+                    Yes, Delete
+                  </button>
+                  <button
+                    onClick={() => setConfirmingBlogId(null)}
+                    className="px-3 py-1 bg-gray-600 text-white rounded text-xs hover:bg-gray-700 transition cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
 
             {openCommentsId === blog._id && (
               <div className="mt-4 pt-4 border-t border-gray-700">

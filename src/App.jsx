@@ -56,6 +56,7 @@ import Adsophos from './pages/Adsophos.jsx';
 import { PhotoBooth } from './gdgc-modules/photobooth/PhotoBooth.jsx';
 import TheHeistAdsophos from './gdgc-modules/heist/TheHeistAdsophos.jsx';
 import Loop13 from './gdgc-modules/loop13/Loop_13.jsx';
+import MyBlogs from './pages/MyBlogs.jsx';
 
 function App() {
   const [isVerified, setIsVerified] = useState(null);
