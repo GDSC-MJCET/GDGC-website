@@ -5,7 +5,7 @@ import { useState } from "react";
 export default function BlogLand() {
     const [removeNavbar,setRemoveNavbar] = useState(false)
     return (
-       <div className="bg-black" >
+       <div className="bg-black min-h-screen" >
 
        
         <BlogNavbar removeNavbar={removeNavbar} setRemoveNavbar={setRemoveNavbar} />

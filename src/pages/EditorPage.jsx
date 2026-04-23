@@ -15,38 +15,13 @@ export const EditorContext = createContext({})
 const EditorPage = () =>{
      let [textEditor,setTextEditor] = useState({ isReady : false })
     let [blog,setBlog] = useState(blogStructure)
-    const nav = useNavigate ()
-     const handleSubmit=async()=>{
-        let auth = JSON.parse(localStorage.getItem("AuthState"))
-        const tl = toast.loading ("Submitting blog...")
-        const content = await textEditor.save()
-        const blogtosent = {
-            ...blog,content
-        }
-        try {
-            
-            const res =  await axios.post(import.meta.env.VITE_SERVER+"/api/v1/blog/publish-blog",{blog:blogtosent},{headers:{
-                Authorization : `Bearer ${auth.token}`
-            }})
-             if (res.data.success) {
-                toast.dismiss (tl)
-                toast.success ("Blog submitted")
-                 return nav("/blog/home")
-             }else{
-                toast.dismiss (tl)
-                toast.error(res.data.error)
-             }
-        } catch (error) {
-            toast.dismiss (tl)
-            toast.error ("An error occurred while submitting the blog")
-             console.error (error)
-        }
-     }
+   
+     
         return (
             <EditorContext.Provider value={{blog,setBlog,textEditor,setTextEditor}} >
                 <Toaster/>
                 <BlogEditor  />
-                <button className="roundd-md bg-black text-white cursor-pointer"  onClick={handleSubmit} >Publish</button>
+                
             </EditorContext.Provider>
         )
     }
