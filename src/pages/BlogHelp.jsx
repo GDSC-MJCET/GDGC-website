@@ -2,91 +2,56 @@ const image = "/visualise.ai.png";
 
 export default function BlogHelp() {
   return (
-    <div className="relative h-full w-full bg-black">
-  <div
-    className="absolute bottom-0 left-0 right-0 top-0  bg-[linear-gradient(45deg,#ffffff25_1px,transparent_1px),linear-gradient(-45deg,#ffffff25_1px,transparent_1px)]  bg-[size:20px_20px]  "
-  />
+    <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-12 items-start">
+  {/* Image block – appears after Q&A on mobile, before Q&A on desktop */}
+  <div className="w-full md:w-[40%] order-2 md:order-1 md:sticky top-24">
+    <div className="rounded-2xl overflow-hidden">
+      <img
+        src={image}
+        alt="Blog system visualization"
+        className="w-full h-auto max-h-[30vh] md:max-h-none object-contain mt-4 md:mt-0"
+      />
+    </div>
+  </div>
 
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 px-6 py-16">
-      
-      {/* Header */}
-      <div className="max-w-6xl mx-auto mb-20 text-center">
-        <h1 className="text-4xl font-bold tracking-tight mb-4">
-          Blog Help
-        </h1>
-        <p className="text-zinc-400 max-w-2xl mx-auto">
-          A concise reference for how the blog system works, how data flows,
-          and how clients are expected to interact with the API.
-        </p>
-      </div>
+  {/* Q&A block – appears first on mobile, after image on desktop */}
+  <div className="w-full mt-16 md:w-[60%] order-1 md:order-2 space-y-10">
+    <Section
+  question="Why should I write blogs?"
+  answer="Writing blogs helps you showcase your knowledge, share insights, spread information across the community, and build a habit of clear communication. It’s a great way to contribute, help others learn, and establish your presence within GDGC."
+/>
 
-      {/* Main layout */}
-      <div className="max-w-7xl mx-auto flex gap-12 items-start">
-        
-        {/* Left: Illustration */}
-        <div className="w-[40%] sticky top-24">
-          <div className="rounded-2xl overflow-hidden">
-            <img
-              src={image}
-              alt="Blog system visualization"
-              className="w-full h-auto object-contain"
-            />
-          </div>
-        </div>
+<Section
+  question="Who can delete a blog post?"
+  answer="Only the original author of the post and GB (Governing Body) members have permission to delete a blog. This ensures content ownership while allowing moderation when necessary."
+/>
 
-        {/* Right: Q&A */}
-        <div className="w-[60%] space-y-10">
+<Section
+  question="Who can upload a blog?"
+  answer="Any active GDGC member can upload a blog. You just need to be logged into the platform, no special roles required to start sharing your thoughts."
+/>
 
-  <Section
-    question="What is the Blog feature used for?"
-    answer="The blog is an informal communication space for Execom and GB members. It’s meant for sharing thoughts, updates, announcements, or discussions that don’t fit into formal channels. Think of it as a lightweight internal feed rather than a polished publishing platform."
-  />
+<Section
+  question="Whom should I report bugs to?"
+  answer="Please report any bugs or technical issues to the Tech Captains or the Web Execom team. They are responsible for maintaining the blog system and addressing platform-related problems."
+/>
 
-  <Section
-    question="How do I create a new blog post?"
-    answer="Navigate to the blog editor from the blog section and start writing directly in the editor. The editor supports structured blocks like headings, paragraphs, and images. Once you’re done, publishing the post makes it immediately visible to other members."
-  />
+<Section
+  question="Which library is used for the blog editor?"
+  answer="The editor is built with Editor.js , a block‑based, open‑source WYSIWYG editor. It outputs clean JSON data instead of raw HTML, making content easy to store, render, and extend. Each paragraph, heading, image, or list is a separate block, which gives consistent styling and flexibility. The editor also supports plugins for custom blocks, and we’ve integrated image uploads directly to Cloudinary."
+/>
 
-  <Section
-    question="How is the blog editor implemented?"
-    answer="The editor is built using Editor.js, which provides a block-based writing experience. Each piece of content text, headings, images is stored as structured data rather than raw HTML, making posts easier to render, update, and extend in the future."
-  />
+<Section
+  question="How are blog banners uploaded?"
+  answer="Banners are uploaded directly from the frontend to Cloudinary using Cloudinary’s SDK. Once the upload is complete, the returned image URL is stored in the database alongside the blog post. This approach reduces backend load and simplifies image handling."
+/>
 
-  <Section
-    question="How do I attach an image to a blog post?"
-    answer="Images can be added directly from the editor. When you upload an image, it is sent from the frontend to Cloudinary using its SDK. Cloudinary handles storage, optimization, and delivery, and the editor stores the returned image URL as part of the post content."
-  />
-
-  <Section
-    question="Is there any other way images can be uploaded?"
-    answer="Yes. An alternative approach is uploading images to the backend using Multer middleware and then forwarding them to a storage service. While this works, using Cloudinary directly from the frontend reduces backend load and simplifies image handling."
-  />
-
-  <Section
-    question="How do upvotes and downvotes work?"
-    answer="Each blog post supports upvoting and downvoting to reflect community feedback. Votes are tied to the user’s identity, so a user can’t repeatedly vote on the same post. The total vote count updates in real time to reflect engagement."
-  />
-
-  <Section
-    question="Can I edit or delete a blog post after publishing?"
-    answer="Yes, but only for posts you authored. Editing opens the same editor with the existing content loaded. Deleting a post permanently removes it from the feed and is restricted to the author or administrators."
-  />
-
-  <Section
-    question="Who can see the blog posts?"
-    answer="All published blog posts are visible to authorized members of the platform. Some actions like posting, editing, or voting may require authentication, but reading posts is generally open within the system."
-  />
-
+<Section
+  question="How do likes and comments work?"
+  answer="Likes (upvotes) allow members to show appreciation for a post. Each user can like a blog only once. Comments let members discuss or ask questions below a post. Both likes and comments are updated in real time and are visible to all authenticated users. Comments support nested replies, making conversations easy to follow."
+/>
+  </div>
 </div>
-
-      </div>
-
-      {/* Footer */}
-      <div className="max-w-4xl mx-auto mt-24 text-center text-zinc-500 text-sm">
-        Designed for clarity, not magic. If behavior feels surprising,{" it’s "}a bug.
-      </div>
-    </div>
-    </div>
   );
 }
 
