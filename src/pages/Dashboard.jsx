@@ -105,12 +105,17 @@ const Dashboard = () => {
             </NavLink>
           </div>
 
-
-          {/* socials buttton: */}
-          {/* <br />
-          <button onClick={() => setShowPopUp(true)} className="cursor-pointer inline-flex items-center gap-2 px-5 py-2.5 bg-white text-black text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors">
-            Edit Socials
-          </button> */}
+          <br />
+        <NavLink
+            to="/team/customization/socials"
+            className="group relative inline-flex items-center gap-2 px-6 py-3  text-white text-sm font-medium rounded-lg overflow-hidden transition-all duration-300 bg-gradient-to-r from-red-500 via-blue-500 to-green-500 hover:scale-109 hover:shadow-xl"
+          >
+          <span className="absolute inset-0 bg-white/10 opacity-1 group-hover:opacity-200 transition duration-300"></span>
+          <span className="relative z-10 flex items-center gap-2">
+            Add Socials
+          </span>
+        </NavLink>
+         
         </div>
       </div>
     </>
