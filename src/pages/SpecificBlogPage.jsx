@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState, useCallback, memo } from "react";
 import { FaComment, FaArrowUp, FaReply } from "react-icons/fa";
 import axios from "axios";
+import {toast,Toaster} from 'react-hot-toast';
 import { useParams } from "react-router-dom";
 
 const SpecificBlog = () => {
@@ -21,12 +22,11 @@ const SpecificBlog = () => {
   // Fetch blog
   console.log("Fetching blog with id:", blogId);
   useEffect(() => {
-    if (!auth?.token || !blogId) return;
+    if ( !blogId) return;
     axios
       .post(
         `${server}/api/v1/blog/get-blog`,
-        { _id: blogId },
-        { headers: { Authorization: `Bearer ${auth.token}` } }
+        { _id: blogId }
       )
       .then((res) => {
         const b = res?.data || null;
@@ -102,7 +102,7 @@ const SpecificBlog = () => {
 
   // Like / unlike
   const handleLike = async () => {
-    if (!auth?.token || !blog) return;
+    if (!auth?.token || !blog) return toast.error("You must be logged in to perform this action.");
     try {
       const { data } = await axios.post(
         `${server}/api/v1/blog/like-blog`,
@@ -122,7 +122,7 @@ const SpecificBlog = () => {
   };
 
   const handleUnlike = async () => {
-    if (!auth?.token || !blog) return;
+    if (!auth?.token || !blog) return toast.error("You must be logged in to perform this action.");
     try {
       await axios.post(
         `${server}/api/v1/blog/unlike-blog`,
@@ -140,6 +140,7 @@ const SpecificBlog = () => {
 
   // Add top‑level comment
   const handleAddComment = async () => {
+    if (!auth?.token || !blog) return toast.error("You must be logged in to perform this action.");
     const text = (commentInput || "").trim();
     if (!text || !blog) return;
     const tempId = `temp-${Date.now()}`;
@@ -176,7 +177,8 @@ const SpecificBlog = () => {
 
   // Add reply
   const handleAddReply = async (parentComment) => {
-    if (!blog) return;
+
+    if (!blog || !auth?.token) return toast.error("You must be logged in to perform this action.");
     const parentIdStr = String(parentComment._id);
     const text = (replyInputs[parentIdStr] || "").trim();
     if (!text) return;
@@ -243,6 +245,7 @@ const SpecificBlog = () => {
 
     return (
       <div className="mb-4" style={{ marginLeft: (comment.level || 0) > 0 ? "1.5rem" : 0 }}>
+        <Toaster/>
         <div className="rounded-xl border border-white/10 bg-white/5 p-4 shadow-lg shadow-black/20">
           <div className="flex justify-between items-start">
             <span className="font-bold text-green-400 text-sm">{comment.commentedBy?.name || "Anonymous"}</span>
