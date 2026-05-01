@@ -1,16 +1,15 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { Home, Settings, SquarePen, UserRound, Feeds } from "lucide-react";
+import { Home, Settings, SquarePen, UserRound, List } from "lucide-react"; // ✅ Replace Feed with List
 import SidebarLink from "../components/SideBarLink";
+
 const navItems = [
   { label: "Feed", to: "/tweets", icon: Home },
-  { label: "My Tweets", to: "/tweets/me", icon: Feeds },
+  { label: "My Tweets", to: "/tweets/me", icon: List }, // ✅ Use List icon
   { label: "My Profile", to: "/tweets/profile", icon: UserRound },
   { label: "Create Tweet", to: "/tweets/create", icon: SquarePen },
   { label: "Settings", to: "/tweets/settings", icon: Settings },
 ];
-
-
 
 export default function TweetHomeLayout() {
   const navigate = useNavigate();
@@ -95,7 +94,6 @@ export default function TweetHomeLayout() {
           </div>
 
           <div className="px-5 py-6 md:px-8">
-            {/* Default child route should render the feed here */}
             <Outlet />
           </div>
         </main>
@@ -103,5 +101,3 @@ export default function TweetHomeLayout() {
     </div>
   );
 }
-
-
