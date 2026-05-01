@@ -54,17 +54,17 @@ export default function LoginPage() {
       return;
     }
     if (!password?.trim()) {
-  toast.error('God forbid developers dealing with empty passwords');
+  toast.error('Why not write something in the password field?');
   return;
 }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        toast.error('Please enter a valid email address');
+        toast.error('Why not enter a legit email address?');
         return;
       }
      
     
      toast.loading("Signing in...")
-     const server = import.meta.env.VITE_SERVER+"/api/v1/auth/signin" || "http://localhost:3009"
+     const server = import.meta.env.VITE_SERVER+"/api/v1/auth/signin" 
     axios.post(server,{
 
       email,password
@@ -72,7 +72,7 @@ export default function LoginPage() {
       if(data.data.token){
         toast.success("Logged In Successfully")
         toast.dismissAll()
-        setAuthState({token:data.data.token,loggedIn:true})
+        setAuthState({token:data.data.token,loggedIn:true,guest:data.data.guest})
         return nav('/team/dashboard');
         
 
