@@ -260,7 +260,7 @@ const SpecificBlog = () => {
                 comment.showReplies ? "text-green-400" : ""
               }`+  (comment.replies.length>0 ? " " : " hidden") }
             >
-              Previous Replies
+              Replies 
             </button>
             <button
               onClick={() => toggleReplyVisible(idStr)}
