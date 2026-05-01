@@ -76,19 +76,16 @@ const Hero = () => {
                   Google Solutions Challenge Info Session
                 </h2>
 
-                <p className="text-white text-base md:text-lg">
+                {/* ✅ FIXED: replaced <p> with <div> */}
+                <div className="text-white text-base md:text-lg">
                   This session is your roadmap to developing, refining, and positioning your project for a national-level platform — with direct insights from 2025 National Winners on exactly what it takes to succeed.
                   <div className="mt-5">🗓 April 3rd | 7–9 PM | Online | FREE</div>
-                </p>
+                </div>
 
                 <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 justify-center md:justify-start">
-                  {/* <button onClick={()=>navigate("/techfaceoff")} className="bg-[#f9ac02] text-black px-6 py-2 rounded-full font-semibold border border-white/40 shadow-[0_0_6px_rgba(255,255,255,0.85)]">
-                    Learn More 
-                  </button>
-                  <button  onClick={()=>navigate("/score")} className="bg-[#57cbff] text-black px-6 py-2 rounded-full font-semibold border border-white/40 shadow-[0_0_6px_rgba(255,255,255,0.85)]">
-                    Live Scorecard
-                  </button> */}
-                  <span className='px-6 py-1 rounded-full border border-white shadow-sm shadow-white text-center'><a href="https://chat.whatsapp.com/I5JsIVcZrGFJHLsGCpPHx0">Know More</a></span>
+                  <span className='px-6 py-1 rounded-full border border-white shadow-sm shadow-white text-center'>
+                    <a href="https://chat.whatsapp.com/I5JsIVcZrGFJHLsGCpPHx0">Know More</a>
+                  </span>
                 </div>
               </div>
             </div>
