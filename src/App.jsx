@@ -348,6 +348,13 @@ function AppWithRouter() {
               <Route path="blog/:blogId" element={<SpecificBlog />} />
               <Route path="help" element={<BlogHelp />} />
             </Route>
+            <Route path="/tweets" element={<TweetHomeLayout />}>
+              <Route index element={<FeedPage />} />
+              <Route path="me" element={<MyTweetsPage />} />
+              <Route path="profile" element={<ProfilePage />} />
+              <Route path="create" element={<CreateTweetPage />} />
+              <Route path="settings" element={<TweetSettingsPage />} />
+            </Route>
 
 
             {/* Catch-all 404 route */}
