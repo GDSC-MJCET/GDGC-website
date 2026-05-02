@@ -24,18 +24,9 @@ const HomePage = () => {
   //   setShowPopup(false);
   //   sessionStorage.setItem("winner-popup-dismissed", "true");
   // };
-  const nav = useNavigate();
   return (
     <Background bgColor="#000000">
       {/* {showPopup && <WinnerPopup onClose={handleClosePopup} />} */}
-     <p className="text-center mt-4">
-  <button
-    onClick={() => nav("/signup-guest")}
-    className="text-blue-400 hover:text-blue-300 transition-colors duration-200 underline decoration-dotted underline-offset-4 font-medium"
-  >
-    Sign up as a guest →
-  </button>
-</p>
       <Nav />
       <Hero />
       <Events />

@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const SignUpPage = () => {
+const SignUpPage = ({ guest, setGuest }) => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -25,7 +25,7 @@ const SignUpPage = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post("/api/auth/signup-guest", {
+      const response = await axios.post(import.meta.env.VITE_SERVER+"/api/v1/auth/signup-guest", {
         email,
         name,
       });
@@ -176,7 +176,7 @@ const SignUpPage = () => {
         <p className="text-center text-zinc-500 text-sm mt-6">
           Already have an account?{" "}
           <button
-            onClick={() => navigate("/login")}
+            onClick={() =>setGuest(false)}
             className="text-blue-400 hover:underline"
           >
             Log in
