@@ -41,9 +41,7 @@ import TeamPage from './pages/TeamPage.jsx';
 import GalleryPage from './pages/GalleryPage.jsx';
 import ContactUsPage from './pages/ContactUsPage.jsx';
 import NotFound from './pages/NotFound.jsx';
-import PracticeListPage from './pages/PracticeListPage.jsx';
 import PracticePage from './pages/PracticePage.jsx';
-import PracticeLayout from './components/practice/PracticeLayout.jsx';
 import SuperAdminDashboard from './pages/SuperAdminDashboard.jsx';
 import SuperAdminUsers from './pages/SuperAdminUsers.jsx';
 import BlogPosts from './pages/BlogPosts.jsx';
@@ -60,6 +58,7 @@ import { PhotoBooth } from './gdgc-modules/photobooth/PhotoBooth.jsx';
 import TheHeistAdsophos from './gdgc-modules/heist/TheHeistAdsophos.jsx';
 import Loop13 from './gdgc-modules/loop13/Loop_13.jsx';
 import MyBlogs from './pages/MyBlogs.jsx';
+import PracticeListPage from './pages/PracticeListPage.jsx';
 
 function App() {
   const [isVerified, setIsVerified] = useState(null);
@@ -302,26 +301,24 @@ function AppWithRouter() {
           <Routes>
             {/* Public   pages */}
             <Route path="/" element={<HomePage />} />
-            <Route path="initialsetup/:id" element={<InitialSetup />} />
-            <Route path="techfaceoff" element={<TechDebatePage />} />
-            <Route path='score' element={<ScorePage />} />
-            <Route path="events" element={<EventsPage />} />
-            <Route path="event-details" element={<EventDetails />} />
-            <Route path="team-page" element={<TeamPage />} />
-            <Route path="gallery" element={<GalleryPage />} />
-            <Route path="contact" element={<ContactUsPage />} />
-            <Route path="login" element={<LoginPage />} />
-            <Route path="forgotpassword" element={<ForgotPassword />} />
-            <Route path='adsophos' element={<Adsophos />}>
+              <Route path="initialsetup/:id" element={<InitialSetup />} />
+              <Route path="techfaceoff" element={<TechDebatePage />} />
+              <Route path='score' element={<ScorePage />} />
+              <Route path="events" element={<EventsPage />} />
+              <Route path="event-details" element={<EventDetails />} />
+              <Route path="team-page" element={<TeamPage />} />
+              <Route path="gallery" element={<GalleryPage />} />
+              <Route path="contact" element={<ContactUsPage />} />
+              <Route path="login" element={<LoginPage />} />
+              <Route path="forgotpassword" element={<ForgotPassword />} />
+              <Route path='adsophos' element={<Adsophos />}>
             {/* <Route path='practice' element={<PracticePage />} /> */}
             </Route>
             <Route path='photobooth' element={<PhotoBooth />} />
             <Route path='heist' element={<TheHeistAdsophos />} />
             <Route path='loop13' element={<Loop13 />} />
-            <Route path="practice" element={<PracticeLayout />}>
-              <Route index element={<PracticeListPage />} />
-              <Route path=":problemId" element={<PracticePage />} />
-            </Route>
+            <Route path="practice/:problemId" element={<PracticePage />} />
+            <Route path='practice' element={<PracticeListPage />} />
 
             {/* Team area (layout route) */}
             <Route path="team" element={<TeamLayout />}>

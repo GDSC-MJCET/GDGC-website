@@ -164,6 +164,7 @@ const normalizeProblem = (rawProblem, fallbackId) => {
 }
 
 const getMockProblem = (problemId) => {
+  console.log("bloddy mock problem",MOCK_PROBLEMS[problemId]);
   return MOCK_PROBLEMS[problemId] || null
 }
 
@@ -199,7 +200,7 @@ const PracticePage = () => {
 
     const fetchProblem = async () => {
       const mockProblem = getMockProblem(problemId) // this program id we are getting from the url 
-
+      console.log("bloddy mock problem",mockProblem);
       if (!server) {
         if (mockProblem) {
           const normalizedProblem = normalizeProblem(mockProblem, problemId)
@@ -235,7 +236,7 @@ const PracticePage = () => {
       setCustomInput("")
 
       try {
-        const response = await axios.get(`${server}/api/v1/problems/${problemId}`)
+        const response = await axios.get(`${server}/api/problems/${problemId}`)
         if (cancelled) return
 
         const normalizedProblem = normalizeProblem(response.data, problemId)
@@ -270,17 +271,42 @@ const PracticePage = () => {
           setError("")
           return
         }
-
-        setError(
-          fetchError?.response?.data?.message ||
-            fetchError?.response?.data?.error ||
-            "We couldn't load this problem right now."
-        )
+        if (fetchError) {
+          console.log("we got an fetch error")
+          // console.log(fetchError, "fetchError");
+          console.log("do we not have a server here ?",server)
+          console.log(mockProblem, "mockProblem this is it");
+          console.log("we have a mock problem");
+          if (mockProblem) {
+            const normalizedProblem = normalizeProblem(mockProblem, problemId)
+            const initialCode = {}
+  
+            normalizedProblem.allowedLanguages.forEach((language) => {
+              initialCode[language] = normalizedProblem.starterCode[language] || ""
+            })
+  
+            setProblem(normalizedProblem)
+            setSelectedLanguage(normalizedProblem.defaultLanguage)
+            setCodeByLanguage(initialCode)
+            setCustomInput(normalizedProblem.statement.examples[0]?.input || "")
+            setIsMockProblem(true)
+            setLoading(false)
+            return
+          }
+          
+          setLoading(false)
+          setError("VITE_SERVER is not configured for problem fetching.")
+          return
+          
+          
+        }
       } finally {
         if (!cancelled) {
           setLoading(false)
         }
       }
+
+     
     }
 
     fetchProblem()
@@ -341,11 +367,12 @@ const PracticePage = () => {
         return
       }
 
-      const response = await axios.post(`${server}/api/v1/problems/${problemId}/run`, {
-        language: selectedLanguage,
-        code: currentCode,
-        customInput,
-      })
+      const auth = JSON.parse(localStorage.getItem("AuthState"))
+      const response = await axios.post(
+        `${server}/api/problems/${problemId}/run`,
+        { language: selectedLanguage, code: currentCode, customInput },
+        { headers: { Authorization: `Bearer ${auth?.token}` } }
+      )
 
       setRunState({
         status: "success",
@@ -394,14 +421,43 @@ const PracticePage = () => {
         return
       }
 
-      const response = await axios.post(`${server}/api/v1/problems/${problemId}/submit`, {
-        language: selectedLanguage,
-        code: currentCode,
-      })
+      const auth = JSON.parse(localStorage.getItem("AuthState"))
+      const authHeaders = { Authorization: `Bearer ${auth?.token}` }
+
+      const { data: createData } = await axios.post(
+        `${server}/api/submissions`,
+        { problemId: problem.id, code: currentCode, language: selectedLanguage },
+        { headers: authHeaders }
+      )
+      const submissionId = createData.submissionId
+
+      let done = false
+      let verdict = "pending"
+      for (let i = 0; i < 30 && !done; i++) {
+        await new Promise((r) => setTimeout(r, 1000))
+        const { data: statusData } = await axios.get(
+          `${server}/api/submissions/${submissionId}/status`,
+          { headers: authHeaders }
+        )
+        done = statusData.done
+        verdict = statusData.verdict
+      }
+
+      const { data: fullData } = await axios.get(
+        `${server}/api/submissions/${submissionId}`,
+        { headers: authHeaders }
+      )
+      const results = fullData.submission?.results || []
 
       setSubmitState({
         status: "success",
-        data: response.data,
+        data: {
+          status: verdict,
+          passedCount: results.filter((r) => r.passed).length,
+          totalCount: results.length,
+          runtimeMs: null,
+          memoryKb: null,
+        },
         error: "",
       })
     } catch (submitError) {
@@ -421,6 +477,7 @@ const PracticePage = () => {
   }
 
   if (error || !problem) {
+    console.log(error, "error" , problem);
     return (
       <div className="min-h-screen bg-[#050816] px-4 py-6 text-white md:px-6">
         <div className="mx-auto flex max-w-3xl flex-col gap-5 rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-[0_30px_120px_rgba(0,0,0,0.45)] backdrop-blur">

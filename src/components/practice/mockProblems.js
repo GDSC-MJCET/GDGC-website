@@ -120,12 +120,13 @@ export const MOCK_PROBLEMS = {
 
 export const getMockProblem = (problemId) => MOCK_PROBLEMS[problemId] || null
 
-export const getMockProblemList = () =>
-  Object.values(MOCK_PROBLEMS).map((problem) => ({
+export function getMockProblemList() {
+  return Object.values(MOCK_PROBLEMS).map((problem) => ({
     id: problem.id,
     slug: problem.slug,
-    title: problem.title,
+    title: problem.title, 
     difficulty: problem.difficulty,
     tags: problem.tags || [],
     summary: problem.summary || problem.statement?.paragraphs?.[0] || "",
   }))
+}

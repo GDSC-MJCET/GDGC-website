@@ -70,17 +70,8 @@ const CodeWorkspace = ({
       </div>
 
       <div className="grid flex-1 gap-4 xl:grid-rows-[minmax(0,1fr)_320px]">
-        <div className="overflow-hidden rounded-2xl border border-border bg-[#111111] shadow-none">
-          <div className="flex items-center justify-between border-b border-border px-4 py-3">
-            <div className="flex items-center gap-2">
-              <span className="size-3 rounded-full bg-gray-600" />
-              <span className="size-3 rounded-full bg-gray-500" />
-              <span className="size-3 rounded-full bg-gray-400" />
-            </div>
-            <p className="text-xs uppercase tracking-[0.32em] text-gray-500">Solution</p>
-          </div>
-
-          <div className="practice-editor h-[420px] xl:h-full">
+        <div className="overflow-hidden p-2 border border-border bg-[#111111] shadow-none">
+          <div className="practice-editor">
             <CodeMirror
               basicSetup={{
                 autocompletion: true,
@@ -90,9 +81,8 @@ const CodeWorkspace = ({
                 highlightActiveLineGutter: true,
                 lineNumbers: true,
               }}
-              className="h-full text-sm"
+              className="text-md"
               extensions={[editorExtension]}
-              height="100%"
               onChange={onCodeChange}
               theme={oneDark}
               value={code}
