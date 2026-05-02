@@ -12,7 +12,7 @@ import LiquidEther from './components/LiquidEther.jsx';
 
 
 
-
+import SignUpPage from './pages/SignUpPage.jsx';
 import Footer from './components/footer/footer.jsx';
 import HeadingSection from './components/heading-section'
 import LoginPage from './pages/LoginPage.jsx'
@@ -300,6 +300,7 @@ function AppWithRouter() {
           <Routes>
             {/* Public   pages */}
             <Route path="/" element={<HomePage />} />
+            <Route path="/signup-guest" element={<SignUpPage />} />
             <Route path="initialsetup/:id" element={<InitialSetup />} />
             <Route path="techfaceoff" element={<TechDebatePage />} />
             <Route path='score' element={<ScorePage />} />
