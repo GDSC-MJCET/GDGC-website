@@ -4,20 +4,15 @@ import { useNavigate } from "react-router-dom";
 
 const SignUpPage = ({ guest, setGuest }) => {
   const navigate = useNavigate();
-  const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // Step 1 form data
+  // Form data
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
 
-  // Step 2 form data
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
-  // Step 1: Send email + name to backend
+  // Send email + name to backend
   const handleGuestSignup = async (e) => {
     e.preventDefault();
     setError("");
@@ -25,44 +20,14 @@ const SignUpPage = ({ guest, setGuest }) => {
     setLoading(true);
 
     try {
-      const response = await axios.post(import.meta.env.VITE_SERVER+"/api/v1/auth/signup-guest", {
+      const response = await axios.post(import.meta.env.VITE_SERVER + "/api/v1/auth/signup-guest", {
         email,
         name,
       });
-      setSuccess(response.data.message || "Verification email sent! Check your inbox.");
-      setStep(2); // Move to password step
-    } catch (err) {
-      setError(err.response?.data?.message || "Signup failed. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Step 2: Verify & set password
-  const handleSetPassword = async (e) => {
-    e.preventDefault();
-    setError("");
-    setSuccess("");
-
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters.");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      await axios.post("/api/auth/verify-password", {
-        email,
-        password,
-      });
-      setSuccess("Password set successfully! Redirecting to login...");
+      setSuccess(response.data.message || "Verification email sent! Redirecting to login...");
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
-      setError(err.response?.data?.message || "Password verification failed.");
+      setError(err.response?.data?.message || "Signup failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -87,96 +52,48 @@ const SignUpPage = ({ guest, setGuest }) => {
           </div>
         )}
 
-        {step === 1 ? (
-          <form onSubmit={handleGuestSignup} className="space-y-5">
-            <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1">
-                Email
-              </label>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2 rounded-xl bg-zinc-900 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition"
-                placeholder="you@example.com"
-              />
-            </div>
+        <form onSubmit={handleGuestSignup} className="space-y-5">
+          <div>
+            <label className="block text-sm font-medium text-zinc-300 mb-1">
+              Email
+            </label>
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-2 rounded-xl bg-zinc-900 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition"
+              placeholder="you@example.com"
+            />
+          </div>
 
-            <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1">
-                Full Name
-              </label>
-              <input
-                type="text"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-2 rounded-xl bg-zinc-900 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition"
-                placeholder="John Doe"
-              />
-            </div>
+          <div>
+            <label className="block text-sm font-medium text-zinc-300 mb-1">
+              Full Name
+            </label>
+            <input
+              type="text"
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full px-4 py-2 rounded-xl bg-zinc-900 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition"
+              placeholder="John Doe"
+            />
+          </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold transition disabled:opacity-50"
-            >
-              {loading ? "Sending..." : "Sign Up"}
-            </button>
-          </form>
-        ) : (
-          <form onSubmit={handleSetPassword} className="space-y-5">
-            <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1">
-                Password
-              </label>
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 rounded-xl bg-zinc-900 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition"
-                placeholder="••••••••"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1">
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                required
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-4 py-2 rounded-xl bg-zinc-900 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition"
-                placeholder="••••••••"
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-2 rounded-xl bg-green-600 hover:bg-green-700 text-white font-semibold transition disabled:opacity-50"
-            >
-              {loading ? "Setting Password..." : "Set Password"}
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setStep(1)}
-              className="w-full text-sm text-zinc-400 hover:text-white transition"
-            >
-              ← Go back to email step
-            </button>
-          </form>
-        )}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold transition disabled:opacity-50"
+          >
+            {loading ? "Sending..." : "Sign Up"}
+          </button>
+        </form>
 
         <p className="text-center text-zinc-500 text-sm mt-6">
           Already have an account?{" "}
           <button
-            onClick={() =>setGuest(false)}
+            onClick={() => setGuest(false)}
             className="text-blue-400 hover:underline"
           >
             Log in
