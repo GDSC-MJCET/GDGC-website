@@ -35,6 +35,7 @@ const SpecificBlog = () => {
         setBlog({ ...b, comments });
         setLiked(Boolean(b.isLiked));
         setName(res?.data?.Name || "");
+      
       })
       .catch((err) => console.error("fetch blog:", err));
   }, [server, auth?.token, blogId]);
