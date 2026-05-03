@@ -53,6 +53,7 @@ import { Navigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import EventDetails from './components/events/EventDetails.jsx';
 import Adsophos from './pages/Adsophos.jsx';
+import SuperAdminContacts from './pages/SuperAdminContacts.jsx';
 import { PhotoBooth } from './gdgc-modules/photobooth/PhotoBooth.jsx';
 import TheHeistAdsophos from './gdgc-modules/heist/TheHeistAdsophos.jsx';
 import Loop13 from './gdgc-modules/loop13/Loop_13.jsx';
@@ -338,6 +339,7 @@ function AppWithRouter() {
               <Route path="superadmin">
                 <Route index element={<SuperAdminDashboard />} />
                 <Route path="users" element={<SuperAdminUsers />} />
+                <Route path="contacts" element={<SuperAdminContacts />} />
               </Route>
             </Route>
 
