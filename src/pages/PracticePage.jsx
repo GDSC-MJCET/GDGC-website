@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
-import { Braces, FileText, Play, Send } from "lucide-react"
-import { useParams } from "react-router-dom"
+import { ArrowLeft, Braces, CheckCircle2, FileText, Play, Send } from "lucide-react"
+import { useParams, useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import ProblemPanel from "@/components/practice/ProblemPanel"
 import CodeWorkspace from "@/components/practice/CodeWorkspace"
@@ -32,17 +32,21 @@ const MOCK_PROBLEMS = {
         "Given an array of integers `nums` and an integer `target`, return the indices of the two numbers such that they add up to `target`.",
         "You may assume that each input has exactly one solution, and you may not use the same element twice.",
         "You can return the answer in any order.",
+        "**Input format:** First line contains the array elements space-separated. Second line contains the target.",
+        "**Output format:** Print the two indices space-separated.",
       ],
       examples: [
         {
           input: "nums = [2,7,11,15]\ntarget = 9",
-          output: "[0,1]",
-          explanation: "Because nums[0] + nums[1] equals 9, we return [0, 1].",
+          stdin: "2 7 11 15\n9",
+          output: "0 1",
+          explanation: "nums[0] + nums[1] = 2 + 7 = 9, so return [0, 1].",
         },
         {
           input: "nums = [3,2,4]\ntarget = 6",
-          output: "[1,2]",
-          explanation: "The pair 2 and 4 adds up to 6.",
+          stdin: "3 2 4\n6",
+          output: "1 2",
+          explanation: "nums[1] + nums[2] = 2 + 4 = 6.",
         },
       ],
       constraints: [
@@ -53,12 +57,12 @@ const MOCK_PROBLEMS = {
       ],
     },
     allowedLanguages: ["javascript", "python", "cpp", "java"],
-    defaultLanguage: "javascript",
+    defaultLanguage: "python",
     starterCode: {
-      javascript: `function twoSum(nums, target) {\n  // Write your solution here\n  return []\n}`,
-      python: `class Solution:\n    def twoSum(self, nums, target):\n        # Write your solution here\n        return []`,
-      cpp: `class Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        // Write your solution here\n        return {};\n    }\n};`,
-      java: `class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        // Write your solution here\n        return new int[] {};\n    }\n}`,
+      python: `nums = list(map(int, input().split()))\ntarget = int(input())\n\n# Write your solution here\n# Print the two indices: print(i, j)\n`,
+      javascript: `const lines = require('fs').readFileSync('/dev/stdin', 'utf8').trim().split('\\n')\nconst nums = lines[0].split(' ').map(Number)\nconst target = Number(lines[1])\n\n// Write your solution here\n// console.log(i, j)\n`,
+      cpp: `#include <bits/stdc++.h>\nusing namespace std;\nint main() {\n    vector<int> nums;\n    string line; getline(cin, line);\n    istringstream ss(line);\n    int x; while (ss >> x) nums.push_back(x);\n    int target; cin >> target;\n    // Write your solution here\n    // cout << i << " " << j << endl;\n    return 0;\n}\n`,
+      java: `import java.util.*;\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String[] parts = sc.nextLine().trim().split(" ");\n        int[] nums = new int[parts.length];\n        for (int i = 0; i < parts.length; i++) nums[i] = Integer.parseInt(parts[i]);\n        int target = sc.nextInt();\n        // Write your solution here\n        // System.out.println(i + " " + j);\n    }\n}\n`,
     },
   },
 }
@@ -95,7 +99,8 @@ const normalizeExamples = (value) => {
 
       return {
         id: example.id || `example-${index}`,
-        input: example.input || example.stdin || "",
+        input: example.input || "",           // human-readable display text
+        stdin: example.stdin || example.input || "", // actual stdin piped to the container
         output: example.output || example.stdout || "",
         explanation: example.explanation || "",
       }
@@ -180,6 +185,7 @@ const emptyExecutionState = {
 
 const PracticePage = () => {
   const { problemId } = useParams()
+  const nav = useNavigate()
   const server = import.meta.env.VITE_SERVER?.replace(/\/$/, "")
 
   const [problem, setProblem] = useState(null)
@@ -192,6 +198,7 @@ const PracticePage = () => {
   const [lastResultType, setLastResultType] = useState("run")
   const [customInput, setCustomInput] = useState("")
   const [activeMobilePane, setActiveMobilePane] = useState("problem")
+  const [customRunState, setCustomRunState] = useState(emptyExecutionState)
   const [runState, setRunState] = useState(emptyExecutionState)
   const [submitState, setSubmitState] = useState(emptyExecutionState)
 
@@ -339,6 +346,30 @@ const PracticePage = () => {
     })
   }
 
+  const handleCustomRun = async () => {
+    if (!problem || !selectedLanguage) return
+    setCustomRunState({ status: "loading", data: null, error: "" })
+    setResultTab("testcase")
+    setActiveMobilePane("result")
+
+    try {
+      if (isMockProblem || !server) {
+        await wait(500)
+        setCustomRunState({ status: "success", data: { stdout: "mock output\n", stderr: "", exitCode: 0, timedOut: false }, error: "" })
+        return
+      }
+      const auth = JSON.parse(localStorage.getItem("AuthState"))
+      const response = await axios.post(
+        `${server}/api/submissions/custom-run`,
+        { code: currentCode, language: selectedLanguage, input: customInput },
+        { headers: { Authorization: `Bearer ${auth?.token}` } }
+      )
+      setCustomRunState({ status: "success", data: response.data, error: "" })
+    } catch (err) {
+      setCustomRunState({ status: "error", data: null, error: err?.response?.data?.message || "Custom run failed." })
+    }
+  }
+
   const handleRun = async () => {
     if (!problem || !selectedLanguage) return
 
@@ -357,10 +388,9 @@ const PracticePage = () => {
         setRunState({
           status: "success",
           data: {
-            status: "success",
-            stdout: "Sample testcase passed.\nOutput: [0,1]",
-            stderr: "",
-            runtimeMs: 8,
+            results: [
+              { index: 0, passed: false, stdout: "hello world\n", stderr: "", exitCode: 0, timedOut: false, input: "nums = [2,7,11,15]\ntarget = 9", expectedOutput: "[0,1]" },
+            ],
           },
           error: "",
         })
@@ -369,14 +399,14 @@ const PracticePage = () => {
 
       const auth = JSON.parse(localStorage.getItem("AuthState"))
       const response = await axios.post(
-        `${server}/api/problems/${problemId}/run`,
-        { language: selectedLanguage, code: currentCode, customInput },
+        `${server}/api/submissions/run`,
+        { code: currentCode, language: selectedLanguage, problemId: problem.id },
         { headers: { Authorization: `Bearer ${auth?.token}` } }
       )
 
       setRunState({
         status: "success",
-        data: response.data,
+        data: { results: response.data.results },
         error: "",
       })
     } catch (runError) {
@@ -496,12 +526,31 @@ const PracticePage = () => {
     )
   }
 
+  const isSolved = submitState.status === 'success' && submitState.data?.status === 'accepted'
+
   return (
     <div className="min-h-screen bg-[#050816] text-white">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,_rgba(55,95,255,0.18),_transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(25,211,182,0.18),_transparent_24%),linear-gradient(180deg,_rgba(255,255,255,0.02),_transparent_36%)]" />
 
       <div className="mx-auto flex max-w-[1600px] flex-col gap-4 px-3 py-3 sm:px-4 md:h-screen md:px-5 md:py-5">
-        
+        {/* Top bar: back button + solved banner */}
+        <div className="flex items-center gap-3 flex-wrap">
+          <button
+            onClick={() => nav(-1)}
+            className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-white transition-colors shrink-0"
+          >
+            <ArrowLeft className="size-4" />
+            Back
+          </button>
+
+          {isSolved && (
+            <div className="flex items-center gap-2 rounded-lg bg-emerald-500/15 border border-emerald-500/30 px-3 py-1.5 text-sm text-emerald-300 font-medium animate-in fade-in slide-in-from-top-2 duration-300">
+              <CheckCircle2 className="size-4" />
+              Problem solved! Great work 🎉
+            </div>
+          )}
+        </div>
+
         <main className="grid flex-1 gap-4 md:min-h-0 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.15fr)]">
           <section className={activeMobilePane === "problem" ? "block md:min-h-0" : "hidden md:min-h-0 md:block"}>
             <ProblemPanel problem={problem} />
@@ -512,9 +561,11 @@ const PracticePage = () => {
               allowedLanguages={problem.allowedLanguages}
               code={currentCode}
               customInput={customInput}
+              customRunState={customRunState}
               lastResultType={lastResultType}
               onCodeChange={updateCode}
               onCustomInputChange={setCustomInput}
+              onCustomRun={handleCustomRun}
               onLanguageChange={handleLanguageChange}
               onResultTabChange={setResultTab}
               onRun={handleRun}

@@ -4,7 +4,7 @@ import { java } from "@codemirror/lang-java"
 import { javascript } from "@codemirror/lang-javascript"
 import { python } from "@codemirror/lang-python"
 import { oneDark } from "@codemirror/theme-one-dark"
-import { Play, Send } from "lucide-react"
+import { Play, Send, Terminal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import LanguageSelector from "@/components/practice/LanguageSelector"
 import ResultPanel from "@/components/practice/ResultPanel"
@@ -20,9 +20,11 @@ const CodeWorkspace = ({
   allowedLanguages,
   code,
   customInput,
+  customRunState,
   lastResultType,
   onCodeChange,
   onCustomInputChange,
+  onCustomRun,
   onLanguageChange,
   onResultTabChange,
   onRun,
@@ -33,9 +35,10 @@ const CodeWorkspace = ({
   submitState,
 }) => {
   const editorExtension = languageExtensions[selectedLanguage] || javascript()
+  const customRunPending = customRunState?.status === "loading"
   const runPending = runState.status === "loading"
   const submitPending = submitState.status === "loading"
-  const actionsDisabled = runPending || submitPending
+  const actionsDisabled = customRunPending || runPending || submitPending
 
   return (
     <div className="flex h-full flex-col gap-4">
@@ -53,9 +56,10 @@ const CodeWorkspace = ({
             disabled={actionsDisabled}
             onClick={onRun}
             size="sm"
+            title="Run against sample test cases"
           >
             <Play className={`size-4 ${runPending ? "animate-pulse" : ""}`} />
-            {runPending ? "Running" : "Run"}
+            {runPending ? "Running…" : "Run"}
           </Button>
           <Button
             className="rounded-lg border border-white/10 bg-white text-black hover:bg-gray-200"
@@ -64,7 +68,7 @@ const CodeWorkspace = ({
             size="sm"
           >
             <Send className={`size-4 ${submitPending ? "animate-pulse" : ""}`} />
-            {submitPending ? "Submitting" : "Submit"}
+            {submitPending ? "Submitting…" : "Submit"}
           </Button>
         </div>
       </div>
@@ -92,8 +96,10 @@ const CodeWorkspace = ({
 
         <ResultPanel
           customInput={customInput}
+          customRunState={customRunState}
           lastResultType={lastResultType}
           onCustomInputChange={onCustomInputChange}
+          onCustomRun={onCustomRun}
           onResultTabChange={onResultTabChange}
           resultTab={resultTab}
           runState={runState}

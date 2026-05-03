@@ -58,7 +58,11 @@ import { PhotoBooth } from './gdgc-modules/photobooth/PhotoBooth.jsx';
 import TheHeistAdsophos from './gdgc-modules/heist/TheHeistAdsophos.jsx';
 import Loop13 from './gdgc-modules/loop13/Loop_13.jsx';
 import MyBlogs from './pages/MyBlogs.jsx';
-import PracticeListPage from './pages/PracticeListPage.jsx';
+import PracticeListPage from './pages/PracticeListPage.jsx'
+import ProblemAdminPage from './pages/ProblemAdminPage.jsx';
+import ExercisesPage from './pages/ExercisesPage.jsx';
+import ExerciseDetailPage from './pages/ExerciseDetailPage.jsx';
+import ContentManagementPage from './pages/ContentManagementPage.jsx';
 
 function App() {
   const [isVerified, setIsVerified] = useState(null);
@@ -319,13 +323,20 @@ function AppWithRouter() {
             <Route path='loop13' element={<Loop13 />} />
             <Route path="practice/:problemId" element={<PracticePage />} />
             <Route path='practice' element={<PracticeListPage />} />
+            <Route path='exercises' element={<ExercisesPage />} />
+            <Route path='exercises/:exerciseId' element={<ExerciseDetailPage />} />
 
             {/* Team area (layout route) */}
             <Route path="team" element={<TeamLayout />}>
-              {/* <Route path="hr-interface" element={<HrInterface/>}/> */}
-              {/* <Route path="hr-control" element={<HrControlInterface/>}/> */}
               <Route index element={<Navigate to="/*" />} />
               <Route path="dashboard" element={<Dashboard />} />
+
+              {/* Practice + Exercises inside the sidebar layout */}
+              <Route path="practice" element={<PracticeListPage />} />
+              <Route path="practice/:problemId" element={<PracticePage />} />
+              <Route path="exercises" element={<ExercisesPage />} />
+              <Route path="exercises/:exerciseId" element={<ExerciseDetailPage />} />
+
               <Route path="customization">
                 <Route path="qrchange" element={<QrChange />} />
                 <Route path="socials" element={<Socials />} />
@@ -335,6 +346,8 @@ function AppWithRouter() {
               <Route path="admin">
                 <Route path="users" element={<AdminUsers />} />
                 <Route path="hr-interface" element={<HrInterface />} />
+                <Route path="problems" element={<ProblemAdminPage />} />
+                <Route path="content" element={<ContentManagementPage />} />
               </Route>
 
               <Route path="superadmin">

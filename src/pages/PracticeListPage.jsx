@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, CheckCircle2 } from "lucide-react"
 import { Link } from "react-router-dom"
 import axios from "axios"
 import { Badge } from "@/components/ui/badge"
@@ -19,6 +19,7 @@ const PracticeListPage = () => {
   const server = import.meta.env.VITE_SERVER?.replace(/\/$/, "")
   const [problems, setProblems] = useState([])
   const [isMock, setIsMock] = useState(false)
+  const [solvedIds, setSolvedIds] = useState(new Set())
 
   useEffect(() => {
     if (!server) {
@@ -42,6 +43,21 @@ const PracticeListPage = () => {
         setProblems(getMockProblemList())
         setIsMock(true)
       })
+
+    // Fetch solved problems for logged-in users
+    const auth = JSON.parse(localStorage.getItem('AuthState'))
+    if (auth?.token) {
+      axios
+        .get(`${server}/api/submissions/solved`, {
+          headers: { Authorization: `Bearer ${auth.token}` },
+        })
+        .then((res) => {
+          if (res.data.success) {
+            setSolvedIds(new Set(res.data.solvedIds.map(String)))
+          }
+        })
+        .catch(() => {})
+    }
   }, [server])
 
   const getSlug = (problem) => problem.slug || problem._id || problem.id
@@ -73,12 +89,21 @@ const PracticeListPage = () => {
         </div>
 
         <section className="grid gap-4">
-          {problems.map((problem) => (
+          {problems.map((problem) => {
+            const isSolved = solvedIds.has(String(problem._id || problem.id))
+            return (
             <Link key={problem._id || problem.id} to={`/practice/${getSlug(problem)}`}>
-              <Card className="group overflow-hidden border-border bg-[#111111] shadow-none transition-colors duration-200 hover:border-white/20 hover:bg-[#151515]">
+              <Card className={`group overflow-hidden border-border bg-[#111111] shadow-none transition-colors duration-200 hover:border-white/20 hover:bg-[#151515] ${isSolved ? 'border-emerald-500/20' : ''}`}>
                 <CardContent className="p-0">
                   <div className="flex flex-col gap-5 px-5 py-5 md:flex-row md:items-start md:justify-between md:px-6">
                     <div className="flex min-w-0 flex-1 gap-4">
+                      {/* Solved indicator */}
+                      <div className="shrink-0 pt-1.5">
+                        {isSolved
+                          ? <CheckCircle2 className="size-5 text-emerald-400" />
+                          : <div className="size-5 rounded-full border-2 border-white/10" />
+                        }
+                      </div>
                       <div className="min-w-0 flex flex-col space-y-2">
                         <h2 className="text-lg font-semibold tracking-tight text-white md:text-xl">
                           {problem.title}
@@ -104,14 +129,15 @@ const PracticeListPage = () => {
                     </div>
 
                     <div className="flex items-center gap-2 self-end rounded-xl border border-border bg-background px-4 py-3 text-sm text-gray-300 transition-colors group-hover:border-white/20 group-hover:text-white md:self-center">
-                      <span>Open workspace</span>
+                      <span>{isSolved ? 'View solution' : 'Open workspace'}</span>
                       <ArrowRight className="size-4" />
                     </div>
                   </div>
                 </CardContent>
               </Card>
             </Link>
-          ))}
+          )})}
+
 
           {problems.length === 0 && (
             <Card className="rounded-2xl border-border bg-[#111111] shadow-none">
