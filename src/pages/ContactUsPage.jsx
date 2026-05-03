@@ -3,8 +3,10 @@ import Background from "../components/Background";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import { IconMail, IconPhone, IconMapPin, IconClock, IconBrandInstagram, IconBrandLinkedin, IconBrandGithub, IconBrandYoutube } from "@tabler/icons-react";
+import axios from "axios";
 
 const ContactUsPage = () => {
+  const server = import.meta.env.VITE_SERVER
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -16,13 +18,24 @@ const ContactUsPage = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission here
-    console.log("Form submitted:", formData);
-    // Reset form
-    setFormData({ name: "", email: "", subject: "", message: "" });
-  };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const res = await axios.post(
+      `${server}/api/v1/contact`,
+      formData
+    );
+
+    if (res.data.success) {
+      // alert("Message sent successfully");
+      setFormData({ name: "", email: "", subject: "", message: "" });
+    }
+  } catch (err) {
+    console.error(err);
+    alert(err?.response?.data?.msg || "Server error");
+  }
+};
 
   return (
     <Background bgColor="black">
