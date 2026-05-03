@@ -11,6 +11,7 @@ import { WavyBackground } from '../components/ui/wavy-background';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
+import SignUpPage from './SignUpPage';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -19,8 +20,22 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const {authState,setAuthState}=useContext(AuthContext);
+  const [guest,setGuest]=useState(false)
   const [checkingAuth, setCheckingAuth]=useState(true)
   const nav = useNavigate()
+  useEffect(() => {
+  const loginDiv = document.getElementById("login-div");
+  const signupDiv = document.getElementById("signup-div");
+  
+  if (guest) {
+    loginDiv?.classList.add("hidden");
+    signupDiv?.classList.remove("hidden");
+  } else {
+    loginDiv?.classList.remove("hidden");
+    signupDiv?.classList.add("hidden");
+  }
+  console.log("Guest state changed:", guest);
+}, [guest]);
   useEffect(()=>{
     if(authState.loggedIn){
       localStorage.setItem("AuthState", JSON.stringify(authState));
@@ -43,8 +58,9 @@ export default function LoginPage() {
     })
   },[])
   if(checkingAuth){
-    return <div className='bg-black'></div>;
+    return <div className='bg-white dark:bg-black'></div>;
   }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -54,17 +70,17 @@ export default function LoginPage() {
       return;
     }
     if (!password?.trim()) {
-  toast.error('God forbid developers dealing with empty passwords');
+  toast.error('Why not write something in the password field?');
   return;
 }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        toast.error('Please enter a valid email address');
+        toast.error('Why not enter a legit email address?');
         return;
       }
      
     
      toast.loading("Signing in...")
-     const server = import.meta.env.VITE_SERVER+"/api/v1/auth/signin" || "http://localhost:3009"
+     const server = import.meta.env.VITE_SERVER+"/api/v1/auth/signin" 
     axios.post(server,{
 
       email,password
@@ -72,7 +88,7 @@ export default function LoginPage() {
       if(data.data.token){
         toast.success("Logged In Successfully")
         toast.dismissAll()
-        setAuthState({token:data.data.token,loggedIn:true})
+        setAuthState({token:data.data.token,loggedIn:true,guest:data.data.guest})
         return nav('/team/dashboard');
         
 
@@ -89,8 +105,8 @@ export default function LoginPage() {
   };
 
  return (
- 
-    <div className="min-h-screen flex items-center justify-center p-4">
+  <>
+    <div id="login-div" className={"min-h-screen flex items-center justify-center p-4" + (guest ? " hidden" : "a")}>
    <Toaster/>
     <div className="
       w-full max-w-md rounded-lg p-[2px]
@@ -174,20 +190,27 @@ export default function LoginPage() {
               {isLoading ? "Signing in..." : "Sign in"}
             </Button>
 
-            {/* <div className="text-sm text-center text-slate-400">
+             <div  onClick={(e) => {
+    e.preventDefault();
+    setGuest(true);
+  }} className="text-sm text-center text-slate-400">
               Don&apos;t have an account?{" "}
               <a
-                href="#"
+                
                 className="text-blue-300 hover:underline font-medium"
               >
-                Sign up
+                Sign up as a guest
               </a>
-            </div> */}
+            </div> 
           </CardFooter>
         </form>
       </Card>
       </div>
     </div>
+     <div id="signup-div" className={guest ? "" : "hidden"}>
+        <SignUpPage guest={guest} setGuest={setGuest} />
+      </div>
+      </>
  
 );
 

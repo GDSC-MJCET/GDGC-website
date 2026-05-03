@@ -153,7 +153,7 @@ export default function WinnerPopup({ onClose }) {
 
         {/* Card */}
         <div
-          className={`relative max-w-md w-full rounded-2xl border border-white/10 bg-[#111111] p-8 text-center transform transition-all duration-300 ${
+          className={`relative max-w-md w-full rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#111111] p-8 text-center transform transition-all duration-300 ${
             visible ? "scale-100 translate-y-0" : "scale-95 translate-y-4"
           }`}
           style={{ animation: visible ? "pulse-glow 3s ease-in-out infinite" : "none" }}
@@ -161,7 +161,7 @@ export default function WinnerPopup({ onClose }) {
           {/* Close button */}
           <button
             onClick={handleClose}
-            className="absolute top-3 right-3 text-white/50 hover:text-white text-xl leading-none p-1"
+            className="absolute top-3 right-3 text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white text-xl leading-none p-1"
             aria-label="Close"
           >
             ✕
@@ -173,7 +173,7 @@ export default function WinnerPopup({ onClose }) {
           </div>
 
           {/* Sparkle row */}
-          <p className="text-sm mb-3 tracking-widest">✨ ✨ ✨</p>
+          <p className="text-sm mb-3 tracking-widest text-black dark:text-white">✨ ✨ ✨</p>
 
           {/* Heading with shimmer */}
           <h2
@@ -200,7 +200,7 @@ export default function WinnerPopup({ onClose }) {
           </p>
 
           {/* Sub text */}
-          <p className="text-white/70 text-sm md:text-base mb-6">
+          <p className="text-gray-700 dark:text-white/70 text-sm md:text-base mb-6">
             Winners of{" "}
             <span className="text-[#57cbff]">Tech Face-Off: The Verdict</span>{" "}
             🎉
