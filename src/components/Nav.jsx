@@ -38,7 +38,7 @@ const Nav = ({ bgColor = "#000000" }) => {
     },
   ];
 
-  const menuItems = {"Home" : "/", "Tech Face-off" : "/techfaceoff" , "Events" : "/events", "Adsophos": "/adsophos", "Team" : "/team-page", "Gallery" : "/gallery", "Contact Us" : "/contact"};
+  const menuItems = {"Home" : "/", "Blogs":"/blog/home" ,"Tech Face-off" : "/techfaceoff" , "Events" : "/events", "Adsophos": "/adsophos", "Team" : "/team-page", "Gallery" : "/gallery", "Contact Us" : "/contact"};
 
   return (
     <div className="shadow-xl shadow-gray-900/70">
@@ -50,7 +50,7 @@ const Nav = ({ bgColor = "#000000" }) => {
         <div className="flex items-center justify-between px-6 md:px-20 py-4">
           <img src="/logo.svg" alt="Logo" className="h-9" />
 
-          <ul className="hidden md:flex gap-12 items-center text-white text-sm tracking-wide">
+          <ul className="hidden md:flex gap-12 items-center text-black dark:text-white text-sm tracking-wide">
             {Object.entries(menuItems).map(([index,item]) => (
               <li
                 key={index}
@@ -64,7 +64,7 @@ const Nav = ({ bgColor = "#000000" }) => {
           <div className="flex items-center gap-4 md:hidden">
             <button
               onClick={() => setOpen(true)}
-              className=" text-white"
+              className=" text-black dark:text-white"
             >
               <IconMenu2 size={28} />
             </button>
@@ -72,7 +72,7 @@ const Nav = ({ bgColor = "#000000" }) => {
         </div>
 
         <div className="px-6 md:px-20">
-          <hr className="border-white/20" />
+          <hr className="border-gray-200 dark:border-white/20" />
         </div>
 
         <div className="flex items-center justify-between px-6 md:px-20 py-3">
@@ -104,16 +104,16 @@ const Nav = ({ bgColor = "#000000" }) => {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 260, damping: 30 }}
-              className="fixed top-0 right-0 h-full w-full bg-[#111] z-999 flex flex-col"
+              className="fixed top-0 right-0 h-full w-full bg-white dark:bg-[#111] z-999 flex flex-col"
             >
               <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
                 <img src="/logo.svg" className="h-8" />
                 <button onClick={() => setOpen(false)}>
-                  <IconX className="text-white" size={28} />
+                  <IconX className="text-black dark:text-white" size={28} />
                 </button>
               </div>
 
-              <div className="flex-1 flex flex-col justify-center px-8 gap-8 text-white text-2xl font-medium">
+              <div className="flex-1 flex flex-col justify-center px-8 gap-8 text-black dark:text-white text-2xl font-medium">
                 {Object.entries(menuItems).map(([name, path], i) => (
                   <motion.div
                     key={name}
@@ -135,7 +135,7 @@ const Nav = ({ bgColor = "#000000" }) => {
                 </button>
               </div>
 
-              <div className="absolute bottom-6 left-0 right-0 flex justify-center text-white">
+              <div className="absolute bottom-6 left-0 right-0 flex justify-center text-black dark:text-white">
                 <FloatingDock items={links} />
               </div>
             </motion.div>

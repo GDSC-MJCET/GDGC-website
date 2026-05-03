@@ -113,6 +113,8 @@ const Dashboard = () => {
   const [checked, setChecked] = useState(false)
   const [exercises, setExercises] = useState([])
   const [loadingExercises, setLoadingExercises] = useState(true)
+  const [isAdmin, setIsAdmin] = useState(false)
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false)
 
   useEffect(() => {
     if (!auth?.token) { nav('/login'); return }
@@ -124,6 +126,20 @@ const Dashboard = () => {
       .then((res) => { if (!res.data.success) nav('/login') })
       .catch(() => nav('/login'))
       .finally(() => setChecked(true))
+
+    axios.get(
+      `${import.meta.env.VITE_SERVER}/api/v1/admin/verify-admin`,
+      { headers: { Authorization: `Bearer ${auth?.token}` } }
+    ).then((data) => {
+      if (data.data.success) setIsAdmin(true)
+    }).catch(() => {})
+
+    axios.get(
+      `${import.meta.env.VITE_SERVER}/api/v1/admin/verify-super-admin`,
+      { headers: { Authorization: `Bearer ${auth?.token}` } }
+    ).then((data) => {
+      if (data.data.success) setIsSuperAdmin(true)
+    }).catch(() => {})
 
     // Fetch exercises with user's solve progress
     axios
@@ -161,22 +177,24 @@ const Dashboard = () => {
           </Card>
         </Link>
 
-        <NavLink to="/team/customization/qrchange">
-          <Card className="group border-white/10 bg-[#111] hover:border-white/25 hover:bg-[#151515] transition-all cursor-pointer h-full">
-            <CardContent className="p-5 flex flex-col gap-3 h-full">
-              <div className="flex items-center justify-between">
-                <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
-                  <QrCode className="size-5 text-gray-400" />
+        {(isAdmin || isSuperAdmin) && (
+          <NavLink to="/team/customization/qrchange">
+            <Card className="group border-white/10 bg-[#111] hover:border-white/25 hover:bg-[#151515] transition-all cursor-pointer h-full">
+              <CardContent className="p-5 flex flex-col gap-3 h-full">
+                <div className="flex items-center justify-between">
+                  <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
+                    <QrCode className="size-5 text-gray-400" />
+                  </div>
+                  <ArrowRight className="size-4 text-gray-600 group-hover:text-white transition-colors" />
                 </div>
-                <ArrowRight className="size-4 text-gray-600 group-hover:text-white transition-colors" />
-              </div>
-              <div>
-                <p className="font-semibold text-white">Change QR Redirect</p>
-                <p className="text-xs text-gray-500 mt-0.5">Update where your QR code points</p>
-              </div>
-            </CardContent>
-          </Card>
-        </NavLink>
+                <div>
+                  <p className="font-semibold text-white">Change QR Redirect</p>
+                  <p className="text-xs text-gray-500 mt-0.5">Update where your QR code points</p>
+                </div>
+              </CardContent>
+            </Card>
+          </NavLink>
+        )}
       </div>
 
       {/* Exercises section */}
