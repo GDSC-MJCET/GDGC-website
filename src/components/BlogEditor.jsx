@@ -138,7 +138,7 @@ const BlogEditor = ({ }) => {
         setBlog({ ...blog, content: textEditor.isReady ? textEditor : content })
      }, [textEditor])
     return (
-        <div className="bg-black" >
+        <div className="bg-white dark:bg-black" >
 
             <nav className="sticky top-0 z-50 px-4 sm:px-6 py-3 sm:py-4">
                 <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
@@ -146,25 +146,25 @@ const BlogEditor = ({ }) => {
                         <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg p-1 sm:p-1.5 group-hover:scale-105 transition-transform">
                             <img src={logo} alt="GDGC" className="w-full h-full object-contain" />
                         </div>
-                        <span className="text-xl sm:text-2xl text-white font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+                                <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
                            GDGC Blogs
                         </span>
                     </Link>
 
                     <div className="flex flex-wrap items-center gap-3 sm:gap-6">
                         <div className="hidden md:block">
-                            <p className="text-white font-medium text-xl sm:text-2xl">
+                            <p className="text-black dark:text-white font-medium text-xl sm:text-2xl">
                                 {title ? title : 'Untitled Blog'}
                             </p>
                         </div>
                         <button
                             onClick={handlePublish}
-                            className="relative overflow-hidden px-4 sm:px-6 py-1.5 sm:py-2.5 rounded-lg text-white font-semibold shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 text-xl sm:text-2xl"
+                            className="relative overflow-hidden px-4 sm:px-6 py-1.5 sm:py-2.5 rounded-lg text-black dark:text-white font-semibold shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 text-xl sm:text-2xl"
                         >
                             <span className="relative z-10">Publish</span>
                             <div className="absolute inset-0 bg-white/20 -translate-x-full hover:translate-x-full transition-transform duration-500" />
                         </button>
-                        <p className="text-white text-2xl sm:text-3xl cursor-pointer" onClick={handleHomeOnclick}>
+                        <p className="text-black dark:text-white text-2xl sm:text-3xl cursor-pointer" onClick={handleHomeOnclick}>
                             <FaHome />
                         </p>
                     </div>
@@ -185,34 +185,34 @@ const BlogEditor = ({ }) => {
             />
             <main className={(confirmed ? "  " : "hidden")} > 
                 
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
-      <div className="w-full max-w-md rounded-xl bg-[#111] border border-gray-700 p-5 sm:p-6 shadow-xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
+            <div className="w-full max-w-md rounded-xl bg-white dark:bg-[#111] border border-gray-200 dark:border-gray-700 p-5 sm:p-6 shadow-xl">
         
-        <h2 className="text-base sm:text-lg font-semibold text-white mb-3">
-          Danger
-        </h2>
+                <h2 className="text-base sm:text-lg font-semibold text-black dark:text-white mb-3">
+                    Danger
+                </h2>
 
-        <p className="text-sm sm:text-base text-gray-300 mb-6">
-          Changes you made won't be saved if you leave. Are you sure you want to go back to home?
-        </p>
+                <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-6">
+                    Changes you made won't be saved if you leave. Are you sure you want to go back to home?
+                </p>
 
-        <div className="flex justify-end gap-3">
-          <p
-            onClick={() => setConfirmed(false)}
-            className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-gray-700 text-white hover:text-gray-200 cursor-pointer transition text-sm sm:text-base"
-          >
-            Cancel
-          </p>
+                <div className="flex justify-end gap-3">
+                    <p
+                        onClick={() => setConfirmed(false)}
+                        className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-gray-700 dark:text-white hover:text-gray-200 cursor-pointer transition text-sm sm:text-base"
+                    >
+                        Cancel
+                    </p>
 
-          <Link to={"/blog"}
-            className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition text-sm sm:text-base"
-          >
-            Confirm
-          </Link>
+                    <Link to={"/blog"}
+                        className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition text-sm sm:text-base"
+                    >
+                        Confirm
+                    </Link>
+                </div>
+
+            </div>
         </div>
-
-      </div>
-    </div>
   
                 
                  </main>
@@ -261,7 +261,7 @@ const BlogEditor = ({ }) => {
                         onKeyDown={handleKeyDown}
                         onChange={handleTitleOnChange}
                         defaultValue={title}
-                        className="w-full line-clamp-1 text-3xl sm:text-5xl md:text-6xl font-bold text-white placeholder-gray-300 resize-none outline-none leading-tight tracking-tight min-h-[2.5rem] sm:min-h-[3rem] focus:placeholder-gray-400 transition-colors duration-200 bg-transparent"
+                        className="w-full line-clamp-1 text-3xl sm:text-5xl md:text-6xl font-bold text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-300 resize-none outline-none leading-tight tracking-tight min-h-[2.5rem] sm:min-h-[3rem] focus:placeholder-gray-400 transition-colors duration-200 bg-transparent"
                         rows={1}
                     />
                     <div className="mt-2 sm:mt-3 h-1 w-16 sm:w-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full" />
@@ -272,7 +272,7 @@ const BlogEditor = ({ }) => {
                     value={des} 
                     placeholder="Description " 
                     onChange={(e) => setBlog({...blog, des: e.target.value})}
-                    className="mt-4 sm:mt-6 w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-white placeholder-gray-400 transition-all duration-200 font-medium focus:outline-none text-sm sm:text-base"
+                    className="mt-4 sm:mt-6 w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-300 transition-all duration-200 font-medium focus:outline-none text-sm sm:text-base"
                 />
 
 
@@ -280,10 +280,10 @@ const BlogEditor = ({ }) => {
 <div className="mt-6 sm:mt-10">
   
 
-    <div
-      id="textEditor"
-      className="min-h-[300px] sm:min-h-[500px] p-3 sm:p-6 text-white overflow-x-auto"
-    />
+        <div
+            id="textEditor"
+            className="min-h-[300px] sm:min-h-[500px] p-3 sm:p-6 text-black dark:text-white overflow-x-auto"
+        />
   
 </div>
             </main>

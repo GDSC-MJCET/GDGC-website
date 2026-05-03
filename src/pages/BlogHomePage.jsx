@@ -32,6 +32,7 @@ const auth = JSON.parse(localStorage.getItem("AuthState") );
           comments: (blog.comments || []).map(c => ({ ...c, showReplies: false }))
         }));
         setBlogs(blogsWithShowReplies);
+      
         const arr = res?.data?.LikedArray?.map((i) => String(i._id)) || [];
         setLiked(arr);
         const ownerArr = res?.data?.OwnerArray || [];
