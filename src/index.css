@@ -306,4 +306,32 @@
 .pill {
   @apply text-xl px-12 py-2 rounded-2xl border border-white/80;
 }
+/* Remove the box – keep only the plus icon */
+#textEditor .ce-block__plus,
+#textEditor .ce-toolbar__plus,
+#textEditor .ce-block__settings,
+#textEditor button[title="Add"],
+#textEditor button[title="Insert"] {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  display: inline-flex !important;  /* keeps alignment */
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Make the icon large – adjust size as needed */
+#textEditor .ce-block__plus svg,
+#textEditor .ce-toolbar__plus svg,
+#textEditor button[title="Add"] svg,
+#textEditor .ce-block__settings svg {
+  width: 45px !important;   /* increase to desired size */
+  height: 45px !important;
+ color: white !important; /* white background for visibility */
+}
 

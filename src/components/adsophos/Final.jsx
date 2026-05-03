@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import './adsophos.css'
 
 const Final = () => {
   const [hovered, setHovered] = useState(null);
@@ -6,10 +7,11 @@ const Final = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [mounted, setMounted] = useState(false);
   const containerRef = useRef(null);
-
+  
   const buttons = [
-    "Register for Mystery Rooms",
-    "Register for Photobooth",
+    { text: "Register for Loop 13", link: "/loop13" },
+    { text: "Register for Diamond Heist", link: "/heist" },
+    { text: "Register for Photobooth", link: "/photobooth" },
   ];
 
   useEffect(() => {
@@ -30,8 +32,8 @@ const Final = () => {
     };
   }, []);
 
-  const cloudParallaxX = mousePos.x * -18;
-  const cloudParallaxY = mousePos.y * -10 - scrollY * 0.25;
+  const cloudParallaxX = mousePos.x * -10;
+  const cloudParallaxY = mousePos.y * -4 - scrollY * 0.08;
   const grassParallaxY = scrollY * 0.08;
   const marioParallaxX = mousePos.x * 8;
 
@@ -105,39 +107,40 @@ const Final = () => {
 
       <div
         ref={containerRef}
-        className="relative w-full  min-h-screen overflow-hidden flex flex-col items-center justify-start"
+        className="relative w-full adsophos-container min-h-[560px] md:min-h-screen overflow-hidden flex flex-col items-center justify-start"
       >
 
         {/* Cloud Background */}
         <img
           src="/final-cloud-ads.png"
           alt=""
-          className="absolute inset-0 w-full h-full object-cover z-0 cloud-idle"
+          className="absolute inset-0 w-full h-full object-contain md:object-cover object-center z-0 cloud-idle pointer-events-none"
           style={{
-            transform: `translateX(${cloudParallaxX}px) translateY(${cloudParallaxY}px) scale(1.08)`,
+            transform: `translateX(${cloudParallaxX}px) translateY(${cloudParallaxY}px) scale(1.02)`,
             transition: "transform 0.12s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
             willChange: "transform",
           }}
         />
 
         {/* Top Content */}
-        <div className="relative z-20 flex flex-col items-center mt-20">
+        <div className="relative z-20 flex flex-col items-center mt-4 sm:mt-6 md:mt-24 px-4 text-center">
 
           {/* Title */}
           <h1
-            className={`text-6xl md:text-8xl font-bold text-transparent bg-clip-text bg-linear-to-b from-[#f19ad1] via-[#ff00a2] to-[#f19ad1] mb-12 tracking-wide title-animated`}
+            className={`footer font-bold text-transparent bg-clip-text mb-8 md:mb-12 tracking-wide title-animated`}
           >
-            START <br /> EVENT
+             <div className="text-[#ff00a2]">START</div> <div className="text-[#ff00a2]">EVENT</div> 
           </h1>
 
           {/* Buttons */}
-          <div className="flex flex-col gap-6 text-xl">
+          <div className="flex flex-col gap-4 md:gap-6 text-lg md:text-xl">
             {buttons.map((btn, i) => (
-              <div
+              <a
                 key={i}
+                href={btn.link}
                 onMouseEnter={() => setHovered(i)}
                 onMouseLeave={() => setHovered(null)}
-                className={`flex items-center gap-3 cursor-pointer group btn-animated-${i}`}
+                className={`flex items-center gap-3 cursor-pointer group btn-animated-${i} no-underline`}
               >
                 {/* Arrow */}
                 <span
@@ -152,31 +155,31 @@ const Final = () => {
 
                 {/* Text */}
                 <span className="text-[#ff5700] font-extrabold group-hover:translate-x-1 group-hover:text-[#e5005c] transition-transform btn-text">
-                  {btn}
+                  {btn.text}
                 </span>
-              </div>
+              </a>
             ))}
           </div>
         </div>
 
         {/* Grass Bottom */}
-         <div className="absolute bottom-0 w-full z-20">
+        <div className="absolute bottom-0 w-full z-20">
 
-  {/* Grass */}
-  <img
-    src="/final-grass-ads.png"
-    alt=""
-    className="w-full h-30"
-  />
+          {/* Grass */}
+          <img
+            src="/final-grass-ads.png"
+            alt="Grass"
+            className="w-full h-20 md:h-32 object-cover"
+          />
 
-  {/* Mario */}
-  <img
-    src="/mario.png"
-    alt=""
-    className="absolute right-10 bottom-full mb-[-20px] w-[120px]"
-  />
+          {/* Mario */}
+          <img
+            src="/mario.png"
+            alt="Mario"
+            className="absolute right-5 md:right-10 bottom-full mb-[-10px] md:mb-[-20px] w-[80px] md:w-[120px] mario-float"
+          />
 
-</div>
+        </div>
       </div>
     </>
   );

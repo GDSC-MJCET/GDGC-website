@@ -1,10 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 /* enum-like nav keys */
 const NAV = {
-  FEED: "FEED",
+  FEED: "HOME",
   PUBLISH: "PUBLISH",
   MYBLOGS: "MYBLOGS",
   HELP: "HELP",
@@ -17,17 +17,26 @@ const navItems = [
   { key: NAV.HELP, label: "Help", route: "/blog/help" },
 ];
 
-const BlogNavbar = () => {
-  const [active, setActive] = useState(NAV.FEED);
+const BlogNavbar = ({removeNavbar, setRemoveNavbar}) => {
+  const [active, setActive] = useState(window.location.pathname.toUpperCase().split("/")[2] || NAV.FEED);
+  console.log("Active nav item:", active);
   const navigate = useNavigate();
 
   const handleNav = (item) => {
     setActive(item.key);
     navigate(item.route);
   };
+  const pathname = window.location.pathname
+    if (pathname=="/blog/editor") {
+      setRemoveNavbar(true)
+    }else{
+      setRemoveNavbar(false)
+    }
+
+ 
 
   return (
-   <nav className="fixed top-0 left-0 w-full z-50">
+   <nav className={ `fixed top-0 left-0 w-full z-50` + (removeNavbar ? " hidden " : " ")}>
   <div className="mx-auto max-w-7xl px-6">
     <div className="relative mt-4">
       <div className="flex items-center justify-center h-16 px-6">

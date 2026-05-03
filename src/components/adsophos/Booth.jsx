@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import './adsophos.css';
 
 const Booth = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -92,13 +93,13 @@ const Booth = () => {
         }
       `}</style>
 
-      <div ref={sectionRef} className="relative w-full overflow-hidden">
+      <div ref={sectionRef} className="relative  adsophos-container w-full overflow-hidden">
 
         {/* Background — covers the full height of content */}
         <img
-          src="/ads-game-1-bg.png"
+          src="/booth.jpg"
           alt=""
-          className="absolute inset-0 w-full h-full object-cover z-0 bg-drift"
+          className="absolute inset-0 w-full h-full object-contain z-0 bg-drift"
           style={{
             transform: `translateX(${bgParallaxX}px) translateY(${bgParallaxY}px) scale(1.08)`,
             transition: 'transform 0.14s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
@@ -114,18 +115,17 @@ const Booth = () => {
 
           {/* Title badge */}
           <div className="flex justify-center mb-16">
-            <h2 className="booth-title text-transparent bg-linear-to-b from-[#ffffff] via-[#ea4336] to-[#ffffff] text-6xl font-bold bg-clip-text ">
+            <h2 className="booth booth-title">
               THE GDGC PHOTOBOOTH
             </h2>
           </div>
 
-          <div className="max-w-4xl flex justify-between items-start gap-10">
-
+          <div className="max-w-5xl flex flex-col md:flex-row justify-between items-center md:items-start gap-10 px-4 md:px-0">
             {/* Image (tall) */}
             <img
               src="/photo-booth.png"
               alt=""
-              className="h-[620px] w-auto object-contain -mt-22 booth-image"
+              className="w-[800px] max-h-[600px] object-contain md:-mt-22 booth-image"
               style={{
                 transform: `translateX(${imageParallaxX}px) translateY(${imageParallaxY}px)`,
                 transition: 'transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
@@ -134,16 +134,16 @@ const Booth = () => {
             />
 
             {/* Content */}
-            <div className="flex flex-col justify-start">
-              <p className="mb-6 booth-text">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestiae harum porro ipsum fuga nisi aliquam. Aliquam quod, dolorum iure asperiores cupiditate dolore.
-              </p>
+            <div className="flex flex-col justify-start items-center md:items-start text-center md:text-left max-w-lg">
+              <p className="mb-8 product-sans text-[#ffffff] text-base sm:text-xl font-medium leading-relaxed">
+              Step into our Photo Booth and capture moments that last beyond the event. With a DSLR setup, aesthetic backdrops, and Polaroid-style prints, take home a memory that’s uniquely yours.              </p>
 
-              <button className="booth-btn border-2 border-[#ffffff] bg-gradient-to-b from-[#f6a2a2] via-[#ea4336] to-[#f6a2a2] px-10 py-3 text-lg text-[#ffffff] rounded-lg hover:scale-105 transition-transform">
-                Register Now!
+              <button 
+              onClick={() => (window.location.href = "https://www.adsophos.com/register?event=PhotoBooth")}
+              className="booth-btn  border-2 border-[#ffffff] bg-gradient-to-b from-[#f6a2a2] via-[#ea4336] to-[#f6a2a2] px-8 md:px-10 py-2 md:py-3 text-sm sm:text-base md:text-lg text-[#ffffff] rounded-lg">
+                 Get Your Photo!
               </button>
             </div>
-
           </div>
         </div>
       </div>

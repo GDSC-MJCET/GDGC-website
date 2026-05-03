@@ -97,7 +97,7 @@ const EventDetails = () => {
           <div className="space-y-12 sm:space-y-16 lg:space-y-22 mt-8 sm:mt-12">
             <div className='flex flex-col lg:flex-row gap-6 sm:gap-8 items-center'>
                 <div className='flex-1 order-2 lg:order-1'>
-                    <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">Neque</h2>
+                    <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">Description</h2>
                     <p className="text-gray-300 leading-relaxed text-sm sm:text-base">{event.neque}</p>
                 </div>
                 <div className='relative overflow-hidden rounded-xl shadow-md group-hover:shadow-xl transition-shadow duration-300 flex-shrink-0 order-1 lg:order-2 flex-1'>
@@ -111,8 +111,8 @@ const EventDetails = () => {
             </div>
             <div className='flex flex-col-reverse md:flex-col text-right lg:flex-row-reverse gap-6 sm:gap-8 lg:gap-12 xl:gap-22 items-center'>
                 <div className='flex-1'>
-                    <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">Neque</h2>
-                    <p className="text-gray-300 leading-relaxed text-sm sm:text-base">{event.neque}</p>
+                    {/* <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">Neque</h2> */}
+                    <p className="text-gray-300 leading-relaxed text-sm sm:text-base">{event.neque1}</p>
                 </div>
                 <div className='relative overflow-hidden rounded-xl shadow-md group-hover:shadow-xl transition-shadow duration-300 flex-shrink-0 flex-1'>
                     <img

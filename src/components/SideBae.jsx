@@ -7,11 +7,13 @@ import axios from 'axios'
 
 
 const SettingSubPanel = ({handleClickRedirect , clicked}) => {
+  const auth = JSON.parse(localStorage.getItem("AuthState"));
+  const [isGuest,setIsGuest] = useState(auth.guest)
     return (
         <div className='text-[12px] flex flex-col gap-2 pl-6 pt-2'>
             {/* <span onClick={()=>handleClickRedirect("dash","/team/dashboard" )} className={`flex ${clicked == "dash" ? "bg-white text-black" : ""} p-2 rounded-md flex-row cursor-pointer gap-2 items-center`}> */}
 
-            <span onClick={()=>handleClickRedirect("Qr","/team/customization/qrchange" )} className={`${clicked == "Qr" ? "bg-white text-black rounded-md" : ""} flex flex-row  gap-2 items-center`}>
+            <span onClick={()=>handleClickRedirect("Qr","/team/customization/qrchange" )} className={`${clicked == "Qr" ? "bg-white text-black rounded-md" : ""} flex flex-row  gap-2 items-center` + (isGuest ? " hidden" : "")}>
                 {/* <Settings2 className='w-4'/> */}
                 <Link to="/team/customization/qrchange" className={` py-1 px-3 w-full rounded-md`} >Change Qr </Link> 
                 {/* <ChevronUp onClick={handleClickSetting} className='w-4'/> */}
@@ -47,6 +49,18 @@ const AdminSubPanel = ({handleClickRedirect , clicked}) => {
         </div>
     )
 }
+const GuestSubPanel = ({handleClickRedirect , clicked}) => {
+    return (
+        <div className='text-[12px] flex flex-col gap-2 pl-6 pt-2'>
+            <span onClick={()=>handleClickRedirect("socials","/team/customization/socials" )} className={`${clicked == "socials" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}>
+                {/* <Settings2 className='w-4'/> */}
+                <Link to="/team/customization/socials" className=' py-1 px-3 w-full rounded-md' >Socials</Link>
+                {/* <ChevronUp onClick={handleClickSetting} className='w-4'/> */}
+            </span>
+        </div>
+    )
+}
+
 
 const SuperAdminSubPanel = ({handleClickRedirect , clicked}) => {
     return (
@@ -72,7 +86,8 @@ const SideBae = ({ isOpen, onClose }) => {
     const [openSuperAdminPanel , setOpenSuperAdminPanel] = useState(false)
     const [isAdmin,setIsAdmin] = useState(false);
     const [isSuperAdmin,setIsSuperAdmin] = useState(false)
-    const navigate = useNavigate();
+    const [isGuest,setIsGuest] = useState(false)
+    const nav = useNavigate();
     
     const auth = JSON.parse(localStorage.getItem("AuthState"));
     useEffect(() => {
@@ -115,6 +130,7 @@ const SideBae = ({ isOpen, onClose }) => {
       .catch(() => {
         return
       })
+      localStorage.getItem("AuthState") && setIsGuest(JSON.parse(localStorage.getItem("AuthState")).guest)
   }, [auth?.token])
     function handleClickSettings() {
         setOpenSettingPanel(!openSettingPanel)
@@ -127,7 +143,7 @@ const SideBae = ({ isOpen, onClose }) => {
     }
     function handleClickRedirect(item , redirect) {
         setClicked(item)
-        navigate(redirect)
+        nav(redirect)
         // Close sidebar on mobile after navigation
         if (onClose) onClose()
     }
@@ -272,6 +288,9 @@ const SideBae = ({ isOpen, onClose }) => {
         </div>
       </div></>)
   }
+
+
+  
   return (
     <>
       {/* Overlay for mobile */}
