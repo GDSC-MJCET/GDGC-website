@@ -83,8 +83,8 @@ export default function Events() {
       </div>
 
       <div className="mt-16 flex flex-col md:flex-row gap-6 justify-between items-center max-w-6xl mx-auto px-6">
-          <ActionButton label="Live Events" link={'/techfaceoff'} color="#5ddb6e" />  
-        <ActionButton label="Past Events"  color="#ffe7a5" />
+          {/* <ActionButton label="Live Events" link={'/techfaceoff'} color="#5ddb6e" />   */}
+        <ActionButton label="Past Events" link={'/events'}  color="#ffe7a5" />
       </div>
     </section>
   );
