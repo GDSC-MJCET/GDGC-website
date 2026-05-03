@@ -23,6 +23,19 @@ export default function LoginPage() {
   const [guest,setGuest]=useState(false)
   const [checkingAuth, setCheckingAuth]=useState(true)
   const nav = useNavigate()
+  useEffect(() => {
+  const loginDiv = document.getElementById("login-div");
+  const signupDiv = document.getElementById("signup-div");
+  
+  if (guest) {
+    loginDiv?.classList.add("hidden");
+    signupDiv?.classList.remove("hidden");
+  } else {
+    loginDiv?.classList.remove("hidden");
+    signupDiv?.classList.add("hidden");
+  }
+  console.log("Guest state changed:", guest);
+}, [guest]);
   useEffect(()=>{
     if(authState.loggedIn){
       localStorage.setItem("AuthState", JSON.stringify(authState));
@@ -45,7 +58,7 @@ export default function LoginPage() {
     })
   },[])
   if(checkingAuth){
-    return <div className='bg-black'></div>;
+    return <div className='bg-white dark:bg-black'></div>;
   }
 
   const handleSubmit = async (e) => {
@@ -93,7 +106,7 @@ export default function LoginPage() {
 
  return (
   <>
-    <div className={"min-h-screen flex items-center justify-center p-4" + (guest ? " hidden" : " ")}>
+    <div id="login-div" className={"min-h-screen flex items-center justify-center p-4" + (guest ? " hidden" : "a")}>
    <Toaster/>
     <div className="
       w-full max-w-md rounded-lg p-[2px]
@@ -194,7 +207,7 @@ export default function LoginPage() {
       </Card>
       </div>
     </div>
-      <div className={` hidd` + (guest ? " " : "en")}>
+     <div id="signup-div" className={guest ? "" : "hidden"}>
         <SignUpPage guest={guest} setGuest={setGuest} />
       </div>
       </>
