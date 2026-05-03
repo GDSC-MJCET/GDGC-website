@@ -68,16 +68,6 @@ const Dashboard = () => {
   return (
 
     <>
-      {/* FOR SOCIALSSS */}
-      {/* <SocialsPopup
-        showPopUp={showPopUp}
-        setShowPopUp={setShowPopUp}
-        auth={auth}
-        initialData={socials}
-      /> */}
-
-
-
       <div className="min-h-[70vh] flex flex-col items-center justify-center px-4">
         <div className="text-center space-y-4">
           <h1 className="text-3xl md:text-4xl font-bold text-white">
@@ -115,7 +105,22 @@ const Dashboard = () => {
             Add Socials
           </span>
         </NavLink>
-         
+        <br />
+        <NavLink
+            to="/team/leaderboard"
+            className="group relative inline-flex items-center gap-2 px-6 py-3  text-white text-sm font-medium rounded-lg overflow-hidden transition-all duration-300 bg-gradient-to-r from-red-500 via-blue-500 to-green-500 hover:scale-109 hover:shadow-xl"
+          >
+          <span className="absolute inset-0 bg-white/10 opacity-1 group-hover:opacity-200 transition duration-300"></span>
+          <span className="relative z-10 flex items-center gap-2">
+            leaderboard
+          </span>
+        </NavLink>
+        {/* <button
+        onClick={() => navigate("/team/leaderboard")}
+        className="px-4 py-2 bg-black text-white rounded-md mt-4"
+      >
+        Go to Leaderboard
+      </button> */}
         </div>
       </div>
     </>

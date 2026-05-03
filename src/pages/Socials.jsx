@@ -56,6 +56,10 @@ const Socials = () => {
       setError("Please add at least one social");
       return;
     }
+    if (form.leetcode && !form.leetcode.match(/leetcode\.com/)) {
+  setError("Please enter a valid LeetCode URL");
+  return;
+}
 
     setError("");
 
@@ -68,7 +72,8 @@ const Socials = () => {
 
     })
     .catch((err) => {
-      console.log(err);
+      const msg = err.response?.data?.message || "Something went wrong";
+      setError(msg);
     });
   };
 
