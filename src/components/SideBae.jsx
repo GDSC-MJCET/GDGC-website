@@ -8,7 +8,7 @@ import axios from 'axios'
 
 const SettingSubPanel = ({handleClickRedirect , clicked}) => {
   const auth = JSON.parse(localStorage.getItem("AuthState"));
-  const [isGuest,setIsGuest] = useState(auth.guest)
+  const [isGuest,setIsGuest] = useState(auth?.guest || false)
     return (
         <div className='text-[12px] flex flex-col gap-2 pl-6 pt-2'>
             {/* <span onClick={()=>handleClickRedirect("dash","/team/dashboard" )} className={`flex ${clicked == "dash" ? "bg-white text-black" : ""} p-2 rounded-md flex-row cursor-pointer gap-2 items-center`}> */}
