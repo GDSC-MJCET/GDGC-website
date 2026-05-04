@@ -316,6 +316,7 @@ function AppWithRouter() {
             {/* <Route path='practice' element={<PracticePage />} /> */}
               <Route path="/signup-guest" element={<SignUpPage />} />
               <Route path="techfaceoff" element={<TechDebatePage />} />
+              <Route path="buildweek-form" element={<BuildWeekForm />} />
               <Route path='score' element={<ScorePage />} />
               <Route path="events" element={<EventsPage />} />
               <Route path="event-details" element={<EventDetails />} />
