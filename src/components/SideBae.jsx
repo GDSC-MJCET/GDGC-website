@@ -19,21 +19,38 @@ const SettingsSubPanel = ({ nav, active }) => (
   </div>
 )
 
-const AdminSubPanel = ({ nav, active }) => (
-  <div className='text-[12px] flex flex-col gap-2 pl-6 pt-2'>
-    <span onClick={() => nav('adminUsers', '/team/admin/users')} className={sub(active, 'adminUsers')}>Users</span>
-    <span onClick={() => nav('hr-interface', '/team/admin/hr-interface')} className={sub(active, 'hr-interface')}>Tech Debate</span>
-    <span onClick={() => nav('content', '/team/admin/content')} className={sub(active, 'content')}>Content</span>
-  </div>
-)
 
-const SuperAdminSubPanel = ({ nav, active }) => (
-  <div className='text-[12px] flex flex-col gap-2 pl-6 pt-2'>
-    <span onClick={() => nav('superAdminDashboard', '/team/superadmin')} className={sub(active, 'superAdminDashboard')}>Dashboard</span>
-    <span onClick={() => nav('superAdminUsers', '/team/superadmin/users')} className={sub(active, 'superAdminUsers')}>Users</span>
-    <span onClick={() => nav('superAdminContacts', '/team/superadmin/contacts')} className={sub(active, 'superAdminContacts')}>Contact Submissions</span>
-  </div>
-)
+const AdminSubPanel = ({handleClickRedirect , clicked}) => {
+    return (
+        <div className='text-[12px] flex flex-col gap-2 pl-6 pt-2'>
+            <span onClick={()=>handleClickRedirect("adminUsers","/team/admin/users" )} className={`${clicked == "adminUsers" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}>
+                <Link to="/team/admin/users" className=' py-1 px-3 w-full rounded-md' >Users</Link> 
+            </span>
+            <span onClick={()=>handleClickRedirect("hr-interface","/team/admin/hr-interface" )} className={`${clicked == "hr-interface" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}>
+                <Link to="/team/admin/hr-interface" className=' py-1 px-3 w-full rounded-md' >Tech Debate</Link> 
+            </span>
+            <span 
+              onClick={()=>handleClickRedirect("images","/team/admin/images")}
+              className={`${clicked == "images" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}
+            >
+              <Link to="/team/admin/images" className='py-1 px-3 w-full rounded-md'>
+                Images
+              </Link>
+            </span>
+        </div>
+    )
+}
+const GuestSubPanel = ({handleClickRedirect , clicked}) => {
+    return (
+        <div className='text-[12px] flex flex-col gap-2 pl-6 pt-2'>
+            <span onClick={()=>handleClickRedirect("socials","/team/customization/socials" )} className={`${clicked == "socials" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}>
+                {/* <Settings2 className='w-4'/> */}
+                <Link to="/team/customization/socials" className=' py-1 px-3 w-full rounded-md' >Socials</Link>
+                {/* <ChevronUp onClick={handleClickSetting} className='w-4'/> */}
+            </span>
+        </div>
+    )
+}
 
 const BlogSubPanel = ({ nav, active }) => (
   <div className='text-[12px] flex flex-col gap-2 pl-6 pt-2'>
@@ -44,6 +61,29 @@ const BlogSubPanel = ({ nav, active }) => (
   </div>
 )
 
+const SuperAdminSubPanel = ({handleClickRedirect , clicked}) => {
+    return (
+        <div className='text-[12px] flex flex-col gap-2 pl-6 pt-2'>
+            <span onClick={()=>handleClickRedirect("superAdminDashboard","/team/superadmin" )} className={`${clicked == "superAdminDashboard" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}>
+                <Link to="/team/superadmin" className=' py-1 px-3 w-full rounded-md' >Dashboard</Link> 
+            </span>
+            <span onClick={()=>handleClickRedirect("superAdminUsers","/team/superadmin/users" )} className={`${clicked == "superAdminUsers" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}>
+                <Link to="/team/superadmin/users" className=' py-1 px-3 w-full rounded-md' >Users</Link> 
+            </span>
+            <span onClick={()=>handleClickRedirect("superAdminContacts","/team/superadmin/contacts" )} className={`${clicked == "superAdminContacts" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}>
+                <Link to="/team/superadmin/contacts" className=' py-1 px-3 w-full rounded-md' >Contact Submissions</Link> 
+            </span>
+            <span 
+              onClick={()=>handleClickRedirect("superAdminImages","/team/superadmin/images")}
+              className={`${clicked == "superAdminImages" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}
+            >
+              <Link to="/team/superadmin/images" className='py-1 px-3 w-full rounded-md'>
+                Images
+              </Link>
+            </span>
+        </div>
+    )
+}
 // ── Collapsible nav group ─────────────────────────────────────────────────────
 const NavGroup = ({ icon: Icon, label, open, onToggle, children }) => (
   <div>
