@@ -8,6 +8,16 @@ import CodeWorkspace from "@/components/practice/CodeWorkspace"
 import LoadingState from "@/components/practice/LoadingState"
 
 const SUPPORTED_LANGUAGES = ["javascript", "python", "cpp", "java"]
+
+// Shown when a problem has no starter code defined for that language,
+// or when the user switches to a language they haven't typed in yet.
+const DEFAULT_TEMPLATES = {
+  python: `# Read input\n# e.g. n = int(input())\n\n# Write your solution here\n`,
+  javascript: `const lines = require('fs').readFileSync('/dev/stdin','utf8').trim().split('\\n')\n\n// Write your solution here\n`,
+  cpp: `#include <bits/stdc++.h>\nusing namespace std;\nint main() {\n    // Read input\n    // Write your solution here\n    return 0;\n}\n`,
+  java: `import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // Read input: e.g. int n = sc.nextInt();\n        // Write your solution here\n    }\n}\n`,
+}
+
 const LANGUAGE_ALIASES = {
   js: "javascript",
   javascript: "javascript",
@@ -224,7 +234,7 @@ const PracticePage = () => {
           const initialCode = {}
 
           normalizedProblem.allowedLanguages.forEach((language) => {
-            initialCode[language] = normalizedProblem.starterCode[language] || ""
+            initialCode[language] = normalizedProblem.starterCode[language] || DEFAULT_TEMPLATES[language] || ""
           })
 
           setProblem(normalizedProblem)
@@ -263,7 +273,7 @@ const PracticePage = () => {
         const initialCode = {}
 
         normalizedProblem.allowedLanguages.forEach((language) => {
-          initialCode[language] = normalizedProblem.starterCode[language] || ""
+          initialCode[language] = normalizedProblem.starterCode[language] || DEFAULT_TEMPLATES[language] || ""
         })
 
         setProblem(normalizedProblem)
@@ -294,7 +304,7 @@ const PracticePage = () => {
           const initialCode = {}
 
           normalizedProblem.allowedLanguages.forEach((language) => {
-            initialCode[language] = normalizedProblem.starterCode[language] || ""
+            initialCode[language] = normalizedProblem.starterCode[language] || DEFAULT_TEMPLATES[language] || ""
           })
 
           setProblem(normalizedProblem)
@@ -316,7 +326,7 @@ const PracticePage = () => {
             const initialCode = {}
   
             normalizedProblem.allowedLanguages.forEach((language) => {
-              initialCode[language] = normalizedProblem.starterCode[language] || ""
+              initialCode[language] = normalizedProblem.starterCode[language] || DEFAULT_TEMPLATES[language] || ""
             })
   
             setProblem(normalizedProblem)
@@ -362,13 +372,14 @@ const PracticePage = () => {
   const handleLanguageChange = (language) => {
     setSelectedLanguage(language)
     setCodeByLanguage((currentState) => {
-      if (currentState[language] !== undefined) {
+      // Only keep existing code if the user has actually typed something.
+      // An empty string means they haven't touched this language yet → show template.
+      if (currentState[language]) {
         return currentState
       }
-
       return {
         ...currentState,
-        [language]: problem?.starterCode?.[language] || "",
+        [language]: problem?.starterCode?.[language] || DEFAULT_TEMPLATES[language] || "",
       }
     })
   }

@@ -53,9 +53,9 @@ const NavGroup = ({ icon: Icon, label, open, onToggle, children }) => (
     >
       <Icon className='w-4 h-4 text-gray-400 flex-shrink-0' />
       <span className='flex-1'>{label}</span>
-      {open ? <ChevronDown className='w-4 h-4 text-gray-400' /> : <ChevronUp className='w-4 h-4 text-gray-400' />}
+      {open ? <ChevronUp className='w-4 h-4 text-gray-400' /> : <ChevronDown className='w-4 h-4 text-gray-400' />}
     </span>
-    {!open && children}
+    {open && children}
   </div>
 )
 
@@ -112,10 +112,10 @@ const SideBae = ({ isOpen, onClose }) => {
   const [roleReady, setRoleReady]           = useState(false)
 
   // Panel open/close state
-  const [openSettings, setOpenSettings]     = useState(false)
-  const [openAdmin, setOpenAdmin]           = useState(false)
-  const [openSuperAdmin, setOpenSuperAdmin] = useState(false)
-  const [openBlog, setOpenBlog]             = useState(false)
+  const [openSettings, setOpenSettings]     = useState(true)
+  const [openAdmin, setOpenAdmin]           = useState(true)
+  const [openSuperAdmin, setOpenSuperAdmin] = useState(true)
+  const [openBlog, setOpenBlog]             = useState(true)
 
   // Sync active highlight with URL
   useEffect(() => {
