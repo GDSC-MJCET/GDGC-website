@@ -46,6 +46,21 @@ const CodeSample = ({ children }) => (
   </pre>
 )
 
+// ── inline code: renders `backtick` spans, everything else plain text ─────────
+function InlineText({ children }) {
+  if (!children) return null
+  const parts = String(children).split(/(`[^`]+`)/)
+  return (
+    <>
+      {parts.map((part, i) =>
+        part.startsWith('`') && part.endsWith('`')
+          ? <code key={i} className="rounded bg-white/10 px-1.5 py-0.5 font-mono text-[13px] text-amber-200">{part.slice(1, -1)}</code>
+          : <span key={i}>{part}</span>
+      )}
+    </>
+  )
+}
+
 // ── Submissions tab ───────────────────────────────────────────────────────────
 function SubmissionsTab({ problemId, refreshToken }) {
   const [submissions, setSubmissions] = useState([])
@@ -200,7 +215,7 @@ const ProblemPanel = ({ problem, submissionRefreshToken }) => {
                 <div className="space-y-4 text-sm leading-7 text-gray-300 md:text-[15px]">
                   {problem.statement.paragraphs.length ? (
                     problem.statement.paragraphs.map((paragraph, index) => (
-                      <p key={`${problem.id}-paragraph-${index}`}>{paragraph}</p>
+                      <p key={`${problem.id}-paragraph-${index}`}><InlineText>{paragraph}</InlineText></p>
                     ))
                   ) : (
                     <p>No statement text was returned for this problem yet.</p>
@@ -209,6 +224,33 @@ const ProblemPanel = ({ problem, submissionRefreshToken }) => {
               </section>
 
               <Separator className="bg-border" />
+
+              {/* Input / Output format — one description for the whole problem */}
+              {(problem.statement.inputFormat || problem.statement.outputFormat) ? (
+                <>
+                  <section className="space-y-3">
+                    <div className="space-y-1">
+                      <p className="text-xs uppercase tracking-[0.32em] text-gray-500">Format</p>
+                      <h3 className="text-lg font-medium text-white">Input & Output</h3>
+                    </div>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      {problem.statement.inputFormat ? (
+                        <div className="rounded-xl border border-border bg-background px-4 py-3 space-y-1">
+                          <p className="text-xs font-medium uppercase tracking-widest text-gray-500">Input</p>
+                          <p className="text-sm leading-6 text-gray-300"><InlineText>{problem.statement.inputFormat}</InlineText></p>
+                        </div>
+                      ) : null}
+                      {problem.statement.outputFormat ? (
+                        <div className="rounded-xl border border-border bg-background px-4 py-3 space-y-1">
+                          <p className="text-xs font-medium uppercase tracking-widest text-gray-500">Output</p>
+                          <p className="text-sm leading-6 text-gray-300"><InlineText>{problem.statement.outputFormat}</InlineText></p>
+                        </div>
+                      ) : null}
+                    </div>
+                  </section>
+                  <Separator className="bg-border" />
+                </>
+              ) : null}
 
               <section className="space-y-4">
                 <div className="space-y-1">
@@ -228,7 +270,7 @@ const ProblemPanel = ({ problem, submissionRefreshToken }) => {
                         ) : null}
                         {example.explanation ? (
                           <p className="mt-3 text-sm leading-7 text-gray-400">
-                            <span className="font-medium text-white">Explanation:</span> {example.explanation}
+                            <span className="font-medium text-white">Explanation:</span> <InlineText>{example.explanation}</InlineText>
                           </p>
                         ) : null}
                       </div>
@@ -253,7 +295,7 @@ const ProblemPanel = ({ problem, submissionRefreshToken }) => {
                     {problem.statement.constraints.map((constraint) => (
                       <li className="flex items-start gap-3 rounded-xl border border-border bg-background px-4 py-3" key={constraint}>
                         <span className="mt-2 size-2 rounded-full bg-gray-400" />
-                        <span>{constraint}</span>
+                        <span><InlineText>{constraint}</InlineText></span>
                       </li>
                     ))}
                   </ul>
