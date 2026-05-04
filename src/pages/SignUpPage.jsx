@@ -25,6 +25,7 @@ const SignUpPage = ({ guest, setGuest }) => {
         name,
       });
       setSuccess(response.data.message || "Verification email sent! Redirecting to login...");
+      setGuest(false);
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed. Please try again.");
@@ -34,9 +35,9 @@ const SignUpPage = ({ guest, setGuest }) => {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 flex items-center justify-center px-4">
-      <div className="w-full max-w-md bg-white/5 border border-white/10 rounded-2xl p-8 shadow-xl">
-        <h1 className="text-2xl font-bold text-white text-center mb-6">
+    <div className="min-h-screen bg-white dark:bg-zinc-950 flex items-center justify-center px-4">
+      <div className="w-full max-w-md bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl p-8 shadow-xl">
+        <h1 className="text-2xl font-bold text-black dark:text-white text-center mb-6">
           Guest Signup
         </h1>
 
@@ -54,7 +55,7 @@ const SignUpPage = ({ guest, setGuest }) => {
 
         <form onSubmit={handleGuestSignup} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1">
+            <label className="block text-sm font-medium text-gray-600 dark:text-zinc-300 mb-1">
               Email
             </label>
             <input
@@ -62,13 +63,13 @@ const SignUpPage = ({ guest, setGuest }) => {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 rounded-xl bg-zinc-900 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition"
+              className="w-full px-4 py-2 rounded-xl bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 text-black dark:text-white focus:outline-none focus:border-blue-500 transition"
               placeholder="you@example.com"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1">
+            <label className="block text-sm font-medium text-gray-600 dark:text-zinc-300 mb-1">
               Full Name
             </label>
             <input
@@ -76,7 +77,7 @@ const SignUpPage = ({ guest, setGuest }) => {
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2 rounded-xl bg-zinc-900 border border-white/10 text-white focus:outline-none focus:border-blue-500 transition"
+              className="w-full px-4 py-2 rounded-xl bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 text-black dark:text-white focus:outline-none focus:border-blue-500 transition"
               placeholder="John Doe"
             />
           </div>
@@ -90,10 +91,12 @@ const SignUpPage = ({ guest, setGuest }) => {
           </button>
         </form>
 
-        <p className="text-center text-zinc-500 text-sm mt-6">
+        <p className="text-center text-gray-700 dark:text-zinc-500 text-sm mt-6">
           Already have an account?{" "}
           <button
-            onClick={() => setGuest(false)}
+            onClick={() => {setGuest(false)
+              navigate("/login")
+            }}
             className="text-blue-400 hover:underline"
           >
             Log in

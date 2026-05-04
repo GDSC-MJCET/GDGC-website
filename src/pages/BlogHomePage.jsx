@@ -32,6 +32,7 @@ const auth = JSON.parse(localStorage.getItem("AuthState") );
           comments: (blog.comments || []).map(c => ({ ...c, showReplies: false }))
         }));
         setBlogs(blogsWithShowReplies);
+      
         const arr = res?.data?.LikedArray?.map((i) => String(i._id)) || [];
         setLiked(arr);
         const ownerArr = res?.data?.OwnerArray || [];
@@ -384,14 +385,15 @@ const auth = JSON.parse(localStorage.getItem("AuthState") );
 
   return (
     <div className="relative min-h-screen w-full bg-black pt-16">
-      <section className="grid grid-cols-1 md:grid-cols-3 relative z-10 pt-18 font-mono">
+     <section className="grid grid-cols-1 md:grid-cols-3 relative z-10 pt-18 font-mono">
         {blogs.map((blog) => (
           <div
             key={String(blog._id)}
             className="m-4 p-4 border border-white rounded-lg transition hover:border-green-400 hover:shadow-[0_0_10px_#4ade80]"
           >
             <h2 className="text-2xl font-bold text-white mb-2 cursor-pointer" onClick={() => handleBlogOnClick(blog._id)}>{blog.title}</h2>
-            {blog.banner && <img src={blog.banner} alt="Blog Banner" className="w-full h-auto mb-4 rounded" />}
+            <p className="text-gray-400 text-xs mb-2">by {blog.author?.name || "Unknown"}</p>  
+            {blog.banner && <img src={blog.banner} alt="Blog Banner" className="w-full max-h-48  mb-4 rounded" />}
             <p className="text-white mb-4">{blog.des}</p>
 
             <div className="flex gap-4 items-center">
