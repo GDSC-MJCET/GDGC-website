@@ -88,7 +88,7 @@ export default function LoginPage() {
       if(data.data.token){
         toast.success("Logged In Successfully")
         toast.dismissAll()
-        setAuthState({token:data.data.token,loggedIn:true,guest:data.data.guest})
+        setAuthState({token:data.data.token,loggedIn:true,guest:data.data.guest,name:data.data.name})
         return nav('/team/dashboard');
         
 

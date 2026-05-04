@@ -250,6 +250,34 @@
   }
 }
 
+.practice-editor {
+  height: 100%;
+}
+
+.practice-editor .cm-theme,
+.practice-editor .cm-editor,
+.practice-editor .cm-scroller {
+  height: 100%;
+}
+
+.practice-editor .cm-editor {
+  background: linear-gradient(180deg, rgba(13, 18, 32, 0.98) 0%, rgba(10, 15, 28, 0.98) 100%);
+}
+
+.practice-editor .cm-scroller {
+  font-family: "DM Mono", "Fira Code", monospace;
+}
+
+.practice-editor .cm-gutters {
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.practice-editor .cm-activeLine,
+.practice-editor .cm-activeLineGutter {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
 
 @keyframes spinSlow {
   0% {
@@ -334,4 +362,3 @@
   height: 45px !important;
  color: white !important; /* white background for visibility */
 }
-
