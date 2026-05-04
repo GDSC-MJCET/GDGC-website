@@ -13,7 +13,7 @@ import Background from '../components/Background';
 const domain1Options = [
   'Web Basic',
   'Web Intermediate',
-  'AMIL',
+  'AIML',
   'CyberSecurity',
 ];
 
@@ -84,15 +84,11 @@ export default function BuildWeekForm() {
     if (!formData.domain1) {
       newErrors.domain1 = 'Please select a domain choice.';
     }
-    if (!formData.domain2) {
-      newErrors.domain2 = 'Please select a domain choice.';
-    }
-    const selectedDomains = [formData.domain1, formData.domain2];
-    const needsGithub = selectedDomains.some(domain => domain.startsWith('Web'));
-    const needsLeetcode = selectedDomains.includes('DSA');
-    if (needsGithub && !formData.github.trim()) {
+    if (!formData.github.trim()){
       newErrors.github = 'Please enter your GitHub profile or username.';
     }
+    const selectedDomains = [formData.domain1, formData.domain2];
+    const needsLeetcode = selectedDomains.includes('DSA');
     if (needsLeetcode && !formData.leetcode.trim()) {
       newErrors.leetcode = 'Please enter your LeetCode profile or username.';
     }
@@ -255,8 +251,8 @@ export default function BuildWeekForm() {
                 {errors.domain1 && <p className="text-red-500 text-xs">{errors.domain1}</p>}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="domain2">Domain 2*</Label>
-                <select id="domain2" name="domain2" value={formData.domain2} onChange={handleInputChange} required className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
+                <Label htmlFor="domain2">Domain 2 </Label>
+                <select id="domain2" name="domain2" value={formData.domain2} onChange={handleInputChange} className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
                   <option value="">Select a domain</option>
                   {domain2Options.map(option => (
                     <option key={option} value={option}>{option}</option>
@@ -274,8 +270,8 @@ export default function BuildWeekForm() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="github">GitHub {((formData.domain1.startsWith('Web') || formData.domain2.startsWith('Web')) ? '*' : '(required if you choose a Web domain)')}</Label>
-                <Input id="github" name="github" value={formData.github} onChange={handleInputChange} placeholder="GitHub username or profile URL" />
+                <Label htmlFor="github">GitHub * </Label>
+                <Input id="github" name="github" value={formData.github} required onChange={handleInputChange} placeholder="GitHub username or profile URL" />
                 {errors.github && <p className="text-red-500 text-xs">{errors.github}</p>}
               </div>
               <div className="space-y-2">
@@ -286,13 +282,13 @@ export default function BuildWeekForm() {
             </CardContent>
           </Card>
         
-                            <div className="text-center">
-                                <Button type="submit" disabled={isSubmitting} className="px-8 py-5 text-lg font-semibold">
-                                    {isSubmitting ? 'Submitting...' : 'Submit'}
-                                </Button>
-                                {submitStatus === 'error' && <p className="text-red-500 text-sm mt-4">Submission failed. Please check your details and try again</p>}
-                            </div>
-                        </form>
+            <div className="text-center">
+                <Button type="submit" disabled={isSubmitting} className="px-8 py-5 text-lg font-semibold">
+                    {isSubmitting ? 'Submitting...' : 'Submit'}
+                </Button>
+                {submitStatus === 'error' && <p className="text-red-500 text-sm mt-4">Submission failed. Please check your details and try again</p>}
+            </div>
+        </form>
       </div>
 
       
