@@ -49,6 +49,7 @@ import AdminUsers from './pages/AdminUsers.jsx';
 import ScorePage from './pages/ScorePage.jsx';
 import HrInterface from './pages/HrInterface.jsx';
 import HrControlInterface from './pages/HrControlInterface.jsx';
+import BuildWeekForm from './pages/BuildWeekForm.jsx';
 // import TDForm from './pages/TDForm.jsx';
 import { Navigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
@@ -315,6 +316,7 @@ function AppWithRouter() {
             {/* <Route path='practice' element={<PracticePage />} /> */}
               <Route path="/signup-guest" element={<SignUpPage />} />
               <Route path="techfaceoff" element={<TechDebatePage />} />
+              <Route path="buildweek-form" element={<BuildWeekForm />} />
               <Route path='score' element={<ScorePage />} />
               <Route path="events" element={<EventsPage />} />
               <Route path="event-details" element={<EventDetails />} />
