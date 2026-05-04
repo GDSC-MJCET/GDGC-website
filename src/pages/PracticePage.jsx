@@ -62,7 +62,7 @@ const MOCK_PROBLEMS = {
       python: `nums = list(map(int, input().split()))\ntarget = int(input())\n\n# Write your solution here\n# Print the two indices: print(i, j)\n`,
       javascript: `const lines = require('fs').readFileSync('/dev/stdin', 'utf8').trim().split('\\n')\nconst nums = lines[0].split(' ').map(Number)\nconst target = Number(lines[1])\n\n// Write your solution here\n// console.log(i, j)\n`,
       cpp: `#include <bits/stdc++.h>\nusing namespace std;\nint main() {\n    vector<int> nums;\n    string line; getline(cin, line);\n    istringstream ss(line);\n    int x; while (ss >> x) nums.push_back(x);\n    int target; cin >> target;\n    // Write your solution here\n    // cout << i << " " << j << endl;\n    return 0;\n}\n`,
-      java: `import java.util.*;\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String[] parts = sc.nextLine().trim().split(" ");\n        int[] nums = new int[parts.length];\n        for (int i = 0; i < parts.length; i++) nums[i] = Integer.parseInt(parts[i]);\n        int target = sc.nextInt();\n        // Write your solution here\n        // System.out.println(i + " " + j);\n    }\n}\n`,
+      java: `import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String[] parts = sc.nextLine().trim().split(" ");\n        int[] nums = new int[parts.length];\n        for (int i = 0; i < parts.length; i++) nums[i] = Integer.parseInt(parts[i]);\n        int target = sc.nextInt();\n        // Write your solution here\n        // System.out.println(i + " " + j);\n    }\n}\n`,
     },
   },
 }
@@ -201,8 +201,18 @@ const PracticePage = () => {
   const [customRunState, setCustomRunState] = useState(emptyExecutionState)
   const [runState, setRunState] = useState(emptyExecutionState)
   const [submitState, setSubmitState] = useState(emptyExecutionState)
-
+  // isSolved: true if user has ever accepted this problem (history or current session)
+  const [isSolved, setIsSolved] = useState(false)
+  // bumped after every submit so ProblemPanel's Submissions tab auto-refreshes
+  const [submissionRefreshToken, setSubmissionRefreshToken] = useState(0)
+  // we need to add authentication on this route
   useEffect(() => {
+    const auth = JSON.parse(localStorage.getItem("AuthState"));
+    if (!auth?.token || !auth?.loggedIn) {
+      nav("/login", { replace: true });
+      return;
+    }
+
     let cancelled = false
 
     const fetchProblem = async () => {
@@ -235,12 +245,14 @@ const PracticePage = () => {
       setError("")
       setProblem(null)
       setIsMockProblem(false)
+      setIsSolved(false)
       setRunState(emptyExecutionState)
       setSubmitState(emptyExecutionState)
       setLastResultType("run")
       setResultTab("testcase")
       setActiveMobilePane("problem")
       setCustomInput("")
+      setSubmissionRefreshToken(0)
 
       try {
         const response = await axios.get(`${server}/api/problems/${problemId}`)
@@ -259,6 +271,21 @@ const PracticePage = () => {
         setCodeByLanguage(initialCode)
         setCustomInput(normalizedProblem.statement.examples[0]?.input || "")
         setIsMockProblem(false)
+
+        // Check if the user has already solved this problem
+        const auth = JSON.parse(localStorage.getItem("AuthState"))
+        if (auth?.token) {
+          axios
+            .get(`${server}/api/submissions?problemId=${problemId}`, {
+              headers: { Authorization: `Bearer ${auth.token}` },
+            })
+            .then((r) => {
+              if (!cancelled && (r.data.submissions || []).some((s) => s.verdict === "accepted")) {
+                setIsSolved(true)
+              }
+            })
+            .catch(() => {})
+        }
       } catch (fetchError) {
         if (cancelled) return
 
@@ -490,6 +517,10 @@ const PracticePage = () => {
         },
         error: "",
       })
+
+      // Mark solved + refresh Submissions tab
+      if (verdict === "accepted") setIsSolved(true)
+      setSubmissionRefreshToken((t) => t + 1)
     } catch (submitError) {
       setSubmitState({
         status: "error",
@@ -526,7 +557,9 @@ const PracticePage = () => {
     )
   }
 
-  const isSolved = submitState.status === 'success' && submitState.data?.status === 'accepted'
+  // also mark solved immediately when current session's submit comes back accepted
+  const justSolved = submitState.status === 'success' && submitState.data?.status === 'accepted'
+  const solvedDisplay = isSolved || justSolved
 
   return (
     <div className="min-h-screen bg-[#050816] text-white">
@@ -543,17 +576,20 @@ const PracticePage = () => {
             Back
           </button>
 
-          {isSolved && (
+          {solvedDisplay && (
             <div className="flex items-center gap-2 rounded-lg bg-emerald-500/15 border border-emerald-500/30 px-3 py-1.5 text-sm text-emerald-300 font-medium animate-in fade-in slide-in-from-top-2 duration-300">
               <CheckCircle2 className="size-4" />
-              Problem solved! Great work 🎉
+              {justSolved && !isSolved ? "Problem solved! Great work 🎉" : "You've solved this problem ✓"}
             </div>
           )}
         </div>
 
         <main className="grid flex-1 gap-4 md:min-h-0 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.15fr)]">
           <section className={activeMobilePane === "problem" ? "block md:min-h-0" : "hidden md:min-h-0 md:block"}>
-            <ProblemPanel problem={problem} />
+            <ProblemPanel
+              problem={problem}
+              submissionRefreshToken={submissionRefreshToken}
+            />
           </section>
 
           <section className={activeMobilePane === "problem" ? "hidden md:min-h-0 md:block" : "block md:min-h-0"}>
@@ -562,6 +598,7 @@ const PracticePage = () => {
               code={currentCode}
               customInput={customInput}
               customRunState={customRunState}
+              isSolved={solvedDisplay}
               lastResultType={lastResultType}
               onCodeChange={updateCode}
               onCustomInputChange={setCustomInput}

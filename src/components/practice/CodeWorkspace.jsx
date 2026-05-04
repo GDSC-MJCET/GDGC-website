@@ -4,7 +4,7 @@ import { java } from "@codemirror/lang-java"
 import { javascript } from "@codemirror/lang-javascript"
 import { python } from "@codemirror/lang-python"
 import { oneDark } from "@codemirror/theme-one-dark"
-import { Play, Send, Terminal } from "lucide-react"
+import { CheckCircle2, Play, Send, Terminal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import LanguageSelector from "@/components/practice/LanguageSelector"
 import ResultPanel from "@/components/practice/ResultPanel"
@@ -21,6 +21,7 @@ const CodeWorkspace = ({
   code,
   customInput,
   customRunState,
+  isSolved,
   lastResultType,
   onCodeChange,
   onCustomInputChange,
@@ -48,6 +49,12 @@ const CodeWorkspace = ({
           <div className="rounded-lg border border-border bg-background px-3 py-2 text-xs uppercase tracking-[0.28em] text-gray-400">
             {selectedLanguage || "language"}
           </div>
+          {isSolved && (
+            <div className="flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1.5 text-xs font-medium text-emerald-400">
+              <CheckCircle2 className="size-3.5" />
+              Solved
+            </div>
+          )}
         </div>
 
         <div className="flex items-center gap-2">

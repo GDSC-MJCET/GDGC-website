@@ -60,7 +60,7 @@ export default function ExercisesPage() {
               const allDone = ex.problemCount > 0 && ex.solvedCount === ex.problemCount
 
               return (
-                <Link key={ex._id} to={`/exercises/${ex._id}`}>
+                <Link key={ex._id} to={`/team/exercises/${ex._id}`}>
                   <Card className="group h-full border-white/10 bg-[#0d0d0d] hover:border-white/25 hover:bg-[#111] transition-all duration-200 cursor-pointer">
                     <CardContent className="p-5 flex flex-col gap-4 h-full">
                       {/* Top row */}

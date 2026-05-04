@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate, NavLink, Link } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
-import { BookOpen, CheckCircle2, ArrowRight, QrCode, Circle } from 'lucide-react'
+import {
+  BookOpen, CheckCircle2, ArrowRight, QrCode, Circle,
+  Users, FileText, Shield,
+} from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 
@@ -12,10 +15,39 @@ function authHeaders() {
   return { Authorization: `Bearer ${auth?.token}` }
 }
 
+function greeting() {
+  const h = new Date().getHours()
+  if (h < 12) return 'Good morning'
+  if (h < 17) return 'Good afternoon'
+  return 'Good evening'
+}
+
 const diffColor = {
-  easy: 'border-emerald-400/30 bg-emerald-400/10 text-emerald-300',
-  medium: 'border-amber-400/30 bg-amber-400/10 text-amber-300',
-  hard: 'border-rose-400/30 bg-rose-400/10 text-rose-300',
+  easy:   'border-emerald-400/30 bg-emerald-400/10 text-emerald-300',
+  medium: 'border-amber-400/30  bg-amber-400/10  text-amber-300',
+  hard:   'border-rose-400/30   bg-rose-400/10   text-rose-300',
+}
+
+// ── Quick-link card ──────────────────────────────────────────────────────────
+function QuickCard({ to, icon: Icon, iconBg, iconColor, title, sub }) {
+  return (
+    <Link to={to}>
+      <Card className="group border-white/10 bg-[#111] hover:border-white/25 hover:bg-[#151515] transition-all cursor-pointer h-full">
+        <CardContent className="p-5 flex flex-col gap-3 h-full">
+          <div className="flex items-center justify-between">
+            <div className={`p-2.5 rounded-xl border ${iconBg}`}>
+              <Icon className={`size-5 ${iconColor}`} />
+            </div>
+            <ArrowRight className="size-4 text-gray-600 group-hover:text-white transition-colors" />
+          </div>
+          <div>
+            <p className="font-semibold text-white">{title}</p>
+            <p className="text-xs text-gray-500 mt-0.5">{sub}</p>
+          </div>
+        </CardContent>
+      </Card>
+    </Link>
+  )
 }
 
 // ── Exercise card (expandable) ───────────────────────────────────────────────
@@ -29,7 +61,6 @@ function ExerciseCard({ exercise }) {
 
   return (
     <div className={`rounded-2xl border transition-colors ${allDone ? 'border-emerald-500/20' : 'border-white/10'} bg-[#0d0d0d]`}>
-      {/* Card header — click to expand */}
       <button
         className="w-full text-left p-4 flex items-center gap-4"
         onClick={() => setOpen(v => !v)}
@@ -39,8 +70,6 @@ function ExerciseCard({ exercise }) {
             {allDone && <CheckCircle2 className="size-4 text-emerald-400 shrink-0" />}
             <span className="font-semibold text-white text-sm leading-snug truncate">{exercise.title}</span>
           </div>
-
-          {/* Progress bar */}
           <div className="space-y-1">
             <div className="flex items-center justify-between text-xs">
               <span className="text-gray-500">{exercise.problemCount} problems</span>
@@ -56,13 +85,11 @@ function ExerciseCard({ exercise }) {
             </div>
           </div>
         </div>
-
         <ArrowRight
           className={`size-4 text-gray-600 shrink-0 transition-transform duration-200 ${open ? 'rotate-90' : ''}`}
         />
       </button>
 
-      {/* Expanded problem list */}
       {open && (
         <div className="border-t border-white/5 px-4 pb-3 pt-2 space-y-1">
           {exercise.problems.length === 0 && (
@@ -71,7 +98,7 @@ function ExerciseCard({ exercise }) {
           {exercise.problems.map((p, i) => (
             <Link
               key={p._id}
-              to={`/practice/${p.slug || p._id}`}
+              to={`/team/practice/${p.slug || p._id}`}
               className="flex items-center gap-3 rounded-lg px-2 py-2 hover:bg-white/5 transition-colors group"
             >
               {p.solved
@@ -92,10 +119,8 @@ function ExerciseCard({ exercise }) {
               )}
             </Link>
           ))}
-
-          {/* Go to full exercise page */}
           <Link
-            to={`/exercises/${exercise._id}`}
+            to={`/team/exercises/${exercise._id}`}
             className="flex items-center justify-center gap-1.5 mt-2 py-1.5 text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
           >
             View full exercise <ArrowRight className="size-3" />
@@ -108,93 +133,150 @@ function ExerciseCard({ exercise }) {
 
 // ── Dashboard ────────────────────────────────────────────────────────────────
 const Dashboard = () => {
-  const auth = JSON.parse(localStorage.getItem('AuthState'))
-  const nav = useNavigate()
-  const [checked, setChecked] = useState(false)
-  const [exercises, setExercises] = useState([])
+  const auth    = JSON.parse(localStorage.getItem('AuthState'))
+  const isGuest = !!auth?.guest
+
+  const [ready,            setReady]            = useState(false)
+  const [displayName,      setDisplayName]      = useState('')
+  const [isAdmin,          setIsAdmin]          = useState(false)
+  const [isSuperAdmin,     setIsSuperAdmin]     = useState(false)
+  const [exercises,        setExercises]        = useState([])
   const [loadingExercises, setLoadingExercises] = useState(true)
-  const [isAdmin, setIsAdmin] = useState(false)
-  const [isSuperAdmin, setIsSuperAdmin] = useState(false)
+  const nav = useNavigate()
 
   useEffect(() => {
     if (!auth?.token) { nav('/login'); return }
 
+    const headers = { Authorization: `Bearer ${auth.token}` }
+
+    // One parallel batch for all auth/role checks
+    Promise.allSettled([
+      axios.get(`${SERVER}/api/v1/dashboard/get-dashboard`, { headers }),
+      axios.get(`${SERVER}/api/v1/admin/verify-admin`,      { headers }),
+      axios.get(`${SERVER}/api/v1/admin/verify-super-admin`, { headers }),
+    ]).then(([dashRes, adminRes, superRes]) => {
+      // Redirect if dashboard auth fails
+      if (dashRes.status === 'rejected' || !dashRes.value?.data?.success) {
+        nav('/login'); return
+      }
+      // Name comes from the dashboard response — same source the top-bar popup uses
+      setDisplayName(dashRes.value.data.user?.name || dashRes.value.data.user?.email?.split('@')[0] || 'there')
+      if (adminRes.status === 'fulfilled' && adminRes.value.data.success)  setIsAdmin(true)
+      if (superRes.status === 'fulfilled' && superRes.value.data.success)  setIsSuperAdmin(true)
+      setReady(true)
+    })
+
+    // Exercises (independent — fire alongside role checks)
     axios
-      .get(import.meta.env.VITE_SERVER + '/api/v1/dashboard/get-dashboard', {
-        headers: { Authorization: `Bearer ${auth.token}` },
-      })
-      .then((res) => { if (!res.data.success) nav('/login') })
-      .catch(() => nav('/login'))
-      .finally(() => setChecked(true))
-
-    axios.get(
-      `${import.meta.env.VITE_SERVER}/api/v1/admin/verify-admin`,
-      { headers: { Authorization: `Bearer ${auth?.token}` } }
-    ).then((data) => {
-      if (data.data.success) setIsAdmin(true)
-    }).catch(() => {})
-
-    axios.get(
-      `${import.meta.env.VITE_SERVER}/api/v1/admin/verify-super-admin`,
-      { headers: { Authorization: `Bearer ${auth?.token}` } }
-    ).then((data) => {
-      if (data.data.success) setIsSuperAdmin(true)
-    }).catch(() => {})
-
-    // Fetch exercises with user's solve progress
-    axios
-      .get(`${SERVER}/api/exercises`, { headers: authHeaders() })
-      .then((res) => setExercises(res.data.exercises || []))
+      .get(`${SERVER}/api/exercises`, { headers })
+      .then(res => setExercises(res.data.exercises || []))
       .catch(() => setExercises([]))
       .finally(() => setLoadingExercises(false))
   }, [])
 
-  if (!checked) return null
+  if (!ready) return null
+
+  // ── Quick-link cards ───────────────────────────────────────────────────────
+  const quickLinks = []
+
+  quickLinks.push(
+    <QuickCard
+      key="practice"
+      to="/team/practice"
+      icon={CheckCircle2}
+      iconBg="bg-emerald-500/10 border-emerald-500/20"
+      iconColor="text-emerald-400"
+      title="Practice"
+      sub="Browse and solve individual problems"
+    />
+  )
+
+  // QR / Settings card — available to non-guests (members, admins, superadmins)
+  if (!isGuest) {
+    quickLinks.push(
+      <QuickCard
+        key="qr"
+        to="/team/customization/qrchange"
+        icon={QrCode}
+        iconBg="bg-white/5 border-white/10"
+        iconColor="text-gray-400"
+        title="Change QR Redirect"
+        sub="Update where your QR code points"
+      />
+    )
+  }
+
+  // Content management — admins and superadmins
+  if (isAdmin || isSuperAdmin) {
+    quickLinks.push(
+      <QuickCard
+        key="content"
+        to="/team/admin/content"
+        icon={FileText}
+        iconBg="bg-indigo-500/10 border-indigo-500/20"
+        iconColor="text-indigo-400"
+        title="Content"
+        sub="Manage problems and exercises"
+      />
+    )
+  }
+
+  // User management — admins and superadmins
+  if (isAdmin || isSuperAdmin) {
+    quickLinks.push(
+      <QuickCard
+        key="users"
+        to="/team/admin/users"
+        icon={Users}
+        iconBg="bg-amber-500/10 border-amber-500/20"
+        iconColor="text-amber-400"
+        title="Users"
+        sub="View and manage team members"
+      />
+    )
+  }
+
+  // SuperAdmin panel shortcut
+  if (isSuperAdmin) {
+    quickLinks.push(
+      <QuickCard
+        key="superadmin"
+        to="/team/superadmin"
+        icon={Shield}
+        iconBg="bg-rose-500/10 border-rose-500/20"
+        iconColor="text-rose-400"
+        title="SuperAdmin"
+        sub="Platform-wide controls and contacts"
+      />
+    )
+  }
 
   return (
     <div className="min-h-[70vh] px-6 py-8 max-w-2xl mx-auto">
+      {/* Welcome header */}
       <div className="mb-8">
-        <p className="text-xs uppercase tracking-widest text-gray-500 mb-1">Member Area</p>
-        <h1 className="text-3xl font-semibold text-white">Dashboard</h1>
+        <p className="text-xs uppercase tracking-widest text-gray-500 mb-1">{greeting()} 👋</p>
+        <h1 className="text-3xl font-semibold text-white capitalize">{displayName}</h1>
+        {isSuperAdmin && (
+          <span className="inline-block mt-2 text-[11px] font-medium uppercase tracking-widest text-rose-400 border border-rose-400/30 bg-rose-400/10 rounded-full px-2.5 py-0.5">
+            Super Admin
+          </span>
+        )}
+        {!isSuperAdmin && isAdmin && (
+          <span className="inline-block mt-2 text-[11px] font-medium uppercase tracking-widest text-amber-400 border border-amber-400/30 bg-amber-400/10 rounded-full px-2.5 py-0.5">
+            Admin
+          </span>
+        )}
+        {!isSuperAdmin && !isAdmin && isGuest && (
+          <span className="inline-block mt-2 text-[11px] font-medium uppercase tracking-widest text-gray-400 border border-white/10 bg-white/5 rounded-full px-2.5 py-0.5">
+            Guest
+          </span>
+        )}
       </div>
 
       {/* Quick links */}
-      <div className="grid gap-4 sm:grid-cols-2 mb-8">
-        <Link to="/practice">
-          <Card className="group border-white/10 bg-[#111] hover:border-white/25 hover:bg-[#151515] transition-all cursor-pointer h-full">
-            <CardContent className="p-5 flex flex-col gap-3 h-full">
-              <div className="flex items-center justify-between">
-                <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
-                  <CheckCircle2 className="size-5 text-emerald-400" />
-                </div>
-                <ArrowRight className="size-4 text-gray-600 group-hover:text-white transition-colors" />
-              </div>
-              <div>
-                <p className="font-semibold text-white">Practice</p>
-                <p className="text-xs text-gray-500 mt-0.5">Browse and solve individual problems</p>
-              </div>
-            </CardContent>
-          </Card>
-        </Link>
-
-        {(isAdmin || isSuperAdmin) && (
-          <NavLink to="/team/customization/qrchange">
-            <Card className="group border-white/10 bg-[#111] hover:border-white/25 hover:bg-[#151515] transition-all cursor-pointer h-full">
-              <CardContent className="p-5 flex flex-col gap-3 h-full">
-                <div className="flex items-center justify-between">
-                  <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
-                    <QrCode className="size-5 text-gray-400" />
-                  </div>
-                  <ArrowRight className="size-4 text-gray-600 group-hover:text-white transition-colors" />
-                </div>
-                <div>
-                  <p className="font-semibold text-white">Change QR Redirect</p>
-                  <p className="text-xs text-gray-500 mt-0.5">Update where your QR code points</p>
-                </div>
-              </CardContent>
-            </Card>
-          </NavLink>
-        )}
+      <div className={`grid gap-4 mb-8 ${quickLinks.length >= 4 ? 'sm:grid-cols-2' : quickLinks.length === 3 ? 'sm:grid-cols-3' : 'sm:grid-cols-2'}`}>
+        {quickLinks}
       </div>
 
       {/* Exercises section */}
@@ -204,7 +286,7 @@ const Dashboard = () => {
             <BookOpen className="size-4 text-indigo-400" />
             <h2 className="text-sm font-semibold text-white uppercase tracking-widest">Exercises</h2>
           </div>
-          <Link to="/exercises" className="text-xs text-gray-500 hover:text-white transition-colors flex items-center gap-1">
+          <Link to="/team/exercises" className="text-xs text-gray-500 hover:text-white transition-colors flex items-center gap-1">
             View all <ArrowRight className="size-3" />
           </Link>
         </div>
@@ -224,7 +306,7 @@ const Dashboard = () => {
           </Card>
         )}
 
-        {!loadingExercises && exercises.map((ex) => (
+        {!loadingExercises && exercises.map(ex => (
           <ExerciseCard key={ex._id} exercise={ex} />
         ))}
       </div>

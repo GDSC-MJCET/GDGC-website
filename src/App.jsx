@@ -325,16 +325,16 @@ function AppWithRouter() {
             <Route path='photobooth' element={<PhotoBooth />} />
             <Route path='heist' element={<TheHeistAdsophos />} />
             <Route path='loop13' element={<Loop13 />} />
-            <Route path="practice/:problemId" element={<PracticePage />} />
-            <Route path='practice' element={<PracticeListPage />} />
+            <Route path="practice/:problemId" element={<PracticePage />} /> 
+            {/* <Route path='practice' element={<PracticeListPage />} />
             <Route path='exercises' element={<ExercisesPage />} />
-            <Route path='exercises/:exerciseId' element={<ExerciseDetailPage />} />
+            <Route path='exercises/:exerciseId' element={<ExerciseDetailPage />} />  */}
 
             {/* Team area (layout route) */}
             <Route path="team" element={<TeamLayout />}>
               <Route index element={<Navigate to="/*" />} />
               <Route path="dashboard" element={<Dashboard />} />
-
+              
               {/* Practice + Exercises inside the sidebar layout */}
               <Route path="practice" element={<PracticeListPage />} />
               <Route path="practice/:problemId" element={<PracticePage />} />
