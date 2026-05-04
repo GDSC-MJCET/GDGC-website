@@ -19,27 +19,10 @@ const SettingsSubPanel = ({ nav, active }) => (
   </div>
 )
 
-const AdminSubPanel = ({ nav, active }) => (
-  <div className='text-[12px] flex flex-col gap-2 pl-6 pt-2'>
-    <span onClick={() => nav('adminUsers', '/team/admin/users')} className={sub(active, 'adminUsers')}>Users</span>
-    <span onClick={() => nav('hr-interface', '/team/admin/hr-interface')} className={sub(active, 'hr-interface')}>Tech Debate</span>
-    <span onClick={() => nav('content', '/team/admin/content')} className={sub(active, 'content')}>Content</span>
-  </div>
-)
 
 const AdminSubPanel = ({handleClickRedirect , clicked}) => {
     return (
         <div className='text-[12px] flex flex-col gap-2 pl-6 pt-2'>
-            {/* <span onClick={()=>handleClickRedirect("blogs","/team/blog/home" )} className={`${clicked == "blogs" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}>
-                {/* <Settings2 className='w-4'/> */}
-                {/* <Link to="/team/blog/home" className=' py-1 px-3 w-full rounded-md' >Blogs</Link>  */}
-                {/* <ChevronUp onClick={handleClickSetting} className='w-4'/> */}
-            {/* </span> */}
-            {/* // <span onClick={()=>handleClickRedirect("posts","/team/blog/posts" )} className={`${clicked == "posts" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}> */}
-                {/* <Settings2 className='w-4'/> */}
-                {/* <Link to="/team/blog/posts" className=' py-1 px-3 w-full rounded-md' >Posts</Link>  */}
-                {/* <ChevronUp onClick={handleClickSetting} className='w-4'/> */}
-            {/* </span> */} 
             <span onClick={()=>handleClickRedirect("adminUsers","/team/admin/users" )} className={`${clicked == "adminUsers" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}>
                 <Link to="/team/admin/users" className=' py-1 px-3 w-full rounded-md' >Users</Link> 
             </span>
