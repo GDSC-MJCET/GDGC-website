@@ -13,7 +13,7 @@ import Background from '../components/Background';
 const domain1Options = [
   'Web Basic',
   'Web Intermediate',
-  'AMIL',
+  'AIML',
   'CyberSecurity',
 ];
 
