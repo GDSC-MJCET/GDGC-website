@@ -58,6 +58,7 @@ import { PhotoBooth } from './gdgc-modules/photobooth/PhotoBooth.jsx';
 import TheHeistAdsophos from './gdgc-modules/heist/TheHeistAdsophos.jsx';
 import Loop13 from './gdgc-modules/loop13/Loop_13.jsx';
 import MyBlogs from './pages/MyBlogs.jsx';
+import ImageManager from './pages/ImageManager.jsx';
 // import TweetHomeLayout from './pages/TweetHome.jsx';
 
 function App() {
@@ -334,12 +335,14 @@ function AppWithRouter() {
               <Route path="admin">
                 <Route path="users" element={<AdminUsers />} />
                 <Route path="hr-interface" element={<HrInterface />} />
+                <Route path="images" element={<ImageManager />} />
               </Route>
 
               <Route path="superadmin">
                 <Route index element={<SuperAdminDashboard />} />
                 <Route path="users" element={<SuperAdminUsers />} />
                 <Route path="contacts" element={<SuperAdminContacts />} />
+                <Route path="images" element={<ImageManager />} />
               </Route>
             </Route>
 

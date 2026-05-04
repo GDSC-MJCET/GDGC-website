@@ -46,6 +46,14 @@ const AdminSubPanel = ({handleClickRedirect , clicked}) => {
             <span onClick={()=>handleClickRedirect("hr-interface","/team/admin/hr-interface" )} className={`${clicked == "hr-interface" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}>
                 <Link to="/team/admin/hr-interface" className=' py-1 px-3 w-full rounded-md' >Tech Debate</Link> 
             </span>
+            <span 
+              onClick={()=>handleClickRedirect("images","/team/admin/images")}
+              className={`${clicked == "images" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}
+            >
+              <Link to="/team/admin/images" className='py-1 px-3 w-full rounded-md'>
+                Images
+              </Link>
+            </span>
         </div>
     )
 }
@@ -73,6 +81,14 @@ const SuperAdminSubPanel = ({handleClickRedirect , clicked}) => {
             </span>
             <span onClick={()=>handleClickRedirect("superAdminContacts","/team/superadmin/contacts" )} className={`${clicked == "superAdminContacts" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}>
                 <Link to="/team/superadmin/contacts" className=' py-1 px-3 w-full rounded-md' >Contact Submissions</Link> 
+            </span>
+            <span 
+              onClick={()=>handleClickRedirect("superAdminImages","/team/superadmin/images")}
+              className={`${clicked == "superAdminImages" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}
+            >
+              <Link to="/team/superadmin/images" className='py-1 px-3 w-full rounded-md'>
+                Images
+              </Link>
             </span>
         </div>
     )
