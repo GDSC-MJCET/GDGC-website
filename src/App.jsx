@@ -41,6 +41,7 @@ import TeamPage from './pages/TeamPage.jsx';
 import GalleryPage from './pages/GalleryPage.jsx';
 import ContactUsPage from './pages/ContactUsPage.jsx';
 import NotFound from './pages/NotFound.jsx';
+import PracticePage from './pages/PracticePage.jsx';
 import SuperAdminDashboard from './pages/SuperAdminDashboard.jsx';
 import SuperAdminUsers from './pages/SuperAdminUsers.jsx';
 import BlogPosts from './pages/BlogPosts.jsx';
@@ -54,10 +55,17 @@ import { Navigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import EventDetails from './components/events/EventDetails.jsx';
 import Adsophos from './pages/Adsophos.jsx';
+import SuperAdminContacts from './pages/SuperAdminContacts.jsx';
 import { PhotoBooth } from './gdgc-modules/photobooth/PhotoBooth.jsx';
 import TheHeistAdsophos from './gdgc-modules/heist/TheHeistAdsophos.jsx';
 import Loop13 from './gdgc-modules/loop13/Loop_13.jsx';
 import MyBlogs from './pages/MyBlogs.jsx';
+import PracticeListPage from './pages/PracticeListPage.jsx'
+import ProblemAdminPage from './pages/ProblemAdminPage.jsx';
+import ExercisesPage from './pages/ExercisesPage.jsx';
+import ExerciseDetailPage from './pages/ExerciseDetailPage.jsx';
+import ContentManagementPage from './pages/ContentManagementPage.jsx';
+import SuperAdminBlogPanel from './pages/SuperAdminBlog.jsx';
 // import TweetHomeLayout from './pages/TweetHome.jsx';
 
 function App() {
@@ -84,22 +92,22 @@ function App() {
     verifyUser();
   }, [auth?.token]);
   if (isVerified == null) {
-    return <div className='bg-black'></div>
+    return <div className='bg-white dark:bg-black'></div>
   }
 
   return (
-    <div className=" min-h-screen w-full bg-black flex flex-col items-center justify-center px-4">
+    <div className=" min-h-screen w-full bg-white dark:bg-black flex flex-col items-center justify-center px-4">
       <div className="fixed top-4 right-4 z-10">
         {isVerified ?
-          <button className="border-none text-white px-2 py-1 shadow text-base md:text-lg hover:bg-white hover:text-black hover:border hover:rounded-xl" onClick={() => { nav("/team/dashboard") }}>Dashboard</button>
-          : <button className="border-none text-white px-2 py-1 shadow text-base md:text-lg hover:bg-white hover:text-black hover:border hover:rounded-xl" onClick={() => { nav("/login") }}>Login</button>
+          <button className="border-none text-black dark:text-white px-2 py-1 shadow text-base md:text-lg hover:bg-white hover:text-black hover:border hover:rounded-xl" onClick={() => { nav("/team/dashboard") }}>Dashboard</button>
+          : <button className="border-none text-black dark:text-white px-2 py-1 shadow text-base md:text-lg hover:bg-white hover:text-black hover:border hover:rounded-xl" onClick={() => { nav("/login") }}>Login</button>
         }
       </div>
       <div className="text-center space-y-6">
-        <h1 className="text-4xl md:text-6xl font-bold text-white">
+        <h1 className="text-4xl md:text-6xl font-bold text-black dark:text-white">
           Coming Soon
         </h1>
-        <p className="text-gray-400 text-lg md:text-xl max-w-md mx-auto">
+        <p className="text-gray-700 dark:text-gray-400 text-lg md:text-xl max-w-md mx-auto">
           We're working on something exciting. Stay tuned!
         </p>
       </div>
@@ -173,7 +181,7 @@ function PopUpMenu({ name, email, closePopup, triggerRef }) {
       className="fixed z-[9999]"
       style={{ top: pos.top, right: pos.right }}
     >
-      <div className="w-56 rounded-xl border border-white/10 bg-[#1E1E1E] shadow-lg p-2 text-sm text-gray-200">
+      <div className="w-56 rounded-xl border border-white/10 bg-white dark:bg-[#1E1E1E] shadow-lg p-2 text-sm text-gray-900 dark:text-gray-200">
         <div className="px-3 py-2">
           <p className="font-semibold">{name}</p>
           <p className="text-gray-400 text-xs">{email}</p>
@@ -199,7 +207,7 @@ function MenuItem({ label, shortcut, active, danger }) {
   return (
     <div
       className={`flex items-center justify-between px-3 py-2 rounded cursor-pointer 
-      ${active ? "bg-gray-700" : "hover:bg-gray-700"} 
+      ${active ? "bg-gray-200 dark:bg-gray-700" : "hover:bg-gray-100 dark:hover:bg-gray-700"} 
       ${danger ? "text-red-400 hover:bg-red-950 hover:text-red-300" : ""}`}
     >
       <span>{label}</span>
@@ -301,31 +309,39 @@ function AppWithRouter() {
           <Routes>
             {/* Public   pages */}
             <Route path="/" element={<HomePage />} />
-            <Route path="/signup-guest" element={<SignUpPage />} />
-            <Route path="initialsetup/:id" element={<InitialSetup />} />
-            <Route path="techfaceoff" element={<TechDebatePage />} />
-            <Route path="buildweek-form" element={<BuildWeekForm />} />
-            <Route path='score' element={<ScorePage />} />
-            <Route path="events" element={<EventsPage />} />
-            <Route path="event-details" element={<EventDetails />} />
-            <Route path="team-page" element={<TeamPage />} />
-            <Route path="gallery" element={<GalleryPage />} />
-            <Route path="contact" element={<ContactUsPage />} />
-            <Route path="login" element={<LoginPage />} />
-            <Route path="forgotpassword" element={<ForgotPassword />} />
-            <Route path='adsophos' element={<Adsophos />}>
+              <Route path="initialsetup/:id" element={<InitialSetup />} />
+              <Route path="contact" element={<ContactUsPage />} />
+              <Route path="login" element={<LoginPage />} />
+              <Route path="forgotpassword" element={<ForgotPassword />} />
+            {/* <Route path='practice' element={<PracticePage />} /> */}
+              <Route path="/signup-guest" element={<SignUpPage />} />
+              <Route path="techfaceoff" element={<TechDebatePage />} />
+              <Route path='score' element={<ScorePage />} />
+              <Route path="events" element={<EventsPage />} />
+              <Route path="event-details" element={<EventDetails />} />
+              <Route path="team-page" element={<TeamPage />} />
+              <Route path="gallery" element={<GalleryPage />} />
+              <Route path='adsophos' element={<Adsophos />}>
             </Route>
             <Route path='photobooth' element={<PhotoBooth />} />
             <Route path='heist' element={<TheHeistAdsophos />} />
             <Route path='loop13' element={<Loop13 />} />
-
+            <Route path="practice/:problemId" element={<PracticePage />} /> 
+            {/* <Route path='practice' element={<PracticeListPage />} />
+            <Route path='exercises' element={<ExercisesPage />} />
+            <Route path='exercises/:exerciseId' element={<ExerciseDetailPage />} />  */}
 
             {/* Team area (layout route) */}
             <Route path="team" element={<TeamLayout />}>
-              {/* <Route path="hr-interface" element={<HrInterface/>}/> */}
-              {/* <Route path="hr-control" element={<HrControlInterface/>}/> */}
               <Route index element={<Navigate to="/*" />} />
               <Route path="dashboard" element={<Dashboard />} />
+              
+              {/* Practice + Exercises inside the sidebar layout */}
+              <Route path="practice" element={<PracticeListPage />} />
+              <Route path="practice/:problemId" element={<PracticePage />} />
+              <Route path="exercises" element={<ExercisesPage />} />
+              <Route path="exercises/:exerciseId" element={<ExerciseDetailPage />} />
+
               <Route path="customization">
                 <Route path="qrchange" element={<QrChange />} />
                 <Route path="socials" element={<Socials />} />
@@ -335,20 +351,24 @@ function AppWithRouter() {
               <Route path="admin">
                 <Route path="users" element={<AdminUsers />} />
                 <Route path="hr-interface" element={<HrInterface />} />
+                <Route path="problems" element={<ProblemAdminPage />} />
+                <Route path="content" element={<ContentManagementPage />} />
               </Route>
 
               <Route path="superadmin">
                 <Route index element={<SuperAdminDashboard />} />
                 <Route path="users" element={<SuperAdminUsers />} />
+                <Route path="contacts" element={<SuperAdminContacts />} />
               </Route>
             </Route>
 
             {/* Blog routes (optional, currently unused) */}
-            <Route path="blog" element={<BlogLand />}>
+            <Route path="blog" element={<TeamLayout />}>
               <Route path="home" element={<BlogHome />} />
               <Route path="editor" element={<BlogWrite />} />
               <Route path="posts" element={<BlogPosts />} />
               <Route path="myblogs" element={<MyBlogs/>}/>
+              <Route path="superadmin-validation" element={<SuperAdminBlogPanel />} />
               <Route path="blog/:blogId" element={<SpecificBlog />} />
               <Route path="help" element={<BlogHelp />} />
             </Route>

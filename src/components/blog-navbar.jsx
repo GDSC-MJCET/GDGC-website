@@ -56,8 +56,8 @@ const BlogNavbar = ({removeNavbar, setRemoveNavbar}) => {
                 className={`relative text-lg font-medium cursor-pointer transition-colors duration-200
                   ${
                     isActive
-                      ? "text-white"
-                      : "text-neutral-400 hover:text-white"
+                      ? "text-black dark:text-white"
+                      : "text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white"
                   }
                 `}
               >
@@ -65,7 +65,7 @@ const BlogNavbar = ({removeNavbar, setRemoveNavbar}) => {
 
                 <span
                   className={`absolute left-0 -bottom-1 h-[2px] w-full
-                    bg-white
+                    bg-black dark:bg-white
                     transition-transform duration-300 origin-left
                     ${isActive ? "scale-x-100" : "scale-x-0"}
                   `}
