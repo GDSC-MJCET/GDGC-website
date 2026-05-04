@@ -32,7 +32,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phoneRegex = /^\+?\d{10,15}$/;
 const collegeRegex = /^[A-Za-z0-9&.,'()\-\s]{2,100}$/;
 const rollRegex = /^[A-Za-z0-9-]{2,20}$/;
-export default function GdGXHorizonForm() {
+export default function BuildWeekForm() {
 
   const [formData, setFormData] = useState({
     name:"",
@@ -121,8 +121,8 @@ export default function GdGXHorizonForm() {
     try {
       // The user's original code used axios to post data.
       // This is a placeholder for how it might be adapted.
-      console.log(applicationData)
-      const response = await axios.post(`http://localhost:3009/api/v1/buildweek/form`, applicationData, {
+    
+      const response = await axios.post(`${import.meta.env.VITE_SERVER}`+"/api/v1/buildweek/form", applicationData, {
         //const response = await axios.post('YOUR_BACKEND_URL_HERE', applicationData, {
         headers: {
           'Content-Type': 'application/json',
