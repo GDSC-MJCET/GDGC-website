@@ -26,6 +26,8 @@ const emptyProblem = () => ({
   statement: {
     paragraphs: '',
     constraints: '',
+    inputFormat: '',
+    outputFormat: '',
     examples: [{ input: '', output: '', explanation: '' }],
   },
 })
@@ -150,6 +152,16 @@ function ProblemForm({ initial, onSave, onCancel, saving }) {
         <label className={lCls}>Constraints (one per line)</label>
         <Textarea className={`${iCls} min-h-[80px] font-mono text-sm`} value={form.statement.constraints} onChange={(e) => set('statement.constraints', e.target.value)} />
       </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className={lCls}>Input Format</label>
+          <Textarea rows={3} className={`${iCls} text-sm resize-y`} placeholder="Describe the input format — e.g. First line contains N integers space-separated. Second line contains the target." value={form.statement.inputFormat || ''} onChange={(e) => set('statement.inputFormat', e.target.value)} />
+        </div>
+        <div>
+          <label className={lCls}>Output Format</label>
+          <Textarea rows={3} className={`${iCls} text-sm resize-y`} placeholder="Describe the output format — e.g. Print two space-separated indices." value={form.statement.outputFormat || ''} onChange={(e) => set('statement.outputFormat', e.target.value)} />
+        </div>
+      </div>
       <div>
         <div className="flex items-center justify-between mb-2">
           <label className={lCls}>Examples</label>
@@ -163,8 +175,8 @@ function ProblemForm({ initial, onSave, onCancel, saving }) {
                 <button type="button" onClick={() => removeExample(i)} className="text-gray-600 hover:text-red-400"><X className="size-3" /></button>
               )}
             </div>
-            <Input className={`${iCls} font-mono text-xs`} placeholder="Input" value={ex.input} onChange={(e) => setExample(i, 'input', e.target.value)} />
-            <Input className={`${iCls} font-mono text-xs`} placeholder="Output" value={ex.output} onChange={(e) => setExample(i, 'output', e.target.value)} />
+            <Textarea rows={3} className={`${iCls} font-mono text-xs resize-y min-h-[60px]`} placeholder="Input (one value per line)" value={ex.input} onChange={(e) => setExample(i, 'input', e.target.value)} />
+            <Textarea rows={2} className={`${iCls} font-mono text-xs resize-y min-h-[40px]`} placeholder="Output" value={ex.output} onChange={(e) => setExample(i, 'output', e.target.value)} />
             <Input className={`${iCls} text-xs`} placeholder="Explanation (optional)" value={ex.explanation} onChange={(e) => setExample(i, 'explanation', e.target.value)} />
           </div>
         ))}
