@@ -1,13 +1,27 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Leaderboard = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const nav = useNavigate();
 
   useEffect(() => {
+    const auth = JSON.parse(localStorage.getItem("AuthState"));
+
+    if (!auth?.token) {
+      nav("/login");
+      return;
+    }
+
     axios
-      .get(import.meta.env.VITE_SERVER + "/api/v1/leaderboard")
+      // .get(import.meta.env.VITE_SERVER + "/api/v1/leaderboard")
+      .get(import.meta.env.VITE_SERVER + "/api/v1/leaderboard", {
+        headers: {
+          Authorization: `Bearer ${auth?.token}`,
+        },
+      })
       .then((res) => {
         setUsers(res.data.data);
       })
