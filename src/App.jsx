@@ -32,7 +32,10 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from './context/AuthContext.js';
 import Socials from './pages/Socials.jsx';
-import { NavLink, useNavigate } from 'react-router-dom'
+
+import Leaderboard from "./pages/LeaderBoard.jsx";
+import { NavLink, useNavigate } from 'react-router-dom';
+
 import ChangePassword from './pages/ChangePassword.jsx';
 import HomePage from './pages/HomePage.jsx';
 import TechDebatePage from './pages/TechDebatePage.jsx';
@@ -347,8 +350,11 @@ function AppWithRouter() {
               <Route path="customization">
                 <Route path="qrchange" element={<QrChange />} />
                 <Route path="socials" element={<Socials />} />
-                <Route path="changepassword" element={<ChangePassword />} />
+                <Route path="changepassword" element={<ChangePassword />} />                
               </Route>
+
+              <Route path="leaderboard" element={<Leaderboard />} />
+
 
               <Route path="admin">
                 <Route path="users" element={<AdminUsers />} />
