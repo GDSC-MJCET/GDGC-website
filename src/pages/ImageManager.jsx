@@ -11,7 +11,6 @@ const ImageManager = () => {
   const [copiedId, setCopiedId] = useState(null);
   const [error, setError] = useState("");
 
-  // FETCH
   const fetchImages = async () => {
     try {
       const { data, error } = await supabase.storage.from("images").list("", {
@@ -27,7 +26,6 @@ const ImageManager = () => {
           .from("images")
           .getPublicUrl(file.name);
 
-        // Extract title from filename: "timestamp__My Title.jpg" → "My Title"
         const titlePart = file.name.replace(/^\d+__/, "").replace(/\.[^.]+$/, "");
 
         return {
@@ -48,7 +46,6 @@ const ImageManager = () => {
     fetchImages();
   }, []);
 
-  // UPLOAD
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -61,10 +58,8 @@ const ImageManager = () => {
     setLoading(true);
 
     try {
-      // Sanitize title (remove special chars that break filenames)
       const sanitizedTitle = title.trim().replace(/[^a-zA-Z0-9 _-]/g, "");
 
-      // Filename format: "timestamp__My Title.jpg"
       const ext = file.name.split(".").pop();
       const fileName = `${Date.now()}__${sanitizedTitle}.${ext}`;
 
@@ -88,7 +83,6 @@ const ImageManager = () => {
     }
   };
 
-  // DELETE
   const handleDelete = async (fileName) => {
     if (!confirm("Delete this image?")) return;
 
@@ -108,7 +102,6 @@ const ImageManager = () => {
     }
   };
 
-  // COPY URL
   const handleCopy = async (fileName, url) => {
     try {
       await navigator.clipboard.writeText(url);
@@ -123,7 +116,6 @@ const ImageManager = () => {
     <div className="p-6 text-white">
       <h1 className="text-2xl mb-6 font-semibold">Image Manager</h1>
 
-      {/* FORM */}
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 mb-8">
         <div className="flex gap-4 items-center flex-wrap">
           <input
@@ -152,7 +144,6 @@ const ImageManager = () => {
 
         {error && <p className="text-red-400">{error}</p>}
 
-        {/* PREVIEW */}
         {file && (
           <img
             src={URL.createObjectURL(file)}
@@ -162,7 +153,6 @@ const ImageManager = () => {
         )}
       </form>
 
-      {/* GRID */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {images.map((img) => (
           <div key={img.name} className="border border-gray-700 p-3 rounded">
@@ -172,11 +162,9 @@ const ImageManager = () => {
               className="w-full h-40 object-cover rounded"
             />
 
-            {/* TITLE */}
             <p className="mt-2 font-medium">{img.displayTitle}</p>
 
             <div className="flex gap-3 mt-2">
-              {/* COPY */}
               <button
                 onClick={() => handleCopy(img.name, img.publicUrl)}
                 className="flex items-center gap-1 text-sm text-gray-300 hover:text-white"
@@ -188,7 +176,6 @@ const ImageManager = () => {
                 )}
               </button>
 
-              {/* DELETE */}
               <button
                 onClick={() => handleDelete(img.name)}
                 disabled={deletingId === img.name}
