@@ -16,7 +16,7 @@ const ImageManager = () => {
       const { data, error } = await supabase.storage.from("images").list("", {
         sortBy: { column: "created_at", order: "desc" },
       });
-
+      
       if (error) throw error;
 
       const validFiles = data.filter((f) => f.name !== ".emptyFolderPlaceholder");
