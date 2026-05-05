@@ -85,14 +85,7 @@ export default function BuildWeekForm() {
       newErrors.domain1 = 'Please select atleast 1 domain choice from either of the domains.';
       newErrors.domain2 = 'Please select atleast 1 domain choice from either of the domains.';
     }
-    if (!formData.github.trim()){
-      newErrors.github = 'Please enter your GitHub profile or username.';
-    }
-    const selectedDomains = [formData.domain1, formData.domain2];
-    const needsLeetcode = selectedDomains.includes('DSA');
-    if (needsLeetcode && !formData.leetcode.trim()) {
-      newErrors.leetcode = 'Please enter your LeetCode profile or username.';
-    }
+    
     
 
     setErrors(newErrors);
@@ -141,7 +134,6 @@ export default function BuildWeekForm() {
         domain2: '',
         github: '',
         leetcode: '',
-
       });
       
       setErrors({});
@@ -267,18 +259,18 @@ export default function BuildWeekForm() {
           <Card className='shadow-lg'>
             <CardHeader>
               <CardTitle className="2xl font-bold">Socials</CardTitle>
-              <CardDescription>Share the profiles that match your selected domain choices</CardDescription>
+              <CardDescription>Share the profiles of the following</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="github">GitHub * </Label>
-                <Input id="github" name="github" value={formData.github} required onChange={handleInputChange} placeholder="GitHub username or profile URL" />
-                {errors.github && <p className="text-red-500 text-xs">{errors.github}</p>}
+                <Label htmlFor="github">GitHub </Label>
+                <Input id="github" name="github" value={formData.github} onChange={handleInputChange} placeholder="https://github.com/<username>" />
+                {/* {errors.github && <p className="text-red-500 text-xs">{errors.github}</p>} */}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="leetcode">LeetCode {(formData.domain1 === 'DSA' || formData.domain2 === 'DSA') ? '*' : '(required if you choose DSA)'}</Label>
-                <Input id="leetcode" name="leetcode" value={formData.leetcode} onChange={handleInputChange} placeholder="LeetCode username or profile URL" />
-                {errors.leetcode && <p className="text-red-500 text-xs">{errors.leetcode}</p>}
+                <Label htmlFor="leetcode">LeetCode</Label>
+                <Input id="leetcode" name="leetcode" value={formData.leetcode} onChange={handleInputChange} placeholder="https://leetcode.com/<username>" />
+                {/* {errors.leetcode && <p className="text-red-500 text-xs">{errors.leetcode}</p>} */}
               </div>
             </CardContent>
           </Card>
