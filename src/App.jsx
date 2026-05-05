@@ -343,7 +343,7 @@ function AppWithRouter() {
               <Route path="practice/:problemId" element={<PracticePage />} />
               <Route path="exercises" element={<ExercisesPage />} />
               <Route path="exercises/:exerciseId" element={<ExerciseDetailPage />} />
-
+              
               <Route path="customization">
                 <Route path="qrchange" element={<QrChange />} />
                 <Route path="socials" element={<Socials />} />
