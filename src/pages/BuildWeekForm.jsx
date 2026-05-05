@@ -81,8 +81,9 @@ export default function BuildWeekForm() {
     if (!formData.phone_no.trim() || !phoneRegex.test(formData.phone_no)) {
       newErrors.phone_no = 'Please enter a valid phone number.';
     }
-    if (!formData.domain1) {
-      newErrors.domain1 = 'Please select a domain choice.';
+    if (!formData.domain1 && !formData.domain2) {
+      newErrors.domain1 = 'Please select atleast 1 domain choice from either of the domains.';
+      newErrors.domain2 = 'Please select atleast 1 domain choice from either of the domains.';
     }
     if (!formData.github.trim()){
       newErrors.github = 'Please enter your GitHub profile or username.';
@@ -237,12 +238,12 @@ export default function BuildWeekForm() {
           <Card className='shadow-lg'>
             <CardHeader>
               <CardTitle className="2xl font-bold">Domain Choices</CardTitle>
-              <CardDescription>Select two preferred domains</CardDescription>
+              <CardDescription>Select from atleast one preferred domains</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="domain1">Domain 1*</Label>
-                <select id="domain1" name="domain1" value={formData.domain1} onChange={handleInputChange} required className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
+                <Label htmlFor="domain1">Domain 1</Label>
+                <select id="domain1" name="domain1" value={formData.domain1} onChange={handleInputChange}  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
                   <option value="">Select a domain</option>
                   {domain1Options.map(option => (
                     <option key={option} value={option}>{option}</option>
@@ -346,12 +347,12 @@ export default function BuildWeekForm() {
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
-              <span>Aimen</span>
+              <span>Amaan</span>
               <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
               </svg>
               <a href="tel:8765432109" className="hover:underline">
-              +91 96760 71331
+              +91 88970 79715
               </a>
             </div>
           </div>
