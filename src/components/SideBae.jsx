@@ -37,6 +37,14 @@ const AdminSubPanel = ({handleClickRedirect , clicked}) => {
                 Images
               </Link>
             </span>
+            <span 
+              onClick={()=>handleClickRedirect("images","/team/admin/images")}
+              className={`${clicked == "images" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}
+            >
+              <Link to="/team/admin/content" className='py-1 px-3 w-full rounded-md'>
+                Content
+              </Link>
+            </span>
         </div>
     )
 }
