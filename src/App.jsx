@@ -346,7 +346,7 @@ function AppWithRouter() {
               <Route path="practice/:problemId" element={<PracticePage />} />
               <Route path="exercises" element={<ExercisesPage />} />
               <Route path="exercises/:exerciseId" element={<ExerciseDetailPage />} />
-              
+
               <Route path="customization">
                 <Route path="qrchange" element={<QrChange />} />
                 <Route path="socials" element={<Socials />} />
@@ -363,7 +363,6 @@ function AppWithRouter() {
                 <Route path="problems" element={<ProblemAdminPage />} />
                 <Route path="content" element={<ContentManagementPage />} />
               </Route>
-
               <Route path="superadmin">
                 <Route index element={<SuperAdminDashboard />} />
                 <Route path="users" element={<SuperAdminUsers />} />
