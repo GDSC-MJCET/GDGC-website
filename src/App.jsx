@@ -70,6 +70,7 @@ import ExercisesPage from './pages/ExercisesPage.jsx';
 import ExerciseDetailPage from './pages/ExerciseDetailPage.jsx';
 import ContentManagementPage from './pages/ContentManagementPage.jsx';
 import SuperAdminBlogPanel from './pages/SuperAdminBlog.jsx';
+import TeamMemberManager from './pages/TeamMemberManager.jsx';
 // import TweetHomeLayout from './pages/TweetHome.jsx';
 
 function App() {
@@ -360,6 +361,7 @@ function AppWithRouter() {
                 <Route path="users" element={<AdminUsers />} />
                 <Route path="hr-interface" element={<HrInterface />} />
                 <Route path="images" element={<ImageManager />} />
+                <Route path="team" element={<TeamMemberManager />} />
                 <Route path="problems" element={<ProblemAdminPage />} />
                 <Route path="content" element={<ContentManagementPage />} />
               </Route>

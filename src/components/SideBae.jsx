@@ -38,8 +38,16 @@ const AdminSubPanel = ({handleClickRedirect , clicked}) => {
               </Link>
             </span>
             <span 
-              onClick={()=>handleClickRedirect("images","/team/admin/images")}
-              className={`${clicked == "images" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}
+              onClick={()=>handleClickRedirect("team","/team/admin/team")}
+              className={`${clicked == "team" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}
+            >
+              <Link to="/team/admin/team" className='py-1 px-3 w-full rounded-md'>
+                Team
+              </Link>
+            </span>
+            <span 
+              onClick={()=>handleClickRedirect("content","/team/admin/content")}
+              className={`${clicked == "content" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}
             >
               <Link to="/team/admin/content" className='py-1 px-3 w-full rounded-md'>
                 Content
