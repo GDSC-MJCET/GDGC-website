@@ -196,8 +196,6 @@ function TestCaseManager({ problem, onClose }) {
   const [newExpected, setNewExpected] = useState('')
   const [newIsSample, setNewIsSample] = useState(false)
   const [saving, setSaving] = useState(false)
-  const [generating, setGenerating] = useState(false)
-  const [genError, setGenError] = useState('')
 
   const load = useCallback(async () => {
     const { data } = await axios.get(`${SERVER}/api/problems/${problem._id}/testcases`, { headers: authHeaders() })
@@ -224,15 +222,6 @@ function TestCaseManager({ problem, onClose }) {
     await load()
   }
 
-  const generateWithAI = async () => {
-    setGenerating(true); setGenError('')
-    try {
-      await axios.post(`${SERVER}/api/problems/${problem._id}/generate-testcases`, {}, { headers: authHeaders() })
-      await load()
-    } catch (e) { setGenError(e?.response?.data?.message || 'AI generation failed.') }
-    setGenerating(false)
-  }
-
   const sampleCount = testCases.filter(tc => tc.isSample).length
   const hiddenCount = testCases.filter(tc => !tc.isSample).length
   const iCls = 'bg-[#0a0a0a] border-white/10 text-white placeholder:text-gray-600 font-mono text-xs'
@@ -240,10 +229,6 @@ function TestCaseManager({ problem, onClose }) {
   return (
     <Modal title={`Test Cases — ${problem.title}`} onClose={onClose}>
       <div className="mb-4 flex items-center gap-3">
-        <Button onClick={generateWithAI} disabled={generating}
-          className="bg-gradient-to-r from-violet-600 to-indigo-600 text-white hover:from-violet-500 hover:to-indigo-500 flex items-center gap-2 flex-1">
-          {generating ? (<><svg className="size-4 animate-spin" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>AI is generating…</>) : 'Generate with AI'}
-        </Button>
         <div className="text-right text-xs text-gray-500 shrink-0 space-y-0.5">
           <p><span className="text-emerald-400 font-medium">{sampleCount}</span> sample</p>
           <p><span className="text-gray-400 font-medium">{hiddenCount}</span> hidden</p>
@@ -255,11 +240,9 @@ function TestCaseManager({ problem, onClose }) {
         <span className="flex items-center gap-1.5"><span className="inline-block h-2 w-2 rounded-full bg-gray-600"/>Hidden — only used for <strong className="text-gray-300">Submit</strong></span>
       </div>
 
-      {genError && <p className="text-sm text-red-400 bg-red-400/10 border border-red-400/20 rounded-lg px-3 py-2 mb-3">{genError}</p>}
-
       <div className="space-y-2 max-h-[40vh] overflow-y-auto pr-1">
-        {testCases.length === 0 && !generating && (
-          <p className="text-sm text-gray-500 text-center py-4">No test cases yet. Generate with AI or add manually below.</p>
+        {testCases.length === 0 && (
+          <p className="text-sm text-gray-500 text-center py-4">No test cases yet. Add manually below.</p>
         )}
         {testCases.map((tc, i) => (
           <div key={tc._id} className={`rounded-xl border p-3 space-y-1.5 ${tc.isSample ? 'border-emerald-500/25 bg-emerald-500/5' : 'border-white/10'}`}>
