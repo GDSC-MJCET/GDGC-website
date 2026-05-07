@@ -43,6 +43,7 @@
     "font-awesome": "^4.7.0",
     "framer-motion": "^12.23.12",
     "gsap": "^3.14.2",
+    "heic2any": "^0.0.4",
     "lucide-react": "^0.542.0",
     "motion": "^12.23.12",
     "radix-ui": "^1.4.3",

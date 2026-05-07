@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Trash2, Copy, Pencil, Check, X } from "lucide-react";
+import React, { useEffect, useState, useCallback } from "react";
+import { Trash2, Copy, Pencil, Check, X, ExternalLink } from "lucide-react";
 import { supabase } from "../utils/supabase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import heic2any from "heic2any";
 
 const ImageManager = () => {
   const [title, setTitle] = useState("");
@@ -62,15 +63,32 @@ const ImageManager = () => {
     setLoading(true);
 
     try {
+      let fileToUpload = file;
+      let finalExt = file.name.split(".").pop()?.toLowerCase();
+
+      if (["heic", "heif"].includes(finalExt)) {
+        setError("Converting HEIC to JPEG...");
+        const blob = await heic2any({
+          blob: file,
+          toType: "image/jpeg",
+          quality: 0.9,
+        });
+        fileToUpload = new File([blob], file.name.replace(/\.(heic|heif)$/i, ".jpg"), {
+          type: "image/jpeg",
+        });
+        finalExt = "jpg";
+        setError("");
+      }
+
       const sanitizedTitle = title.trim().replace(/[^a-zA-Z0-9 _-]/g, "");
 
-      const ext = file.name.split(".").pop();
+      const ext = finalExt;
       const fileName = `${Date.now()}__${sanitizedTitle}.${ext}`;
 
       const { error: uploadError } = await supabase.storage
         .from("images")
-        .upload(fileName, file, {
-          contentType: file.type,
+        .upload(fileName, fileToUpload, {
+          contentType: fileToUpload.type,
           upsert: false,
         });
 
@@ -252,6 +270,7 @@ const ImageManager = () => {
               <button
                 onClick={() => handleCopy(img.name, img.publicUrl)}
                 className="flex items-center gap-1 text-sm text-gray-300 hover:text-white"
+                title="Copy URL"
               >
                 {copiedId === img.name ? (
                   <span className="text-green-400 text-xs">Copied!</span>
@@ -259,6 +278,16 @@ const ImageManager = () => {
                   <Copy size={16} />
                 )}
               </button>
+
+              <a
+                href={img.publicUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-sm text-gray-300 hover:text-white"
+                title="Open in new tab"
+              >
+                <ExternalLink size={16} />
+              </a>
 
               <button
                 onClick={() => handleDelete(img.name)}
