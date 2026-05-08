@@ -6,7 +6,7 @@ const SERVER = import.meta.env.VITE_SERVER?.replace(/\/$/, "");
 
 const FILTERS = [
   "ALL", "WEB", "UI/UX", "AI/ML", "CYBERSEC", "CLOUD",
-  "HR", "MEDIA", "DESIGN", "DOC", "EVENTS", "OPERATIONS", "MARKETING",
+  "HR", "MEDIA", "DESIGN", "DOC", "EVENTS", "OPERATIONS", "MARKETING", "DSA",
 ];
 
 export default function ExeSection({ activeFilter, setActiveFilter }) {

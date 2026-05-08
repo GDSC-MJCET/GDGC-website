@@ -9,7 +9,7 @@ import heic2any from "heic2any";
 const SERVER = import.meta.env.VITE_SERVER?.replace(/\/$/, "");
 const DOMAINS = [
   "WEB", "UI/UX", "AI/ML", "CYBERSEC", "CLOUD", "HR",
-  "MEDIA", "DESIGN", "DOC", "EVENTS", "OPERATIONS", "MARKETING"
+  "MEDIA", "DESIGN", "DOC", "EVENTS", "OPERATIONS", "MARKETING", "DSA"
 ];
 const ROLES = ["EXECOM", "CORE"];
 
