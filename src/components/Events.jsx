@@ -2,13 +2,21 @@ import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 export default function Events() {
   const cards = [
-    // {
-    //   title: "Pixel X — Frontend Mastery",
-    //   text: "Learn real-world frontend engineering with production-grade workflows. Learn real-world frontend engineering with production-grade workflows.",
-    //   image: "/poster.png",
-    //   color: "#A7E399",
-    //   date: "December 2025",
-    // },
+    {
+      title: "GDGC MJCET × HORIZON presents: EPISODE 4 — BUILD WEEK",
+      text: "This summer, make every day of your vacation count. Pick a domain, sharpen your skills, and start building alongside people who are just as driven and passionate as you are.",
+      image: "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/1778439455443__buildweek.jpeg",
+      color: "#A855F7",
+      date: "June 2025",
+      live: true,
+    },
+    {
+      title: "Google Solutions Challenge Info Session",
+      text: "This session is your roadmap to developing, refining, and positioning your project for a national-level platform — with direct insights from 2025 National Winners on exactly what it takes to succeed.",
+      image: "/info-session-26.jpeg",
+      color: "#4285F4",
+      date: "April 2026",
+    },
     {
       title: "Doodle Your Engineering",
       text: "Doodle Your Engineering is an introductory event meticulously designed for first-year engineering students to gain a comprehensive understanding of the diverse fields within technology.",
@@ -83,7 +91,7 @@ export default function Events() {
       </div>
 
       <div className="mt-16 flex flex-col md:flex-row gap-6 justify-between items-center max-w-6xl mx-auto px-6">
-          {/* <ActionButton label="Live Events" link={'/techfaceoff'} color="#5ddb6e" />   */}
+        <ActionButton label="Live Events" link={'/buildweek-form'} color="#A855F7" />
         <ActionButton label="Past Events" link={'/events'}  color="#ffe7a5" />
       </div>
     </section>
@@ -98,6 +106,11 @@ function EventCard({ card, mobile = false }) {
     >
       <div className="flex justify-between items-center px-6 py-4 text-black">
         <span className="uppercase tracking-wide text-sm">{card.date}</span>
+        {card.live && (
+          <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">
+            LIVE
+          </span>
+        )}
         <span className="text-sm font-medium">GDGC MJCET</span>
       </div>
 
