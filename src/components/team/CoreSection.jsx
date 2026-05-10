@@ -46,12 +46,7 @@ export default function CoreSection({ activeFilter, setActiveFilter }) {
         </h2>
 
         <p className="text-white">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptates
-          blanditiis eius error officia impedit corporis consequuntur laboriosam
-          culpa voluptatem sed nostrum voluptas esse, cumque dolorem aperiam
-          repudiandae vitae omnis suscipit ut quos, eaque libero magnam
-          incidunt. Est dolorum cum enim adipisci impedit perspicatis eum,
-          omnis, consequuntur reprehenderit voluptas unde. Quaerat.
+          The Core Team is the heartbeat of GDGC MJCET — the learners, the doers, and the future leaders. Under the mentorship of the Executive Committee, they gain hands-on experience, develop domain expertise, and shine as the lime light of the club through various events and initiatives. Core members represent the chapter at the ground level and are the driving force behind execution.
         </p>
       </div>
 

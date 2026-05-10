@@ -217,15 +217,15 @@ export default function TeamCard({ side, role, name, image, linkedin, github, ab
       >
         {/* Image — left when side="left" */}
         {isLeft && (
-          <div className="w-28 flex-shrink-0 overflow-hidden">
+          <div className="w-36 sm:w-44 flex-shrink-0 overflow-hidden">
             <img src={image} alt={name} className="w-full h-full object-cover object-top" />
           </div>
         )}
 
         {/* Text */}
-        <div className={`flex-1 p-3 flex flex-col justify-center min-w-0 ${isLeft ? "text-left" : "text-right"}`}>
+        <div className={`flex-1 p-3 sm:p-4 flex flex-col justify-center min-w-0 ${isLeft ? "text-left" : "text-right"}`}>
           <p
-            className="text-xs mb-0.5 truncate"
+            className="text-xs sm:text-sm mb-0.5 truncate"
             style={{
               background: "linear-gradient(to right, #f8d8d8, #cdf6c5)",
               WebkitBackgroundClip: "text",
@@ -234,32 +234,23 @@ export default function TeamCard({ side, role, name, image, linkedin, github, ab
           >
             {role}
           </p>
-          <h3 className="text-base leading-tight mb-2">{name}</h3>
-          {/* <div className={`flex ${isLeft ? "justify-start" : "justify-end"}`}>
-            <button
-              onClick={() => setIsOpen(true)}
-              className="bg-white/60 hover:bg-white hover:text-red-500 cursor-pointer text-black px-1 flex justify-center items-center rounded-sm text-lg transition-colors duration-200"
-              aria-label={`View ${name}'s profile`}
-            >
-              <LiaPlusSolid /> <span>View Info</span>
-            </button>
-          </div> */}
+          <h3 className="text-base sm:text-lg leading-tight mb-2">{name}</h3>
         </div>
 
         {/* Image — right when side="right" */}
         {!isLeft && (
-          <div className="w-28 flex-shrink-0 overflow-hidden">
+          <div className="w-36 sm:w-44 flex-shrink-0 overflow-hidden">
             <img src={image} alt={name} className="w-full h-full object-cover object-top" />
           </div>
         )}
       </div>
 
       {/* ── Desktop: original horizontal timeline card ── */}
-      <div className={`hidden md:flex w-full overflow-hidden cursor-pointer duration-75 group-hover:scale-110 sm:w-80 ${isLeft ? "justify-end" : "justify-start"}`} title="View Info" onClick={() => setIsOpen(true)}>
-        <div className="flex w-full justify-center md:justify-around items-center overflow-hidden rounded-xl gap-2 text-white">
+      <div className={`hidden md:flex w-full overflow-hidden cursor-pointer duration-75 group-hover:scale-110 sm:w-96 lg:w-[28rem] ${isLeft ? "justify-end" : "justify-start"}`} title="View Info" onClick={() => setIsOpen(true)}>
+        <div className="flex w-full justify-center md:justify-around items-center overflow-hidden rounded-xl gap-3 text-white">
 
           {isLeft && (
-            <div className="w-36 flex-shrink-0 overflow-hidden rounded-lg">
+            <div className="w-48 lg:w-56 flex-shrink-0 overflow-hidden rounded-lg">
               <img
                 src={image}
                 alt={name}
@@ -292,7 +283,7 @@ export default function TeamCard({ side, role, name, image, linkedin, github, ab
           </div>
 
           {!isLeft && (
-            <div className="w-36 flex-shrink-0 overflow-hidden rounded-lg">
+            <div className="w-48 lg:w-56 flex-shrink-0 overflow-hidden rounded-lg">
               <img
                 src={image}
                 alt={name}

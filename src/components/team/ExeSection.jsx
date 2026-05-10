@@ -46,12 +46,7 @@ export default function ExeSection({ activeFilter, setActiveFilter }) {
         </h2>
 
         <p className="text-white">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptates
-          blanditiis eius error officia impedit corporis consequuntur laboriosam
-          culpa voluptatem sed nostrum voluptas esse, cumque dolorem aperiam
-          repudiandae vitae omnis suscipit ut quos, eaque libero magnam
-          incidunt. Est dolorum cum enim adipisci impedit perspicatis eum,
-          omnis, consequuntur reprehenderit voluptas unde. Quaerat.
+          The Executive Committee is formed and appointed by the Governing Body. They are the subject matter experts who lead various domains within the chapter. The EXECOM is responsible for hiring and managing their own Core team members, overseeing major executions, and ensuring that every initiative is executed with excellence and alignment to the chapter's goals.
         </p>
       </div>
 
