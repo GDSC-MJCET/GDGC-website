@@ -9,6 +9,7 @@ import {
 const LANGUAGE_LABELS = {
   javascript: "JavaScript",
   python: "Python",
+  python_ml: "Python (ML)",
   cpp: "C++",
   java: "Java",
 }
