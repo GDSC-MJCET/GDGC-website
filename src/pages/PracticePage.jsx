@@ -7,12 +7,13 @@ import ProblemPanel from "@/components/practice/ProblemPanel"
 import CodeWorkspace from "@/components/practice/CodeWorkspace"
 import LoadingState from "@/components/practice/LoadingState"
 
-const SUPPORTED_LANGUAGES = ["javascript", "python", "cpp", "java"]
+const SUPPORTED_LANGUAGES = ["javascript", "python", "python_ml", "cpp", "java"]
 
 // Shown when a problem has no starter code defined for that language,
 // or when the user switches to a language they haven't typed in yet.
 const DEFAULT_TEMPLATES = {
   python: `# Read input\n# e.g. n = int(input())\n\n# Write your solution here\n`,
+  python_ml: `import numpy as np\nimport pandas as pd\n\n# Read input from stdin\ndata = input().split()\n\n# Write your solution here\nprint("Hello from Python ML!")\n`,
   javascript: `const lines = require('fs').readFileSync('/dev/stdin','utf8').trim().split('\\n')\n\n// Write your solution here\n`,
   cpp: `#include <bits/stdc++.h>\nusing namespace std;\nint main() {\n    // Read input\n    // Write your solution here\n    return 0;\n}\n`,
   java: `import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // Read input: e.g. int n = sc.nextInt();\n        // Write your solution here\n    }\n}\n`,
@@ -24,6 +25,9 @@ const LANGUAGE_ALIASES = {
   node: "javascript",
   python: "python",
   py: "python",
+  python_ml: "python_ml",
+  "python ml": "python_ml",
+  ml: "python_ml",
   cpp: "cpp",
   "c++": "cpp",
   cxx: "cpp",
