@@ -32,7 +32,10 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from './context/AuthContext.js';
 import Socials from './pages/Socials.jsx';
-import { NavLink, useNavigate } from 'react-router-dom'
+
+import Leaderboard from "./pages/LeaderBoard.jsx";
+import { NavLink, useNavigate } from 'react-router-dom';
+
 import ChangePassword from './pages/ChangePassword.jsx';
 import HomePage from './pages/HomePage.jsx';
 import TechDebatePage from './pages/TechDebatePage.jsx';
@@ -41,6 +44,7 @@ import TeamPage from './pages/TeamPage.jsx';
 import GalleryPage from './pages/GalleryPage.jsx';
 import ContactUsPage from './pages/ContactUsPage.jsx';
 import NotFound from './pages/NotFound.jsx';
+import PracticePage from './pages/PracticePage.jsx';
 import SuperAdminDashboard from './pages/SuperAdminDashboard.jsx';
 import SuperAdminUsers from './pages/SuperAdminUsers.jsx';
 import BlogPosts from './pages/BlogPosts.jsx';
@@ -48,6 +52,7 @@ import AdminUsers from './pages/AdminUsers.jsx';
 import ScorePage from './pages/ScorePage.jsx';
 import HrInterface from './pages/HrInterface.jsx';
 import HrControlInterface from './pages/HrControlInterface.jsx';
+import BuildWeekForm from './pages/BuildWeekForm.jsx';
 // import TDForm from './pages/TDForm.jsx';
 import { Navigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
@@ -58,7 +63,14 @@ import { PhotoBooth } from './gdgc-modules/photobooth/PhotoBooth.jsx';
 import TheHeistAdsophos from './gdgc-modules/heist/TheHeistAdsophos.jsx';
 import Loop13 from './gdgc-modules/loop13/Loop_13.jsx';
 import MyBlogs from './pages/MyBlogs.jsx';
+import ImageManager from './pages/ImageManager.jsx';
+import PracticeListPage from './pages/PracticeListPage.jsx'
+import ProblemAdminPage from './pages/ProblemAdminPage.jsx';
+import ExercisesPage from './pages/ExercisesPage.jsx';
+import ExerciseDetailPage from './pages/ExerciseDetailPage.jsx';
+import ContentManagementPage from './pages/ContentManagementPage.jsx';
 import SuperAdminBlogPanel from './pages/SuperAdminBlog.jsx';
+import TeamMemberManager from './pages/TeamMemberManager.jsx';
 // import TweetHomeLayout from './pages/TweetHome.jsx';
 
 function App() {
@@ -302,45 +314,62 @@ function AppWithRouter() {
           <Routes>
             {/* Public   pages */}
             <Route path="/" element={<HomePage />} />
-            <Route path="/signup-guest" element={<SignUpPage />} />
-            <Route path="initialsetup/:id" element={<InitialSetup />} />
-            <Route path="techfaceoff" element={<TechDebatePage />} />
-            <Route path='score' element={<ScorePage />} />
-            <Route path="events" element={<EventsPage />} />
-            <Route path="event-details" element={<EventDetails />} />
-            <Route path="team-page" element={<TeamPage />} />
-            <Route path="gallery" element={<GalleryPage />} />
-            <Route path="contact" element={<ContactUsPage />} />
-            <Route path="login" element={<LoginPage />} />
-            <Route path="forgotpassword" element={<ForgotPassword />} />
-            <Route path='adsophos' element={<Adsophos />}>
+              <Route path="initialsetup/:id" element={<InitialSetup />} />
+              <Route path="contact" element={<ContactUsPage />} />
+              <Route path="login" element={<LoginPage />} />
+              <Route path="forgotpassword" element={<ForgotPassword />} />
+            {/* <Route path='practice' element={<PracticePage />} /> */}
+              <Route path="/signup-guest" element={<SignUpPage />} />
+              <Route path="techfaceoff" element={<TechDebatePage />} />
+              <Route path="buildweek-form" element={<BuildWeekForm />} />
+              <Route path='score' element={<ScorePage />} />
+              <Route path="events" element={<EventsPage />} />
+              <Route path="event-details" element={<EventDetails />} />
+              <Route path="team-page" element={<TeamPage />} />
+              <Route path="gallery" element={<GalleryPage />} />
+              <Route path='adsophos' element={<Adsophos />}>
             </Route>
             <Route path='photobooth' element={<PhotoBooth />} />
             <Route path='heist' element={<TheHeistAdsophos />} />
             <Route path='loop13' element={<Loop13 />} />
-
+            <Route path="practice/:problemId" element={<PracticePage />} /> 
+            {/* <Route path='practice' element={<PracticeListPage />} />
+            <Route path='exercises' element={<ExercisesPage />} />
+            <Route path='exercises/:exerciseId' element={<ExerciseDetailPage />} />  */}
 
             {/* Team area (layout route) */}
             <Route path="team" element={<TeamLayout />}>
-              {/* <Route path="hr-interface" element={<HrInterface/>}/> */}
-              {/* <Route path="hr-control" element={<HrControlInterface/>}/> */}
               <Route index element={<Navigate to="/*" />} />
               <Route path="dashboard" element={<Dashboard />} />
+              
+              {/* Practice + Exercises inside the sidebar layout */}
+              <Route path="practice" element={<PracticeListPage />} />
+              <Route path="practice/:problemId" element={<PracticePage />} />
+              <Route path="exercises" element={<ExercisesPage />} />
+              <Route path="exercises/:exerciseId" element={<ExerciseDetailPage />} />
+
               <Route path="customization">
                 <Route path="qrchange" element={<QrChange />} />
                 <Route path="socials" element={<Socials />} />
-                <Route path="changepassword" element={<ChangePassword />} />
+                <Route path="changepassword" element={<ChangePassword />} />                
               </Route>
+
+              <Route path="leaderboard" element={<Leaderboard />} />
+
 
               <Route path="admin">
                 <Route path="users" element={<AdminUsers />} />
                 <Route path="hr-interface" element={<HrInterface />} />
+                <Route path="images" element={<ImageManager />} />
+                <Route path="team" element={<TeamMemberManager />} />
+                <Route path="problems" element={<ProblemAdminPage />} />
+                <Route path="content" element={<ContentManagementPage />} />
               </Route>
-
               <Route path="superadmin">
                 <Route index element={<SuperAdminDashboard />} />
                 <Route path="users" element={<SuperAdminUsers />} />
                 <Route path="contacts" element={<SuperAdminContacts />} />
+                <Route path="images" element={<ImageManager />} />
               </Route>
             </Route>
 

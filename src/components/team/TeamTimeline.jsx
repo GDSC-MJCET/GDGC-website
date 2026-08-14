@@ -291,7 +291,7 @@ const team = [
     tags: ["Community Outreach", "Student Advocacy", "Representation", "Engagement"],
   },
   {
-    name: "Aqueeb Talib",
+    name: "Aqeeb Talib",
     role: "Chief Representative",
     image: talib,
     github: "https://github.com/flexsyyy",
@@ -300,7 +300,7 @@ const team = [
     tags: ["Networking", "Community Growth", "Representation", "Public Relations"],
   },
   {
-    name: "Mohammed Sami",
+    name: "Mohammed Samiuddin",
     role: "Tech Captain",
     image: sami,
     github: "https://github.com/Ms3314",
@@ -372,13 +372,8 @@ export default function VerticalLineTimeline() {
         >
           Governing Body
         </h2>
-        <p className="text-white">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptates
-          blanditiis eius error officia impedit corporis consequuntur laboriosam
-          culpa voluptatem sed nostrum voluptas esse, cumque dolorem aperiam
-          repudiandae vitae omnis suscipit ut quos, eaque libero magnam
-          incidunt. Est dolorum cum enim adipisci impedit perspiciatis eum,
-          omnis, consequuntur reprehenderit voluptas unde. Quaerat.
+<p className="text-white">
+          The Governing Body stands at the apex of GDGC MJCET's hierarchy. They are responsible for steering the chapter's overall direction, establishing policies, and maintaining accountability. The Governing Body has the authority to appoint and form the Executive Committee, ensuring that leadership aligns with the chapter's mission and values.
         </p>
       </div>
 

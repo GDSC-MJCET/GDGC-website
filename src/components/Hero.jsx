@@ -65,27 +65,25 @@ const Hero = () => {
             <div className="flex  bg-[#000000] flex-col md:flex-row justify-center items-center rounded-b-4xl border-2 border-white/40 shadow-[0_0_8px_rgba(255,255,255,0.85)] max-w-3xl mx-auto px-6 md:px-22 py-18 gap-10 md:gap-22">
               <div className="w-full md:scale-150">
                 <img
-                  src="/info-session-26.jpeg"
-                  alt="Info Session"
+                  src="https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/1778439455443__buildweek.jpeg"
+                  alt="Build Week"
                   className="rounded-sm "
                 />
               </div>
 
               <div className="flex flex-col gap-6 text-center md:text-left">
                 <h2 className="text-2xl md:text-3xl font-bold text-white">
-                  Google Solutions Challenge Info Session
+                  GDGC MJCET × HORIZON presents: EPISODE 4 — BUILD WEEK
                 </h2>
 
-                {/* ✅ FIXED: replaced <p> with <div> */}
                 <div className="text-white text-base md:text-lg">
-                  This session is your roadmap to developing, refining, and positioning your project for a national-level platform — with direct insights from 2025 National Winners on exactly what it takes to succeed.
-                  <div className="mt-5">🗓 April 3rd | 7–9 PM | Online | FREE</div>
+                  This summer, make every day of your vacation count. Pick a domain, sharpen your skills, and start building alongside people who are just as driven and passionate as you are.
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 justify-center md:justify-start">
-                  <span className='px-6 py-1 rounded-full border border-white shadow-sm shadow-white text-center'>
-                    <a href="https://chat.whatsapp.com/I5JsIVcZrGFJHLsGCpPHx0">Know More</a>
-                  </span>
+                  {/* <span className='px-6 py-1 rounded-full border border-purple-400 shadow-sm shadow-purple-400 text-center'>
+                    {/* <a href="/buildweek-form">Register Now</a> */}
+                  {/* </span> */}
                 </div>
               </div>
             </div>
