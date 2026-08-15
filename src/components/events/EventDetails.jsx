@@ -54,7 +54,7 @@ const EventDetails = () => {
               <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
                 <div className="flex-shrink-0">
                   <img
-                    src="/poster.png"
+                    src={event.poster}
                     alt={event.title}
                     className="w-full mx-auto lg:mx-0 lg:w-96 h-auto object-cover rounded-lg lg:rounded-xl"
                   />
@@ -94,6 +94,7 @@ const EventDetails = () => {
               {event.overview}
             </p>
           </div>
+          
           <div className="space-y-12 sm:space-y-16 lg:space-y-22 mt-8 sm:mt-12">
             <div className='flex flex-col lg:flex-row gap-6 sm:gap-8 items-center'>
                 <div className='flex-1 order-2 lg:order-1'>
@@ -102,7 +103,7 @@ const EventDetails = () => {
                 </div>
                 <div className='relative overflow-hidden rounded-xl shadow-md group-hover:shadow-xl transition-shadow duration-300 flex-shrink-0 order-1 lg:order-2 flex-1'>
                     <img
-                        src="/poster.png"
+                        src={event.image1}
                         alt={event.title}
                         className='w-screen h-32 md:w-full   md:h-100   object-cover transform group-hover:scale-105 transition-transform duration-500 '
                     />
@@ -116,7 +117,7 @@ const EventDetails = () => {
                 </div>
                 <div className='relative overflow-hidden rounded-xl shadow-md group-hover:shadow-xl transition-shadow duration-300 flex-shrink-0 flex-1'>
                     <img
-                        src="/poster.png"
+                        src={event.image2}
                         alt={event.title}
                         className='w-screen h-32 md:w-full   md:h-100   object-cover transform group-hover:scale-105 transition-transform duration-500 '
                     />
@@ -124,6 +125,23 @@ const EventDetails = () => {
                 </div>
             </div>
           </div>
+                      {/* THIRD IMAGE SECTION (New) */}
+            <div className='flex flex-col lg:flex-row gap-6 sm:gap-8 items-center'>
+                <div className='flex-1 order-2 lg:order-1'>
+                    <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">Highlights</h2>
+                    <p className="text-gray-300 leading-relaxed text-sm sm:text-base">
+                        {event.highlights || "Additional highlights from the event."}
+                    </p>
+                </div>
+                <div className='relative overflow-hidden rounded-xl shadow-md group-hover:shadow-xl transition-shadow duration-300 flex-shrink-0 order-1 lg:order-2 flex-1'>
+                    <img
+                        src={event.image3}  // <-- Uses your 3rd image
+                        alt={event.title}
+                        className='w-screen h-32 md:w-full md:h-100 object-cover transform group-hover:scale-105 transition-transform duration-500'
+                    />
+                    <div className='absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
+                </div>
+            </div>
 
           <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 sm:gap-0 mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-gray-700">
             <button
