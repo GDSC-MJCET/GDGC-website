@@ -116,9 +116,10 @@ export default function LiveScoreCard() {
 
     const fetchDebate = async () => {
       try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_SERVER}`+`/api/v1/techdebate/get-score`
-        );
+        // const res = await axios.get(
+        //   `${import.meta.env.VITE_SERVER}`+`/api/v1/techdebate/get-score`
+        // );
+        const res = null;
         if (res) {
           setDebate(res.data.sendingData);
           setVoteCountLeft(res.data.sendingData.votesLeft);
@@ -127,7 +128,7 @@ export default function LiveScoreCard() {
           setNoLiveMatch(false);
         }
       } catch (err) {
-        console.error("fetch debate error", err);
+        console.error("Debate is finished",err);
         if (mounted) {
           setLoading(false);
           setNoLiveMatch(true);

@@ -13,7 +13,11 @@ export const eventsByYear = {
     neque: "Tech Face-Off was structured as a multi-stage debate progressing through a Round of 16, Quarterfinals, Semifinals, and a Grand Finale. Topics spanned AI ethics, system design, cybersecurity, and emerging tech, with teams delivering research-backed arguments and sharp rebuttals under time pressure. An independent fact-checking panel ensured credibility, while experienced judges evaluated logic, structure, and rebuttal quality throughout every round.",
     neque1: "The event drew 65 students from 13 clubs, making it one of the most collaborative inter-club engagements of the year. Consistent audience involvement extended discussions beyond competing teams to the entire room, fostering shared learning. Participants left with stronger analytical thinking, structured communication skills, and a sharper ability to engage critically with real-world technological challenges.",
     nequeimg: "poster.png",
-    bg: "#4ade80"
+    bg: "#4ade80",
+     poster: "/techfaceoffposter.jpeg",      // was .png
+    image1: "/tech-faceoff-1.jpeg",
+    image2: "/tech-faceoff-2.jpeg",
+    image3: "/tech-faceoff-3.jpg",
   },
   {
     title: "From Protection to Response",
@@ -24,7 +28,11 @@ export const eventsByYear = {
     neque: "The session covered the CIA Triad, modern threats like malware, phishing, APTs, and zero-day attacks, along with real-world case studies highlighting social engineering tactics. Insights into next-gen firewalls and incident response frameworks were shared, giving students a realistic picture of how security professionals operate. The session also explored career paths and the skills needed to break into the cybersecurity domain.",
     neque1: "Around 50 students attended and remained actively engaged through real-world examples and interactive discussions that helped connect theory to practice. The Q&A segment allowed students to dig deeper into attack types, organizational defense strategies, and career opportunities in security. Attendees left with a clearer understanding of how cyberattacks work and why thinking critically about security is essential in today's landscape.",
     nequeimg: "poster.png",
-    bg: "#60a5fa"
+    bg: "#60a5fa",
+    poster: "/frtpposter.jpeg",            // was .png
+    image1: "/frtp-1.jpg",                  // was .png
+    image2: "/frtp-2.jpg",                  // was .png
+    image3: "/frtp-3.jpg",                  
   },
   {
     title: "PIXELX",
@@ -35,7 +43,11 @@ export const eventsByYear = {
     neque: "The workshop followed a step-by-step progression through HTML, CSS, and JavaScript, where participants built a portfolio webpage and a Rock-Paper-Scissors game from scratch. Modern concepts like Flexbox, Grid, and DOM manipulation were covered through live coding rather than passive theory. Every concept was immediately applied to a real project, making the learning tangible and rewarding from the very first hour.",
     neque1: "Around 30 students participated actively through live coding, real-time doubt solving, and peer discussions that kept the session collaborative throughout. The hands-on format meant participants could see the results of every change instantly and ask questions as they went. They walked away understanding how websites are built and, more importantly, with the confidence to open a blank file and start building on their own.",
     nequeimg: "poster.png",
-    bg: "#fde047"
+    bg: "#fde047",
+     poster: "/pixelxposter.jpeg",           // was .png
+    image1: "/pixelx-1.jpg",
+    image2: "/pixelx-2.jpg",
+    image3: "/pixelx-3.jpg",
   },
   {
     title: "DYE 2025",
@@ -46,7 +58,11 @@ export const eventsByYear = {
     neque: "The event covered five domains — Web Development, UI/UX Design, AI/ML, Cloud Computing, and Cybersecurity — each presented with beginner-friendly explanations, real-world case studies, and practical learning paths. Emerging technologies like AI, Web3, and cloud ecosystems were woven into discussions to give students a forward-looking perspective on the industry. A fun segment called 'Tech Word or Trash Word' kept energy high before a community-focused close encouraging GDGC membership.",
     neque1: "DYE 2025 recorded an impressive 114 participants, driven by a strong pre-event marketing strategy combining digital outreach and on-campus engagement. Attendees remained actively involved throughout domain sessions and the interactive Q&A, with discussions staying lively from start to finish. The post-event montage reel reached 7K views, extending the event's impact well beyond the session itself and inspiring students to explore tech with clarity and confidence.",
     nequeimg: "poster.png",
-    bg: "#f472b6"
+    bg: "#f472b6",
+     poster: "/dyeposter.png",               // already correct
+    image1: "/dye-1.png",
+    image2: "/dye-2.jpg",
+    image3: "/dye-3.png",
   },
   {
     title: "CLOUD STUDY JAMS 2025",
@@ -57,7 +73,11 @@ export const eventsByYear = {
     neque: "The session introduced the Study Jams campaign structure — timeline, credits, certifications, and rewards — followed by clear explanations of cloud concepts like Virtual Machines, storage, and service models including IaaS, PaaS, and SaaS. A live demonstration walked students through redeeming credits and enrolling in the program, followed by a hands-on walkthrough of creating a Virtual Machine via both the Console UI and Cloud Shell CLI.",
     neque1: "The session engaged 85 participants who remained active throughout live demonstrations and a Q&A covering labs, credits, and common troubleshooting scenarios. The hands-on format effectively reduced the intimidation factor of entering a new technical domain, helping students see cloud computing as immediately accessible. Attendees left with a solid foundation in cloud concepts and the confidence to dive into hands-on labs and certification tracks right away.",
     nequeimg: "poster.png",
-    bg: "#c084fc"
+    bg: "#c084fc",
+    poster: "/dyeposter.png",               // already correct
+    image1: "/dye-1.png",
+    image2: "/dye-2.jpg",
+    image3: "/dye-3.png",
   },
   {
     title: "INFO SESSION 2025",
@@ -68,7 +88,11 @@ export const eventsByYear = {
     neque: "The session opened with an address by the Faculty Advisor on balancing academics with practical skills, followed by a detailed overview of GDGC's global presence, mission, and opportunities like the Solution Challenge and Google Summer of Code. Club structure, technical and non-technical domains, and the importance of open-source culture, GitHub collaboration, and portfolio development were all covered to help students understand how to make the most of their time in the community.",
     neque1: "A guest session by an Amazon SDE Intern brought real-world perspective on DSA, project building, hackathons, networking, and navigating internship applications. Over 60 students participated, with a highly engaged Q&A addressing AI's role in the industry, domain selection, and how to get started from scratch. Attendees left with clear direction, actionable career-building strategies, and genuine motivation to actively participate in GDGC and make the most of their engineering journey.",
     nequeimg: "poster.png",
-    bg: "#fb923c"
+    bg: "#fb923c",
+    poster: "/dyeposter.png",               // already correct
+    image1: "/dye-1.png",
+    image2: "/dye-2.jpg",
+    image3: "/dye-3.png",
   },
 ],
 "2024-25": [
@@ -281,7 +305,7 @@ const EventCard = ({ event, onMoreInfo, scale = 1 }) => (
       <div className='relative flex-shrink-0'>
         <div className='relative overflow-hidden rounded-xl sm:rounded-2xl shadow-md group-hover:shadow-xl transition-shadow duration-300'>
           <img
-            src="/poster.png"
+            src={event.poster || "/poster.png"}
             alt={event.title}
             className='w-screen h-32 sm:w-60 sm:h-60 object-cover transform group-hover:scale-105 transition-transform duration-500'
             
