@@ -63,29 +63,11 @@ const Hero = () => {
             </div>
 
             <div className="flex  bg-[#000000] flex-col md:flex-row justify-center items-center rounded-b-4xl border-2 border-white/40 shadow-[0_0_8px_rgba(255,255,255,0.85)] max-w-3xl mx-auto px-6 md:px-22 py-18 gap-10 md:gap-22">
-              <div className="w-full md:scale-150">
-                <img
-                  src="https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/1778439455443__buildweek.jpeg"
-                  alt="Build Week"
-                  className="rounded-sm "
-                />
-              </div>
-
-              <div className="flex flex-col gap-6 text-center md:text-left">
-                <h2 className="text-2xl md:text-3xl font-bold text-white">
-                  GDGC MJCET × HORIZON presents: EPISODE 4 — BUILD WEEK
-                </h2>
-
-                <div className="text-white text-base md:text-lg">
-                  This summer, make every day of your vacation count. Pick a domain, sharpen your skills, and start building alongside people who are just as driven and passionate as you are.
-                </div>
-
-                <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 justify-center md:justify-start">
-                  {/* <span className='px-6 py-1 rounded-full border border-purple-400 shadow-sm shadow-purple-400 text-center'>
-                    {/* <a href="/buildweek-form">Register Now</a> */}
-                  {/* </span> */}
-                </div>
-              </div>
+              <h2 className="font-medium text-lg md:text-3xl text-center bg-linear-to-r from-[#F8D8D8] to-[#CDF6C5] bg-clip-text text-transparent">
+                No Live Event right now
+                <br></br>
+                Scroll for past events
+              </h2>
             </div>
           </div>
         </motion.div>
