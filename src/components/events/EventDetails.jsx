@@ -110,7 +110,7 @@ const EventDetails = () => {
                     <div className='absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
                 </div>
             </div>
-            <div className='flex flex-col-reverse md:flex-col text-right lg:flex-row-reverse gap-6 sm:gap-8 lg:gap-12 xl:gap-22 items-center'>
+            <div className='flex flex-col-reverse md:flex-col lg:flex-row-reverse gap-6 sm:gap-8 lg:gap-12 xl:gap-22 items-center'>
                 <div className='flex-1'>
                     {/* <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">Neque</h2> */}
                     <p className="text-gray-300 leading-relaxed text-sm sm:text-base">{event.neque1}</p>

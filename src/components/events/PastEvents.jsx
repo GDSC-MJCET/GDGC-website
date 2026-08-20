@@ -3,102 +3,231 @@ import { ChevronDown } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 export const eventsByYear = {
-"2025-26": [
+"2025-26":[
+  // 1. ANTIGRAVITY 2.0
+  {
+    title: "ANTIGRAVITY 2.0",
+    date: "20th",
+    month: "June, 2026",
+    desc: "A hands-on technical workshop exploring Antigravity 2.0, agentic AI, and specification-driven development, featuring expert-led sessions, live application building, and practical insights into AI-powered software development.",
+    overview: "The Building the Future with Antigravity 2.0 workshop, conducted on 20th June 2026, was organized by GDGC MJCET in collaboration with AI Community Hyderabad. The hands-on technical workshop was designed for developers, builders, and technology enthusiasts seeking practical exposure to modern AI development and agentic workflows.",
+    neque: "The session focused on AI updates and agentic development, specification-driven development with Antigravity 2.0, AI application development, and modern AI-assisted software workflows. Key sessions included an introduction to AI Community Hyderabad, insights into Antigravity 2.0's agentic interface, a session on specification-driven development, and a live demonstration of building an AI-powered diet plan generator using Gemini.",
+    neque1: "The workshop saw participation from 65 students, with strong engagement throughout the technical sessions and live demonstrations. The hands-on format allowed participants to observe modern AI development workflows in practice. The networking session provided an opportunity to interact with speakers and the broader developer community. Participants gained practical insights into agentic AI and specification-driven development.",
+    nequeimg: "poster.png",
+    bg: "#a78bfa",
+    poster: "/antigravityposter.jpeg",
+    image1: "/antigravityI.JPG",
+    image2: "/antigravityII.JPG",
+    image3: "/antigravityIII.JPG",
+    highlights: [
+      "65 participants",
+      "Live demo: diet plan generator with Gemini",
+      "Speakers: Jay Thakkar, Shruti Mishra, Tushar Kumar Shah, Md. Moinuddin"
+    ]
+  },
+
+  // 2. EPISODE 4: BUILD WEEK
+  {
+    title: "EPISODE 4: BUILD WEEK",
+    date: "10th – 26th",
+    month: "May, 2026",
+    desc: "A multi-domain technical and project-based learning initiative bringing together 154 student developers and tech enthusiasts for hands-on workshops across UI/UX, Web Development, Cloud, AI/ML, Cybersecurity, DSA, and Generative AI.",
+    overview: "Episode 4: Build Week was organized by Google Developer Groups on Campus MJCET in collaboration with Horizon Research Group as a practical and project-oriented learning initiative during the summer break. The program brought together students from diverse backgrounds to explore emerging technologies through structured workshops, interactive sessions, and guided hands-on learning.",
+    neque: "Spanning eight technical domains, including UI/UX, Cloud Computing, Cybersecurity, Web Development, Generative AI, AI/ML, and DSA, Build Week provided participants with opportunities to strengthen their technical foundations, gain industry-relevant exposure, and apply their learning through projects. Each track was led by experienced mentors and included hands-on sessions, assignments, and project development.",
+    neque1: "The program brought together 154 participants across its various tracks, creating a collaborative online learning environment. The alternate-day structure allowed consistent engagement with each domain. The combination of workshops, guided exercises, and project development encouraged active participation and peer learning. Participants gained practical skills, industry-relevant exposure, and certificates upon completion.",
+    nequeimg: "poster.png",
+    bg: "#fbbf24",
+    poster: "/buildweekposter.jpeg",
+    image1: "/buildweekI.PNG",
+    image2: "/buildweekII.PNG",
+    image3: "/buildweekIII.png",
+    highlights: [
+      "154 participants",
+      "8 technical domains",
+      "Project-based learning with certificates"
+    ]
+  },
+
+  // 3. BUG BOUNTY
+  {
+    title: "BUG BOUNTY",
+    date: "15th",
+    month: "April, 2026",
+    desc: "An intensive workshop on ethical hacking and bug bounty hunting, led by a highly accomplished cybersecurity professional, covering vulnerability discovery, responsible disclosure, and real‑world attack techniques.",
+    overview: "The Bug Bounty Workshop was held on 15th April 2026, featuring an expert speaker known for his achievements in the bug bounty community. The session provided hands‑on training in identifying security flaws in web applications, mobile apps, and APIs, and taught participants the art of writing effective vulnerability reports and navigating disclosure processes.",
+    neque: "The workshop began with an introduction to the bug bounty ecosystem, platforms like HackerOne and Bugcrowd, and the legal/ethical aspects of responsible disclosure. The speaker demonstrated common vulnerabilities (OWASP Top 10) through live attack scenarios, covering SQL injection, XSS, CSRF, and business logic flaws. Participants practiced using tools like Burp Suite, Nmap, and Postman in a sandboxed environment with real‑time guidance.",
+    neque1: "More than 50 students attended, many with no prior security background. The interactive nature allowed participants to ask questions and try techniques alongside the instructor. By the end, attendees had a solid grasp of bug hunting methodologies and were motivated to start their own security research. The speaker also shared career advice and resources for further learning.",
+    nequeimg: "poster.png",
+    bg: "#f87171",
+    poster: "/bugbountyposter.jpeg",
+    image1: "/BugBounty.jpg",
+    image2: "/BugBountyII.jpg ",
+    image3: "/bugbountyIII.png",
+    highlights: [
+      "50+ participants",
+      "Live penetration testing demos",
+      "Tools: Burp Suite, Nmap, Postman"
+    ]
+  },
+
+  // 4. GSC INFO SESSION
+  {
+    title: "GSC INFO SESSION",
+    date: "3rd",
+    month: "April, 2026",
+    desc: "An informative and technical session guiding 498 students through the Google Solutions Challenge 2026, covering problem selection, ideation, project development, Google technologies, registration, evaluation, and strategies for building impactful real-world solutions.",
+    overview: "The Google Solutions Challenge Info Session, organized by GDGC MJCET, was conducted to guide students through the Google Solutions Challenge 2026 and help them understand how to approach the competition effectively. The session introduced participants to the challenge structure, problem statements, registration process, project development strategies, and ways to build impactful solutions using Google technologies.",
+    neque: "The session emphasized that the Solutions Challenge extends beyond conventional hackathon development, encouraging students to address meaningful real-world problems aligned with the UN Sustainable Development Goals (SDGs). Participants were guided to approach projects with a focus on impact, usability, scalability, and meaningful application of technology. Detailed walkthroughs of the registration process and evaluation criteria were provided.",
+    neque1: "The session recorded participation from 498 students, making it one of the largest informational sessions conducted by GDGC MJCET. The online format enabled students to access guidance on both technical and strategic aspects. The detailed registration walkthrough and discussion around project ideation, evaluation, and submission provided practical clarity on how to begin their Solutions Challenge journey.",
+    nequeimg: "poster.png",
+    bg: "#38bdf8",
+    poster: "/gscinfosessionposter.jpeg",
+    image1: "/gscinfosessionI.jpg",
+    image2: "/gscinfosessionII.jpg",
+    image3: "/info-session-26.jpeg",
+    highlights: [
+      "498 participants",
+      "Covered 5 problem statements + Open Innovation track",
+      "Guidance on Google technologies & evaluation criteria"
+    ]
+  },
+
+  // 5. TECH FACE-OFF
   {
     title: "TECH FACE-OFF",
     date: "12th & 13th",
     month: "February, 2026",
     desc: "Tech Face-Off: The Verdict, GDGC MJCET's flagship event, was a two-day inter-club debate that brought together top student chapters to engage in high-level discussions on real-world technology issues.",
     overview: "Conducted on 12th and 13th February 2026, Tech Face-Off brought together student chapters in a competitive debate format centered around contemporary tech themes. Spanning multiple rounds from prelims to the grand finale, participants engaged in research-backed arguments, rebuttals, and critical analysis under time constraints, emphasizing clarity of thought, depth of understanding, and disciplined expression.",
-    neque: "Tech Face-Off was structured as a multi-stage debate progressing through a Round of 16, Quarterfinals, Semifinals, and a Grand Finale. Topics spanned AI ethics, system design, cybersecurity, and emerging tech, with teams delivering research-backed arguments and sharp rebuttals under time pressure. An independent fact-checking panel ensured credibility, while experienced judges evaluated logic, structure, and rebuttal quality throughout every round.",
-    neque1: "The event drew 65 students from 13 clubs, making it one of the most collaborative inter-club engagements of the year. Consistent audience involvement extended discussions beyond competing teams to the entire room, fostering shared learning. Participants left with stronger analytical thinking, structured communication skills, and a sharper ability to engage critically with real-world technological challenges.",
+    neque: "Tech Face-Off was structured as a multi-stage debate progressing through Round of 16, Quarterfinals, Semifinals, and a Grand Finale. Topics spanned AI ethics, system design, cybersecurity, and emerging tech. An independent fact-checking panel ensured credibility, while experienced judges evaluated logic, structure, and rebuttal quality.",
+    neque1: "The event drew 65 students from 13 clubs, making it one of the most collaborative inter-club engagements. Consistent audience involvement extended discussions beyond competing teams to the entire room. Participants left with stronger analytical thinking, structured communication skills, and a sharper ability to engage critically with real-world technological challenges.",
     nequeimg: "poster.png",
     bg: "#4ade80",
-     poster: "/techfaceoffposter.jpeg",      // was .png
+    poster: "/techfaceoffposter.jpeg",
     image1: "/tech-faceoff-1.jpeg",
     image2: "/tech-faceoff-2.jpeg",
     image3: "/tech-faceoff-3.jpg",
+    highlights: [
+      "65+ participants from 13 clubs",
+      "Multi-stage debate with fact-checking panel",
+      "Topics on AI, cybersecurity, and system design"
+    ]
   },
+
+  // 6. FPTR
   {
-    title: "From Protection to Response",
+    title: "FPTR",
     date: "27th",
     month: "November, 2025",
     desc: "From Protection to Response — an industry-oriented cybersecurity session by IEEE CS and GDGC MJCET, focused on real-world threats and how modern defense systems respond to them.",
     overview: "Conducted on 27th November 2025, this session introduced students to the fundamentals of cybersecurity, moving beyond basic protection to understanding incident response and real-world attack scenarios. Led by industry expert Mr. Mahesh Nirati, the session combined conceptual clarity with practical insights into how security systems function today.",
-    neque: "The session covered the CIA Triad, modern threats like malware, phishing, APTs, and zero-day attacks, along with real-world case studies highlighting social engineering tactics. Insights into next-gen firewalls and incident response frameworks were shared, giving students a realistic picture of how security professionals operate. The session also explored career paths and the skills needed to break into the cybersecurity domain.",
-    neque1: "Around 50 students attended and remained actively engaged through real-world examples and interactive discussions that helped connect theory to practice. The Q&A segment allowed students to dig deeper into attack types, organizational defense strategies, and career opportunities in security. Attendees left with a clearer understanding of how cyberattacks work and why thinking critically about security is essential in today's landscape.",
+    neque: "The session covered the CIA Triad, modern threats like malware, phishing, APTs, and zero-day attacks, along with real-world case studies highlighting social engineering tactics. Insights into next-gen firewalls and incident response frameworks were shared, giving students a realistic picture of security operations. Career paths and skills needed in cybersecurity were also explored.",
+    neque1: "Around 50 students attended and remained engaged through real-world examples and interactive discussions that connected theory to practice. The Q&A allowed students to dig deeper into attack types and defense strategies. Attendees left with a clearer understanding of how cyberattacks work and the importance of thinking critically about security.",
     nequeimg: "poster.png",
     bg: "#60a5fa",
-    poster: "/frtpposter.jpeg",            // was .png
-    image1: "/frtp-1.jpg",                  // was .png
-    image2: "/frtp-2.jpg",                  // was .png
-    image3: "/frtp-3.jpg",                  
+    poster: "/frtpposter.jpeg",
+    image1: "/frtp-1.jpg",
+    image2: "/frtp-2.jpg",
+    image3: "/frtp-3.jpg",
+    highlights: [
+      "50+ attendees",
+      "Industry expert from IEEE CS",
+      "Live case studies on APTs and zero-day attacks"
+    ]
   },
+
+  // 7. PIXELX
   {
     title: "PIXELX",
     date: "22nd",
     month: "November, 2025",
     desc: "PixelX was a hands-on web development workshop by GDGC MJCET, designed to introduce students to the fundamentals of HTML, CSS, and JavaScript through practical, build-focused learning.",
     overview: "PixelX, conducted by GDGC MJCET on 22nd November 2025, was a beginner-friendly web development workshop covering HTML, CSS, and JavaScript. The session focused on learning by doing, taking participants from basic structure to building interactive web projects within a single day.",
-    neque: "The workshop followed a step-by-step progression through HTML, CSS, and JavaScript, where participants built a portfolio webpage and a Rock-Paper-Scissors game from scratch. Modern concepts like Flexbox, Grid, and DOM manipulation were covered through live coding rather than passive theory. Every concept was immediately applied to a real project, making the learning tangible and rewarding from the very first hour.",
-    neque1: "Around 30 students participated actively through live coding, real-time doubt solving, and peer discussions that kept the session collaborative throughout. The hands-on format meant participants could see the results of every change instantly and ask questions as they went. They walked away understanding how websites are built and, more importantly, with the confidence to open a blank file and start building on their own.",
+    neque: "The workshop followed a step-by-step progression through HTML, CSS, and JavaScript, where participants built a portfolio webpage and a Rock-Paper-Scissors game from scratch. Modern concepts like Flexbox, Grid, and DOM manipulation were covered through live coding rather than passive theory. Every concept was immediately applied to a real project, making learning tangible.",
+    neque1: "Around 30 students participated actively through live coding, real-time doubt solving, and peer discussions. The hands-on format meant participants could see results instantly. They walked away understanding how websites are built and with the confidence to start building on their own.",
     nequeimg: "poster.png",
     bg: "#fde047",
-     poster: "/pixelxposter.jpeg",           // was .png
+    poster: "/pixelxposter.jpeg",
     image1: "/pixelx-1.jpg",
     image2: "/pixelx-2.jpg",
     image3: "/pixelx-3.jpg",
+    highlights: [
+      "30+ participants",
+      "Built a portfolio + Rock-Paper-Scissors game",
+      "Live coding with instant feedback"
+    ]
   },
+
+  // 8. DYE 2025
   {
     title: "DYE 2025",
     date: "17th",
     month: "October, 2025",
-    desc: "A multi-domain technical event introducing students to Web Development, AI/ML, Cloud and Cybersecurity, combining learning, interaction, and community engagement.",
+    desc: "A multi-domain technical event introducing students to Web Development, AI/ML, Cloud and Cybersecurity, combining learning, interaction, and community engagement to kickstart their tech journey.",
     overview: "Doodle Your Engineering, organized by GDGC MJCET on 17th October 2025, was a technical exploratory event designed for first and second-year students. The session introduced participants to multiple technology domains, providing a broad understanding of career paths and industry trends through informative talks, interactive segments and real-world insights.",
-    neque: "The event covered five domains — Web Development, UI/UX Design, AI/ML, Cloud Computing, and Cybersecurity — each presented with beginner-friendly explanations, real-world case studies, and practical learning paths. Emerging technologies like AI, Web3, and cloud ecosystems were woven into discussions to give students a forward-looking perspective on the industry. A fun segment called 'Tech Word or Trash Word' kept energy high before a community-focused close encouraging GDGC membership.",
-    neque1: "DYE 2025 recorded an impressive 114 participants, driven by a strong pre-event marketing strategy combining digital outreach and on-campus engagement. Attendees remained actively involved throughout domain sessions and the interactive Q&A, with discussions staying lively from start to finish. The post-event montage reel reached 7K views, extending the event's impact well beyond the session itself and inspiring students to explore tech with clarity and confidence.",
+    neque: "The event covered five domains — Web Development, UI/UX Design, AI/ML, Cloud Computing, and Cybersecurity — each presented with beginner-friendly explanations, real-world case studies, and practical learning paths. Emerging technologies like AI, Web3, and cloud ecosystems were woven into discussions. A fun segment 'Tech Word or Trash Word' kept energy high before a community-focused close encouraging GDGC membership.",
+    neque1: "DYE 2025 recorded an impressive 114 participants, driven by a strong pre-event marketing strategy. Attendees remained actively involved throughout domain sessions and the interactive Q&A. The post-event montage reel reached 7K views, extending the event's impact beyond the session and inspiring students to explore tech with clarity and confidence.",
     nequeimg: "poster.png",
     bg: "#f472b6",
-     poster: "/dyeposter.png",               // already correct
+    poster: "/dyeposter.png",
     image1: "/dye-1.png",
     image2: "/dye-2.jpg",
     image3: "/dye-3.png",
+    highlights: [
+      "114 participants",
+      "5 technical domains covered",
+      "7K+ views on post-event reel"
+    ]
   },
+
+  // 9. GCSJ INFO SESSION
   {
-    title: "CLOUD STUDY JAMS 2025",
+    title: "GCSJ INFO SESSION",
     date: "3rd",
     month: "October, 2025",
-    desc: "An introductory session on Google Cloud Study Jams, featuring cloud fundamentals, live demonstrations and hands-on guidance to begin your Google Cloud journey.",
+    desc: "An introductory session on Google Cloud Study Jams, covering how to apply through GDGC MJCET, cloud fundamentals, live demonstrations, and hands-on guidance to begin your Google Cloud journey.",
     overview: "The Google Cloud Study Jams Info Session, conducted by GDGC MJCET on 3rd October 2025, introduced students to the Google Cloud Study Jams initiative and its learning ecosystem. The session focused on building a foundational understanding of cloud computing and guiding participants through accessing Google Cloud resources, completing hands-on labs and earning certifications.",
-    neque: "The session introduced the Study Jams campaign structure — timeline, credits, certifications, and rewards — followed by clear explanations of cloud concepts like Virtual Machines, storage, and service models including IaaS, PaaS, and SaaS. A live demonstration walked students through redeeming credits and enrolling in the program, followed by a hands-on walkthrough of creating a Virtual Machine via both the Console UI and Cloud Shell CLI.",
-    neque1: "The session engaged 85 participants who remained active throughout live demonstrations and a Q&A covering labs, credits, and common troubleshooting scenarios. The hands-on format effectively reduced the intimidation factor of entering a new technical domain, helping students see cloud computing as immediately accessible. Attendees left with a solid foundation in cloud concepts and the confidence to dive into hands-on labs and certification tracks right away.",
+    neque: "The session introduced the Study Jams campaign structure — timeline, credits, certifications, and rewards — followed by clear explanations of cloud concepts like Virtual Machines, storage, and service models including IaaS, PaaS, and SaaS. A live demonstration walked students through redeeming credits and enrolling, followed by a hands-on walkthrough of creating a Virtual Machine via both the Console UI and Cloud Shell CLI.",
+    neque1: "The session engaged 85 participants who remained active throughout live demonstrations and a Q&A covering labs, credits, and troubleshooting. The hands-on format reduced the intimidation factor, helping students see cloud computing as immediately accessible. Attendees left with a solid foundation in cloud concepts and the confidence to dive into hands-on labs and certification tracks.",
     nequeimg: "poster.png",
     bg: "#c084fc",
-    poster: "/dyeposter.png",               // already correct
-    image1: "/dye-1.png",
-    image2: "/dye-2.jpg",
-    image3: "/dye-3.png",
+    poster: "/gcsjinfosessionposter.png",
+    image1: "/gcsjinfosessionI.jpg",
+    image2: "/gcsjinfosessionII.jpg",
+    image3: "/9.PNG",
+    highlights: [
+      "85 participants",
+      "Live VM demo on Google Cloud Console",
+      "Certification pathways & registration explained"
+    ]
   },
+
+  // 10. GDGC INFO SESSION
   {
-    title: "INFO SESSION 2025",
+    title: "GDGC INFO SESSION",
     date: "4th",
     month: "September, 2025",
-    desc: "An orientation session introducing GDGC MJCET, its opportunities, and career-building insights to help freshers kickstart their journey.",
+    desc: "An orientation session introducing GDGC MJCET, its opportunities, and career-building insights to help freshers kickstart their journey with clarity, skills, and community support.",
     overview: "The GDGC MJCET Fresher's Information Session 2025, conducted on 4th September 2025, served as an introductory and orientation session for incoming students. Organized virtually, the session aimed to familiarize first-year engineering students with GDGC's mission, structure and opportunities for technical and professional growth.",
-    neque: "The session opened with an address by the Faculty Advisor on balancing academics with practical skills, followed by a detailed overview of GDGC's global presence, mission, and opportunities like the Solution Challenge and Google Summer of Code. Club structure, technical and non-technical domains, and the importance of open-source culture, GitHub collaboration, and portfolio development were all covered to help students understand how to make the most of their time in the community.",
-    neque1: "A guest session by an Amazon SDE Intern brought real-world perspective on DSA, project building, hackathons, networking, and navigating internship applications. Over 60 students participated, with a highly engaged Q&A addressing AI's role in the industry, domain selection, and how to get started from scratch. Attendees left with clear direction, actionable career-building strategies, and genuine motivation to actively participate in GDGC and make the most of their engineering journey.",
+    neque: "The session opened with an address by the Faculty Advisor on balancing academics with practical skills, followed by a detailed overview of GDGC's global presence, mission, and opportunities like the Solution Challenge and Google Summer of Code. Club structure, technical and non-technical domains, and the importance of open-source culture, GitHub collaboration, and portfolio development were all covered. A guest session by an Amazon SDE Intern provided real-world perspective on DSA, project building, hackathons, networking, and internship applications.",
+    neque1: "Over 60 students participated, with a highly engaged Q&A addressing AI's role, domain selection, and getting started. Attendees left with clear direction, actionable career-building strategies, and motivation to actively participate in GDGC initiatives. The session effectively provided students with clarity and inspiration to make the most of their engineering journey.",
     nequeimg: "poster.png",
     bg: "#fb923c",
-    poster: "/dyeposter.png",               // already correct
+    poster: "/gdgcinfosessionposter.png",
     image1: "/dye-1.png",
     image2: "/dye-2.jpg",
     image3: "/dye-3.png",
-  },
+    highlights: [
+      "60+ participants",
+      "Guest talk by Amazon SDE Intern",
+      "Focus on open-source and career building"
+    ]
+  }
 ],
 "2024-25": [
   {
     title: "EPISODE 3: BREAKTHROUGH",
-    date: "5th – 20th",
+    date: "5th – 20th" ,
     month: "May, 2025",
     desc: "A 15-day multi-domain learning program designed to help students explore, build, and grow through structured sessions, hands-on projects, and consistent practice.",
     overview: "Episode 3: Breakthrough was a 15-day online learning program conducted from May 5th to May 20th, organized by GDGC MJCET in collaboration with Horizon Research Group. The event was designed to provide a structured and consistent learning experience across multiple domains — spanning AI/ML, Web Development, App Development, Cloud, Cybersecurity, UI/UX, Game Development, Media, Marketing, and DSA.",
