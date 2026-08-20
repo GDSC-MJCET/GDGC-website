@@ -214,9 +214,9 @@ export const eventsByYear = {
     nequeimg: "poster.png",
     bg: "#fb923c",
     poster: "/gdgcinfosessionposter.png",
-    image1: "/dye-1.png",
-    image2: "/dye-2.jpg",
-    image3: "/dye-3.png",
+    image1: "/iinfo.jpeg",
+    image2: "/iinfoII.jpeg",
+    image3: "/iinfoIII.jpeg",
     highlights: [
       "60+ participants",
       "Guest talk by Amazon SDE Intern",
