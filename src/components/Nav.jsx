@@ -38,7 +38,11 @@ const Nav = ({ bgColor = "#000000" }) => {
     },
   ];
 
-  const menuItems = {"Home" : "/", "Blogs":"/blog/home" ,"Tech Face-off" : "/techfaceoff" , "Events" : "/events", "Adsophos": "/adsophos", "Team" : "/team-page", "Gallery" : "/gallery", "Contact Us" : "/contact"};
+  const menuItems = {"Home" : "/",
+    //  "Blogs":"/blog/home" ,
+    "Tech Face-off" : "/techfaceoff" , "Events" : "/events", "Adsophos": "/adsophos", "Team" : "/team-page",
+    //  "Gallery" : "/gallery", 
+     "Contact Us" : "/contact"};
 
   return (
     <div className="shadow-xl shadow-gray-900/70">
