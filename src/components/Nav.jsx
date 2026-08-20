@@ -49,7 +49,7 @@ const Nav = ({ bgColor = "#000000" }) => {
         className="relative z-100 shadow-xl "
       >
         <div className="flex items-center justify-between px-6 md:px-20 py-4">
-          <img src="/logo.svg" alt="Logo" className="h-9" />
+          <img src="/logo.svg" alt="Logo" className="h-12" />
 
           <ul className="hidden md:flex gap-12 items-center text-black dark:text-white text-sm tracking-wide">
             {Object.entries(menuItems).map(([index,item]) => (

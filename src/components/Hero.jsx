@@ -64,12 +64,12 @@ const Hero = () => {
 
             <div className="flex  bg-[#000000] flex-col md:flex-row justify-center items-center rounded-b-4xl border-2 border-white/40 shadow-[0_0_8px_rgba(255,255,255,0.85)] max-w-3xl mx-auto px-6 md:px-22 py-18 gap-10 md:gap-22">
 
-              <div className="w-full md:scale-150">
-                {/* <img
-                  src="https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/1778439455443__buildweek.jpeg"
+              <div className="w-full md:scale-150 flex justify-center items-center">
+                <img
+                  src="/logo.svg"
                   alt="Build Week"
-                  className="rounded-sm "
-                /> */}
+                  className="rounded-sm w-[70%]"
+                />
               </div>
 
               <div className="flex flex-col gap-6 text-center md:text-left">
