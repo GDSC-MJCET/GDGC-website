@@ -8,7 +8,6 @@ export default function Events() {
       image: "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/1778439455443__buildweek.jpeg",
       color: "#A855F7",
       date: "June 2025",
-      live: true,
     },
     {
       title: "Google Solutions Challenge Info Session",
@@ -42,6 +41,7 @@ export default function Events() {
 
   return (
     <section className="relative py-20 items-center">
+      
       {/* <div className="hidden md:block relative w-full items-center" style={{ height: "380vh" }}>
         {cards.map((card, i) => (
           <div
@@ -76,14 +76,14 @@ export default function Events() {
 </div>
 
 
-      <div className="md:hidden space-y-10 px-4">
+      <div className="md:hidden space-y-10 px-4 relative z-10">
         {cards.map((card, i) => (
           <div
             key={i}
             style={{
               top: `${10 + i * 6}vh`,
             }}
-            className="sticky flex justify-center items-center h-[65vh] w-full mb-10 z-20"
+            className="sticky flex justify-center items-center h-[65vh] w-full mb-10 z-10"
           >
             <EventCard card={card} mobile />
           </div>

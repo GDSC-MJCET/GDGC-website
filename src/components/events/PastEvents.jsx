@@ -13,7 +13,11 @@ export const eventsByYear = {
     neque: "Tech Face-Off was structured as a multi-stage debate progressing through a Round of 16, Quarterfinals, Semifinals, and a Grand Finale. Topics spanned AI ethics, system design, cybersecurity, and emerging tech, with teams delivering research-backed arguments and sharp rebuttals under time pressure. An independent fact-checking panel ensured credibility, while experienced judges evaluated logic, structure, and rebuttal quality throughout every round.",
     neque1: "The event drew 65 students from 13 clubs, making it one of the most collaborative inter-club engagements of the year. Consistent audience involvement extended discussions beyond competing teams to the entire room, fostering shared learning. Participants left with stronger analytical thinking, structured communication skills, and a sharper ability to engage critically with real-world technological challenges.",
     nequeimg: "poster.png",
-    bg: "#4ade80"
+    bg: "#4ade80",
+     poster: "/techfaceoffposter.jpeg",      // was .png
+    image1: "/tech-faceoff-1.jpeg",
+    image2: "/tech-faceoff-2.jpeg",
+    image3: "/tech-faceoff-3.jpg",
   },
   {
     title: "From Protection to Response",
@@ -24,7 +28,11 @@ export const eventsByYear = {
     neque: "The session covered the CIA Triad, modern threats like malware, phishing, APTs, and zero-day attacks, along with real-world case studies highlighting social engineering tactics. Insights into next-gen firewalls and incident response frameworks were shared, giving students a realistic picture of how security professionals operate. The session also explored career paths and the skills needed to break into the cybersecurity domain.",
     neque1: "Around 50 students attended and remained actively engaged through real-world examples and interactive discussions that helped connect theory to practice. The Q&A segment allowed students to dig deeper into attack types, organizational defense strategies, and career opportunities in security. Attendees left with a clearer understanding of how cyberattacks work and why thinking critically about security is essential in today's landscape.",
     nequeimg: "poster.png",
-    bg: "#60a5fa"
+    bg: "#60a5fa",
+    poster: "/frtpposter.jpeg",            // was .png
+    image1: "/frtp-1.jpg",                  // was .png
+    image2: "/frtp-2.jpg",                  // was .png
+    image3: "/frtp-3.jpg",                  
   },
   {
     title: "PIXELX",
@@ -35,7 +43,11 @@ export const eventsByYear = {
     neque: "The workshop followed a step-by-step progression through HTML, CSS, and JavaScript, where participants built a portfolio webpage and a Rock-Paper-Scissors game from scratch. Modern concepts like Flexbox, Grid, and DOM manipulation were covered through live coding rather than passive theory. Every concept was immediately applied to a real project, making the learning tangible and rewarding from the very first hour.",
     neque1: "Around 30 students participated actively through live coding, real-time doubt solving, and peer discussions that kept the session collaborative throughout. The hands-on format meant participants could see the results of every change instantly and ask questions as they went. They walked away understanding how websites are built and, more importantly, with the confidence to open a blank file and start building on their own.",
     nequeimg: "poster.png",
-    bg: "#fde047"
+    bg: "#fde047",
+     poster: "/pixelxposter.jpeg",           // was .png
+    image1: "/pixelx-1.jpg",
+    image2: "/pixelx-2.jpg",
+    image3: "/pixelx-3.jpg",
   },
   {
     title: "DYE 2025",
@@ -46,7 +58,11 @@ export const eventsByYear = {
     neque: "The event covered five domains — Web Development, UI/UX Design, AI/ML, Cloud Computing, and Cybersecurity — each presented with beginner-friendly explanations, real-world case studies, and practical learning paths. Emerging technologies like AI, Web3, and cloud ecosystems were woven into discussions to give students a forward-looking perspective on the industry. A fun segment called 'Tech Word or Trash Word' kept energy high before a community-focused close encouraging GDGC membership.",
     neque1: "DYE 2025 recorded an impressive 114 participants, driven by a strong pre-event marketing strategy combining digital outreach and on-campus engagement. Attendees remained actively involved throughout domain sessions and the interactive Q&A, with discussions staying lively from start to finish. The post-event montage reel reached 7K views, extending the event's impact well beyond the session itself and inspiring students to explore tech with clarity and confidence.",
     nequeimg: "poster.png",
-    bg: "#f472b6"
+    bg: "#f472b6",
+     poster: "/dyeposter.png",               // already correct
+    image1: "/dye-1.png",
+    image2: "/dye-2.jpg",
+    image3: "/dye-3.png",
   },
   {
     title: "CLOUD STUDY JAMS 2025",
@@ -57,7 +73,11 @@ export const eventsByYear = {
     neque: "The session introduced the Study Jams campaign structure — timeline, credits, certifications, and rewards — followed by clear explanations of cloud concepts like Virtual Machines, storage, and service models including IaaS, PaaS, and SaaS. A live demonstration walked students through redeeming credits and enrolling in the program, followed by a hands-on walkthrough of creating a Virtual Machine via both the Console UI and Cloud Shell CLI.",
     neque1: "The session engaged 85 participants who remained active throughout live demonstrations and a Q&A covering labs, credits, and common troubleshooting scenarios. The hands-on format effectively reduced the intimidation factor of entering a new technical domain, helping students see cloud computing as immediately accessible. Attendees left with a solid foundation in cloud concepts and the confidence to dive into hands-on labs and certification tracks right away.",
     nequeimg: "poster.png",
-    bg: "#c084fc"
+    bg: "#c084fc",
+    poster: "/dyeposter.png",               // already correct
+    image1: "/dye-1.png",
+    image2: "/dye-2.jpg",
+    image3: "/dye-3.png",
   },
   {
     title: "INFO SESSION 2025",
@@ -68,7 +88,11 @@ export const eventsByYear = {
     neque: "The session opened with an address by the Faculty Advisor on balancing academics with practical skills, followed by a detailed overview of GDGC's global presence, mission, and opportunities like the Solution Challenge and Google Summer of Code. Club structure, technical and non-technical domains, and the importance of open-source culture, GitHub collaboration, and portfolio development were all covered to help students understand how to make the most of their time in the community.",
     neque1: "A guest session by an Amazon SDE Intern brought real-world perspective on DSA, project building, hackathons, networking, and navigating internship applications. Over 60 students participated, with a highly engaged Q&A addressing AI's role in the industry, domain selection, and how to get started from scratch. Attendees left with clear direction, actionable career-building strategies, and genuine motivation to actively participate in GDGC and make the most of their engineering journey.",
     nequeimg: "poster.png",
-    bg: "#fb923c"
+    bg: "#fb923c",
+    poster: "/dyeposter.png",               // already correct
+    image1: "/dye-1.png",
+    image2: "/dye-2.jpg",
+    image3: "/dye-3.png",
   },
 ],
 "2024-25": [
@@ -80,8 +104,12 @@ export const eventsByYear = {
     overview: "Episode 3: Breakthrough was a 15-day online learning program conducted from May 5th to May 20th, organized by GDGC MJCET in collaboration with Horizon Research Group. The event was designed to provide a structured and consistent learning experience across multiple domains — spanning AI/ML, Web Development, App Development, Cloud, Cybersecurity, UI/UX, Game Development, Media, Marketing, and DSA.",
     neque: "The program followed a multi-domain structure where daily sessions balanced concept-building with hands-on implementation, covering both technical and non-technical fields for a well-rounded experience. Participants were exposed to real-world tools and technologies across domains such as AI, Cloud, and Development. Structured assignments were provided after each domain to reinforce learning through practical application, while collaborative sessions and continuous mentor guidance ensured consistent engagement and support throughout.",
     neque1: "The program saw over 250 registrations, with active participation from students across different colleges and domains. Consistent attendance, interactive sessions, and assignment submissions reflected strong engagement and commitment throughout the 15-day journey. Participants emerged with strong foundational understanding across multiple domains, hands-on experience through structured assignments, and increased confidence in exploring different fields — along with improved consistency and discipline in their approach to learning.",
-    nequeimg: "poster.png",
-    bg: "#a78bfa"
+    nequeimg: "/EPISODE 3_ BREAKTHROUGH.jpg",
+    bg: "#a78bfa",
+    poster: "/EPISODE 3_ BREAKTHROUGH.jpg",
+    image1: "/BT-1.png",
+    image2: "/BT-2.png",
+    image3: "/BT-3.png",
   },
   {
     title: "DEV ARENA",
@@ -91,8 +119,12 @@ export const eventsByYear = {
     overview: "Dev Arena was a two-day hands-on workshop organized by GDGC MJCET in collaboration with MJ Esports and Campus Hydra, conducted on April 23rd and 24th. The event brought together the worlds of game development and artificial intelligence, focusing on building something real rather than just learning concepts. Over the two days, students developed a First-Person Shooter (FPS) game while simultaneously exploring how AI can be integrated to make games more interactive and intelligent.",
     neque: "The event opened with a keynote by the COO of Live Studios on the gaming industry and AI's growing role within it, followed by interactive quizzes and an introduction to Hugging Face Transformers. Participants then moved into a live demonstration of speech-to-text and chatbot integration into Unity before diving into hands-on FPS game development — building core mechanics like player movement and shooting. They then developed an AI assistant named 'Ralfie', enabling voice-based interaction within the game environment, which was progressively enhanced through advanced AI integrations.",
     neque1: "Dev Arena witnessed participation from over 180 students, with strong engagement sustained across both days. The combination of hands-on activities, live demonstrations, and interactive segments — including quizzes, giveaways, and Q&A sessions — created an environment where students actively built, experimented, and asked thoughtful questions. By the end, participants had a working project combining game development and AI, boosting both their confidence and interest in exploring these domains further.",
-    nequeimg: "poster.png",
-    bg: "#f87171"
+    nequeimg: "/DEVARENA.png",
+    bg: "#f87171",
+    poster: "/DEVARENA.png",
+    image1: "/dev-arena-1.JPG",
+    image2: "/dev-arena-3.png",
+    image3: "/dev-arena-2.png",
   },
   {
     title: "DESIGN AND DEV",
@@ -102,8 +134,12 @@ export const eventsByYear = {
     overview: "Design and Dev was a three-day hands-on workshop organized by GDGC MJCET, focused on bridging design and development into one complete learning experience. The workshop took participants from creating a design to turning it into a fully functional product — moving through UI/UX design, web development, and mobile app development as one connected flow rather than separate domains.",
     neque: "Day 1 focused on UI/UX design in Figma, covering layout structuring, color, typography, and spacing, culminating in a complete portfolio hero section with navigation and interactive elements. Day 2 transitioned into web development, converting Figma designs into functional websites using HTML and CSS, with hands-on exploration of responsive design, the box model, Flexbox, and live previews. Day 3 moved into Flutter, transforming the portfolio website into a cross-platform mobile application with UI components, Row/Column layouts, social media integration, and CV download functionality.",
     neque1: "The workshop saw active participation from students across different years, with strong engagement maintained throughout all three days. The structured yet interactive format, combined with continuous mentor support, ensured that students from varying experience levels could keep up and contribute. By the end, participants had a complete portfolio project spanning design, web, and mobile platforms — providing a strong foundation for hackathons, personal projects, and further exploration in both design and development.",
-    nequeimg: "poster.png",
-    bg: "#34d399"
+    nequeimg: "/DESIGN AND DEV.png",
+    bg: "#34d399",
+    poster: "/DESIGN AND DEV.png",
+    image1: "/dd-1.png",
+    image2: "/dd-2.png",
+    image3: "/dd-3.png",
   },
   {
     title: "DSA BOOTCAMP",
@@ -113,8 +149,12 @@ export const eventsByYear = {
     overview: "The DSA Bootcamp organized by GDGC MJCET was a comprehensive 90-day program launched on 2nd January, designed to strengthen participants' understanding of Data Structures and Algorithms. The program adopted an inclusive approach catering to learners across varying skill levels — from beginners to advanced coders — combining a structured curriculum, personalized learning paths, and continuous mentorship to create a dynamic and collaborative environment.",
     neque: "Participants were onboarded through a DSA League Qualifier Test and categorized into four leagues — Alpha, Beta, Gamma, and Omega — for personalized learning. The curriculum was based on Striver's A2Z DSA Course Sheet (455 problems), progressing through fundamentals in Month 1, intermediate topics in Month 2, and advanced concepts including trees, graphs, and dynamic programming in Month 3. League-wise leaderboards, monthly contests, and team-based challenges gamified the experience, while expert mentorship and curated resources from platforms like NeetCode, GeeksforGeeks, and HackerRank provided comprehensive support.",
     neque1: "The bootcamp witnessed enthusiastic participation from students across different academic levels, with consistent interaction through peer discussions, team coding challenges, real-time doubt clarification, and leaderboard tracking. Participants emerged with enhanced understanding of core data structures and algorithms, improved coding discipline, and increased confidence in tackling technical interviews and competitive programming. The program's structured roadmap, combined with mentorship and gamification, transformed learning into an engaging and result-oriented journey that built both technical proficiency and a strategic mindset.",
-    nequeimg: "poster.png",
-    bg: "#fbbf24"
+    nequeimg: "/GDGC DSA BOOTCAMP.jpg",
+    bg: "#fbbf24",
+    poster: "/GDGC DSA BOOTCAMP.jpg",
+    image1: "/DB1.PNG",
+    image2: "/DB2.PNG",
+    image3: "/DB3.PNG",
   },
   {
     title: "SOLUTIONS CHALLENGE INFO SESSION",
@@ -124,8 +164,12 @@ export const eventsByYear = {
     overview: "The Solutions Challenge Information Session was conducted on 15th January 2025 from 7:00 PM to 9:00 PM in an online format, led by Ms. Sanika Chavan — a distinguished winner of the Google Solution Challenge 2024. The session aimed to provide participants with a comprehensive understanding of the challenge, including its structure, evaluation criteria, and effective participation strategies, drawing from the speaker's firsthand experience.",
     neque: "The session presented a detailed overview of the Google Solution Challenge 2024, highlighting its focus in India and the requirement to address 31 predefined problem statements mapped to the UN SDGs. The six-month competition timeline — spanning registration, ideation, pitch deck submission, mentorship bootcamps, prototype development, and the final demonstration — was explained in full. Key emphasis was placed on integrating Google's Gemini models, forming diverse multidisciplinary teams, utilizing technologies like Flutter, Firebase, and Google Cloud, and building iteratively toward an MVP, illustrated through a case study of the winning project 'SpoonShare'.",
     neque1: "The session witnessed active participation from students across various institutions, with strong engagement particularly during the Q&A segment covering team formation, project execution, deployment, and evaluation. Participants left with a clear and structured roadmap for the Solutions Challenge, along with an understanding of user-centric design, practical implementation, and sustainable impact. The session reframed the challenge not merely as a competition but as a valuable platform for learning, innovation, and meaningful contribution to real-world problems through technology.",
-    nequeimg: "poster.png",
-    bg: "#38bdf8"
+    nequeimg: "/SOLUTIONS CHALLENGE INFO SESSION.jpg",
+    bg: "#38bdf8",
+    poster: "/SOLUTIONS CHALLENGE INFO SESSION.jpg",
+    image1: "/SOLUTIONS CHALLENGE INFO SESSION.jpg",
+    image2: "/SOLUTIONS CHALLENGE INFO SESSION.jpg",
+    image3: "/SOLUTIONS CHALLENGE INFO SESSION.jpg",
   },
   {
     title: "TECH FACE-OFF '24",
@@ -135,8 +179,12 @@ export const eventsByYear = {
     overview: "Tech Face-Off: Clash of Clubs, organized by GDGC MJCET in collaboration with the Orators' Club, was a three-day inter-club debate competition held on 17th, 18th, and 20th December 2024. The event brought together students from various technical societies to engage in structured debates on contemporary technological and societal topics, designed to foster critical thinking, communication skills, and collaboration.",
     neque: "The competition followed a multi-stage knockout format — preliminary, quarter-final, semi-final, and grand finale rounds — with debate topics spanning AI, Web3, cybersecurity, remote work, cryptocurrencies, and digital privacy. A balanced evaluation panel comprising faculty members and student judges ensured a dynamic and inclusive atmosphere throughout. The highly competitive Grand Finale centered on encryption versus national security and privacy, with TSIG declared as winners and a Best Speaker award recognizing exceptional oratory.",
     neque1: "The event witnessed enthusiastic participation from multiple student clubs, with participants actively engaging across all rounds through strong collaboration and communication. The inter-club format encouraged networking and peer learning across technical and non-technical student communities, while the inclusion of both faculty and student judges added credibility and diversity to evaluations. Participants emerged with enhanced critical thinking, improved public speaking and argumentation skills, and broader exposure to diverse perspectives on emerging technological issues.",
-    nequeimg: "poster.png",
-    bg: "#fb923c"
+    nequeimg: "/TECH FACE-OFFS.png",
+    bg: "#fb923c",
+    poster: "/TECH FACE-OFFS.png",
+    image1: "/tech24-4.jpeg",
+    image2: "/tech24-2.jpeg",
+    image3: "/tech24-3.jpeg",
   },
   {
     title: "CYBER STRIKERS LEAGUE",
@@ -146,8 +194,12 @@ export const eventsByYear = {
     overview: "Cyber Strikers League was a unique and high-energy event conducted on December 19, 2024, at Ghulam Ahmed Hall by GDGC MJCET. The event creatively blended football-style gameplay with technical quizzes, offering participants an experience that combined strategy, teamwork, and technology in a format unlike anything conventional.",
     neque: "The event introduced a football-inspired gameplay format where quiz performance directly influenced match outcomes, creating a seamless blend of real-time technical knowledge and competitive gameplay. A custom-built game was developed using JavaScript, React, Node.js, Three.js, and Matter.js, deployed over a network-based setup that allowed participants to access and play via a shared IP environment. Throughout the matches, high energy, competitive spirit, humor, and active audience involvement kept the atmosphere lively and engaging from start to finish.",
     neque1: "The event witnessed strong participation from over 120 attendees, with participants, hosts, and the audience remaining actively involved throughout. The unique blend of gaming and learning significantly enhanced engagement while encouraging teamwork, strategic thinking, and quick decision-making. It provided a practical and engaging way to apply technical knowledge in a real-time setting, and strengthened community bonding through an experience that made learning feel genuinely fun and competitive.",
-    nequeimg: "poster.png",
-    bg: "#4ade80"
+    nequeimg: "/CYBER STRIKERS LEAGUE.png",
+    bg: "#4ade80",
+    poster: "/CYBER STRIKERS LEAGUE.png",
+    image1: "/c4.jpg",
+    image2: "/c9.jpg",
+    image3: "/c3.jpg",
   },
   {
     title: "DYE '24",
@@ -157,8 +209,12 @@ export const eventsByYear = {
     overview: "Doodle Your Engineering, held on 13th November 2024 at the Seminar Hall (Block 4), was an engaging and informative session organized by GDG MJCET to help students explore diverse technology domains and make informed decisions about their engineering journey. Designed for both beginners and enthusiasts, the event provided clarity on career paths, skill-building, and personal development within the tech space.",
     neque: "The session delivered comprehensive roadmaps for major tech domains including Web Development, App Development, AI/ML, Cybersecurity, Networking, and Game Development, each led by GDG leads with real-world insights, tools, and resources. Sessions on Git and GitHub fundamentals, collaborative development practices, and building a strong professional presence through LinkedIn and GitHub were woven throughout. Live demonstrations including networking concepts and cybersecurity practices, interactive presentations, and project showcases kept the content practical and engaging.",
     neque1: "The event witnessed enthusiastic participation from a large number of students across different years and branches, who remained actively engaged through interactive demonstrations, discussions, and real-time learning. The diversity of sessions ensured involvement from students with varied interests, fostering a collaborative and inclusive learning environment. Participants left equipped with clear direction, structured roadmaps, and valuable resources to kickstart their journeys — empowered to take initiative, build meaningful projects, and strategically shape their careers in technology.",
-    nequeimg: "poster.png",
-    bg: "#f472b6"
+    nequeimg: "/DOODLE YOUR ENGINEERING.png",
+    bg: "#f472b6",
+    poster: "/DOODLE YOUR ENGINEERING.png",
+    image1: "/DY1.jpg",
+    image2: "/DY5.jpg",
+    image3: "/DY7.jpg",
   },
   {
     title: "INFO SESSION '24",
@@ -168,19 +224,12 @@ export const eventsByYear = {
     overview: "The GDG MJCET Info Session '24, held on 4th October 2024, was an introductory online event aimed at familiarizing students with the vision, mission, and upcoming initiatives of GDG MJCET. The session brought together students, faculty, and industry professionals to set the tone for a year focused on learning, innovation, and community building.",
     neque: "The session introduced GDG MJCET's vision, mission, and roadmap for 2024–2025, unveiled the new governing body and leadership team, and featured an insightful address by the faculty coordinator on balancing academics with skill development. An overview of key Google technologies — including AI, Cloud, Web, and App Development — was followed by the launch announcement of the Gen AI Study Jams campaign. The session also featured an expert talk by Abdul Malik, SDE at Amazon, on engineering growth, networking, and career development, rounded off by an interactive Q&A and distribution of curated learning resources.",
     neque1: "The event witnessed an enthusiastic turnout of around 160 participants, with approximately 80% active attendance. Students were highly engaged throughout, especially during the Q&A and the Gen AI Study Jams announcement, which generated strong excitement for hands-on learning in AI and Cloud. The session successfully fostered interaction between juniors, seniors, and industry professionals, strengthening the sense of community while inspiring students to actively participate in GDG MJCET's upcoming initiatives and pursue continuous learning.",
-    nequeimg: "poster.png",
-    bg: "#60a5fa"
-  },
-  {
-    title: "PRODX",
-    date: "6th",
-    month: "July, 2024",
-    desc: "ProdX was an interactive session on product management where students learned about industry practices, interview strategies, and real-world applications from experienced professionals.",
-    overview: "ProdX was conducted by GDGC MJCET on 6th July 2024 at Seminar Hall, Block 4, with the aim of introducing product management as a career option and giving students a clear understanding of the field. The session covered industry insights, interview preparation, and the role of a product manager, featuring speakers Kondru Sharathchandra, Senior Product Manager at Google, and Purnachandra from Siemens.",
-    neque: "Kondru Sharathchandra focused on interview preparation and product management fundamentals — sharing his career journey, emphasizing the importance of attitude, and explaining the product life cycle using real-world examples from companies like Zomato, Swiggy, CRED, and Foodpanda. Purnachandra then covered the technical aspects of product management, detailing the product life cycle and introducing tools for project management, data analysis, and prototyping, while stressing the importance of staying current with emerging technologies. Both speakers emphasized continuous learning, shared curated resources, and highlighted the value of networking.",
-    neque1: "The event saw active participation from students, with the audience remaining engaged throughout and the Q&A session proving particularly interactive — allowing students to connect directly with speakers and clarify doubts. Overall, the event gave students clear insight into real industry scenarios, interview strategies, and the skills required in product management. The session also motivated many attendees to consider product management as a potential career path and take concrete steps toward skill development.",
-    nequeimg: "poster.png",
-    bg: "#34d399"
+    nequeimg: "/INFO SESSION.png",
+    bg: "#60a5fa",
+    poster: "/INFO SESSION.png",
+    image1: "/info-session-4.jpg",
+    image2: "/info-session-1.jpg",
+    image3: "/info-session-2.jpg",
   },
 ],
 "2023-24": [
@@ -261,6 +310,21 @@ export const eventsByYear = {
     nequeimg: "poster.png",
     bg: "#fb923c"
   },
+  {
+    title: "PRODX",
+    date: "6th",
+    month: "July, 2024",
+    desc: "ProdX was an interactive session on product management where students learned about industry practices, interview strategies, and real-world applications from experienced professionals.",
+    overview: "ProdX was conducted by GDGC MJCET on 6th July 2024 at Seminar Hall, Block 4, with the aim of introducing product management as a career option and giving students a clear understanding of the field. The session covered industry insights, interview preparation, and the role of a product manager, featuring speakers Kondru Sharathchandra, Senior Product Manager at Google, and Purnachandra from Siemens.",
+    neque: "Kondru Sharathchandra focused on interview preparation and product management fundamentals — sharing his career journey, emphasizing the importance of attitude, and explaining the product life cycle using real-world examples from companies like Zomato, Swiggy, CRED, and Foodpanda. Purnachandra then covered the technical aspects of product management, detailing the product life cycle and introducing tools for project management, data analysis, and prototyping, while stressing the importance of staying current with emerging technologies. Both speakers emphasized continuous learning, shared curated resources, and highlighted the value of networking.",
+    neque1: "The event saw active participation from students, with the audience remaining engaged throughout and the Q&A session proving particularly interactive — allowing students to connect directly with speakers and clarify doubts. Overall, the event gave students clear insight into real industry scenarios, interview strategies, and the skills required in product management. The session also motivated many attendees to consider product management as a potential career path and take concrete steps toward skill development.",
+    nequeimg: "/poster.png",
+    bg: "#34d399",
+    poster: "/poster.png",
+    image1: "/poster.png",
+    image2: "/poster.png",
+    image3: "/poster.png",
+  },
 ],
 };
 
@@ -281,7 +345,7 @@ const EventCard = ({ event, onMoreInfo, scale = 1 }) => (
       <div className='relative flex-shrink-0'>
         <div className='relative overflow-hidden rounded-xl sm:rounded-2xl shadow-md group-hover:shadow-xl transition-shadow duration-300'>
           <img
-            src="/poster.png"
+            src={event.poster || "/poster.png"}
             alt={event.title}
             className='w-screen h-32 sm:w-60 sm:h-60 object-cover transform group-hover:scale-105 transition-transform duration-500'
             
