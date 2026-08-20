@@ -17,7 +17,7 @@ const Hero = () => {
         
         <Link to="/score">
         <button className='cursor-pointer flex text-[#ffd428] justify-center items-center w-full mt-6 sm:mt-8 md:mt-10 lg:mt-12 text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl gap-1 sm:gap-2 tracking-tighter hover:gap-3 sm:hover:gap-4 transition-all'>
-          <span className='text-center'>CHECK OUT THE LIVE SCOREBOARD</span> 
+          <span className='text-center'>TOURNAMENT SUMMARY</span> 
           <span>→</span>
         </button>
         </Link>

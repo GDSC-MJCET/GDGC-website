@@ -32,7 +32,7 @@ export default function Events() {
     },
     {
       title: "Tech Face-Off: The Verdict",
-      text: "Tech Face-Off: The Verdict is where chapters go head-to-head in a high-stakes technical debate, judged, challenged, and decided with zero bias and full intensity. This isn’t about who speaks louder, it’s about who thinks deeper and defends better.",
+      text: "Tech Face-Off: The Verdict is where chapters go head-to-head in a high-stakes technical debate, judged, challenged, and decided with zero bias and full intensity. This isn't about who speaks louder, it's about who thinks deeper and defends better.",
       image: "/tech-face-off-l.webp",
       color: "#38BDF8",
       date: "February 2026",
@@ -90,8 +90,7 @@ export default function Events() {
         ))}
       </div>
 
-      <div className="mt-16 flex flex-col md:flex-row gap-6 justify-between items-center max-w-6xl mx-auto px-6">
-        <ActionButton label="Live Events" link={'/buildweek-form'} color="#A855F7" />
+      <div className="mt-16 flex flex-col md:flex-row gap-6 justify-center items-center max-w-6xl mx-auto px-6">
         <ActionButton label="Past Events" link={'/events'}  color="#ffe7a5" />
       </div>
     </section>
