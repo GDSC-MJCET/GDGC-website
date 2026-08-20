@@ -60,6 +60,7 @@ const Nav = ({ bgColor = "#000000" }) => {
                 <Link to={item}>{index}</Link>
               </li>
             ))}
+          
           </ul>
 
           <div className="flex items-center gap-4 md:hidden">
