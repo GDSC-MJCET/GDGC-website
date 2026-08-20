@@ -63,22 +63,23 @@ const Hero = () => {
             </div>
 
             <div className="flex  bg-[#000000] flex-col md:flex-row justify-center items-center rounded-b-4xl border-2 border-white/40 shadow-[0_0_8px_rgba(255,255,255,0.85)] max-w-3xl mx-auto px-6 md:px-22 py-18 gap-10 md:gap-22">
-              <div className="w-full md:scale-150">
+
+              <div className="w-full md:scale-150 flex justify-center items-center">
                 <img
-                  src="https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/1778439455443__buildweek.jpeg"
+                  src="/logo.svg"
                   alt="Build Week"
-                  className="rounded-sm "
+                  className="rounded-sm w-[70%]"
                 />
               </div>
 
               <div className="flex flex-col gap-6 text-center md:text-left">
                 <h2 className="text-2xl md:text-3xl font-bold text-white">
-                  GDGC MJCET × HORIZON presents: EPISODE 4 — BUILD WEEK
+                  No live event right now
                 </h2>
 
-                <div className="text-white text-base md:text-lg">
-                  This summer, make every day of your vacation count. Pick a domain, sharpen your skills, and start building alongside people who are just as driven and passionate as you are.
-                </div>
+                <div className="text-white text-base md:text-lg opacity-60">
+                  Stay tuned — something exciting is always around the corner.
+                </div> 
 
                 <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 justify-center md:justify-start">
                   {/* <span className='px-6 py-1 rounded-full border border-purple-400 shadow-sm shadow-purple-400 text-center'>

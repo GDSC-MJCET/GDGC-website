@@ -8,7 +8,6 @@ export default function Events() {
       image: "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/1778439455443__buildweek.jpeg",
       color: "#A855F7",
       date: "June 2025",
-      live: true,
     },
     {
       title: "Google Solutions Challenge Info Session",
@@ -33,7 +32,7 @@ export default function Events() {
     },
     {
       title: "Tech Face-Off: The Verdict",
-      text: "Tech Face-Off: The Verdict is where chapters go head-to-head in a high-stakes technical debate, judged, challenged, and decided with zero bias and full intensity. This isn’t about who speaks louder, it’s about who thinks deeper and defends better.",
+      text: "Tech Face-Off: The Verdict is where chapters go head-to-head in a high-stakes technical debate, judged, challenged, and decided with zero bias and full intensity. This isn't about who speaks louder, it's about who thinks deeper and defends better.",
       image: "/tech-face-off-l.webp",
       color: "#38BDF8",
       date: "February 2026",
@@ -42,6 +41,7 @@ export default function Events() {
 
   return (
     <section className="relative py-20 items-center">
+      
       {/* <div className="hidden md:block relative w-full items-center" style={{ height: "380vh" }}>
         {cards.map((card, i) => (
           <div
@@ -76,22 +76,21 @@ export default function Events() {
 </div>
 
 
-      <div className="md:hidden space-y-10 px-4">
+      <div className="md:hidden space-y-10 px-4 relative z-10">
         {cards.map((card, i) => (
           <div
             key={i}
             style={{
               top: `${10 + i * 6}vh`,
             }}
-            className="sticky flex justify-center items-center h-[65vh] w-full mb-10 z-20"
+            className="sticky flex justify-center items-center h-[65vh] w-full mb-10 z-10"
           >
             <EventCard card={card} mobile />
           </div>
         ))}
       </div>
 
-      <div className="mt-16 flex flex-col md:flex-row gap-6 justify-between items-center max-w-6xl mx-auto px-6">
-        <ActionButton label="Live Events" link={'/buildweek-form'} color="#A855F7" />
+      <div className="mt-16 flex flex-col md:flex-row gap-6 justify-center items-center max-w-6xl mx-auto px-6">
         <ActionButton label="Past Events" link={'/events'}  color="#ffe7a5" />
       </div>
     </section>

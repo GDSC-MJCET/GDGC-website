@@ -318,7 +318,7 @@ function AppWithRouter() {
               <Route path="contact" element={<ContactUsPage />} />
               <Route path="login" element={<LoginPage />} />
               <Route path="forgotpassword" element={<ForgotPassword />} />
-            {/* <Route path='practice' element={<PracticePage />} /> */}
+              {/* <Route path='practice' element={<PracticePage />} /> */}
               <Route path="/signup-guest" element={<SignUpPage />} />
               <Route path="techfaceoff" element={<TechDebatePage />} />
               <Route path="buildweek-form" element={<BuildWeekForm />} />
@@ -326,7 +326,7 @@ function AppWithRouter() {
               <Route path="events" element={<EventsPage />} />
               <Route path="event-details" element={<EventDetails />} />
               <Route path="team-page" element={<TeamPage />} />
-              <Route path="gallery" element={<GalleryPage />} />
+              {/* <Route path="gallery" element={<GalleryPage />} /> */}
               <Route path='adsophos' element={<Adsophos />}>
             </Route>
             <Route path='photobooth' element={<PhotoBooth />} />
@@ -374,7 +374,7 @@ function AppWithRouter() {
             </Route>
 
             {/* Blog routes (optional, currently unused) */}
-            <Route path="blog" element={<TeamLayout />}>
+            {/* <Route path="blog" element={<TeamLayout />}>
               <Route path="home" element={<BlogHome />} />
               <Route path="editor" element={<BlogWrite />} />
               <Route path="posts" element={<BlogPosts />} />
@@ -382,7 +382,7 @@ function AppWithRouter() {
               <Route path="superadmin-validation" element={<SuperAdminBlogPanel />} />
               <Route path="blog/:blogId" element={<SpecificBlog />} />
               <Route path="help" element={<BlogHelp />} />
-            </Route>
+            </Route> */}
             {/* <Route path="/tweets" element={<TweetHomeLayout />}>
               <Route index element={<FeedPage />} />
               <Route path="me" element={<MyTweetsPage />} />

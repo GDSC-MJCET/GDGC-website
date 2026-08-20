@@ -47,8 +47,7 @@ function TopBadge({ debate }) {
 
 export default function LiveScoreCard() {
   const [debate, setDebate] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [noLiveMatch, setNoLiveMatch] = useState(false);
+  const [noLiveMatch, setNoLiveMatch] = useState(true);
   const [voteCountLeft, setVoteCountLeft] = useState(0);
   const [voteCountRight, setVoteCountRight] = useState(0);
   const [disable,setDisable] = useState(false)
@@ -124,34 +123,22 @@ export default function LiveScoreCard() {
           setDebate(res.data.sendingData);
           setVoteCountLeft(res.data.sendingData.votesLeft);
           setVoteCountRight(res.data.sendingData.votesRight);
-          setLoading(false);
           setNoLiveMatch(false);
         }
       } catch (err) {
         console.error("Debate is finished",err);
         if (mounted) {
-          setLoading(false);
           setNoLiveMatch(true);
         }
       }
     };
 
     fetchDebate();
-    const interval = setInterval(fetchDebate, 30000);
 
     return () => {
       mounted = false;
-      clearInterval(interval);
     };
   }, []);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-white bg-[#0b0b0c] dm-mono">
-        Loading...
-      </div>
-    );
-  }
 
   if (noLiveMatch || !debate) {
     return (

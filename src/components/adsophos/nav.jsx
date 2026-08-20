@@ -119,7 +119,7 @@ const Nav = () => {
                                 <li><a href="/techfaceoff" className="hover:text-red-500 transition-colors">Tech Face-off</a></li>
                                 <li><a href="/events" className="hover:text-red-500 transition-colors">Events</a></li>
                                 <li><a href="/team-page" className="hover:text-red-500 transition-colors">Team</a></li>
-                                <li><a href="/gallery" className="hover:text-red-500 transition-colors">Gallery</a></li>
+                                {/* <li><a href="/gallery" className="hover:text-red-500 transition-colors">Gallery</a></li> */}
                                 <li><a href="/contact" className="hover:text-red-500 transition-colors">Contact Us</a></li>
                             </ul>
                         </div>

@@ -54,7 +54,7 @@ const About = () => {
                     <p className="text-md sm:text-md opacity-90 md:text-xl">
                     Want to witness the debate live? Register as an audience member to attend Tech Face-Off: The Verdict at the Seminar Hall on 12th–13th February 2026</p>
 
-                    <a href='https://forms.gle/8zHnJmLDESzJp1ik6' rel="noopener noreferrer" target="_blank" className="text-[#4286F5] text-xs sm:text-sm self-start mt-4 hover:underline">
+                    <a  rel="noopener noreferrer" target="_blank" className="text-[#4286F5] text-xs sm:text-sm self-start mt-4 hover:underline">
                     Register as Audience <span>→</span>
                     </a>
                 </div>
@@ -93,7 +93,7 @@ const About = () => {
 
                     </p>
 
-                    <a href='https://drive.google.com/file/d/1bIfsck5Fj82EalLUvGM-N21Agdj0tyXn/view?usp=sharing' rel="noopener noreferrer" target="_blank" className="text-[#4286F5] text-xs sm:text-sm self-start mt-4 hover:underline">
+                    <a className="text-[#4286F5] text-xs sm:text-sm self-start mt-4 hover:underline">
                         View Debate Motions  <span>→</span>
                     </a>
              </div> 
