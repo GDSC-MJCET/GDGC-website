@@ -1,34 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ExeCard from "./ExeCard";
-import axios from "axios";
-
-const SERVER = import.meta.env.VITE_SERVER?.replace(/\/$/, "");
+import exeData from "../../execom.json";
 
 const FILTERS = [
   "ALL", "WEB", "UI/UX", "AI/ML", "CYBERSEC", "CLOUD",
   "HR", "MEDIA", "DESIGN", "DOC", "EVENTS", "OPERATIONS", "MARKETING", "DSA", "PR",
 ];
 
+const members = Object.values(exeData.domains).flat();
+
 export default function ExeSection({ activeFilter, setActiveFilter }) {
-  const [members, setMembers] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchMembers = async () => {
-      try {
-        setLoading(true);
-        const { data } = await axios.get(`${SERVER}/api/v1/team?role=EXECOM`);
-        setMembers(data.members || []);
-      } catch (err) {
-        console.error("Failed to fetch EXECOM:", err);
-        setMembers([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchMembers();
-  }, []);
-
   const filtered =
     activeFilter === "ALL" ? members : members.filter((m) => m.domain === activeFilter);
 
@@ -89,9 +70,7 @@ export default function ExeSection({ activeFilter, setActiveFilter }) {
 
       {/* ── Cards grid ── */}
       <div className="px-8 md:px-16">
-        {loading ? (
-          <div className="text-gray-500">Loading...</div>
-        ) : filtered.length === 0 ? (
+        {filtered.length === 0 ? (
           <div className="text-gray-500">No members found</div>
         ) : (
           <div className="grid md:grid-cols-2 gird-cols-1 lg:grid-cols-4 space-y-10 gap-x-8 gap-y-10">

@@ -1,0 +1,488 @@
+{
+  "success": true,
+  "domains": {
+    "PR": [
+      {
+        "_id": "6a0324db25f302fe445cc1ea",
+        "name": "Aliuddin Hussain ",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778590939292__Aliuddin%20Hussain.jpg",
+        "domain": "PR",
+        "role": "EXECOM",
+        "linkedin": "https://www.linkedin.com/in/aliuddin-hussain-201459280?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+        "github": "https://github.com/Aliuddin-H",
+        "instagram": "",
+        "createdAt": "2026-05-12T13:02:19.940Z",
+        "updatedAt": "2026-05-12T13:02:19.940Z",
+        "__v": 0
+      },
+      {
+        "_id": "6a0324a825f302fe445cc1e5",
+        "name": "Haseeb Al Salafi ",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778590887081__Haseeb%20Al%20Salafi.png",
+        "domain": "PR",
+        "role": "EXECOM",
+        "linkedin": "https://www.linkedin.com/in/haseeb-al-salafi-b7b764324",
+        "github": "https://github.com/Hsae7",
+        "instagram": "",
+        "createdAt": "2026-05-12T13:01:28.641Z",
+        "updatedAt": "2026-05-12T13:01:28.641Z",
+        "__v": 0
+      }
+    ],
+    "EVENTS": [
+      {
+        "_id": "6a031fa925f302fe445cc17d",
+        "name": "Sufiyaan Abdul Shafi",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778589607975__Sufiyaan%20Abdul%20Shafi.png",
+        "domain": "EVENTS",
+        "role": "EXECOM",
+        "linkedin": "",
+        "github": "",
+        "instagram": "",
+        "createdAt": "2026-05-12T12:40:09.890Z",
+        "updatedAt": "2026-05-12T12:40:09.890Z",
+        "__v": 0
+      },
+      {
+        "_id": "6a031b3725f302fe445cc154",
+        "name": "Mohammed Rafiq Akhter",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778588468926__Mohammed%20Rafiq%20Akhter.jpg",
+        "domain": "EVENTS",
+        "role": "EXECOM",
+        "linkedin": "",
+        "github": "",
+        "instagram": "",
+        "createdAt": "2026-05-12T12:21:11.394Z",
+        "updatedAt": "2026-05-12T12:21:11.394Z",
+        "__v": 0
+      },
+      {
+        "_id": "6a031a9e25f302fe445cc14d",
+        "name": "Mohammed Omer Waheed Khan ",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778588316925__Mohammed%20Omer%20Waheed%20Khan.jpg",
+        "domain": "EVENTS",
+        "role": "EXECOM",
+        "linkedin": "",
+        "github": "",
+        "instagram": "",
+        "createdAt": "2026-05-12T12:18:38.880Z",
+        "updatedAt": "2026-05-12T12:18:38.880Z",
+        "__v": 0
+      },
+      {
+        "_id": "6a030aa325f302fe445cc04f",
+        "name": "Ayaan Basharath ",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778584638665__Ayaan%20Basharath.png",
+        "domain": "EVENTS",
+        "role": "EXECOM",
+        "linkedin": "",
+        "github": "",
+        "instagram": "",
+        "createdAt": "2026-05-12T11:10:27.809Z",
+        "updatedAt": "2026-05-12T11:17:19.340Z",
+        "__v": 0
+      }
+    ],
+    "DSA": [
+      {
+        "_id": "6a0309aa25f302fe445cc040",
+        "name": "Mohammed Abdul Moid",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778583974855__Mohammed%20Abdul%20Moid.jpg",
+        "domain": "DSA",
+        "role": "EXECOM",
+        "linkedin": " https://www.linkedin.com/in/mohammed-abdul-moid-04a7b62a1?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+        "github": "https://github.com/Morizz00",
+        "instagram": "",
+        "createdAt": "2026-05-12T11:06:18.604Z",
+        "updatedAt": "2026-05-12T11:06:18.604Z",
+        "__v": 0
+      }
+    ],
+    "DESIGN": [
+      {
+        "_id": "69fe23d05457baad44b5bc53",
+        "name": "Mohammed Meesum Hyder",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778262991732__Mohammed%20Meesum%20Hyder.png",
+        "domain": "DESIGN",
+        "role": "EXECOM",
+        "linkedin": "https://www.linkedin.com/in/meesum-hyder-703662301?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
+        "github": "https://github.com/the-meesumhyder",
+        "instagram": "",
+        "createdAt": "2026-05-08T17:56:32.561Z",
+        "updatedAt": "2026-05-08T17:56:32.561Z",
+        "__v": 0
+      },
+      {
+        "_id": "69fe239f5457baad44b5bc4e",
+        "name": "Namirah Fathima",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778262943259__Namirah%20Fathima.jpg",
+        "domain": "DESIGN",
+        "role": "EXECOM",
+        "linkedin": "https://www.linkedin.com/in/namirah-fathima-15a494388",
+        "github": "https://github.com/namirahfathima786",
+        "instagram": "",
+        "createdAt": "2026-05-08T17:55:43.790Z",
+        "updatedAt": "2026-05-08T17:55:43.790Z",
+        "__v": 0
+      },
+      {
+        "_id": "69fe191ac292bc55c4d1997a",
+        "name": "Shaik Afroze",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778260251044__Shaik%20Afroze.jpg",
+        "domain": "DESIGN",
+        "role": "EXECOM",
+        "linkedin": "",
+        "github": "",
+        "instagram": "",
+        "createdAt": "2026-05-08T17:10:50.525Z",
+        "updatedAt": "2026-05-08T17:10:50.525Z",
+        "__v": 0
+      }
+    ],
+    "UI/UX": [
+      {
+        "_id": "69fe23555457baad44b5bc43",
+        "name": "Afzal Hashmi",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778262868177__Afzal%20Hashmi.jpeg",
+        "domain": "UI/UX",
+        "role": "EXECOM",
+        "linkedin": "http://www.linkedin.com/in/afzalhashsyed",
+        "github": "https://github.com/afzalsyedhs",
+        "instagram": "",
+        "createdAt": "2026-05-08T17:54:29.348Z",
+        "updatedAt": "2026-05-08T17:54:29.348Z",
+        "__v": 0
+      },
+      {
+        "_id": "69fe230b5457baad44b5bc39",
+        "name": "Mohammed Zaid",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778262793600__Mohammed%20Zaid.jpg",
+        "domain": "UI/UX",
+        "role": "EXECOM",
+        "linkedin": "https://www.linkedin.com/in/mohammed-zaid-1b84952a0?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+        "github": "https://github.com/MohammedZaid1946",
+        "instagram": "",
+        "createdAt": "2026-05-08T17:53:15.340Z",
+        "updatedAt": "2026-05-08T17:53:15.340Z",
+        "__v": 0
+      }
+    ],
+    "WEB": [
+      {
+        "_id": "69fe22905457baad44b5bc2b",
+        "name": "Daaniyah Khan",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778262671752__Daaniyah%20Khan.jpeg",
+        "domain": "WEB",
+        "role": "EXECOM",
+        "linkedin": "https://in.linkedin.com/in/daaniyah-khan-16023a32a",
+        "github": "https://github.com/daaniyahjkhan?tab=following",
+        "instagram": "",
+        "createdAt": "2026-05-08T17:51:12.334Z",
+        "updatedAt": "2026-05-08T17:51:12.334Z",
+        "__v": 0
+      },
+      {
+        "_id": "69fe22605457baad44b5bc20",
+        "name": "Mohammad Abdul Baseer",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778262623175__Mohammad%20Abdul%20Baseer.jpeg",
+        "domain": "WEB",
+        "role": "EXECOM",
+        "linkedin": "https://in.linkedin.com/in/abdul-baseer-mohammad-08b622388",
+        "github": "https://github.com/AbdulBaseer-01",
+        "instagram": "",
+        "createdAt": "2026-05-08T17:50:24.226Z",
+        "updatedAt": "2026-05-08T17:50:24.226Z",
+        "__v": 0
+      },
+      {
+        "_id": "69fc3b25c292bc55c4d19143",
+        "name": "Syed Mohammed Ali ",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778137893140__Ali.jpg",
+        "domain": "WEB",
+        "role": "EXECOM",
+        "linkedin": "",
+        "github": "",
+        "instagram": "",
+        "createdAt": "2026-05-07T07:11:33.951Z",
+        "updatedAt": "2026-05-07T07:18:34.828Z",
+        "__v": 0
+      },
+      {
+        "_id": "69fc3529dee0bcfb8b8c4d76",
+        "name": "Ayaan Tabrez",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778136360272__Ayaan%20Tabrez.jpg",
+        "domain": "WEB",
+        "role": "EXECOM",
+        "linkedin": "http://linkedin.com/in/ayaantabrez/",
+        "github": "https://github.com/Peasac",
+        "instagram": "https://www.instagram.com/sudhanshusir_chemistry/",
+        "createdAt": "2026-05-07T06:46:01.334Z",
+        "updatedAt": "2026-05-07T07:12:38.001Z",
+        "__v": 0
+      }
+    ],
+    "OPERATIONS": [
+      {
+        "_id": "69fe21605457baad44b5bc03",
+        "name": "Syed Imaduddin",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778603085600__Syed%20Imaduddin.png",
+        "domain": "OPERATIONS",
+        "role": "EXECOM",
+        "linkedin": "https://www.linkedin.com/in/imaduddin-syed-585524388/",
+        "github": "https://github.com/Imad-746",
+        "instagram": "",
+        "createdAt": "2026-05-08T17:46:08.427Z",
+        "updatedAt": "2026-05-12T16:24:46.475Z",
+        "__v": 0
+      },
+      {
+        "_id": "69fe21335457baad44b5bbfe",
+        "name": "Khaja Nomaan Basheer",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778262321941__Khaja%20Nomaan%20Basheer.jpeg",
+        "domain": "OPERATIONS",
+        "role": "EXECOM",
+        "linkedin": "https://www.linkedin.com/in/khaja-nomaan-basheer-3a1a43328?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
+        "github": "https://github.com/nomaan1027-droid",
+        "instagram": "",
+        "createdAt": "2026-05-08T17:45:23.630Z",
+        "updatedAt": "2026-05-08T17:45:23.630Z",
+        "__v": 0
+      }
+    ],
+    "MEDIA": [
+      {
+        "_id": "69fe209e5457baad44b5bbe1",
+        "name": "Nabeela Fatima",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778262173742__Nabeela%20Fatima.jpg",
+        "domain": "MEDIA",
+        "role": "EXECOM",
+        "linkedin": "https://www.linkedin.com/in/nabeela-fatima-279659354/",
+        "github": "https://github.com/nabisnab",
+        "instagram": "",
+        "createdAt": "2026-05-08T17:42:54.460Z",
+        "updatedAt": "2026-05-12T11:07:14.047Z",
+        "__v": 0
+      },
+      {
+        "_id": "69fe20375457baad44b5bbdc",
+        "name": "Syed Liyaqat Ahmed Ali",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778262070612__Syed%20Liyaqat%20Ahmed%20Ali.jpg",
+        "domain": "MEDIA",
+        "role": "EXECOM",
+        "linkedin": "https://www.linkedin.com/in/syed-liyaqat-96863b315?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+        "github": "https://github.com/Syed-Liyaqat",
+        "instagram": "",
+        "createdAt": "2026-05-08T17:41:11.675Z",
+        "updatedAt": "2026-05-08T17:41:11.675Z",
+        "__v": 0
+      },
+      {
+        "_id": "69fe1f60c292bc55c4d19aff",
+        "name": "Safa Maheen",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778261854353__Safa%20Maheen.jpeg",
+        "domain": "MEDIA",
+        "role": "EXECOM",
+        "linkedin": "https://www.linkedin.com/in/safa-maheen-aa6701336?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
+        "github": "https://github.com/safamaheen",
+        "instagram": "",
+        "createdAt": "2026-05-08T17:37:36.490Z",
+        "updatedAt": "2026-05-08T17:37:36.490Z",
+        "__v": 0
+      }
+    ],
+    "CYBERSEC": [
+      {
+        "_id": "69fe1e2ec292bc55c4d19ade",
+        "name": "Kazi omer",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778261549409__Kazi%20omer.jpg",
+        "domain": "CYBERSEC",
+        "role": "EXECOM",
+        "linkedin": "https://linkedin.com/in/kazi-omer",
+        "github": "https://github.com/iamkaziomer",
+        "instagram": "",
+        "createdAt": "2026-05-08T17:32:30.630Z",
+        "updatedAt": "2026-05-08T17:32:30.630Z",
+        "__v": 0
+      }
+    ],
+    "CLOUD": [
+      {
+        "_id": "69fe1df2c292bc55c4d19ad9",
+        "name": "Imaduddin Mohammed ",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778261480371__Imaduddin%20Mohammed.jpeg",
+        "domain": "CLOUD",
+        "role": "EXECOM",
+        "linkedin": "",
+        "github": "",
+        "instagram": "",
+        "createdAt": "2026-05-08T17:31:30.847Z",
+        "updatedAt": "2026-05-08T17:31:30.847Z",
+        "__v": 0
+      },
+      {
+        "_id": "69fe1a21c292bc55c4d199c9",
+        "name": "Ruhina Moin",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778260495863__Ruhina%20Moin.png",
+        "domain": "CLOUD",
+        "role": "EXECOM",
+        "linkedin": "https://www.linkedin.com/in/ruhina-moin-bab8a42a0",
+        "github": "https://github.com/rmx-004",
+        "instagram": "",
+        "createdAt": "2026-05-08T17:15:13.906Z",
+        "updatedAt": "2026-05-08T17:15:13.906Z",
+        "__v": 0
+      }
+    ],
+    "MARKETING": [
+      {
+        "_id": "69fe1d0bc292bc55c4d19ab4",
+        "name": "Ibrahim wajid",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778261257948__Ibrahim%20wajid.jpeg",
+        "domain": "MARKETING",
+        "role": "EXECOM",
+        "linkedin": "www.linkedin.com/in/ibrahimwajid",
+        "github": "https://github.com/ibrahim-wajid",
+        "instagram": "",
+        "createdAt": "2026-05-08T17:27:39.647Z",
+        "updatedAt": "2026-05-08T17:27:39.647Z",
+        "__v": 0
+      },
+      {
+        "_id": "69fe1ccac292bc55c4d19a89",
+        "name": "Farheen Banu",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778600117325__Safura.jpeg",
+        "domain": "MARKETING",
+        "role": "EXECOM",
+        "linkedin": "https://www.linkedin.com/in/farheen-banu-007a05388",
+        "github": "https://github.com/eeenn10",
+        "instagram": "",
+        "createdAt": "2026-05-08T17:26:34.703Z",
+        "updatedAt": "2026-05-08T17:26:34.703Z",
+        "__v": 0
+      },
+      {
+        "_id": "69fe1c35c292bc55c4d19a60",
+        "name": "Mirza Zabiullah Baig ",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778261042668__Mirza%20Zabiullah%20Baig.jpg",
+        "domain": "MARKETING",
+        "role": "EXECOM",
+        "linkedin": "https://www.linkedin.com/in/mirza-zabiullah-baig-799683338",
+        "github": "https://github.com/Mirza1601",
+        "instagram": "",
+        "createdAt": "2026-05-08T17:24:05.278Z",
+        "updatedAt": "2026-05-08T17:24:05.278Z",
+        "__v": 0
+      },
+      {
+        "_id": "69fe1bf0c292bc55c4d19a2b",
+        "name": "Maaz Malik",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778260974903__Maaz%20Malik.jpeg",
+        "domain": "MARKETING",
+        "role": "EXECOM",
+        "linkedin": "www.linkedin.com/in/maaz-malik-245a7a381",
+        "github": "https://github.com/Maazjmk",
+        "instagram": "",
+        "createdAt": "2026-05-08T17:22:56.675Z",
+        "updatedAt": "2026-05-08T17:22:56.675Z",
+        "__v": 0
+      }
+    ],
+    "DOC": [
+      {
+        "_id": "69fe1b94c292bc55c4d19a21",
+        "name": "Tabrez Khan",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778260881828__Tabrez%20Khan.jpeg",
+        "domain": "DOC",
+        "role": "EXECOM",
+        "linkedin": "https://www.linkedin.com/in/tabrez-khan-368657338?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
+        "github": "https://github.com/tabrez-khan123",
+        "instagram": "",
+        "createdAt": "2026-05-08T17:21:24.181Z",
+        "updatedAt": "2026-05-08T17:21:24.181Z",
+        "__v": 0
+      },
+      {
+        "_id": "69fe1b4ec292bc55c4d19a1c",
+        "name": "Linra khan",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778260809829__Linra%20khan.jpg",
+        "domain": "DOC",
+        "role": "EXECOM",
+        "linkedin": "https://www.linkedin.com/in/linra-khan-785585331",
+        "github": "https://github.com/Linraa24",
+        "instagram": "",
+        "createdAt": "2026-05-08T17:20:14.803Z",
+        "updatedAt": "2026-05-08T17:20:14.803Z",
+        "__v": 0
+      },
+      {
+        "_id": "69fe1a89c292bc55c4d199e1",
+        "name": "Misbah Hussain",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778671434822__Misbah%20Hussain.jpg",
+        "domain": "DOC",
+        "role": "EXECOM",
+        "linkedin": "https://in.linkedin.com/in/misbah-hussain-32a96131a",
+        "github": "https://github.com/misaa07",
+        "instagram": "",
+        "createdAt": "2026-05-08T17:16:57.116Z",
+        "updatedAt": "2026-05-13T11:23:55.733Z",
+        "__v": 0
+      }
+    ],
+    "AI/ML": [
+      {
+        "_id": "69fe198bc292bc55c4d1999e",
+        "name": "Rehmath Unnisa",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778260361783__Rehmath%20Unnisa.jpg",
+        "domain": "AI/ML",
+        "role": "EXECOM",
+        "linkedin": "https://www.linkedin.com/in/rehmath-u-3732a9215?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+        "github": "https://github.com/REHMath-unnisa",
+        "instagram": "",
+        "createdAt": "2026-05-08T17:12:43.809Z",
+        "updatedAt": "2026-05-08T17:12:43.809Z",
+        "__v": 0
+      },
+      {
+        "_id": "69fe192fc292bc55c4d1998a",
+        "name": "Sariah Fathima",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778260268191__Sariah%20Fathima.jpeg",
+        "domain": "AI/ML",
+        "role": "EXECOM",
+        "linkedin": "https://www.linkedin.com/in/sariah-fathima",
+        "github": "https://github.com/sariahfhussain",
+        "instagram": "",
+        "createdAt": "2026-05-08T17:11:11.231Z",
+        "updatedAt": "2026-05-08T17:11:11.231Z",
+        "__v": 0
+      }
+    ],
+    "HR": [
+      {
+        "_id": "69fd78fdc292bc55c4d1958c",
+        "name": "Afra Ahmed",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778219259770__Afra%20Ahmed.jpeg",
+        "domain": "HR",
+        "role": "EXECOM",
+        "linkedin": "https://www.linkedin.com/in/afra-ahmed-020509333",
+        "github": "https://github.com/afra9806",
+        "instagram": "https://www.instagram.com/afra9806?igsh=MXh2ZDNxNWlyamRoeg%3D%3D&utm_source=qr",
+        "createdAt": "2026-05-08T05:47:41.775Z",
+        "updatedAt": "2026-05-08T05:47:41.775Z",
+        "__v": 0
+      },
+      {
+        "_id": "69fc3c67c292bc55c4d1917f",
+        "name": "Mohammed Abdul Haseeb",
+        "image": "https://shcumgowsirqqfazrogw.supabase.co/storage/v1/object/public/images/team/1778223921927__Mohammed%20Abdul%20Haseeb.png",
+        "domain": "HR",
+        "role": "EXECOM",
+        "linkedin": "https://www.linkedin.com/in/mohammed-abdul-haseeb-4087a3379/",
+        "github": "https://github.com/mo-abdulhaseeb",
+        "instagram": "https://www.instagram.com/mo_abdulhaseeb/",
+        "createdAt": "2026-05-07T07:16:55.112Z",
+        "updatedAt": "2026-05-08T07:05:23.114Z",
+        "__v": 0
+      }
+    ]
+  }
+}

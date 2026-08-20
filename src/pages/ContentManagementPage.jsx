@@ -10,7 +10,15 @@ import { Card, CardContent } from '@/components/ui/card'
 
 const SERVER = import.meta.env.VITE_SERVER?.replace(/\/$/, '')
 const DIFFICULTIES = ['easy', 'medium', 'hard']
-const LANGUAGES = ['javascript', 'python', 'cpp', 'java']
+const LANGUAGES = ['javascript', 'python', 'python_ml', 'cpp', 'java']
+
+const LANGUAGE_DISPLAY_LABELS = {
+  javascript: 'JavaScript',
+  python: 'Python',
+  python_ml: 'Python (ML)',
+  cpp: 'C++',
+  java: 'Java',
+}
 
 function authHeaders() {
   const auth = JSON.parse(localStorage.getItem('AuthState'))
@@ -125,7 +133,7 @@ function ProblemForm({ initial, onSave, onCancel, saving }) {
         <div>
           <label className={lCls}>Default Language</label>
           <select className="w-full rounded-md border border-white/10 bg-[#0a0a0a] px-3 py-2 text-sm text-white" value={form.defaultLanguage} onChange={(e) => set('defaultLanguage', e.target.value)}>
-            {LANGUAGES.map((l) => <option key={l}>{l}</option>)}
+            {LANGUAGES.map((l) => <option key={l} value={l}>{LANGUAGE_DISPLAY_LABELS[l] || l}</option>)}
           </select>
         </div>
         <div className="col-span-2">
@@ -138,7 +146,7 @@ function ProblemForm({ initial, onSave, onCancel, saving }) {
             {LANGUAGES.map((lang) => (
               <button key={lang} type="button" onClick={() => toggleLanguage(lang)}
                 className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${form.allowedLanguages.includes(lang) ? 'border-white/40 bg-white/10 text-white' : 'border-white/10 text-gray-500 hover:border-white/20'}`}>
-                {lang}
+                {LANGUAGE_DISPLAY_LABELS[lang] || lang}
               </button>
             ))}
           </div>
