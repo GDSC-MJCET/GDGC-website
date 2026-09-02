@@ -84,7 +84,7 @@ const Nav = ({ bgColor = "#000000" }) => {
             mobileClassName="text-neutral-400"
           />
 
-          <a target="_blank" rel="noopener noreferrer" href="https://gdg.community.dev/gdg-on-campus-muffakham-jah-college-of-engineering-and-technology-hyderabad-india/" className=" bg-[#5ddb6e] text-black py-2 px-8 rounded-full text-sm font-semibold">
+          <a target="_blank" rel="noopener noreferrer" href="https://docs.google.com/forms/d/e/1FAIpQLSfMc7dWVyNixPNjBIc-PZmCuzifw0j2w0c7x1ms2h3H9mnVyw/viewform?usp=send_form" className=" bg-[#5ddb6e] text-black py-2 px-8 rounded-full text-sm font-semibold">
             Join Us
           </a>
         </div>
