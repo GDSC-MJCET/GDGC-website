@@ -10,11 +10,17 @@ import {
   IconMenu2,
   IconX,
 } from "@tabler/icons-react";
+import { ArrowUpRight } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
+// Light/dark toggle disabled for now, see index.css — re-enable by
+// uncommenting the light palette there and restoring this import + usage.
+// import { ModeToggle } from "./mode-toggle";
 
-const Nav = ({ bgColor = "#000000" }) => {
+const Nav = () => {
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+
   const links = [
     {
       title: "Instagram",
@@ -38,56 +44,63 @@ const Nav = ({ bgColor = "#000000" }) => {
     },
   ];
 
-
-  const menuItems = {"Home" : "/", "Tech Face-off" : "/techfaceoff" , "Events" : "/events", "Adsophos": "/adsophos", "Team" : "/team-page", "Contact Us" : "/contact"};
+  const menuItems = { "Home": "/", "Tech Face-off": "/techfaceoff", "Events": "/events", "Adsophos": "/adsophos", "Team": "/team-page", "Contact Us": "/contact" };
 
   return (
-    <div className="shadow-xl shadow-gray-900/70">
-      <header
+    <div>
+      <header className="relative z-100 px-6 py-3 md:px-20 bg-background">
+        <nav className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 lg:grid-cols-[1fr_auto_1fr]">
+          <Link to="/" className="flex min-w-0 items-center ml-6">
+            <img src="/logo.svg" alt="Google Developer Groups" className="h-12 w-auto shrink-0" />
+          </Link>
 
-        style={{ backgroundColor: bgColor }}
-        className="relative z-100 shadow-xl "
-      >
-        <div className="flex items-center justify-between px-6 md:px-20 py-4">
-          <img src="/logo.svg" alt="Logo" className="h-12" />
-
-          <ul className="hidden md:flex gap-12 items-center text-black dark:text-white text-sm tracking-wide">
-            {Object.entries(menuItems).map(([index,item]) => (
-              <li
-                key={index}
-                className="cursor-pointer opacity-80 hover:opacity-100 transition"
-              >
-                <Link to={item}>{index}</Link>
-              </li>
-            ))}
-          
+          <ul className="hidden items-center gap-8 lg:flex">
+            {Object.entries(menuItems).map(([name, path]) => {
+              const isActive = location.pathname === path;
+              return (
+                <li key={name} className="relative">
+                  <Link
+                    to={path}
+                    className="text-sm text-foreground/80 transition-opacity duration-200 hover:opacity-100 hover:text-foreground"
+                  >
+                    {name}
+                  </Link>
+                  <span
+                    className={`absolute -bottom-2 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-foreground transition-opacity duration-200 ${
+                      isActive ? "opacity-100" : "opacity-0"
+                    }`}
+                  />
+                </li>
+              );
+            })}
           </ul>
 
-          <div className="flex items-center gap-4 md:hidden">
-            <button
-              onClick={() => setOpen(true)}
-              className=" text-black dark:text-white"
+          <div className="flex items-center justify-end gap-3">
+            {/* <ModeToggle /> */}
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://docs.google.com/forms/d/e/1FAIpQLSfMc7dWVyNixPNjBIc-PZmCuzifw0j2w0c7x1ms2h3H9mnVyw/viewform?usp=send_form"
+              className="hidden items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all duration-200 hover:opacity-85 hover:scale-[1.03] sm:inline-flex"
             >
-              <IconMenu2 size={28} />
+              Join Us <ArrowUpRight size={15} />
+            </a>
+            <button
+              aria-label="Menu"
+              onClick={() => setOpen(true)}
+              className="flex h-10 w-10 items-center justify-center rounded-md text-foreground transition-colors duration-200 hover:bg-accent"
+            >
+              <span className="lg:hidden">
+                <IconMenu2 size={22} />
+              </span>
+              <span className="hidden grid-cols-3 gap-[3px] lg:grid">
+                {Array.from({ length: 9 }).map((_, i) => (
+                  <span key={i} className="h-[3px] w-[3px] rounded-full bg-foreground/70" />
+                ))}
+              </span>
             </button>
           </div>
-        </div>
-
-        <div className="px-6 md:px-20">
-          <hr className="border-gray-200 dark:border-white/20" />
-        </div>
-
-        <div className="flex items-center justify-between px-6 md:px-20 py-3">
-          <FloatingDock
-            items={links}
-            desktopClassName="text-neutral-400"
-            mobileClassName="text-neutral-400"
-          />
-
-          <a target="_blank" rel="noopener noreferrer" href="https://docs.google.com/forms/d/e/1FAIpQLSfMc7dWVyNixPNjBIc-PZmCuzifw0j2w0c7x1ms2h3H9mnVyw/viewform?usp=send_form" className=" bg-[#5ddb6e] text-black py-2 px-8 rounded-full text-sm font-semibold">
-            Join Us
-          </a>
-        </div>
+        </nav>
       </header>
 
       <AnimatePresence>
@@ -106,16 +119,16 @@ const Nav = ({ bgColor = "#000000" }) => {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 260, damping: 30 }}
-              className="fixed top-0 right-0 h-full w-full bg-white dark:bg-[#111] z-999 flex flex-col"
+              className="fixed top-0 right-0 h-full w-full bg-background z-999 flex flex-col"
             >
-              <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
+              <div className="flex items-center justify-between px-6 py-5 border-b border-border">
                 <img src="/logo.svg" className="h-8" />
                 <button onClick={() => setOpen(false)}>
-                  <IconX className="text-black dark:text-white" size={28} />
+                  <IconX className="text-foreground" size={28} />
                 </button>
               </div>
 
-              <div className="flex-1 flex flex-col justify-center px-8 gap-8 text-black dark:text-white text-2xl font-medium">
+              <div className="flex-1 flex flex-col justify-center px-8 gap-8 text-foreground text-2xl font-medium">
                 {Object.entries(menuItems).map(([name, path], i) => (
                   <motion.div
                     key={name}
@@ -132,12 +145,17 @@ const Nav = ({ bgColor = "#000000" }) => {
               </div>
 
               <div className="px-8 pb-24">
-                <button className="w-full bg-[#5ddb6e] text-black py-3 rounded-full font-semibold">
-                  Join GDG
-                </button>
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://docs.google.com/forms/d/e/1FAIpQLSfMc7dWVyNixPNjBIc-PZmCuzifw0j2w0c7x1ms2h3H9mnVyw/viewform?usp=send_form"
+                  className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-3 rounded-full font-semibold"
+                >
+                  Join Us <ArrowUpRight size={15} />
+                </a>
               </div>
 
-              <div className="absolute bottom-6 left-0 right-0 flex justify-center text-black dark:text-white">
+              <div className="absolute bottom-6 left-0 right-0 flex justify-center text-foreground">
                 <FloatingDock items={links} />
               </div>
             </motion.div>

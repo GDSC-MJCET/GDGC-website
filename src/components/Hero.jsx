@@ -1,97 +1,102 @@
-"use client";
-import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-// import { useNavigate } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
+import { ArrowUpRight } from "lucide-react";
+import ParticleGlobe from "./ParticleGlobe";
 
 const Hero = () => {
-  const sectionRef = useRef(null);
-  // const navigate = useNavigate();
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-
-  const imagesY = useTransform(scrollYProgress, [0, 1], [0, 580]);
-  const contentY = useTransform(scrollYProgress, [0, 40], [0, -80]);
-
   return (
-    <div ref={sectionRef} className="relative min-h-screen overflow-hidden">
+    <section className="relative overflow-hidden bg-background">
+      <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
+        <div
+          className="absolute -bottom-24 -left-40 h-[520px] w-[520px] bg-google-red opacity-[0.18] blur-[130px]"
+          style={{ clipPath: "polygon(70% 0%, 100% 15%, 40% 50%, 100% 85%, 70% 100%, 0% 50%)" }}
+        />
+        <div
+          className="absolute -bottom-24 -right-40 h-[520px] w-[520px] bg-google-yellow opacity-[0.16] blur-[130px]"
+          style={{ clipPath: "polygon(30% 0%, 100% 50%, 30% 100%, 0% 85%, 60% 50%, 0% 15%)" }}
+        />
+      </div>
 
-      <motion.div
-        style={{ y: imagesY }}
-        className="flex justify-between -mt-12  will-change-transform"
-      >
-        <div>
-          <img src="/hero-1.svg" className="w-22 md:w-auto" />
-          <img src="/hero-2.svg" className="mt-24 w-16 md:w-auto" />
-        </div>
+      <div className="relative z-10 px-6 pt-10 pb-20 sm:px-10 lg:px-16">
+        <div className="relative lg:pl-32">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute top-0 left-8 hidden h-full lg:block"
+          >
+            <div className="absolute top-24 bottom-0 left-0 w-px bg-border" />
+            <div className="space-y-1.5 pl-4 text-[10px] tracking-[0.22em] text-muted-foreground">
+              <div>LEARN</div>
+              <div>BUILD</div>
+              <div>CONNECT</div>
+              <div>GROW</div>
+              <div className="mt-3 h-px w-6 bg-border" />
+            </div>
+            <div className="absolute top-1/2 left-4 text-foreground/25">+</div>
+          </div>
 
-        <div className="flex flex-col gap-12 md:gap-22">
-          <img src="/hero-3.svg" className="ml-4 w-22 md:w-auto" />
-          <img src="/hero-4.svg" className="ml-4 w-22 md:w-auto" />
-        </div>
-      </motion.div>
+          <div className="grid items-center gap-14 lg:grid-cols-[minmax(0,48%)_minmax(0,1fr)] lg:gap-8">
+            <div className="min-w-0">
+              <p className="text-[11px] tracking-[0.22em] text-muted-foreground uppercase">
+                Students <span className="mx-1 text-foreground/40">×</span> Technology{" "}
+                <span className="mx-1 text-foreground/40">×</span> Real Impact
+              </p>
 
-      <div className="flex flex-col justify-between min-h-screen">
+              <h1 className="mt-6 whitespace-nowrap text-[clamp(2.25rem,4.9vw,5rem)] leading-[0.95] font-black tracking-[-0.03em] text-foreground">
+                <span className="block">BUILD</span>
+                <span
+                  className="block text-transparent"
+                  style={{ WebkitTextStroke: "2px var(--foreground)", paintOrder: "stroke fill" }}
+                >
+                  TOGETHER
+                </span>
+                <span className="block">
+                  GO FURTHER
+                  <span className="ml-1 inline-block h-[0.14em] w-[0.14em] translate-y-[-0.05em] rounded-full bg-google-red align-baseline" />
+                </span>
+              </h1>
 
-        <motion.div
-          style={{ y: contentY }}
-          className="absolute inset-0 flex flex-col items-center text-center text-white px-6 py-12 pointer-events-none will-change-transform translate-y-24 md:translate-y-35"
-        >
-          <h2 className="text-3xl text-center md:text-6xl font-bold  max-w-2xl lg:max-w-5xl ">
-            A community built around learning, technology and collaboration
-          </h2>
+              <p className="mt-6 max-w-[480px] text-base leading-relaxed text-muted-foreground sm:text-lg">
+                GDGC MJCET is a student-led community under Google Developer
+                Groups, where curious minds learn, build, and solve real-world
+                problems together.
+              </p>
 
-          <p className="mt-4 text-base text-center md:text-lg max-w-2xl lg:max-w-5xl">
-            GDGC MJCET brings students together to learn with intent , build strong fundamentals, and collaborate on real-world problems, creating a student-driven ecosystem rooted in consistency, mentorship, and meaningful growth
-          </p>
-        </motion.div>
-
-        <motion.div style={{ y: contentY }} className="mt-24 md:mt-22 pt-12">
-          <div>
-            <div className="bg-[#000000] border-2 border-white/40 shadow-[0_0_8px_rgba(255,255,255,0.85)] rounded-full px-4 md:px-6 py-4 flex items-center justify-between max-w-4xl h-auto md:h-16 mx-auto gap-4">
-              <img src="/globe-blue.svg" className="h-10 md:h-16" />
-              <img src="/hash-yellow.svg" className="h-6 md:h-9" />
-              <img src="/globe-red.svg" className="h-10 md:h-16" />
-
-              <h2 className="font-medium text-xl md:text-5xl text-center bg-linear-to-r from-[#F8D8D8] to-[#CDF6C5] bg-clip-text text-transparent">
-                Live Event
-              </h2>
-
-              <img src="/pinpoint-green.svg" className="h-10 md:h-16" />
-              <img src="/circles-pink.svg" className="h-10 md:h-16" />
+              <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+                <a
+                  href="https://gdg.community.dev/gdg-on-campus-muffakham-jah-college-of-engineering-and-technology-hyderabad-india/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-7 py-4 text-sm font-semibold text-primary-foreground transition-all duration-200 hover:opacity-85 hover:scale-[1.03]"
+                >
+                  Join the Community <ArrowUpRight size={15} />
+                </a>
+                <Link
+                  to="/events"
+                  className="inline-flex items-center justify-center rounded-full border border-border px-7 py-4 text-sm font-medium text-foreground transition-colors duration-200 hover:bg-primary hover:text-primary-foreground"
+                >
+                  Explore Events
+                </Link>
+              </div>
             </div>
 
-            <div className="flex  bg-[#000000] flex-col md:flex-row justify-center items-center rounded-b-4xl border-2 border-white/40 shadow-[0_0_8px_rgba(255,255,255,0.85)] max-w-3xl mx-auto px-6 md:px-22 py-18 gap-10 md:gap-22">
-
-              <div className="w-full md:scale-150 flex justify-center items-center">
-                <img
-                  src="/logo.svg"
-                  alt="Build Week"
-                  className="rounded-sm w-[70%]"
-                />
-              </div>
-
-              <div className="flex flex-col gap-6 text-center md:text-left">
-                <h2 className="text-2xl md:text-3xl font-bold text-white">
-                  No live event right now
-                </h2>
-
-                <div className="text-white text-base md:text-lg opacity-60">
-                  Stay tuned — something exciting is always around the corner.
-                </div> 
-
-                <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 justify-center md:justify-start">
-                  {/* <span className='px-6 py-1 rounded-full border border-purple-400 shadow-sm shadow-purple-400 text-center'>
-                    {/* <a href="/buildweek-form">Register Now</a> */}
-                  {/* </span> */}
-                </div>
-              </div>
+            <div className="relative min-w-0">
+              <ParticleGlobe className="mx-auto aspect-square w-full max-w-[300px] sm:max-w-[440px] lg:max-w-[620px]" />
             </div>
           </div>
-        </motion.div>
+
+          <div className="mt-10 flex justify-center lg:absolute lg:right-0 lg:-bottom-4 lg:mt-0">
+            <div className="border border-border p-5">
+              <p className="space-y-1 text-[10px] tracking-[0.2em] text-foreground/75 uppercase">
+                <span className="block">A brighter</span>
+                <span className="block">tomorrow</span>
+                <span className="block">together.</span>
+              </p>
+              <span className="mt-4 block h-px w-8 bg-border" />
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
