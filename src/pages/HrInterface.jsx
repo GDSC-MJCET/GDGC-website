@@ -366,19 +366,19 @@ export default function HrInterface() {
               <FaQuestionCircle size={32} className="text-gray-400" />
             )}
           </div>
-          <h2 className="mt-3 text-lg text-white font-semibold">{team?.clubName || (side === "left" ? selectedLeft : selectedRight)}</h2>
+          <h2 className="mt-3 text-lg text-foreground font-semibold">{team?.clubName || (side === "left" ? selectedLeft : selectedRight)}</h2>
           <p className="text-sm text-gray-400">{team?.description || ""}</p>
         </div>
 
         <div className="mt-4 w-full">
-          <h3 className="text-sm text-white font-medium mb-2">Speakers</h3>
-          <ul className="space-y-1 text-white max-h-40 overflow-auto">
+          <h3 className="text-sm text-foreground font-medium mb-2">Speakers</h3>
+          <ul className="space-y-1 text-foreground max-h-40 overflow-auto">
             {side === "left" && leftTeam ? leftTeam.speakers.map((speaker, index) => (
-              <li key={index} className="text-sm text-white">
+              <li key={index} className="text-sm text-foreground">
                 {speaker.name}
               </li>
             )) : side === "right" && rightTeam ? rightTeam.speakers.map((speaker, index) => (
-              <li key={index} className="text-sm text-white">
+              <li key={index} className="text-sm text-foreground">
                 {speaker.name}
               </li>
             )) : <li className="text-sm text-gray-500">No speakers data</li>}
@@ -386,7 +386,7 @@ export default function HrInterface() {
         </div>
 
         <div className="mt-auto w-full flex items-center justify-between pt-4">
-          <div className="text-3xl font-bold text-white">{side === "left" ? leftScore : rightScore}</div>
+          <div className="text-3xl font-bold text-foreground">{side === "left" ? leftScore : rightScore}</div>
 
           <button
             onClick={() => incrementScore(side)}
@@ -675,7 +675,7 @@ export default function HrInterface() {
       {/* Header */}
       <p></p>
       <header className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4">
-        <h1 className="text-xl sm:text-2xl font-semibold text-white">HR — Debate Control</h1>
+        <h1 className="text-xl sm:text-2xl font-semibold text-foreground">HR — Debate Control</h1>
 
         <div className="flex flex-wrap items-center gap-3 sm:gap-4">
           <div className="text-sm text-gray-400">{topic ? `Topic: ${topic}` : "No topic provided"}</div>
@@ -683,7 +683,7 @@ export default function HrInterface() {
           <button
             onClick={handleRefresh}
             title="Refresh teams"
-            className="p-2 rounded-md hover:bg-gray-800 text-white"
+            className="p-2 rounded-md hover:bg-gray-800 text-foreground"
             aria-label="Refresh"
           >
             <FaSyncAlt className={refreshing ? "animate-spin" : ""} />
@@ -693,7 +693,7 @@ export default function HrInterface() {
           <button
             onClick={handleClickPause}
             title={paused ? "Resume debate" : "Pause debate"}
-            className="p-2 rounded-md hover:bg-gray-800 text-white"
+            className="p-2 rounded-md hover:bg-gray-800 text-foreground"
             aria-label={paused ? "Resume" : "Pause"}
           >
             {paused ? <FaPlay /> : <FaPause />}

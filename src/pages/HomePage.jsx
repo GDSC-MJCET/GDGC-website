@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import Background from "../components/Background";
 import Hero from "../components/Hero";
+import HighlightsRow from "../components/HighlightsRow";
 import Events from "../components/Events";
 import About from "../components/About";
 import Idk from "../components/Idk";
@@ -25,10 +26,11 @@ const HomePage = () => {
   //   sessionStorage.setItem("winner-popup-dismissed", "true");
   // };
   return (
-    <Background bgColor="#000000">
+    <Background>
       {/* {showPopup && <WinnerPopup onClose={handleClosePopup} />} */}
       <Nav />
       <Hero />
+      <HighlightsRow />
       <Events />
       <About />
       <Idk />

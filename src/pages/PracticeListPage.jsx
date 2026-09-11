@@ -128,7 +128,7 @@ const PracticeListPage = () => {
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2 self-end rounded-xl border border-border bg-background px-4 py-3 text-sm text-gray-300 transition-colors group-hover:border-white/20 group-hover:text-white md:self-center">
+                    <div className="flex items-center gap-2 self-end rounded-xl border border-border bg-background px-4 py-3 text-sm text-gray-300 transition-colors group-hover:border-white/20 group-hover:text-foreground md:self-center">
                       <span>{isSolved ? 'View solution' : 'Open workspace'}</span>
                       <ArrowRight className="size-4" />
                     </div>

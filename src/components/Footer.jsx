@@ -1,6 +1,6 @@
 import React from "react";
 
-const Footer = ({ bgColor = "#000000" }) => {
+const Footer = () => {
   return (
     <footer className="relative mt-20 overflow-hidden">
       
@@ -23,10 +23,7 @@ const Footer = ({ bgColor = "#000000" }) => {
         
       </div>
 
-      <div
-        className="relative -mt-24 md:-mt-32 text-black dark:text-white z-20"
-        style={{ backgroundColor: bgColor }}
-      >
+      <div className="relative -mt-24 md:-mt-32 bg-background text-foreground z-20">
         <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 grid grid-cols-1 md:grid-cols-3 gap-12">
           
           <div className="flex flex-col space-y-4">
@@ -40,10 +37,10 @@ const Footer = ({ bgColor = "#000000" }) => {
           </div>
 
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-[#686868]">
+            <h3 className="text-xl font-bold text-muted-foreground">
               BUSINESS INQUIRIES
             </h3>
-            <div className="space-y-3 text-gray-700 dark:text-gray-300">
+            <div className="space-y-3 text-foreground/80">
               <p>Email: gdscmjcet@gmail.com</p>
               <p>Abrar : +91 7842483580</p>
               <p>Amaan : +91 8897079715</p>
@@ -51,21 +48,21 @@ const Footer = ({ bgColor = "#000000" }) => {
           </div>
 
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-[#686868]">ADDRESS</h3>
-            <div className="text-gray-700 dark:text-gray-300 space-y-3 mb-10">
+            <h3 className="text-xl font-bold text-muted-foreground">ADDRESS</h3>
+            <div className="text-foreground/80 space-y-3 mb-10">
               <p>Muffakham Jah College of Engineering and Technology</p>
               <p>
                 Mount Pleasant, 8-2-249, Rd Number 3, Venkateshwara Hills, Banjara Hills, Hyderabad, Telangana 500082
               </p>
             </div>
 
-            <a target="_blank" rel="noopener noreferrer" href="https://gdg.community.dev/gdg-on-campus-muffakham-jah-college-of-engineering-and-technology-hyderabad-india/" className="mt-6 md:mt-12 w-fit bg-[#5ddb6e] text-black py-2 px-8 rounded-3xl font-semibold hover:bg-green-500 transition border border-white/60">
+            <a target="_blank" rel="noopener noreferrer" href="https://gdg.community.dev/gdg-on-campus-muffakham-jah-college-of-engineering-and-technology-hyderabad-india/" className="mt-6 md:mt-12 w-fit bg-primary text-primary-foreground py-2 px-8 rounded-3xl font-semibold hover:opacity-90 transition border border-border">
               Join Us
             </a>
           </div>
         </div>
 
-        <div className=" py-4 px-6 md:px-12 flex flex-col md:flex-row gap-2 md:gap-0 justify-between items-center text-gray-500 dark:text-gray-400 text-sm">
+        <div className=" py-4 px-6 md:px-12 flex flex-col md:flex-row gap-2 md:gap-0 justify-between items-center text-muted-foreground text-sm">
           <p>All rights reserved 2026 © GDGC MJCET</p>
           <p>Privacy Policy</p>
         </div>

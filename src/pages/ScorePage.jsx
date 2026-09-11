@@ -32,7 +32,7 @@ export default function ScorePage() {
       >
         {showPopup && <WinnerPopup onClose={handleClosePopup} />}
         <Nav bgColor="#0b0b0b" />
-        <div className="text-white dm-mono   px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 w-full py-6 sm:py-8">
+        <div className="text-foreground dm-mono   px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 w-full py-6 sm:py-8">
             <div className="flex items-center justify-center">
                 <p className="text-4xl sm:text-4xl md:text-6xl lg:text-8xl text-[#57CBFF]">Score</p>
                 <p className="text-4xl sm:text-4xl md:text-6xl lg:text-8xl text-[#5DDB6E]">board</p>
