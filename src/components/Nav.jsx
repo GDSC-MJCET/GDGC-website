@@ -48,10 +48,10 @@ const Nav = () => {
 
   return (
     <div>
-      <header className="relative z-100 px-6 py-3 md:px-20 bg-background">
-        <nav className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 lg:grid-cols-[1fr_auto_1fr]">
-          <Link to="/" className="flex min-w-0 items-center ml-6">
-            <img src="/logo.svg" alt="Google Developer Groups" className="h-12 w-auto shrink-0" />
+      <header className="relative z-100 flex w-full justify-center px-4 py-6">
+        <nav className="grid w-full max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-full border border-border bg-card px-6 py-4 shadow-lg lg:grid-cols-[1fr_auto_1fr] md:px-8">
+          <Link to="/" className="flex min-w-0 items-center">
+            <img src="/logo.svg" alt="Google Developer Groups" className="h-14 w-auto shrink-0" />
           </Link>
 
           <ul className="hidden items-center gap-8 lg:flex">
@@ -81,17 +81,17 @@ const Nav = () => {
               target="_blank"
               rel="noopener noreferrer"
               href="https://docs.google.com/forms/d/e/1FAIpQLSfMc7dWVyNixPNjBIc-PZmCuzifw0j2w0c7x1ms2h3H9mnVyw/viewform?usp=send_form"
-              className="hidden items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all duration-200 hover:opacity-85 hover:scale-[1.03] sm:inline-flex"
+              className="hidden items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-all duration-200 hover:opacity-85 hover:scale-[1.03] sm:inline-flex"
             >
-              Join Us <ArrowUpRight size={15} />
+              Join Us <ArrowUpRight size={16} />
             </a>
             <button
               aria-label="Menu"
               onClick={() => setOpen(true)}
-              className="flex h-10 w-10 items-center justify-center rounded-md text-foreground transition-colors duration-200 hover:bg-accent"
+              className="flex h-11 w-11 items-center justify-center rounded-full text-foreground transition-colors duration-200 hover:bg-accent"
             >
               <span className="lg:hidden">
-                <IconMenu2 size={22} />
+                <IconMenu2 size={24} />
               </span>
               <span className="hidden grid-cols-3 gap-[3px] lg:grid">
                 {Array.from({ length: 9 }).map((_, i) => (
