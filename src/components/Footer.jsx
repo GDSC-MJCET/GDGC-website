@@ -42,8 +42,8 @@ const Footer = () => {
             </h3>
             <div className="space-y-3 text-foreground/80">
               <p>Email: gdscmjcet@gmail.com</p>
-              <p>Abrar : +91 7842483580</p>
-              <p>Amaan : +91 8897079715</p>
+              <p>Afzal : +91 7396211824</p>
+              <p>Ibrahim : +91 6305996906</p>
             </div>
           </div>
 

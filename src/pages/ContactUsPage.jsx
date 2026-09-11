@@ -85,7 +85,7 @@ const ContactUsPage = () => {
                   </div>
                   <div>
                     <p className="text-muted-foreground text-sm">Email</p>
-                    <p className="text-foreground">gdgc@mjcet.edu.in</p>
+                    <p className="text-foreground">gdscmjcet@gmail.com</p>
                   </div>
                 </div>
 
@@ -101,7 +101,7 @@ const ContactUsPage = () => {
                   </div>
                   <div>
                     <p className="text-muted-foreground text-sm">Phone</p>
-                    <p className="text-white">+91 98765 43210</p>
+                    <p className="text-white">+91 73962 11824</p>
                   </div>
                 </div>
 
@@ -117,7 +117,7 @@ const ContactUsPage = () => {
                   </div>
                   <div>
                     <p className="text-muted-foreground text-sm">Address</p>
-                    <p className="text-white">MJ College of Engineering & Technology, Hyderabad</p>
+                    <p className="text-white">Muffakham Jah College of Engineering & Technology, Hyderabad</p>
                   </div>
                 </div>
 
