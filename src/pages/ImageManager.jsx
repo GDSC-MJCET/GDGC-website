@@ -179,7 +179,7 @@ const ImageManager = () => {
   };
 
   return (
-    <div className="p-6 text-white">
+    <div className="p-6 text-foreground">
       <h1 className="text-2xl mb-6 font-semibold">Image Manager</h1>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 mb-8">
@@ -261,7 +261,7 @@ const ImageManager = () => {
               {editingName !== img.name && (
                 <button
                   onClick={() => startRename(img)}
-                  className="flex items-center gap-1 text-sm text-gray-300 hover:text-white"
+                  className="flex items-center gap-1 text-sm text-gray-300 hover:text-foreground"
                 >
                   <Pencil size={16} />
                 </button>
@@ -269,7 +269,7 @@ const ImageManager = () => {
 
               <button
                 onClick={() => handleCopy(img.name, img.publicUrl)}
-                className="flex items-center gap-1 text-sm text-gray-300 hover:text-white"
+                className="flex items-center gap-1 text-sm text-gray-300 hover:text-foreground"
                 title="Copy URL"
               >
                 {copiedId === img.name ? (
@@ -283,7 +283,7 @@ const ImageManager = () => {
                 href={img.publicUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1 text-sm text-gray-300 hover:text-white"
+                className="flex items-center gap-1 text-sm text-gray-300 hover:text-foreground"
                 title="Open in new tab"
               >
                 <ExternalLink size={16} />

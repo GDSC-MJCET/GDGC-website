@@ -182,7 +182,7 @@ const TeamMemberManager = () => {
   const filteredMembers = members;
 
   return (
-    <div className="p-6 text-white">
+    <div className="p-6 text-foreground">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-semibold">Team Member Manager</h1>
         <Button onClick={() => { resetForm(); setShowForm(true); }} className="bg-white text-black">
@@ -198,7 +198,7 @@ const TeamMemberManager = () => {
             className={`px-4 py-1.5 rounded-md text-sm ${
               roleFilter === role
                 ? "bg-white text-black"
-                : "bg-white/10 text-gray-400 hover:text-white"
+                : "bg-white/10 text-gray-400 hover:text-foreground"
             }`}
           >
             {role}
@@ -210,7 +210,7 @@ const TeamMemberManager = () => {
 
       {showForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 overflow-y-auto">
-          <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-[#111] p-6 shadow-2xl">
+          <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-[#111] p-6 shadow-2xl text-white">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">
                 {editingId ? "Edit Member" : "Add Member"}
@@ -320,7 +320,7 @@ const TeamMemberManager = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {filteredMembers.map((member) => (
-          <div key={member._id} className="border border-gray-700 p-3 rounded bg-[#111]">
+          <div key={member._id} className="border border-gray-700 p-3 rounded bg-[#111] text-white">
             <img
               src={member.image}
               alt={member.name}

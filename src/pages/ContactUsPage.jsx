@@ -53,7 +53,7 @@ const ContactUsPage = () => {
             >
               Get In Touch
             </h1>
-            <p className="text-white/70 text-lg max-w-2xl mx-auto">
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               Have questions or want to collaborate? We'd love to hear from you.
             </p>
           </div>
@@ -70,7 +70,7 @@ const ContactUsPage = () => {
                 boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
               }}
             >
-              <h2 className="text-2xl font-semibold text-white mb-6">Contact Information</h2>
+              <h2 className="text-2xl font-semibold text-foreground mb-6">Contact Information</h2>
 
               <div className="space-y-6">
                 <div className="flex items-center gap-4">
@@ -84,8 +84,8 @@ const ContactUsPage = () => {
                     <IconMail size={20} color="#f8d8d8" />
                   </div>
                   <div>
-                    <p className="text-white/70 text-sm">Email</p>
-                    <p className="text-white">gdgc@mjcet.edu.in</p>
+                    <p className="text-muted-foreground text-sm">Email</p>
+                    <p className="text-foreground">gdgc@mjcet.edu.in</p>
                   </div>
                 </div>
 
@@ -100,7 +100,7 @@ const ContactUsPage = () => {
                     <IconPhone size={20} color="#cdf6c5" />
                   </div>
                   <div>
-                    <p className="text-white/70 text-sm">Phone</p>
+                    <p className="text-muted-foreground text-sm">Phone</p>
                     <p className="text-white">+91 98765 43210</p>
                   </div>
                 </div>
@@ -116,7 +116,7 @@ const ContactUsPage = () => {
                     <IconMapPin size={20} color="#f8d8d8" />
                   </div>
                   <div>
-                    <p className="text-white/70 text-sm">Address</p>
+                    <p className="text-muted-foreground text-sm">Address</p>
                     <p className="text-white">MJ College of Engineering & Technology, Hyderabad</p>
                   </div>
                 </div>
@@ -132,14 +132,14 @@ const ContactUsPage = () => {
                     <IconClock size={20} color="#cdf6c5" />
                   </div>
                   <div>
-                    <p className="text-white/70 text-sm">Office Hours</p>
+                    <p className="text-muted-foreground text-sm">Office Hours</p>
                     <p className="text-white">Mon-Fri: 9AM-6PM</p>
                   </div>
                 </div>
               </div>
 
               <div className="mt-8 pt-6 border-t border-white/10">
-                <p className="text-white/70 text-sm mb-4">
+                <p className="text-muted-foreground text-sm mb-4">
                   Follow us on social media for updates and announcements.
                 </p>
                 <div className="flex gap-4">
@@ -238,12 +238,12 @@ const ContactUsPage = () => {
                 boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
               }}
             >
-              <h2 className="text-2xl font-semibold text-white mb-6">Send us a Message</h2>
+              <h2 className="text-2xl font-semibold text-foreground mb-6">Send us a Message</h2>
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-white/70 text-sm mb-2">Name</label>
+                    <label className="block text-muted-foreground text-sm mb-2">Name</label>
                     <input
                       type="text"
                       name="name"
@@ -255,7 +255,7 @@ const ContactUsPage = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-white/70 text-sm mb-2">Email</label>
+                    <label className="block text-muted-foreground text-sm mb-2">Email</label>
                     <input
                       type="email"
                       name="email"
@@ -269,7 +269,7 @@ const ContactUsPage = () => {
                 </div>
 
                 <div>
-                  <label className="block text-white/70 text-sm mb-2">Subject</label>
+                  <label className="block text-muted-foreground text-sm mb-2">Subject</label>
                   <input
                     type="text"
                     name="subject"
@@ -282,7 +282,7 @@ const ContactUsPage = () => {
                 </div>
 
                 <div>
-                  <label className="block text-white/70 text-sm mb-2">Message</label>
+                  <label className="block text-muted-foreground text-sm mb-2">Message</label>
                   <textarea
                     name="message"
                     value={formData.message}

@@ -402,7 +402,7 @@ const Dashboard = () => {
       {/* Welcome header */}
       <div className="mb-8">
         <p className="text-xs uppercase tracking-widest text-gray-500 mb-1">{greeting()} 👋</p>
-        <h1 className="text-3xl font-semibold text-white capitalize">{displayName}</h1>
+        <h1 className="text-3xl font-semibold text-foreground capitalize">{displayName}</h1>
         {isSuperAdmin && (
           <span className="inline-block mt-2 text-[11px] font-medium uppercase tracking-widest text-rose-400 border border-rose-400/30 bg-rose-400/10 rounded-full px-2.5 py-0.5">
             Super Admin
@@ -431,9 +431,9 @@ const Dashboard = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <BookOpen className="size-4 text-indigo-400" />
-            <h2 className="text-sm font-semibold text-white uppercase tracking-widest">Exercises</h2>
+            <h2 className="text-sm font-semibold text-foreground uppercase tracking-widest">Exercises</h2>
           </div>
-          <Link to="/team/exercises" className="text-xs text-gray-500 hover:text-white transition-colors flex items-center gap-1">
+          <Link to="/team/exercises" className="text-xs text-gray-500 hover:text-foreground transition-colors flex items-center gap-1">
             View all <ArrowRight className="size-3" />
           </Link>
         </div>

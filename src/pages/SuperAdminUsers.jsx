@@ -127,14 +127,14 @@ const SuperAdminUsers = () => {
     {
       label: "Total Users",
       value: stats.totalUsers,
-      color: "text-white",
+      color: "text-foreground",
       border: "border-white/10",
       bg: "bg-white/5",
     },
     {
       label: "Admins",
       value: stats.totalAdmins,
-      color: "text-white",
+      color: "text-foreground",
       border: "border-white/20",
       bg: "bg-white/5",
     },
@@ -153,7 +153,7 @@ const SuperAdminUsers = () => {
 
       <div className="w-full max-w-5xl">
         <div className="space-y-2 mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-white">Users Preview</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground">Users Preview</h1>
           <p className="text-gray-400 text-sm md:text-base max-w-xl">
             Preview of all registered users on the platform. You can toggle their admin
             access from here.

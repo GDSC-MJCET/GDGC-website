@@ -40,7 +40,7 @@ const TestCaseRow = ({ tc, onToggleSample, onDelete }) => (
       <Button
         size="sm"
         variant="ghost"
-        className="h-8 rounded-lg border border-border px-3 text-xs text-gray-400 hover:text-white"
+        className="h-8 rounded-lg border border-border px-3 text-xs text-gray-400 hover:text-foreground"
         onClick={() => onToggleSample(tc)}
         title={tc.isSample ? "Mark as hidden" : "Mark as sample"}
       >
@@ -279,7 +279,7 @@ const ProblemAdminPage = () => {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs uppercase tracking-widest text-gray-500">Admin</p>
-            <h1 className="mt-1 text-2xl font-semibold text-white">Test Case Manager</h1>
+            <h1 className="mt-1 text-2xl font-semibold text-foreground">Test Case Manager</h1>
             <p className="mt-1 text-sm text-gray-400">
               <span className="text-emerald-400">Sample</span> test cases are shown to users and used for <strong>Run</strong>.{" "}
               <span className="text-gray-400">Hidden</span> ones are only used for <strong>Submit</strong>.
@@ -288,7 +288,7 @@ const ProblemAdminPage = () => {
           <Button
             size="sm"
             variant="ghost"
-            className="rounded-lg border border-border text-gray-400 hover:text-white"
+            className="rounded-lg border border-border text-gray-400 hover:text-foreground"
             onClick={fetchProblems}
           >
             <RefreshCw className="size-4" />

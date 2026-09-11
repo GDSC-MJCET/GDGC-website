@@ -25,23 +25,23 @@ const SuperAdminContacts = () => {
     .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <p className="text-white">Loading...</p>;
+  if (loading) return <p className="text-foreground">Loading...</p>;
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold text-white mb-6">Contact Submissions</h1>
+      <h1 className="text-2xl font-bold text-foreground mb-6">Contact Submissions</h1>
       {contacts.length === 0 ? (
-        <p className="text-white/70">No submissions yet.</p>
+        <p className="text-muted-foreground">No submissions yet.</p>
       ) : (
         <div className="overflow-x-auto rounded-xl border border-white/10">
-          <table className="w-full text-sm text-white">
+          <table className="w-full text-sm text-foreground">
             <thead>
               <tr style={{ background: "rgba(255,255,255,0.05)" }}>
-                <th className="px-4 py-3 text-left text-white/70">Name</th>
-                <th className="px-4 py-3 text-left text-white/70">Email</th>
-                <th className="px-4 py-3 text-left text-white/70">Subject</th>
-                <th className="px-4 py-3 text-left text-white/70">Message</th>
-                <th className="px-4 py-3 text-left text-white/70">Date</th>
+                <th className="px-4 py-3 text-left text-muted-foreground">Name</th>
+                <th className="px-4 py-3 text-left text-muted-foreground">Email</th>
+                <th className="px-4 py-3 text-left text-muted-foreground">Subject</th>
+                <th className="px-4 py-3 text-left text-muted-foreground">Message</th>
+                <th className="px-4 py-3 text-left text-muted-foreground">Date</th>
               </tr>
             </thead>
             <tbody>
@@ -57,7 +57,7 @@ const SuperAdminContacts = () => {
                   <td className="px-4 py-3">{c.email}</td>
                   <td className="px-4 py-3">{c.subject}</td>
                   <td className="px-4 py-3 max-w-xs truncate">{c.message}</td>
-                  <td className="px-4 py-3 text-white/60">
+                  <td className="px-4 py-3 text-muted-foreground">
                     {new Date(c.createdAt).toLocaleDateString()}
                   </td>
                 </tr>
