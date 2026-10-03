@@ -13,7 +13,7 @@ import LiquidEther from './components/LiquidEther.jsx';
 
 
 import SignUpPage from './pages/SignUpPage.jsx';
-import Footer from './components/footer/footer.jsx';
+import Footer from './components/footer/footer';
 import HeadingSection from './components/heading-section'
 import LoginPage from './pages/LoginPage.jsx'
 import ForgotPassword from './pages/ForgotPassword.jsx';

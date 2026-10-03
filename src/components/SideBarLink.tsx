@@ -1,4 +1,13 @@
-export default function SidebarLink({ to, icon: Icon, children }) {
+import type { ComponentType, ReactNode } from "react";
+import { NavLink } from "react-router-dom";
+
+type SidebarLinkProps = {
+  to: string;
+  icon: ComponentType<{ className?: string }>;
+  children: ReactNode;
+};
+
+export default function SidebarLink({ to, icon: Icon, children }: SidebarLinkProps) {
   return (
     <NavLink
       to={to}
