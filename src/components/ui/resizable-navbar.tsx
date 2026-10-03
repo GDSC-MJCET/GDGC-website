@@ -15,8 +15,11 @@ import { Link } from "react-router-dom";
 export const Navbar = ({
   children,
   className
+}: {
+  children: React.ReactNode;
+  className?: string;
 }) => {
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -37,7 +40,7 @@ export const Navbar = ({
       // IMPORTANT: Change this to class of `fixed` if you want the navbar to be fixed
       className={cn("sticky inset-x-0 top-20 z-40 w-full", className)}>
       {React.Children.map(children, (child) =>
-        React.isValidElement(child)
+        React.isValidElement<{ visible?: boolean }>(child)
           ? React.cloneElement(child, { visible })
           : child)}
     </motion.div>
@@ -48,6 +51,10 @@ export const NavBody = ({
   children,
   className,
   visible
+}: {
+  children: React.ReactNode;
+  className?: string;
+  visible?: boolean;
 }) => {
   return (
     <motion.div
@@ -79,8 +86,12 @@ export const NavItems = ({
   items,
   className,
   onItemClick
+}: {
+  items: { name: string; link: string }[];
+  className?: string;
+  onItemClick?: () => void;
 }) => {
-  const [hovered, setHovered] = useState(null);
+  const [hovered, setHovered] = useState<number | null>(null);
 
   return (
     <motion.div
@@ -112,6 +123,10 @@ export const MobileNav = ({
   children,
   className,
   visible
+}: {
+  children: React.ReactNode;
+  className?: string;
+  visible?: boolean;
 }) => {
   return (
     <motion.div
@@ -144,6 +159,9 @@ export const MobileNav = ({
 export const MobileNavHeader = ({
   children,
   className
+}: {
+  children: React.ReactNode;
+  className?: string;
 }) => {
   return (
     <div
@@ -158,6 +176,11 @@ export const MobileNavMenu = ({
   className,
   isOpen,
   onClose
+}: {
+  children: React.ReactNode;
+  className?: string;
+  isOpen: boolean;
+  onClose: () => void;
 }) => {
   return (
     <AnimatePresence>
@@ -180,6 +203,9 @@ export const MobileNavMenu = ({
 export const MobileNavToggle = ({
   isOpen,
   onClick
+}: {
+  isOpen: boolean;
+  onClick: () => void;
 }) => {
   return isOpen ? (
     <IconX className="text-black dark:text-white" onClick={onClick} />
@@ -209,7 +235,13 @@ export const NavbarButton = ({
   className,
   variant = "primary",
   ...props
-}) => {
+}: {
+  href?: string;
+  as?: React.ElementType;
+  children: React.ReactNode;
+  className?: string;
+  variant?: "primary" | "secondary" | "dark" | "gradient";
+} & Omit<React.ComponentPropsWithoutRef<"a">, "href">) => {
   const baseStyles =
     "px-4 py-2 rounded-md bg-white button bg-white text-black text-sm font-bold relative cursor-pointer hover:-translate-y-0.5 transition duration-200 inline-block text-center";
 
@@ -222,12 +254,14 @@ export const NavbarButton = ({
       "bg-gradient-to-b from-blue-500 to-blue-700 text-white shadow-[0px_2px_0px_0px_rgba(255,255,255,0.3)_inset]",
   };
 
+  const Component = Tag as React.ElementType<React.ComponentPropsWithoutRef<"a">>;
+
   return (
-    <Tag
+    <Component
       href={href || undefined}
       className={cn(baseStyles, variantStyles[variant], className)}
       {...props}>
       {children}
-    </Tag>
+    </Component>
   );
 };

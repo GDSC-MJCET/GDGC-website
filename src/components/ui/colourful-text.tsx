@@ -4,6 +4,8 @@ import { motion } from "motion/react";
 
 export default function ColourfulText({
   text
+}: {
+  text: string;
 }) {
   const colors = [
     "#4285f4", // Blue 500
@@ -25,7 +27,7 @@ export default function ColourfulText({
     return () => clearInterval(interval);
   }, []);
 
-  return text.split("").map((char, index) => (
+  return text.split("").map((char: string, index: number) => (
     <motion.span
       key={`${char}-${count}-${index}`}
       initial={{

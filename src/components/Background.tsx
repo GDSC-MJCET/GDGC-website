@@ -1,6 +1,6 @@
-import React from "react";
+import type { ReactNode } from "react";
 
-const Background = ({ children }) => {
+const Background = ({ children }: { children: ReactNode; bgColor?: string }) => {
   return (
     <div className="relative min-h-screen w-full bg-background">
       <div className="relative z-10">{children}</div>

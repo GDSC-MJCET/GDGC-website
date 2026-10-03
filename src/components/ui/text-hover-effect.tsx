@@ -5,8 +5,11 @@ import { motion } from "motion/react";
 export const TextHoverEffect = ({
   text,
   duration
+}: {
+  text: string;
+  duration?: number;
 }) => {
-  const svgRef = useRef(null);
+  const svgRef = useRef<SVGSVGElement>(null);
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const [hovered, setHovered] = useState(false);
   const [maskPosition, setMaskPosition] = useState({ cx: "50%", cy: "50%" });

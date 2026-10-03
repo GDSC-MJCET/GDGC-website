@@ -1,12 +1,22 @@
 import { cn } from "@/lib/utils";
-import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "motion/react";
+import { AnimatePresence, motion, useMotionValue, useSpring, useTransform, type MotionValue } from "motion/react";
 
-import { useRef, useState } from "react";
+import { useRef, useState, type ReactNode } from "react";
+
+type DockItem = {
+  title: string;
+  icon: ReactNode;
+  href: string;
+};
 
 export const FloatingDock = ({
   items,
   desktopClassName,
   mobileClassName
+}: {
+  items: DockItem[];
+  desktopClassName?: string;
+  mobileClassName?: string;
 }) => {
   return (
     <>
@@ -19,8 +29,11 @@ export const FloatingDock = ({
 const FloatingDockMobile = ({
   items,
   className
+}: {
+  items: DockItem[];
+  className?: string;
 }) => {
-  let mouseX = useMotionValue(Infinity);
+  const mouseX = useMotionValue(Infinity);
   return (
     <motion.div
       onMouseMove={(e) => mouseX.set(e.pageX)}
@@ -39,8 +52,11 @@ const FloatingDockMobile = ({
 const FloatingDockDesktop = ({
   items,
   className
+}: {
+  items: DockItem[];
+  className?: string;
 }) => {
-  let mouseX = useMotionValue(Infinity);
+  const mouseX = useMotionValue(Infinity);
   return (
     <motion.div
       onMouseMove={(e) => mouseX.set(e.pageX)}
@@ -62,11 +78,14 @@ function IconContainer({
   icon,
   href,
   isMobile = false
+}: DockItem & {
+  mouseX: MotionValue<number>;
+  isMobile?: boolean;
 }) {
-  let ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
 
-  let distance = useTransform(mouseX, (val) => {
-    let bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
+  const distance = useTransform(mouseX, (val: number) => {
+    const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
 
     return val - bounds.x - bounds.width / 2;
   });
@@ -85,29 +104,29 @@ function IconContainer({
         iconHeight: [-150, 0, 150, 20, 40, 20]
       };
 
-  let widthTransform = useTransform(distance, sizes.width.slice(0, 3), sizes.width.slice(3));
-  let heightTransform = useTransform(distance, sizes.height.slice(0, 3), sizes.height.slice(3));
+  const widthTransform = useTransform(distance, sizes.width.slice(0, 3), sizes.width.slice(3));
+  const heightTransform = useTransform(distance, sizes.height.slice(0, 3), sizes.height.slice(3));
 
-  let widthTransformIcon = useTransform(distance, sizes.iconWidth.slice(0, 3), sizes.iconWidth.slice(3));
-  let heightTransformIcon = useTransform(distance, sizes.iconHeight.slice(0, 3), sizes.iconHeight.slice(3));
+  const widthTransformIcon = useTransform(distance, sizes.iconWidth.slice(0, 3), sizes.iconWidth.slice(3));
+  const heightTransformIcon = useTransform(distance, sizes.iconHeight.slice(0, 3), sizes.iconHeight.slice(3));
 
-  let width = useSpring(widthTransform, {
+  const width = useSpring(widthTransform, {
     mass: 0.1,
     stiffness: 150,
     damping: 12,
   });
-  let height = useSpring(heightTransform, {
+  const height = useSpring(heightTransform, {
     mass: 0.1,
     stiffness: 150,
     damping: 12,
   });
 
-  let widthIcon = useSpring(widthTransformIcon, {
+  const widthIcon = useSpring(widthTransformIcon, {
     mass: 0.1,
     stiffness: 150,
     damping: 12,
   });
-  let heightIcon = useSpring(heightTransformIcon, {
+  const heightIcon = useSpring(heightTransformIcon, {
     mass: 0.1,
     stiffness: 150,
     damping: 12,
