@@ -48,56 +48,55 @@ const Nav = () => {
 
   return (
     <div>
-      <header className="relative z-100 flex w-full justify-center px-4 py-6">
-        <nav className="grid w-full max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-full border border-border bg-card px-6 py-4 shadow-lg lg:grid-cols-[1fr_auto_1fr] md:px-8">
+      <header className="relative z-100 flex w-full justify-center px-4 py-5">
+        <nav className="grid w-full max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-full border border-border bg-card/70 px-4 py-2 shadow-lg backdrop-blur-xl lg:grid-cols-[1fr_auto_1fr] md:px-5">
           <Link to="/" className="flex min-w-0 items-center">
-            <img src="/logo.svg" alt="Google Developer Groups" className="h-14 w-auto shrink-0" />
+            <img src="/logo.svg" alt="Google Developer Groups" className="h-9 w-auto shrink-0" />
           </Link>
 
-          <ul className="hidden items-center gap-8 lg:flex">
+          <ul className="hidden items-center gap-1 lg:flex">
             {Object.entries(menuItems).map(([name, path]) => {
               const isActive = location.pathname === path;
               return (
-                <li key={name} className="relative">
+                <li key={name}>
                   <Link
                     to={path}
-                    className="text-sm text-foreground/80 transition-opacity duration-200 hover:opacity-100 hover:text-foreground"
-                  >
-                    {name}
-                  </Link>
-                  <span
-                    className={`absolute -bottom-2 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-foreground transition-opacity duration-200 ${
-                      isActive ? "opacity-100" : "opacity-0"
+                    className={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+                      isActive
+                        ? "text-foreground"
+                        : "text-foreground/60 hover:text-foreground"
                     }`}
-                  />
+                  >
+                    {isActive && (
+                      <motion.span
+                        layoutId="nav-pill"
+                        transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                        className="absolute inset-0 rounded-full bg-accent"
+                      />
+                    )}
+                    <span className="relative">{name}</span>
+                  </Link>
                 </li>
               );
             })}
           </ul>
 
-          <div className="flex items-center justify-end gap-3">
+          <div className="flex items-center justify-end gap-2">
             {/* <ModeToggle /> */}
             <a
               target="_blank"
               rel="noopener noreferrer"
               href="https://docs.google.com/forms/d/e/1FAIpQLSfMc7dWVyNixPNjBIc-PZmCuzifw0j2w0c7x1ms2h3H9mnVyw/viewform?usp=send_form"
-              className="hidden items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-all duration-200 hover:opacity-85 hover:scale-[1.03] sm:inline-flex"
+              className="hidden items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-all duration-200 hover:opacity-85 hover:scale-[1.03] sm:inline-flex"
             >
               Join Us <ArrowUpRight size={16} />
             </a>
             <button
               aria-label="Menu"
               onClick={() => setOpen(true)}
-              className="flex h-11 w-11 items-center justify-center rounded-full text-foreground transition-colors duration-200 hover:bg-accent"
+              className="flex lg:hidden h-9 w-9 items-center justify-center rounded-full text-foreground transition-colors duration-200 hover:bg-accent"
             >
-              <span className="lg:hidden">
-                <IconMenu2 size={24} />
-              </span>
-              <span className="hidden grid-cols-3 gap-[3px] lg:grid">
-                {Array.from({ length: 9 }).map((_, i) => (
-                  <span key={i} className="h-[3px] w-[3px] rounded-full bg-foreground/70" />
-                ))}
-              </span>
+              <IconMenu2 size={22} />
             </button>
           </div>
         </nav>
