@@ -24,7 +24,7 @@ export default defineConfig([
     },
   },
   {
-    files: ['src/components/ui/**/*.{ts,tsx}', 'src/components/theme-provider.tsx'],
+    files: ['src/components/ui/**/*.{ts,tsx}', 'src/components/theme-provider.tsx', 'src/components/events/PastEvents.tsx'],
     rules: { 'react-refresh/only-export-components': 'off' },
   },
   {

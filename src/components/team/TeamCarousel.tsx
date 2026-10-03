@@ -1,8 +1,6 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
-import { loadImage, buildCardCanvas } from "./cardCanvas";
-
-type Member = { image: string; name?: string; role?: string };
+import { loadImage, buildCardCanvas, type CardMember } from "./cardCanvas";
 
 function clamp(value: number, minimum: number, maximum: number) {
   return Math.min(maximum, Math.max(minimum, value));
@@ -17,7 +15,7 @@ function normalizeAngle(angle: number) {
   return a;
 }
 
-export default function TeamCarousel({ members }: { members: Member[] }) {
+export default function TeamCarousel({ members }: { members: CardMember[] }) {
   const hostRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const currentIndexRef = useRef(0);
@@ -70,7 +68,7 @@ export default function TeamCarousel({ members }: { members: Member[] }) {
     // panels/materials/meshes can be built synchronously. Crucially these
     // are already CARD_W x CARD_H — swapping in the photo later reuses the
     // same canvas dimensions, avoiding a WebGL texture-resize error.
-    const textures = members.map((member: Member) => {
+    const textures = members.map((member: CardMember) => {
       const texture = new THREE.CanvasTexture(buildCardCanvas(null, member));
       texture.colorSpace = THREE.SRGBColorSpace;
       texture.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());

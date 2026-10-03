@@ -2,13 +2,13 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import Nav from '../Nav';
-import { eventsByYear } from './PastEvents';
+import { eventsByYear, type PastEvent } from './PastEvents';
 
 const EventDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const event = location.state?.event;
-  const year = location.state?.year || '2025-26';
+  const year: string = location.state?.year || '2025-26';
 
   if (!event) {
     return (
@@ -31,7 +31,7 @@ const EventDetails = () => {
   const prevEvent = currentIndex > 0 ? currentYearEvents[currentIndex - 1] : null;
   const nextEvent = currentIndex < currentYearEvents.length - 1 ? currentYearEvents[currentIndex + 1] : null;
 
-  const navigateToEvent = (targetEvent) => {
+  const navigateToEvent = (targetEvent: PastEvent) => {
     navigate('/event-details', { state: { event: targetEvent, year } });
     window.scrollTo(0, 0);
   };

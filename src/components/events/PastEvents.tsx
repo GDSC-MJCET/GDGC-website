@@ -2,7 +2,24 @@ import { useState, useRef, useEffect } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
-export const eventsByYear = {
+export type PastEvent = {
+  title: string;
+  date: string;
+  month: string;
+  desc: string;
+  overview: string;
+  neque: string;
+  neque1: string;
+  nequeimg: string;
+  bg: string;
+  poster: string;
+  image1: string;
+  image2: string;
+  image3: string;
+  highlights?: string[];
+};
+
+export const eventsByYear: Record<string, PastEvent[]> = {
 "2025-26":[
   // 1. ANTIGRAVITY 2.0
   {
@@ -487,7 +504,7 @@ export const eventsByYear = {
 
 const YEARS = ["2025-26", "2024-25", "2023-24"]
 
-const EventCard = ({ event, onMoreInfo, scale = 1 }) => (
+const EventCard = ({ event, onMoreInfo, scale = 1 }: { event: PastEvent; onMoreInfo: (event: PastEvent) => void; scale?: number }) => (
   <div
     className='group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 mx-auto'
     style={{
@@ -548,10 +565,10 @@ const EventCard = ({ event, onMoreInfo, scale = 1 }) => (
 )
 
 // Spring physics hook — gives that smooth, bubbly overshoot feel
-const useSpring = (target, stiffness = 0.07, damping = 0.68) => {
+const useSpring = (target: number, stiffness = 0.07, damping = 0.68) => {
   const value = useRef(target)
   const velocity = useRef(0)
-  const raf = useRef(null)
+  const raf = useRef(0)
   const [display, setDisplay] = useState(target)
 
   useEffect(() => {
@@ -577,8 +594,13 @@ const useSpring = (target, stiffness = 0.07, damping = 0.68) => {
   return display
 }
 
-const ParallaxRow = ({ event, onMoreInfo, index, totalEvents }) => {
-  const rowRef = useRef(null)
+const ParallaxRow = ({ event, onMoreInfo, index, totalEvents }: {
+  event: PastEvent;
+  onMoreInfo: (event: PastEvent) => void;
+  index: number;
+  totalEvents: number;
+}) => {
+  const rowRef = useRef<HTMLDivElement>(null)
   const [targetParallax, setTargetParallax] = useState(0)
   const [targetScale, setTargetScale] = useState(1)
   const [isMobile, setIsMobile] = useState(false)
@@ -636,10 +658,10 @@ const ParallaxRow = ({ event, onMoreInfo, index, totalEvents }) => {
 export default function PastEvents() {
   const [selectedYear, setSelectedYear] = useState("2025-26")
   const [dropdownOpen, setDropdownOpen] = useState(false)
-  const dropdownRef = useRef(null)
+  const dropdownRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
 
-  const handleMoreInfo = (event) => {
+  const handleMoreInfo = (event: PastEvent) => {
     navigate('/event-details', { state: { event, year: selectedYear } })
     window.scrollTo(0, 0)
   }
@@ -647,7 +669,7 @@ export default function PastEvents() {
   const events = eventsByYear[selectedYear]
 
   useEffect(() => {
-    const fn = (e) => { if (dropdownRef.current && !dropdownRef.current.contains(e.target)) setDropdownOpen(false) }
+    const fn = (e: MouseEvent) => { if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) setDropdownOpen(false) }
     document.addEventListener('mousedown', fn)
     return () => document.removeEventListener('mousedown', fn)
   }, [])

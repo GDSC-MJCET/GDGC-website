@@ -6,7 +6,9 @@ export const CARD_W = 600;
 export const CARD_H = 800;
 export const CARD_RADIUS = 28;
 
-function roundedRectPath(ctx, x, y, w, h, r) {
+export type CardMember = { name: string; role: string; image: string };
+
+function roundedRectPath(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
   ctx.beginPath();
   ctx.moveTo(x + r, y);
   ctx.arcTo(x + w, y, x + w, y + h, r);
@@ -16,8 +18,8 @@ function roundedRectPath(ctx, x, y, w, h, r) {
   ctx.closePath();
 }
 
-export function loadImage(src) {
-  return new Promise((resolve) => {
+export function loadImage(src: string) {
+  return new Promise<HTMLImageElement | null>((resolve) => {
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.onload = () => resolve(img);
@@ -26,11 +28,11 @@ export function loadImage(src) {
   });
 }
 
-export function buildCardCanvas(image, member) {
+export function buildCardCanvas(image: HTMLImageElement | null, member: CardMember) {
   const canvas = document.createElement("canvas");
   canvas.width = CARD_W;
   canvas.height = CARD_H;
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext("2d")!;
 
   roundedRectPath(ctx, 0, 0, CARD_W, CARD_H, CARD_RADIUS);
   ctx.save();

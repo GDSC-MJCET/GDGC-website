@@ -114,7 +114,13 @@
 
 import { IconBrandGithub, IconBrandLinkedin, IconBrandInstagram } from "@tabler/icons-react";
 
-export default function ExeCard({ name, image, linkedin, github, instagram }) {
+export default function ExeCard({ name, image, linkedin, github, instagram }: {
+  name: string;
+  image: string;
+  linkedin?: string;
+  github?: string;
+  instagram?: string;
+}) {
   return (
     <div className="flex flex-col items-start gap-3 w-full">
 

@@ -56,7 +56,7 @@ import BuildWeekForm from './pages/BuildWeekForm.jsx';
 // import TDForm from './pages/TDForm.jsx';
 import { Navigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
-import EventDetails from './components/events/EventDetails.jsx';
+import EventDetails from './components/events/EventDetails';
 import Adsophos from './pages/Adsophos.jsx';
 import SuperAdminContacts from './pages/SuperAdminContacts.jsx';
 import { PhotoBooth } from './gdgc-modules/photobooth/PhotoBooth.jsx';

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, type Variants } from 'framer-motion'
 import './adsophos.css'
 
 const Nav = () => {
@@ -47,7 +47,7 @@ const Nav = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, [isMenuOpen]);
 
-    const menuVariants = {
+    const menuVariants: Variants = {
         closed: {
             x: '100%',
             transition: {

@@ -2,8 +2,19 @@ import { useState, useEffect } from "react";
 import { IconBrandGithub, IconBrandLinkedin, IconX } from "@tabler/icons-react";
 import { LiaPlusSolid } from "react-icons/lia";
 
+type Person = {
+  side?: string;
+  role: string;
+  name: string;
+  image: string;
+  linkedin?: string;
+  github?: string;
+  about?: string;
+  tags?: string[];
+};
+
 // ─── Profile Overlay ────────────────────────────────────────────────────────
-function ProfileOverlay({ person, isOpen, onClose }) {
+function ProfileOverlay({ person, isOpen, onClose }: { person: Person; isOpen: boolean; onClose: () => void }) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -14,7 +25,7 @@ function ProfileOverlay({ person, isOpen, onClose }) {
   }, [isOpen]);
 
   useEffect(() => {
-    const handler = (e) => { if (e.key === "Escape") onClose(); };
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
   }, [onClose]);
@@ -120,7 +131,7 @@ function ProfileOverlay({ person, isOpen, onClose }) {
             </p>
             {person.tags && person.tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-6">
-                {person.tags.map((tag) => (
+                {person.tags.map((tag: string) => (
                   <span
                     key={tag}
                     className="text-xs px-2.5 py-0.5 rounded-full"
@@ -199,7 +210,7 @@ function ProfileOverlay({ person, isOpen, onClose }) {
 }
 
 // ─── TeamCard ────────────────────────────────────────────────────────────────
-export default function TeamCard({ side, role, name, image, linkedin, github, about, tags }) {
+export default function TeamCard({ side, role, name, image, linkedin, github, about, tags }: Person) {
   const isLeft = side === "left";
   const [isOpen, setIsOpen] = useState(false);
 

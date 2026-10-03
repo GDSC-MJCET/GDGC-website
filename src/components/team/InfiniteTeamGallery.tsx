@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { loadImage, buildCardCanvas } from "./cardCanvas";
+import { loadImage, buildCardCanvas, type CardMember } from "./cardCanvas";
 
 // One plane per member (not a cycling pool of fewer planes than images —
 // unnecessary here since we only ever have a handful of GB members).
@@ -17,8 +17,6 @@ const MAX_V_OFFSET = 1.6;
 
 const FADE = { in: { start: 0.05, end: 0.28 }, out: { start: 0.75, end: 0.95 } };
 const BLUR = { in: { start: 0.0, end: 0.15 }, out: { start: 0.85, end: 1.0 }, max: 4.0 };
-
-type Member = { image: string; name?: string; role?: string };
 
 function clamp(v: number, min: number, max: number) {
   return Math.min(max, Math.max(min, v));
@@ -93,7 +91,7 @@ function blurAt(t: number) {
 }
 
 function GalleryScene({ members, textures, scrollVelocityRef, autoPlayRef }: {
-  members: Member[];
+  members: CardMember[];
   textures: (THREE.CanvasTexture | null)[];
   scrollVelocityRef: RefObject<number>;
   autoPlayRef: RefObject<boolean>;
@@ -167,7 +165,7 @@ function GalleryScene({ members, textures, scrollVelocityRef, autoPlayRef }: {
   );
 }
 
-export default function InfiniteTeamGallery({ members }: { members: Member[] }) {
+export default function InfiniteTeamGallery({ members }: { members: CardMember[] }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const scrollVelocityRef = useRef(0);
   const autoPlayRef = useRef(true);
