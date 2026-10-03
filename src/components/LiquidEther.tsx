@@ -1,6 +1,43 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type CSSProperties } from 'react';
 import * as THREE from 'three';
 import './LiquidEther.css';
+
+type LiquidEtherProps = {
+  mouseForce?: number;
+  cursorSize?: number;
+  isViscous?: boolean;
+  viscous?: number;
+  iterationsViscous?: number;
+  iterationsPoisson?: number;
+  dt?: number;
+  BFECC?: boolean;
+  resolution?: number;
+  isBounce?: boolean;
+  colors?: string[];
+  style?: CSSProperties;
+  className?: string;
+  autoDemo?: boolean;
+  autoSpeed?: number;
+  autoIntensity?: number;
+  takeoverDuration?: number;
+  autoResumeDelay?: number;
+  autoRampDuration?: number;
+};
+
+type WebGLHandle = {
+  output: { simulation: { options: { resolution: number } & Record<string, unknown>; resize(): void } };
+  autoDriver: {
+    enabled: boolean;
+    speed: number;
+    resumeDelay: number;
+    rampDurationMs: number;
+    mouse: { autoIntensity: number; takeoverDuration: number };
+  };
+  start(): void;
+  pause(): void;
+  resize(): void;
+  dispose(): void;
+};
 
 export default function LiquidEther({
   mouseForce = 20,
@@ -22,20 +59,20 @@ export default function LiquidEther({
   takeoverDuration = 0.25,
   autoResumeDelay = 1000,
   autoRampDuration = 0.6
-}) {
-  const mountRef = useRef(null);
-  const webglRef = useRef(null);
-  const resizeObserverRef = useRef(null);
-  const rafRef = useRef(null);
-  const intersectionObserverRef = useRef(null);
+}: LiquidEtherProps) {
+  const mountRef = useRef<HTMLDivElement>(null);
+  const webglRef = useRef<WebGLHandle | null>(null);
+  const resizeObserverRef = useRef<ResizeObserver | null>(null);
+  const rafRef = useRef<number | null>(null);
+  const intersectionObserverRef = useRef<IntersectionObserver | null>(null);
   const isVisibleRef = useRef(true);
-  const resizeRafRef = useRef(null);
+  const resizeRafRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (!mountRef.current) return;
 
-    function makePaletteTexture(stops) {
-      let arr;
+    function makePaletteTexture(stops: string[]) {
+      let arr: string[];
       if (Array.isArray(stops) && stops.length > 0) {
         if (stops.length === 1) {
           arr = [stops[0], stops[0]];
@@ -67,7 +104,42 @@ export default function LiquidEther({
     const paletteTex = makePaletteTexture(colors);
     const bgVec4 = new THREE.Vector4(0, 0, 0, 0); // always transparent
 
+    type Target = THREE.WebGLRenderTarget;
+    type FboKey = 'vel_0' | 'vel_1' | 'vel_viscous0' | 'vel_viscous1' | 'div' | 'pressure_0' | 'pressure_1';
+    type PassProps = {
+      material?: THREE.ShaderMaterialParameters;
+      output?: Target | null;
+      output0?: Target;
+      output1?: Target;
+    };
+    type SimOptions = {
+      iterations_poisson: number;
+      iterations_viscous: number;
+      mouse_force: number;
+      resolution: number;
+      cursor_size: number;
+      viscous: number;
+      isBounce: boolean;
+      dt: number;
+      isViscous: boolean;
+      BFECC: boolean;
+    };
+    type Uniforms = Record<string, THREE.IUniform>;
+
     class CommonClass {
+      declare width: number;
+      declare height: number;
+      declare aspect: number;
+      declare pixelRatio: number;
+      declare isMobile: boolean;
+      declare breakpoint: number;
+      declare fboWidth: number | null;
+      declare fboHeight: number | null;
+      declare time: number;
+      declare delta: number;
+      declare container: HTMLElement | null;
+      declare renderer: THREE.WebGLRenderer;
+      declare clock: THREE.Clock;
       constructor() {
         this.width = 0;
         this.height = 0;
@@ -80,10 +152,10 @@ export default function LiquidEther({
         this.time = 0;
         this.delta = 0;
         this.container = null;
-        this.renderer = null;
-        this.clock = null;
+        this.renderer = null as never;
+        this.clock = null as never;
       }
-      init(container) {
+      init(container: HTMLElement) {
         this.container = container;
         this.pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
         this.resize();
@@ -114,6 +186,28 @@ export default function LiquidEther({
     const Common = new CommonClass();
 
     class MouseClass {
+      declare mouseMoved: boolean;
+      declare coords: THREE.Vector2;
+      declare coords_old: THREE.Vector2;
+      declare diff: THREE.Vector2;
+      declare timer: ReturnType<typeof setTimeout> | null;
+      declare container: HTMLElement | null;
+      declare _onMouseMove: (event: MouseEvent) => void;
+      declare _onTouchStart: (event: TouchEvent) => void;
+      declare _onTouchMove: (event: TouchEvent) => void;
+      declare _onMouseEnter: () => void;
+      declare _onMouseLeave: () => void;
+      declare _onTouchEnd: () => void;
+      declare isHoverInside: boolean;
+      declare hasUserControl: boolean;
+      declare isAutoActive: boolean;
+      declare autoIntensity: number;
+      declare takeoverActive: boolean;
+      declare takeoverStartTime: number;
+      declare takeoverDuration: number;
+      declare takeoverFrom: THREE.Vector2;
+      declare takeoverTo: THREE.Vector2;
+      declare onInteract: (() => void) | null;
       constructor() {
         this.mouseMoved = false;
         this.coords = new THREE.Vector2();
@@ -138,7 +232,7 @@ export default function LiquidEther({
         this.takeoverTo = new THREE.Vector2();
         this.onInteract = null;
       }
-      init(container) {
+      init(container: HTMLElement) {
         this.container = container;
         container.addEventListener('mousemove', this._onMouseMove, false);
         container.addEventListener('touchstart', this._onTouchStart, false);
@@ -156,7 +250,7 @@ export default function LiquidEther({
         this.container.removeEventListener('mouseleave', this._onMouseLeave, false);
         this.container.removeEventListener('touchend', this._onTouchEnd, false);
       }
-      setCoords(x, y) {
+      setCoords(x: number, y: number) {
         if (!this.container) return;
         if (this.timer) clearTimeout(this.timer);
         const rect = this.container.getBoundingClientRect();
@@ -168,14 +262,14 @@ export default function LiquidEther({
           this.mouseMoved = false;
         }, 100);
       }
-      setNormalized(nx, ny) {
+      setNormalized(nx: number, ny: number) {
         this.coords.set(nx, ny);
         this.mouseMoved = true;
       }
-      onDocumentMouseMove(event) {
+      onDocumentMouseMove(event: MouseEvent) {
         if (this.onInteract) this.onInteract();
         if (this.isAutoActive && !this.hasUserControl && !this.takeoverActive) {
-          const rect = this.container.getBoundingClientRect();
+          const rect = this.container!.getBoundingClientRect();
           const nx = (event.clientX - rect.left) / rect.width;
           const ny = (event.clientY - rect.top) / rect.height;
           this.takeoverFrom.copy(this.coords);
@@ -189,7 +283,7 @@ export default function LiquidEther({
         this.setCoords(event.clientX, event.clientY);
         this.hasUserControl = true;
       }
-      onDocumentTouchStart(event) {
+      onDocumentTouchStart(event: TouchEvent) {
         if (event.touches.length === 1) {
           const t = event.touches[0];
           if (this.onInteract) this.onInteract();
@@ -197,7 +291,7 @@ export default function LiquidEther({
           this.hasUserControl = true;
         }
       }
-      onDocumentTouchMove(event) {
+      onDocumentTouchMove(event: TouchEvent) {
         if (event.touches.length === 1) {
           const t = event.touches[0];
           if (this.onInteract) this.onInteract();
@@ -235,7 +329,24 @@ export default function LiquidEther({
     const Mouse = new MouseClass();
 
     class AutoDriver {
-      constructor(mouse, manager, opts) {
+      declare mouse: MouseClass;
+      declare manager: WebGLManager;
+      declare enabled: boolean;
+      declare speed: number;
+      declare resumeDelay: number;
+      declare rampDurationMs: number;
+      declare active: boolean;
+      declare current: THREE.Vector2;
+      declare target: THREE.Vector2;
+      declare lastTime: number;
+      declare activationTime: number;
+      declare margin: number;
+      declare _tmpDir: THREE.Vector2;
+      constructor(
+        mouse: MouseClass,
+        manager: WebGLManager,
+        opts: { enabled: boolean; speed: number; resumeDelay?: number; rampDuration?: number }
+      ) {
         this.mouse = mouse;
         this.manager = manager;
         this.enabled = opts.enabled;
@@ -473,16 +584,23 @@ export default function LiquidEther({
 `;
 
     class ShaderPass {
-      constructor(props) {
+      declare props: PassProps;
+      declare uniforms: Uniforms;
+      declare scene: THREE.Scene;
+      declare camera: THREE.Camera;
+      declare material: THREE.RawShaderMaterial | null;
+      declare geometry: THREE.PlaneGeometry | null;
+      declare plane: THREE.Mesh | null;
+      constructor(props?: PassProps) {
         this.props = props || {};
-        this.uniforms = this.props.material?.uniforms;
-        this.scene = null;
-        this.camera = null;
+        this.uniforms = this.props.material?.uniforms as Uniforms;
+        this.scene = null as never;
+        this.camera = null as never;
         this.material = null;
         this.geometry = null;
         this.plane = null;
       }
-      init() {
+      init(..._args: unknown[]) {
         this.scene = new THREE.Scene();
         this.camera = new THREE.Camera();
         if (this.uniforms) {
@@ -492,7 +610,7 @@ export default function LiquidEther({
           this.scene.add(this.plane);
         }
       }
-      update() {
+      update(..._args: unknown[]): void {
         Common.renderer.setRenderTarget(this.props.output || null);
         Common.renderer.render(this.scene, this.camera);
         Common.renderer.setRenderTarget(null);
@@ -500,7 +618,14 @@ export default function LiquidEther({
     }
 
     class Advection extends ShaderPass {
-      constructor(simProps) {
+      declare line: THREE.LineSegments;
+      constructor(simProps: {
+        cellScale: THREE.Vector2;
+        fboSize: THREE.Vector2;
+        dt: number;
+        src: Target;
+        dst: Target;
+      }) {
         super({
           material: {
             vertexShader: face_vert,
@@ -516,7 +641,7 @@ export default function LiquidEther({
           },
           output: simProps.dst
         });
-        this.uniforms = this.props.material.uniforms;
+        this.uniforms = this.props.material!.uniforms as Uniforms;
         this.init();
       }
       init() {
@@ -537,7 +662,7 @@ export default function LiquidEther({
         this.line = new THREE.LineSegments(boundaryG, boundaryM);
         this.scene.add(this.line);
       }
-      update({ dt, isBounce, BFECC }) {
+      update({ dt, isBounce, BFECC }: { dt: number; isBounce: boolean; BFECC: boolean }) {
         this.uniforms.dt.value = dt;
         this.line.visible = isBounce;
         this.uniforms.isBFECC.value = BFECC;
@@ -546,11 +671,12 @@ export default function LiquidEther({
     }
 
     class ExternalForce extends ShaderPass {
-      constructor(simProps) {
+      declare mouse: THREE.Mesh<THREE.PlaneGeometry, THREE.RawShaderMaterial>;
+      constructor(simProps: { cellScale: THREE.Vector2; cursor_size: number; dst: Target }) {
         super({ output: simProps.dst });
         this.init(simProps);
       }
-      init(simProps) {
+      init(simProps: { cellScale: THREE.Vector2; cursor_size: number }) {
         super.init();
         const mouseG = new THREE.PlaneGeometry(1, 1);
         const mouseM = new THREE.RawShaderMaterial({
@@ -568,7 +694,7 @@ export default function LiquidEther({
         this.mouse = new THREE.Mesh(mouseG, mouseM);
         this.scene.add(this.mouse);
       }
-      update(props) {
+      update(props: { cursor_size: number; mouse_force: number; cellScale: THREE.Vector2 }) {
         const forceX = (Mouse.diff.x / 2) * props.mouse_force;
         const forceY = (Mouse.diff.y / 2) * props.mouse_force;
         const cursorSizeX = props.cursor_size * props.cellScale.x;
@@ -590,7 +716,15 @@ export default function LiquidEther({
     }
 
     class Viscous extends ShaderPass {
-      constructor(simProps) {
+      constructor(simProps: {
+        cellScale: THREE.Vector2;
+        boundarySpace: THREE.Vector2;
+        viscous: number;
+        src: Target;
+        dst: Target;
+        dst_: Target;
+        dt: number;
+      }) {
         super({
           material: {
             vertexShader: face_vert,
@@ -610,16 +744,16 @@ export default function LiquidEther({
         });
         this.init();
       }
-      update({ viscous, iterations, dt }) {
-        let fbo_in, fbo_out;
+      update({ viscous, iterations, dt }: { viscous: number; iterations: number; dt: number }) {
+        let fbo_in: Target, fbo_out!: Target;
         this.uniforms.v.value = viscous;
         for (let i = 0; i < iterations; i++) {
           if (i % 2 === 0) {
-            fbo_in = this.props.output0;
-            fbo_out = this.props.output1;
+            fbo_in = this.props.output0!;
+            fbo_out = this.props.output1!;
           } else {
-            fbo_in = this.props.output1;
-            fbo_out = this.props.output0;
+            fbo_in = this.props.output1!;
+            fbo_out = this.props.output0!;
           }
           this.uniforms.velocity_new.value = fbo_in.texture;
           this.props.output = fbo_out;
@@ -631,7 +765,13 @@ export default function LiquidEther({
     }
 
     class Divergence extends ShaderPass {
-      constructor(simProps) {
+      constructor(simProps: {
+        cellScale: THREE.Vector2;
+        boundarySpace: THREE.Vector2;
+        src: Target;
+        dst: Target;
+        dt: number;
+      }) {
         super({
           material: {
             vertexShader: face_vert,
@@ -647,14 +787,20 @@ export default function LiquidEther({
         });
         this.init();
       }
-      update({ vel }) {
+      update({ vel }: { vel: Target }) {
         this.uniforms.velocity.value = vel.texture;
         super.update();
       }
     }
 
     class Poisson extends ShaderPass {
-      constructor(simProps) {
+      constructor(simProps: {
+        cellScale: THREE.Vector2;
+        boundarySpace: THREE.Vector2;
+        src: Target;
+        dst: Target;
+        dst_: Target;
+      }) {
         super({
           material: {
             vertexShader: face_vert,
@@ -672,15 +818,15 @@ export default function LiquidEther({
         });
         this.init();
       }
-      update({ iterations }) {
-        let p_in, p_out;
+      update({ iterations }: { iterations: number }) {
+        let p_in: Target, p_out!: Target;
         for (let i = 0; i < iterations; i++) {
           if (i % 2 === 0) {
-            p_in = this.props.output0;
-            p_out = this.props.output1;
+            p_in = this.props.output0!;
+            p_out = this.props.output1!;
           } else {
-            p_in = this.props.output1;
-            p_out = this.props.output0;
+            p_in = this.props.output1!;
+            p_out = this.props.output0!;
           }
           this.uniforms.pressure.value = p_in.texture;
           this.props.output = p_out;
@@ -691,7 +837,14 @@ export default function LiquidEther({
     }
 
     class Pressure extends ShaderPass {
-      constructor(simProps) {
+      constructor(simProps: {
+        cellScale: THREE.Vector2;
+        boundarySpace: THREE.Vector2;
+        src_p: Target;
+        src_v: Target;
+        dst: Target;
+        dt: number;
+      }) {
         super({
           material: {
             vertexShader: face_vert,
@@ -708,7 +861,7 @@ export default function LiquidEther({
         });
         this.init();
       }
-      update({ vel, pressure }) {
+      update({ vel, pressure }: { vel: Target; pressure: Target }) {
         this.uniforms.velocity.value = vel.texture;
         this.uniforms.pressure.value = pressure.texture;
         super.update();
@@ -716,7 +869,18 @@ export default function LiquidEther({
     }
 
     class Simulation {
-      constructor(options) {
+      declare options: SimOptions;
+      declare fbos: Record<FboKey, Target>;
+      declare fboSize: THREE.Vector2;
+      declare cellScale: THREE.Vector2;
+      declare boundarySpace: THREE.Vector2;
+      declare advection: Advection;
+      declare externalForce: ExternalForce;
+      declare viscous: Viscous;
+      declare divergence: Divergence;
+      declare poisson: Poisson;
+      declare pressure: Pressure;
+      constructor(options?: Partial<SimOptions>) {
         this.options = {
           iterations_poisson: 32,
           iterations_viscous: 32,
@@ -738,7 +902,7 @@ export default function LiquidEther({
           div: null,
           pressure_0: null,
           pressure_1: null
-        };
+        } as unknown as Record<FboKey, Target>;
         this.fboSize = new THREE.Vector2();
         this.cellScale = new THREE.Vector2();
         this.boundarySpace = new THREE.Vector2();
@@ -764,7 +928,7 @@ export default function LiquidEther({
           wrapS: THREE.ClampToEdgeWrapping,
           wrapT: THREE.ClampToEdgeWrapping
         };
-        for (let key in this.fbos) {
+        for (const key of Object.keys(this.fbos) as FboKey[]) {
           this.fbos[key] = new THREE.WebGLRenderTarget(this.fboSize.x, this.fboSize.y, opts);
         }
       }
@@ -823,7 +987,7 @@ export default function LiquidEther({
       }
       resize() {
         this.calcSize();
-        for (let key in this.fbos) {
+        for (const key of Object.keys(this.fbos) as FboKey[]) {
           this.fbos[key].setSize(this.fboSize.x, this.fboSize.y);
         }
       }
@@ -860,6 +1024,10 @@ export default function LiquidEther({
     }
 
     class Output {
+      declare simulation: Simulation;
+      declare scene: THREE.Scene;
+      declare camera: THREE.Camera;
+      declare output: THREE.Mesh;
       constructor() {
         this.init();
       }
@@ -884,7 +1052,7 @@ export default function LiquidEther({
         );
         this.scene.add(this.output);
       }
-      addScene(mesh) {
+      addScene(mesh: THREE.Object3D) {
         this.scene.add(mesh);
       }
       resize() {
@@ -900,8 +1068,26 @@ export default function LiquidEther({
       }
     }
 
+    type ManagerProps = {
+      $wrapper: HTMLDivElement;
+      autoDemo: boolean;
+      autoSpeed: number;
+      autoIntensity: number;
+      takeoverDuration: number;
+      autoResumeDelay: number;
+      autoRampDuration: number;
+    };
+
     class WebGLManager {
-      constructor(props) {
+      declare props: ManagerProps;
+      declare lastUserInteraction: number;
+      declare autoDriver: AutoDriver;
+      declare output: Output;
+      declare _loop: () => void;
+      declare _resize: () => void;
+      declare _onVisibility: () => void;
+      declare running: boolean;
+      constructor(props: ManagerProps) {
         this.props = props;
         Common.init(props.$wrapper);
         Mouse.init(props.$wrapper);
@@ -974,7 +1160,7 @@ export default function LiquidEther({
             if (canvas && canvas.parentNode) canvas.parentNode.removeChild(canvas);
             Common.renderer.dispose();
           }
-        } catch (e) {
+        } catch {
           void 0;
         }
       }

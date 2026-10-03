@@ -1,6 +1,40 @@
 "use client";;
 import React from "react";
 
+type ImgWithCleanup = HTMLImageElement & { _cleanup?: () => void };
+
+type Sample = {
+  x: number; y: number; r: number; g: number; b: number; a: number; drop: boolean; seed: number;
+};
+
+type PixelatedCanvasProps = {
+  src: string;
+  width?: number;
+  height?: number;
+  cellSize?: number;
+  dotScale?: number;
+  shape?: "square" | "circle";
+  backgroundColor?: string;
+  grayscale?: boolean;
+  className?: string;
+  responsive?: boolean;
+  dropoutStrength?: number;
+  interactive?: boolean;
+  distortionStrength?: number;
+  distortionRadius?: number;
+  distortionMode?: "swirl" | "repel" | "attract";
+  followSpeed?: number;
+  sampleAverage?: boolean;
+  tintColor?: string;
+  tintStrength?: number;
+  maxFps?: number;
+  objectFit?: "cover" | "contain" | "fill" | "none";
+  jitterStrength?: number;
+  jitterSpeed?: number;
+  fadeOnLeave?: boolean;
+  fadeSpeed?: number;
+};
+
 export const PixelatedCanvas = ({
   src,
   width = 400,
@@ -27,10 +61,10 @@ export const PixelatedCanvas = ({
   jitterSpeed = 4,
   fadeOnLeave = true,
   fadeSpeed = 0.1,
-}) => {
-  const canvasRef = React.useRef(null);
-  const samplesRef = React.useRef([]);
-  const dimsRef = React.useRef(null);
+}: PixelatedCanvasProps) => {
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
+  const samplesRef = React.useRef<Sample[]>([]);
+  const dimsRef = React.useRef<{ width: number; height: number; dot: number } | null>(null);
   const targetMouseRef = React.useRef({
     x: -9999,
     y: -9999,
@@ -39,7 +73,7 @@ export const PixelatedCanvas = ({
     x: -9999,
     y: -9999,
   });
-  const rafRef = React.useRef(null);
+  const rafRef = React.useRef<number | null>(null);
   const lastFrameRef = React.useRef(0);
   const pointerInsideRef = React.useRef(false);
   const activityRef = React.useRef(0);
@@ -114,7 +148,7 @@ export const PixelatedCanvas = ({
       }
       off.drawImage(img, dx, dy, dw, dh);
 
-      let imageData;
+      let imageData: ImageData;
       try {
         imageData = off.getImageData(0, 0, offscreen.width, offscreen.height);
       } catch {
@@ -131,7 +165,7 @@ export const PixelatedCanvas = ({
         dot: effectiveDotSize,
       };
 
-      const luminanceAt = (px, py) => {
+      const luminanceAt = (px: number, py: number) => {
         const ix = Math.max(0, Math.min(offscreen.width - 1, px));
         const iy = Math.max(0, Math.min(offscreen.height - 1, py));
         const i = iy * stride + ix * 4;
@@ -141,16 +175,16 @@ export const PixelatedCanvas = ({
         return 0.2126 * rr + 0.7152 * gg + 0.0722 * bb;
       };
 
-      const hash2D = (ix, iy) => {
+      const hash2D = (ix: number, iy: number) => {
         const s = Math.sin(ix * 12.9898 + iy * 78.233) * 43758.5453123;
         return s - Math.floor(s);
       };
 
-      const samples = [];
+      const samples: Sample[] = [];
 
-      let tintRGB = null;
+      let tintRGB: number[] | null = null;
       if (tintColor && tintStrength > 0) {
-        const parse = c => {
+        const parse = (c: string) => {
           if (c.startsWith("#")) {
             const hex = c.slice(1);
             if (hex.length === 3) {
@@ -278,7 +312,7 @@ export const PixelatedCanvas = ({
         return;
       }
 
-      const onPointerMove = (e) => {
+      const onPointerMove = (e: PointerEvent) => {
         const rect = canvasEl.getBoundingClientRect();
         targetMouseRef.current.x = e.clientX - rect.left;
         targetMouseRef.current.y = e.clientY - rect.top;
@@ -408,7 +442,7 @@ export const PixelatedCanvas = ({
         canvasEl.removeEventListener("pointerleave", onPointerLeave);
         if (rafRef.current) cancelAnimationFrame(rafRef.current);
       };
-      (img)._cleanup = cleanup;
+      (img as ImgWithCleanup)._cleanup = cleanup;
     };
 
     img.onerror = () => {
@@ -425,13 +459,13 @@ export const PixelatedCanvas = ({
       return () => {
         isCancelled = true;
         window.removeEventListener("resize", onResize);
-        if ((img)._cleanup) (img)._cleanup();
+        if ((img as ImgWithCleanup)._cleanup) (img as ImgWithCleanup)._cleanup!();
       };
     }
 
     return () => {
       isCancelled = true;
-      if ((img)._cleanup) (img)._cleanup();
+      if ((img as ImgWithCleanup)._cleanup) (img as ImgWithCleanup)._cleanup!();
     };
   }, [
     src,

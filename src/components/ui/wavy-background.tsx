@@ -12,14 +12,24 @@ export const WavyBackground = ({
   blur = 10,
   speed = "fast",
   waveOpacity = 0.5,
+}: {
+  children?: React.ReactNode;
+  className?: string;
+  containerClassName?: string;
+  colors?: string[];
+  waveWidth?: number;
+  backgroundFill?: string;
+  blur?: number;
+  speed?: "slow" | "fast";
+  waveOpacity?: number;
 }) => {
-  const canvasRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const noise = createNoise3D();
 
   let w = 0;
   let h = 0;
   let nt = 0;
-  let animationId;
+  let animationId = 0;
 
   // 🔥 speed multiplier — THIS is the only real change
   const SPEED_MULTIPLIER = 16
@@ -50,7 +60,7 @@ export const WavyBackground = ({
     resize();
     window.addEventListener("resize", resize);
 
-    const drawWave = (count) => {
+    const drawWave = (count: number) => {
       // ✅ same shape, just faster time progression
       nt += getSpeed();
 

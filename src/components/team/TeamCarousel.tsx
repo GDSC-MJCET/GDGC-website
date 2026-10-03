@@ -2,22 +2,24 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { loadImage, buildCardCanvas } from "./cardCanvas";
 
-function clamp(value, minimum, maximum) {
+type Member = { image: string; name?: string; role?: string };
+
+function clamp(value: number, minimum: number, maximum: number) {
   return Math.min(maximum, Math.max(minimum, value));
 }
 
 // Normalize to (-PI, PI] so angular distance-from-center is always the
 // shortest way around the circle.
-function normalizeAngle(angle) {
+function normalizeAngle(angle: number) {
   let a = angle % (Math.PI * 2);
   if (a > Math.PI) a -= Math.PI * 2;
   if (a < -Math.PI) a += Math.PI * 2;
   return a;
 }
 
-export default function TeamCarousel({ members }) {
-  const hostRef = useRef(null);
-  const canvasRef = useRef(null);
+export default function TeamCarousel({ members }: { members: Member[] }) {
+  const hostRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const currentIndexRef = useRef(0);
 
   useEffect(() => {
@@ -68,7 +70,7 @@ export default function TeamCarousel({ members }) {
     // panels/materials/meshes can be built synchronously. Crucially these
     // are already CARD_W x CARD_H — swapping in the photo later reuses the
     // same canvas dimensions, avoiding a WebGL texture-resize error.
-    const textures = members.map((member) => {
+    const textures = members.map((member: Member) => {
       const texture = new THREE.CanvasTexture(buildCardCanvas(null, member));
       texture.colorSpace = THREE.SRGBColorSpace;
       texture.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
@@ -86,7 +88,7 @@ export default function TeamCarousel({ members }) {
     });
 
     const materials = textures.map(
-      (texture) =>
+      (texture: THREE.CanvasTexture) =>
         new THREE.MeshBasicMaterial({
           map: texture,
           opacity: 1,
@@ -98,7 +100,7 @@ export default function TeamCarousel({ members }) {
 
     // One ring of panels (no vertical stacking — this is a horizontal
     // carousel), evenly spaced by actual member count.
-    const panels = materials.map((material, index) => {
+    const panels = materials.map((material: THREE.MeshBasicMaterial, index: number) => {
       const panel = new THREE.Mesh(geometry, material);
       panel.rotation.y = index * slice;
       panel.userData.index = index;
@@ -116,11 +118,12 @@ export default function TeamCarousel({ members }) {
     // cards feel like peeking neighbors rather than equally-prominent tiles.
     const updatePanelAppearance = () => {
       panels.forEach((panel) => {
+        const panelMaterial = panel.material as THREE.MeshBasicMaterial;
         const absoluteAngle = normalizeAngle(panel.rotation.y + gallery.rotation.y);
         const distance = Math.abs(absoluteAngle);
         const focus = clamp(1 - distance / (slice * 2.2), 0.12, 1);
-        panel.material.opacity = focus;
-        panel.material.color.setScalar(0.3 + focus * 0.7);
+        panelMaterial.opacity = focus;
+        panelMaterial.color.setScalar(0.3 + focus * 0.7);
       });
     };
 
@@ -129,7 +132,7 @@ export default function TeamCarousel({ members }) {
       renderer.render(scene, camera);
     };
 
-    const tick = (time) => {
+    const tick = (time: number) => {
       if (disposed || !hostVisible || !documentVisible) {
         frame = 0;
         previousTime = 0;
@@ -162,14 +165,14 @@ export default function TeamCarousel({ members }) {
       previousTime = 0;
     };
 
-    const setActiveFromRotation = (rotation) => {
+    const setActiveFromRotation = (rotation: number) => {
       const rawIndex = Math.round(-rotation / slice);
       const wrapped = ((rawIndex % count) + count) % count;
       currentIndexRef.current = wrapped;
       return rawIndex;
     };
 
-    const goTo = (rawIndex) => {
+    const goTo = (rawIndex: number) => {
       desiredRotation = -rawIndex * slice;
       setActiveFromRotation(desiredRotation);
       if (isReducedMotion) {
@@ -182,7 +185,7 @@ export default function TeamCarousel({ members }) {
 
     // Wheel/trackpad scroll spins the cylinder directly — deliberately high
     // sensitivity so it feels immediate and physical, not a subtle nudge.
-    let snapTimeout = null;
+    let snapTimeout: ReturnType<typeof setTimeout> | null = null;
     const WHEEL_SENSITIVITY = 0.006;
     const SNAP_DELAY = 140;
 
@@ -194,7 +197,7 @@ export default function TeamCarousel({ members }) {
       }, SNAP_DELAY);
     };
 
-    const handleWheel = (event) => {
+    const handleWheel = (event: WheelEvent) => {
       event.preventDefault();
       desiredRotation -= event.deltaY * WHEEL_SENSITIVITY;
       setActiveFromRotation(desiredRotation);
@@ -205,7 +208,7 @@ export default function TeamCarousel({ members }) {
 
     const raycaster = new THREE.Raycaster();
     const pointer = new THREE.Vector2();
-    const handleClick = (event) => {
+    const handleClick = (event: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
       pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
       pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
@@ -267,8 +270,8 @@ export default function TeamCarousel({ members }) {
       document.removeEventListener("visibilitychange", handleVisibility);
       gallery.clear();
       geometry.dispose();
-      materials.forEach((material) => material.dispose());
-      textures.forEach((texture) => texture.dispose());
+      materials.forEach((material: THREE.MeshBasicMaterial) => material.dispose());
+      textures.forEach((texture: THREE.CanvasTexture) => texture.dispose());
       renderer.dispose();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

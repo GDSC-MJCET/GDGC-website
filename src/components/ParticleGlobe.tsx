@@ -15,9 +15,9 @@ const SAT = [
 // no artificial brightness/opacity gradient is used to fake it.
 const CAMERA_DISTANCE = 10;
 
-export default function ParticleGlobe({ className = "" }) {
-  const canvasRef = useRef(null);
-  const wrapRef = useRef(null);
+export default function ParticleGlobe({ className = "" }: { className?: string }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -27,7 +27,10 @@ export default function ParticleGlobe({ className = "" }) {
     if (!ctx) return;
 
     const COUNT = 2600;
-    const pts = [];
+    const pts: {
+      x: number; y: number; z: number; s: number; ph: number;
+      shimmerSpeed: number; jx: number; jy: number; jitterSpeed: number;
+    }[] = [];
     for (let i = 0; i < COUNT; i++) {
       const u = (i + 0.5) / COUNT;
       const phi = Math.acos(1 - 2 * u);
@@ -67,7 +70,7 @@ export default function ParticleGlobe({ className = "" }) {
     let my = 0;
     let tx = 0;
     let ty = 0;
-    const onMove = (e) => {
+    const onMove = (e: MouseEvent) => {
       const r = wrap.getBoundingClientRect();
       tx = ((e.clientX - r.left) / r.width - 0.5) * 2;
       ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
@@ -78,7 +81,7 @@ export default function ParticleGlobe({ className = "" }) {
     const t0 = performance.now();
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const draw = (now) => {
+    const draw = (now: number) => {
       const time = (now - t0) / 1000;
       mx += (tx - mx) * 0.05;
       my += (ty - my) * 0.05;
@@ -105,7 +108,7 @@ export default function ParticleGlobe({ className = "" }) {
       const cp = Math.cos(pit);
       const sp = Math.sin(pit);
 
-      const rot = (x, y, z) => {
+      const rot = (x: number, y: number, z: number) => {
         const x1 = x * cy1 + z * sy1;
         const z1 = -x * sy1 + z * cy1;
         const y2 = y * cp - z1 * sp;
@@ -116,7 +119,7 @@ export default function ParticleGlobe({ className = "" }) {
       // Real perspective projection: screen position scales with depth, so
       // foreshortening — not a manual gradient — creates the dense silhouette
       // ring and sparse center.
-      const project = (x, y, z) => {
+      const project = (x: number, y: number, z: number) => {
         const scale = CAMERA_DISTANCE / (CAMERA_DISTANCE - z);
         return [cx + x * R * scale, cy - y * R * scale, scale];
       };
@@ -149,7 +152,7 @@ export default function ParticleGlobe({ className = "" }) {
         { tilt: 0.5, spin: (reduce ? 0 : time * 0.11) + 0.4, rad: 1.15 },
         { tilt: -1.15, spin: (reduce ? 0 : -time * 0.08) + 1.2, rad: 1.22 },
       ];
-      const ringPoint = (ri, ang) => {
+      const ringPoint = (ri: number, ang: number) => {
         const r = rings[ri] ?? rings[0];
         const x0 = Math.cos(ang) * r.rad;
         const z0 = Math.sin(ang) * r.rad;

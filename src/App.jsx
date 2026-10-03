@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom
 // import AboutPage from './pages/AboutPage';
 import { ThemeProvider } from './components/theme-provider';
 import gdg from "./assets/silkbg.png"
-import LiquidEther from './components/LiquidEther.jsx';
+import LiquidEther from './components/LiquidEther';
 
 
 

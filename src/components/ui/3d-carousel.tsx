@@ -7,14 +7,16 @@ const BLOB_COLORS = ["#4285F4", "#EA4335", "#FBBC05", "#34A853"];
 
 // Shortest signed distance from activeIndex to index, wrapping around the
 // ends of the list, so arrows always step in the direction you'd expect.
-function getOffset(index, activeIndex, length) {
+type Member = { image: string; name: string; role: string };
+
+function getOffset(index: number, activeIndex: number, length: number) {
   let offset = index - activeIndex;
   if (offset > length / 2) offset -= length;
   if (offset < -length / 2) offset += length;
   return offset;
 }
 
-const MemberCard = ({ member, isActive }) => (
+const MemberCard = ({ member, isActive }: { member: Member; isActive: boolean }) => (
   <div
     className={`relative h-full w-full overflow-hidden rounded-3xl border border-border bg-card/80 transition-[filter] duration-300 ${
       isActive ? "" : "grayscale"
@@ -68,12 +70,12 @@ const MemberCard = ({ member, isActive }) => (
   </div>
 );
 
-export function ThreeDPhotoCarousel({ items }) {
+export function ThreeDPhotoCarousel({ items }: { items: Member[] }) {
   const length = items.length;
   const [activeIndex, setActiveIndex] = useState(0);
 
   const goTo = useCallback(
-    (i) => setActiveIndex(((i % length) + length) % length),
+    (i: number) => setActiveIndex(((i % length) + length) % length),
     [length]
   );
   // Functional updater form — doesn't close over `activeIndex`, so each
@@ -88,7 +90,7 @@ export function ThreeDPhotoCarousel({ items }) {
   );
 
   useEffect(() => {
-    const onKey = (e) => {
+    const onKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight") next();
       if (e.key === "ArrowLeft") prev();
     };

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { loadImage, buildCardCanvas } from "./cardCanvas";
@@ -18,7 +18,9 @@ const MAX_V_OFFSET = 1.6;
 const FADE = { in: { start: 0.05, end: 0.28 }, out: { start: 0.75, end: 0.95 } };
 const BLUR = { in: { start: 0.0, end: 0.15 }, out: { start: 0.85, end: 1.0 }, max: 4.0 };
 
-function clamp(v, min, max) {
+type Member = { image: string; name?: string; role?: string };
+
+function clamp(v: number, min: number, max: number) {
   return Math.min(max, Math.max(min, v));
 }
 
@@ -74,7 +76,7 @@ function createCardMaterial() {
   });
 }
 
-function fadeAt(t) {
+function fadeAt(t: number) {
   if (t < FADE.in.start) return 0;
   if (t <= FADE.in.end) return (t - FADE.in.start) / (FADE.in.end - FADE.in.start);
   if (t < FADE.out.start) return 1;
@@ -82,7 +84,7 @@ function fadeAt(t) {
   return 0;
 }
 
-function blurAt(t) {
+function blurAt(t: number) {
   if (t < BLUR.in.start) return BLUR.max;
   if (t <= BLUR.in.end) return BLUR.max * (1 - (t - BLUR.in.start) / (BLUR.in.end - BLUR.in.start));
   if (t < BLUR.out.start) return 0;
@@ -90,10 +92,15 @@ function blurAt(t) {
   return BLUR.max;
 }
 
-function GalleryScene({ members, textures, scrollVelocityRef, autoPlayRef }) {
+function GalleryScene({ members, textures, scrollVelocityRef, autoPlayRef }: {
+  members: Member[];
+  textures: (THREE.CanvasTexture | null)[];
+  scrollVelocityRef: RefObject<number>;
+  autoPlayRef: RefObject<boolean>;
+}) {
   const count = members.length;
   const materials = useMemo(() => members.map(() => createCardMaterial()), [members]);
-  const meshRefs = useRef([]);
+  const meshRefs = useRef<(THREE.Mesh | null)[]>([]);
   const planeZ = useRef(members.map((_, i) => (DEPTH_RANGE / count) * i));
 
   // Golden-angle distributed x/y per card, computed once — separates cards
@@ -152,7 +159,7 @@ function GalleryScene({ members, textures, scrollVelocityRef, autoPlayRef }) {
   return (
     <>
       {members.map((_, i) => (
-        <mesh key={i} ref={(el) => (meshRefs.current[i] = el)} material={materials[i]}>
+        <mesh key={i} ref={(el) => { meshRefs.current[i] = el; }} material={materials[i]}>
           <planeGeometry args={[4.2, 5.6, 24, 24]} />
         </mesh>
       ))}
@@ -160,12 +167,12 @@ function GalleryScene({ members, textures, scrollVelocityRef, autoPlayRef }) {
   );
 }
 
-export default function InfiniteTeamGallery({ members }) {
-  const wrapRef = useRef(null);
+export default function InfiniteTeamGallery({ members }: { members: Member[] }) {
+  const wrapRef = useRef<HTMLDivElement>(null);
   const scrollVelocityRef = useRef(0);
   const autoPlayRef = useRef(true);
   const lastInteractionRef = useRef(Date.now());
-  const [textures, setTextures] = useState(() => members.map(() => null));
+  const [textures, setTextures] = useState<(THREE.CanvasTexture | null)[]>(() => members.map(() => null));
 
   useEffect(() => {
     let disposed = false;
@@ -197,13 +204,13 @@ export default function InfiniteTeamGallery({ members }) {
       lastInteractionRef.current = Date.now();
     };
 
-    const handleWheel = (e) => {
+    const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
       scrollVelocityRef.current += e.deltaY * 0.01;
       markInteraction();
     };
 
-    const handleKey = (e) => {
+    const handleKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
         scrollVelocityRef.current -= 2;
         markInteraction();
