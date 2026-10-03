@@ -30,7 +30,7 @@ import BlogHelp from './pages/BlogHelp.jsx';
 import BlogLand from './pages/BlogLand.jsx';
 import { useEffect } from 'react';
 import axios from 'axios';
-import { AuthContext } from './context/AuthContext.js';
+import { AuthContext } from './context/AuthContext';
 import Socials from './pages/Socials.jsx';
 
 import Leaderboard from "./pages/LeaderBoard.jsx";
