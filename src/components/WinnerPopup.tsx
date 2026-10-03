@@ -38,7 +38,7 @@ function fireConfetti() {
 }
 
 function fireStars() {
-  const defaults = {
+  const defaults: confetti.Options = {
     spread: 360,
     ticks: 80,
     gravity: 0.4,
@@ -57,7 +57,7 @@ function fireStars() {
 }
 
 /* ─── Floating emoji particles ─── */
-function FloatingEmoji({ emoji, style }) {
+function FloatingEmoji({ emoji, style }: { emoji: string; style: React.CSSProperties }) {
   return (
     <span
       className="absolute text-2xl md:text-3xl pointer-events-none select-none animate-float-up"
@@ -69,9 +69,11 @@ function FloatingEmoji({ emoji, style }) {
 }
 
 /* ─── Main popup ─── */
-export default function WinnerPopup({ onClose }) {
+type Emoji = { id: number; emoji: string; style: React.CSSProperties };
+
+export default function WinnerPopup({ onClose }: { onClose: () => void }) {
   const [visible, setVisible] = useState(false);
-  const [emojis, setEmojis] = useState([]);
+  const [emojis, setEmojis] = useState<Emoji[]>([]);
 
   const spawnEmojis = useCallback(() => {
     const pool = ["🎉", "🏆", "⭐", "🎊", "✨", "🥇", "🔥", "💪"];
@@ -147,7 +149,7 @@ export default function WinnerPopup({ onClose }) {
               "--dur": e.style.animationDuration,
               bottom: "10%",
               zIndex: 0,
-            }}
+            } as React.CSSProperties}
           />
         ))}
 

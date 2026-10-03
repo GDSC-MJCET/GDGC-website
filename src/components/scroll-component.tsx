@@ -3,15 +3,15 @@ import React, { useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const ScrollLines = () => {
-  const svgRef = useRef(null);
+  const svgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
     if (!svgRef.current) return;
-    const paths = svgRef.current.querySelectorAll(".draw");
+    const paths = svgRef.current.querySelectorAll<SVGPathElement>(".draw");
     paths.forEach((p) => {
       const len = p.getTotalLength();
-      p.style.strokeDasharray = len;
-      p.style.strokeDashoffset = len;
+      p.style.strokeDasharray = String(len);
+      p.style.strokeDashoffset = String(len);
     });
   }, []);
 
@@ -22,8 +22,8 @@ const ScrollLines = () => {
     { c: "blue", d: "M0 180 C120 160 220 120 360 100 C460 85 540 100 720 180" }
   ];
 
-  const shiftY = (d, dy) =>
-    d.replace(/-?\d+(\.\d+)?/g, (n, _, i) => (i % 2 ? Number(n) + dy : n));
+  const shiftY = (d: string, dy: number) =>
+    d.replace(/-?\d+(\.\d+)?/g, (n: string, _: unknown, i: number) => (i % 2 ? String(Number(n) + dy) : n));
 
   const lowerOffset = 95;
   const offsets = [-36, -24, -12, 0, 12, 24, 36];

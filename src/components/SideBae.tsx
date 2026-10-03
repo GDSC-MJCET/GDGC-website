@@ -3,16 +3,19 @@ import {
   BookOpen, ChevronDown, ChevronUp, Dumbbell, PenSquare,
   Settings2, UserStar, VenetianMask, X,
 } from 'lucide-react'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, type ComponentType, type ReactNode } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import gdg from '../assets/gdg-logo.png'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import type { AuthState } from '../context/AuthContext'
+
+type NavFn = (id: string, path: string) => void
 // ── Sub-panels ────────────────────────────────────────────────────────────────
-const sub = (active, key) =>
+const sub = (active: string, key: string) =>
   `${active === key ? 'bg-white text-black dark:bg-neutral-800 dark:text-white rounded-md' : ''} py-1 px-3 w-full rounded-md cursor-pointer`
 
-const SettingsSubPanel = ({ nav, active }) => (
+const SettingsSubPanel = ({ nav, active }: { nav: NavFn; active: string }) => (
   <div className='text-[12px] flex flex-col gap-2 pl-6 pt-2'>
     <span onClick={() => nav('Qr', '/team/customization/qrchange')} className={sub(active, 'Qr')}>Change QR</span>
     <span onClick={() => nav('socials', '/team/customization/socials')} className={sub(active, 'socials')}>Socials</span>
@@ -20,7 +23,7 @@ const SettingsSubPanel = ({ nav, active }) => (
 )
 
 
-const AdminSubPanel = ({handleClickRedirect , clicked}) => {
+const AdminSubPanel = ({handleClickRedirect , clicked}: { handleClickRedirect: NavFn; clicked: string }) => {
     return (
         <div className='text-[12px] flex flex-col gap-2 pl-6 pt-2'>
             <span onClick={()=>handleClickRedirect("adminUsers","/team/admin/users" )} className={`${clicked == "adminUsers" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}>
@@ -56,7 +59,7 @@ const AdminSubPanel = ({handleClickRedirect , clicked}) => {
         </div>
     )
 }
-const GuestSubPanel = ({handleClickRedirect , clicked}) => {
+const GuestSubPanel = ({handleClickRedirect , clicked}: { handleClickRedirect: NavFn; clicked: string }) => {
     return (
         <div className='text-[12px] flex flex-col gap-2 pl-6 pt-2'>
             <span onClick={()=>handleClickRedirect("socials","/team/customization/socials" )} className={`${clicked == "socials" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}>
@@ -68,7 +71,7 @@ const GuestSubPanel = ({handleClickRedirect , clicked}) => {
     )
 }
 
-const BlogSubPanel = ({ nav, active }) => (
+const BlogSubPanel = ({ nav, active }: { nav: NavFn; active: string }) => (
   <div className='text-[12px] flex flex-col gap-2 pl-6 pt-2'>
     <span onClick={() => nav('blog-feed', '/blog/home')} className={sub(active, 'blog-feed')}>Blog Feed</span>
     <span onClick={() => nav('blog-editor', '/blog/editor')} className={sub(active, 'blog-editor')}>Create Blog</span>
@@ -77,7 +80,7 @@ const BlogSubPanel = ({ nav, active }) => (
   </div>
 )
 
-const SuperAdminSubPanel = ({handleClickRedirect , clicked}) => {
+const SuperAdminSubPanel = ({handleClickRedirect , clicked}: { handleClickRedirect: NavFn; clicked: string }) => {
     return (
         <div className='text-[12px] flex flex-col gap-2 pl-6 pt-2'>
             <span onClick={()=>handleClickRedirect("superAdminDashboard","/team/superadmin" )} className={`${clicked == "superAdminDashboard" ? "bg-white text-black rounded-md" : ""} flex flex-row gap-2 items-center`}>
@@ -101,7 +104,9 @@ const SuperAdminSubPanel = ({handleClickRedirect , clicked}) => {
     )
 }
 // ── Collapsible nav group ─────────────────────────────────────────────────────
-const NavGroup = ({ icon: Icon, label, open, onToggle, children }) => (
+const NavGroup = ({ icon: Icon, label, open, onToggle, children }: {
+  icon: ComponentType<{ className?: string }>; label: string; open: boolean; onToggle: () => void; children: ReactNode
+}) => (
   <div>
     <span
       onClick={onToggle}
@@ -116,7 +121,9 @@ const NavGroup = ({ icon: Icon, label, open, onToggle, children }) => (
 )
 
 // ── Top-level nav item ────────────────────────────────────────────────────────
-const NavItem = ({ icon: Icon, label, id, active, onClick }) => (
+const NavItem = ({ icon: Icon, label, id, active, onClick }: {
+  icon: ComponentType<{ className?: string }>; label: string; id: string; active: string; onClick: (id: string) => void
+}) => (
   <span
     onClick={() => onClick(id)}
     className={`flex ${active === id ? 'bg-white text-black dark:bg-neutral-800 dark:text-white' : ''} p-2 rounded-md flex-row cursor-pointer gap-3 items-center`}
@@ -127,7 +134,7 @@ const NavItem = ({ icon: Icon, label, id, active, onClick }) => (
 )
 
 // ── Sidebar shell ─────────────────────────────────────────────────────────────
-const Shell = ({ isOpen, onClose, children }) => (
+const Shell = ({ isOpen, onClose, children }: { isOpen: boolean; onClose?: () => void; children: ReactNode }) => (
   <>
     {isOpen && (
       <div className='fixed inset-0 bg-black/50 z-40 md:hidden' onClick={onClose} />
@@ -156,10 +163,10 @@ const Shell = ({ isOpen, onClose, children }) => (
 )
 
 // ── Main component ────────────────────────────────────────────────────────────
-const SideBae = ({ isOpen, onClose }) => {
+const SideBae = ({ isOpen, onClose }: { isOpen: boolean; onClose?: () => void }) => {
   const location   = useLocation()
   const navigate   = useNavigate()
-  const auth       = JSON.parse(localStorage.getItem('AuthState'))
+  const auth: AuthState | null = JSON.parse(localStorage.getItem('AuthState') ?? 'null')
 
   const [active, setActive]                 = useState('dash')
   const [isSuperAdmin, setIsSuperAdmin]     = useState(false)
@@ -212,7 +219,7 @@ const SideBae = ({ isOpen, onClose }) => {
   }, [auth?.token])
 
   // Nav helper — sets active + navigates + closes mobile sidebar
-  const go = (id, path) => {
+  const go: NavFn = (id, path) => {
     setActive(id)
     navigate(path)
     if (onClose) onClose()
@@ -241,13 +248,13 @@ const SideBae = ({ isOpen, onClose }) => {
 
   const adminNav = (
     <NavGroup icon={UserStar} label='Admin' open={openAdmin} onToggle={() => setOpenAdmin(v => !v)}>
-      <AdminSubPanel nav={go} active={active} />
+      <AdminSubPanel handleClickRedirect={go} clicked={active} />
     </NavGroup>
   )
 
   const superAdminNav = (
     <NavGroup icon={VenetianMask} label='SuperAdmin' open={openSuperAdmin} onToggle={() => setOpenSuperAdmin(v => !v)}>
-      <SuperAdminSubPanel nav={go} active={active} />
+      <SuperAdminSubPanel handleClickRedirect={go} clicked={active} />
     </NavGroup>
   )
 

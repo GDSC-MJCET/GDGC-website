@@ -17,12 +17,15 @@ const navItems = [
   { key: NAV.HELP, label: "Help", route: "/blog/help" },
 ];
 
-const BlogNavbar = ({removeNavbar, setRemoveNavbar}) => {
+const BlogNavbar = ({removeNavbar, setRemoveNavbar}: {
+  removeNavbar: boolean;
+  setRemoveNavbar: (value: boolean) => void;
+}) => {
   const [active, setActive] = useState(window.location.pathname.toUpperCase().split("/")[2] || NAV.FEED);
   console.log("Active nav item:", active);
   const navigate = useNavigate();
 
-  const handleNav = (item) => {
+  const handleNav = (item: (typeof navItems)[number]) => {
     setActive(item.key);
     navigate(item.route);
   };

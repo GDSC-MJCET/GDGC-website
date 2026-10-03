@@ -7,8 +7,8 @@ import Marker from "@editorjs/marker"
 import List from "@editorjs/list"
 import Paragraph from "@editorjs/paragraph";
 import axios from "axios"
-const uploadImageByUrl = async(e)=>{
-    let link = new Promise((resolve,reject)=>{
+const uploadImageByUrl = async(e: string)=>{
+    const link = new Promise<string>((resolve,reject)=>{
         try {
             resolve(e)
         } catch (error) {
@@ -22,7 +22,7 @@ const uploadImageByUrl = async(e)=>{
         }
     })
 }
-const uploadImageByFile = async (file) => {
+const uploadImageByFile = async (file: File | null | undefined) => {
     // 1. Guard clause: return early if no file is provided
     if (!file) {
         return {
@@ -65,12 +65,12 @@ const uploadImageByFile = async (file) => {
         
         // Provide a more specific error message if possible
         let errorMessage = "Upload failed. Please try again.";
-        if (error.response) {
+        if (axios.isAxiosError(error) && error.response) {
             // The request was made and the server responded with a status code
             // that falls out of the range of 2xx
             errorMessage = error.response.data?.error?.message || 
                           `Server error: ${error.response.status}`;
-        } else if (error.request) {
+        } else if (axios.isAxiosError(error) && error.request) {
             // The request was made but no response was received
             errorMessage = "Network error. Please check your connection.";
         }

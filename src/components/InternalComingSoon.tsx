@@ -6,6 +6,11 @@ export default function InternalComingSoon({
   ctaLabel,
   ctaTo,
   helperText,
+}: {
+  title: string;
+  ctaLabel?: string;
+  ctaTo?: string;
+  helperText?: string;
 }) {
   return (
     <div className="min-h-[70vh] flex flex-col items-center justify-center px-4">

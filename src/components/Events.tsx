@@ -97,7 +97,16 @@ export default function Events() {
   );
 }
 
-function EventCard({ card, mobile = false }) {
+type EventCardData = {
+  color: string;
+  date: string;
+  live?: boolean;
+  title: string;
+  text: string;
+  image: string;
+};
+
+function EventCard({ card, mobile = false }: { card: EventCardData; mobile?: boolean }) {
   return (
     <div
       style={{ backgroundColor: card.color }}
@@ -139,7 +148,7 @@ function EventCard({ card, mobile = false }) {
   );
 }
 
-function ActionButton({ label, color , link="/"}) {
+function ActionButton({ label, color , link="/"}: { label: string; color: string; link?: string }) {
   const navigate = useNavigate()
   return (
     <button

@@ -21,7 +21,7 @@ import InitialSetup from './pages/InitialSetup.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import QrChange from './pages/QrChange.jsx'
 import Portfolio from './pages/Socials.jsx'
-import SideBae from './components/SideBae.jsx'
+import SideBae from './components/SideBae'
 import BlogWrite from './pages/BlogWrite.jsx'
 import { Card, CardHeader } from './components/ui/card'
 import BlogHome from './pages/BlogHomePage.jsx';
