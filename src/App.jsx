@@ -23,7 +23,7 @@ import QrChange from './pages/QrChange.jsx'
 import Portfolio from './pages/Socials.jsx'
 import SideBae from './components/SideBae.jsx'
 import BlogWrite from './pages/BlogWrite.jsx'
-import { Card, CardHeader } from './components/ui/card.jsx'
+import { Card, CardHeader } from './components/ui/card'
 import BlogHome from './pages/BlogHomePage.jsx';
 import SpecificBlog from './pages/SpecificBlogPage.jsx';
 import BlogHelp from './pages/BlogHelp.jsx';
