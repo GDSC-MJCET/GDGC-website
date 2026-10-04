@@ -9,6 +9,7 @@ type Sample = {
 
 type PixelatedCanvasProps = {
   src: string;
+  text?: string;
   width?: number;
   height?: number;
   cellSize?: number;

@@ -18,7 +18,7 @@ import HeadingSection from './components/heading-section'
 import LoginPage from './pages/LoginPage'
 import ForgotPassword from './pages/ForgotPassword';
 import InitialSetup from './pages/InitialSetup'
-import Dashboard from './pages/Dashboard.jsx'
+import Dashboard from './pages/Dashboard'
 import QrChange from './pages/QrChange'
 import Portfolio from './pages/Socials'
 import SideBae from './components/SideBae'
@@ -33,7 +33,7 @@ import axios from 'axios';
 import { AuthContext } from './context/AuthContext';
 import Socials from './pages/Socials';
 
-import Leaderboard from "./pages/LeaderBoard.jsx";
+import Leaderboard from "./pages/LeaderBoard";
 import { NavLink, useNavigate } from 'react-router-dom';
 
 import ChangePassword from './pages/ChangePassword';
@@ -42,7 +42,7 @@ import TechDebatePage from './pages/TechDebatePage';
 import EventsPage from './pages/EventsPage';
 import TeamPage from './pages/TeamPage';
 import GalleryPage from './pages/GalleryPage';
-import ContactUsPage from './pages/ContactUsPage.jsx';
+import ContactUsPage from './pages/ContactUsPage';
 import NotFound from './pages/NotFound';
 import PracticePage from './pages/PracticePage.jsx';
 import SuperAdminDashboard from './pages/SuperAdminDashboard';
@@ -52,8 +52,8 @@ import AdminUsers from './pages/AdminUsers.jsx';
 import ScorePage from './pages/ScorePage';
 import HrInterface from './pages/HrInterface.jsx';
 import HrControlInterface from './pages/HrControlInterface.jsx';
-import BuildWeekForm from './pages/BuildWeekForm.jsx';
-// import TDForm from './pages/TDForm.jsx';
+import BuildWeekForm from './pages/BuildWeekForm';
+// import TDForm from './pages/TDForm';
 import { Navigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import EventDetails from './components/events/EventDetails';
@@ -71,7 +71,7 @@ import ExerciseDetailPage from './pages/ExerciseDetailPage';
 import ContentManagementPage from './pages/ContentManagementPage.jsx';
 import SuperAdminBlogPanel from './pages/SuperAdminBlog.jsx';
 import TeamMemberManager from './pages/TeamMemberManager.jsx';
-// import TweetHomeLayout from './pages/TweetHome.jsx';
+// import TweetHomeLayout from './pages/TweetHome';
 
 function App() {
   const [isVerified, setIsVerified] = useState(null);

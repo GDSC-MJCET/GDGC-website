@@ -6,6 +6,7 @@ export default function ColourfulText({
   text
 }: {
   text: string;
+  className?: string;
 }) {
   const colors = [
     "#4285f4", // Blue 500

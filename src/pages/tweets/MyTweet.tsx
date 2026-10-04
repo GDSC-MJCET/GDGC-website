@@ -3,15 +3,18 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { FaHeart, FaComment, FaTrash, FaRetweet } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import type { AuthState } from "../../context/AuthContext";
+import type { Tweet } from "../../types/tweets";
+import { axiosResponse } from "../../lib/http";
 
 const MyTweets = () => {
-  const [tweets, setTweets] = useState([]);
-  const [likedTweets, setLikedTweets] = useState([]);
-  const [openRepliesId, setOpenRepliesId] = useState(null);
-  const [replyText, setReplyText] = useState({});
+  const [tweets, setTweets] = useState<Tweet[]>([]);
+  const [likedTweets, setLikedTweets] = useState<string[]>([]);
+  const [openRepliesId, setOpenRepliesId] = useState<string | null>(null);
+  const [replyText, setReplyText] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const server = import.meta.env.VITE_SERVER;
-  const auth = JSON.parse(localStorage.getItem("AuthState"));
+  const auth: AuthState = JSON.parse(localStorage.getItem("AuthState") ?? "null")
   const navigate = useNavigate();
 
   const fetchMyTweets = useCallback(async () => {
@@ -34,7 +37,7 @@ const MyTweets = () => {
     fetchMyTweets();
   }, [fetchMyTweets]);
 
-  const handleLike = async (tweetId) => {
+  const handleLike = async (tweetId: string) => {
     try {
       await axios.post(
         `${server}/api/tweet/like`,
@@ -49,7 +52,7 @@ const MyTweets = () => {
       );
       toast.success("Liked!");
     } catch (err) {
-      if (err.response?.status === 400) {
+      if (axiosResponse(err)?.status === 400) {
         // Already liked -> try unlike
         await handleUnlike(tweetId);
       } else {
@@ -58,7 +61,7 @@ const MyTweets = () => {
     }
   };
 
-  const handleUnlike = async (tweetId) => {
+  const handleUnlike = async (tweetId: string) => {
     try {
       await axios.post(
         `${server}/api/tweet/unlike`,
@@ -77,7 +80,7 @@ const MyTweets = () => {
     }
   };
 
-  const handleDelete = async (tweetId) => {
+  const handleDelete = async (tweetId: string) => {
     if (!window.confirm("Delete this tweet permanently?")) return;
     try {
       await axios.post(
@@ -92,15 +95,15 @@ const MyTweets = () => {
     }
   };
 
-  const toggleReplies = (tweetId) => {
+  const toggleReplies = (tweetId: string) => {
     setOpenRepliesId((cur) => (cur === tweetId ? null : tweetId));
   };
 
-  const handleReplyChange = (tweetId, value) => {
+  const handleReplyChange = (tweetId: string, value: string) => {
     setReplyText((prev) => ({ ...prev, [tweetId]: value }));
   };
 
-  const handleReplySubmit = async (tweetId) => {
+  const handleReplySubmit = async (tweetId: string) => {
     const text = replyText[tweetId]?.trim();
     if (!text) return;
     try {
@@ -146,9 +149,9 @@ const MyTweets = () => {
                 <div className="flex justify-between items-start">
                   <div>
                     <p className="text-white whitespace-pre-wrap">{tweet.text}</p>
-                    {tweet.media?.length > 0 && (
+                    {(tweet.media?.length ?? 0) > 0 && (
                       <div className="mt-2 flex flex-wrap gap-2">
-                        {tweet.media.map((m, idx) => (
+                        {tweet.media!.map((m, idx) => (
                           <img
                             key={idx}
                             src={m.url}

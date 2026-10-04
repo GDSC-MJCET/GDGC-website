@@ -3,16 +3,19 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { FaHeart, FaComment, FaRetweet } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import type { AuthState } from "../../context/AuthContext";
+import type { Tweet } from "../../types/tweets";
+import { axiosResponse } from "../../lib/http";
 
 const TweetFeed = () => {
-  const [tweets, setTweets] = useState([]);
-  const [likedTweets, setLikedTweets] = useState([]);
-  const [repostedTweets, setRepostedTweets] = useState([]);
-  const [openRepliesId, setOpenRepliesId] = useState(null);
-  const [replyText, setReplyText] = useState({});
+  const [tweets, setTweets] = useState<Tweet[]>([]);
+  const [likedTweets, setLikedTweets] = useState<string[]>([]);
+  const [repostedTweets, setRepostedTweets] = useState<string[]>([]);
+  const [openRepliesId, setOpenRepliesId] = useState<string | null>(null);
+  const [replyText, setReplyText] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const server = import.meta.env.VITE_SERVER;
-  const auth = JSON.parse(localStorage.getItem("AuthState"));
+  const auth: AuthState = JSON.parse(localStorage.getItem("AuthState") ?? "null")
 
   const fetchFeed = useCallback(async () => {
     try {
@@ -21,8 +24,8 @@ const TweetFeed = () => {
       });
       setTweets(data.tweets || []);
       // isLiked and isReposted come from backend already
-      setLikedTweets(data.tweets.filter(t => t.isLiked).map(t => t._id));
-      setRepostedTweets(data.tweets.filter(t => t.isReposted).map(t => t._id));
+      setLikedTweets(data.tweets.filter((t: Tweet) => t.isLiked).map((t: Tweet) => t._id));
+      setRepostedTweets(data.tweets.filter((t: Tweet) => t.isReposted).map((t: Tweet) => t._id));
     } catch (err) {
       toast.error("Failed to load feed");
     } finally {
@@ -34,7 +37,7 @@ const TweetFeed = () => {
     fetchFeed();
   }, [fetchFeed]);
 
-  const handleLike = async (tweetId) => {
+  const handleLike = async (tweetId: string) => {
     try {
       await axios.post(
         `${server}/api/tweet/like`,
@@ -48,7 +51,7 @@ const TweetFeed = () => {
         )
       );
     } catch (err) {
-      if (err.response?.status === 400) {
+      if (axiosResponse(err)?.status === 400) {
         // Already liked -> unlike
         await handleUnlike(tweetId);
       } else {
@@ -57,7 +60,7 @@ const TweetFeed = () => {
     }
   };
 
-  const handleUnlike = async (tweetId) => {
+  const handleUnlike = async (tweetId: string) => {
     try {
       await axios.post(
         `${server}/api/tweet/unlike`,
@@ -75,7 +78,7 @@ const TweetFeed = () => {
     }
   };
 
-  const handleRepost = async (tweetId) => {
+  const handleRepost = async (tweetId: string) => {
     try {
       await axios.post(
         `${server}/api/tweet/repost`,
@@ -90,7 +93,7 @@ const TweetFeed = () => {
       );
       toast.success("Reposted!");
     } catch (err) {
-      if (err.response?.status === 400) {
+      if (axiosResponse(err)?.status === 400) {
         // Already reposted -> undo
         await handleUndoRepost(tweetId);
       } else {
@@ -99,7 +102,7 @@ const TweetFeed = () => {
     }
   };
 
-  const handleUndoRepost = async (tweetId) => {
+  const handleUndoRepost = async (tweetId: string) => {
     try {
       await axios.post(
         `${server}/api/tweet/unrepost`,
@@ -118,15 +121,15 @@ const TweetFeed = () => {
     }
   };
 
-  const toggleReplies = (tweetId) => {
+  const toggleReplies = (tweetId: string) => {
     setOpenRepliesId((cur) => (cur === tweetId ? null : tweetId));
   };
 
-  const handleReplyChange = (tweetId, value) => {
+  const handleReplyChange = (tweetId: string, value: string) => {
     setReplyText((prev) => ({ ...prev, [tweetId]: value }));
   };
 
-  const handleReplySubmit = async (tweetId) => {
+  const handleReplySubmit = async (tweetId: string) => {
     const text = replyText[tweetId]?.trim();
     if (!text) return;
     try {
@@ -174,9 +177,9 @@ const TweetFeed = () => {
                   <span>{new Date(tweet.createdAt).toLocaleString()}</span>
                 </div>
                 <p className="text-white whitespace-pre-wrap">{tweet.text}</p>
-                {tweet.media?.length > 0 && (
+                {(tweet.media?.length ?? 0) > 0 && (
                   <div className="mt-2 flex flex-wrap gap-2">
-                    {tweet.media.map((m, idx) => (
+                    {tweet.media!.map((m, idx) => (
                       <img
                         key={idx}
                         src={m.url}

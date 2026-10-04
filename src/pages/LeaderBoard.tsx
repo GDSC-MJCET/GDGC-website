@@ -2,13 +2,27 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+type LeaderboardUser = {
+  _id: string;
+  user?: { username?: string; name?: string };
+  username?: string;
+  rank?: number | string;
+  easySolved: number;
+  mediumSolved: number;
+  hardSolved: number;
+  contestRating: number;
+  totalSolved: number;
+  activityStatus?: string;
+};
+import type { AuthState } from "../context/AuthContext";
+
 const Leaderboard = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<LeaderboardUser[]>([]);
   const [loading, setLoading] = useState(true);
   const nav = useNavigate();
 
   useEffect(() => {
-    const auth = JSON.parse(localStorage.getItem("AuthState"));
+    const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
 
     if (!auth?.token) {
       nav("/login");

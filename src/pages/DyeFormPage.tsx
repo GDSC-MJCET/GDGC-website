@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, type ChangeEvent, type FormEvent } from 'react';
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
@@ -34,8 +34,24 @@ const interestFields = [
     { id: 'other', label: 'Other' },
 ];
 
+// Real change events and the synthetic ones built from Radix callbacks both fit this shape.
+type InputLikeEvent = {
+  target: { name: string; value: string; type?: string; checked?: boolean | 'indeterminate' };
+};
+
 export const DyeFormPage = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    name: string;
+    rollNo: string;
+    phoneNo: string;
+    email: string;
+    branch: string;
+    year: string;
+    interests: string[];
+    sessionTopics: string;
+    hasMembership: string;
+    membershipNumber: string;
+  }>({
     name: '',
     rollNo: '',
     phoneNo: '',
@@ -48,16 +64,16 @@ export const DyeFormPage = () => {
     membershipNumber: '',
   });
 
-  const [membershipCardPhoto, setMembershipCardPhoto] = useState(null);
+  const [membershipCardPhoto, setMembershipCardPhoto] = useState<File | null>(null);
   const [membershipCardPhotoPreview, setMembershipCardPhotoPreview] = useState('');
-  const [paymentScreenshot, setPaymentScreenshot] = useState(null);
+  const [paymentScreenshot, setPaymentScreenshot] = useState<File | null>(null);
   const [paymentScreenshotPreview, setPaymentScreenshotPreview] = useState('');
 
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<Record<string, string | null>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null);
+  const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
 
-  const uploadFileToSupabase = useCallback(async (file, folder) => {
+  const uploadFileToSupabase = useCallback(async (file: File | null, folder: string) => {
     if (!file) return null;
 
     try {
@@ -86,7 +102,7 @@ export const DyeFormPage = () => {
     }
   }, [formData.rollNo]);
 
-  const handleInputChange = useCallback((e) => {
+  const handleInputChange = useCallback((e: InputLikeEvent) => {
     const { name, value, type, checked } = e.target;
 
     if (type === 'checkbox' && name === 'interests') {
@@ -101,7 +117,7 @@ export const DyeFormPage = () => {
     }
   }, []);
 
-  const handleFileChange = (e) => {
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, files } = e.target;
     const file = files?.[0];
     if (!file) return;
@@ -110,17 +126,17 @@ export const DyeFormPage = () => {
     reader.onloadend = () => {
         if (name === 'membershipCardPhoto') {
             setMembershipCardPhoto(file);
-            setMembershipCardPhotoPreview(reader.result);
+            setMembershipCardPhotoPreview(reader.result as string);
         } else if (name === 'paymentScreenshot') {
             setPaymentScreenshot(file);
-            setPaymentScreenshotPreview(reader.result);
+            setPaymentScreenshotPreview(reader.result as string);
         }
     };
     reader.readAsDataURL(file);
   };
 
   const validateForm = () => {
-    const newErrors = {};
+    const newErrors: Record<string, string> = {};
     
     if (!nameRegex.test(formData.name)) newErrors.name = 'Please enter a valid name (letters and spaces only).';
     if (!yearRegex.test(formData.year)) newErrors.year = 'Please enter a valid year (e.g., 1, 2, 3, 4).';
@@ -143,7 +159,7 @@ export const DyeFormPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = useCallback(async (e) => {
+  const handleSubmit = useCallback(async (e: FormEvent) => {
     e.preventDefault();
     if (!validateForm()) {
         return;
@@ -153,7 +169,7 @@ export const DyeFormPage = () => {
     setSubmitStatus(null);
     setErrors(prev => ({ ...prev, fileUpload: null })); // Clear previous upload error
 
-    let fileUrl = '';
+    let fileUrl: string | null = '';
     if (formData.hasMembership === 'yes') {
         fileUrl = await uploadFileToSupabase(membershipCardPhoto, 'membership-cards');
     } else if (formData.hasMembership === 'no') {

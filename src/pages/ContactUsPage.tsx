@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, type ChangeEvent, type FormEvent } from "react";
 import Background from "../components/Background";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import { IconMail, IconPhone, IconMapPin, IconClock, IconBrandInstagram, IconBrandLinkedin, IconBrandGithub, IconBrandYoutube } from "@tabler/icons-react";
 import axios from "axios";
+import { axiosResponse } from "../lib/http";
 
 const ContactUsPage = () => {
   const server = import.meta.env.VITE_SERVER
@@ -14,11 +15,11 @@ const ContactUsPage = () => {
     message: "",
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
   e.preventDefault();
 
   try {
@@ -33,7 +34,7 @@ const ContactUsPage = () => {
     }
   } catch (err) {
     console.error(err);
-    alert(err?.response?.data?.msg || "Server error");
+    alert(axiosResponse(err)?.data?.msg || "Server error");
   }
 };
 

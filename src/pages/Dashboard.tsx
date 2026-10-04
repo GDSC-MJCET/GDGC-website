@@ -1,4 +1,5 @@
 // import { IconBrandLine } from "@tabler/icons-react";
+import type { AuthState } from "../context/AuthContext";
 // import { ChartLine, Settings2 } from "lucide-react";
 // import React, { useEffect } from "react";
 // import { Link, useNavigate } from "react-router-dom";
@@ -13,7 +14,7 @@
 //   // const [socials, setSocials] = useState(null);
 //   // const [showPopUp, setShowPopUp] = useState(false);//initially false ie closedd
 
-//   const auth = JSON.parse(localStorage.getItem("AuthState"));
+//   const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
 
 //   useEffect(() => {
 //     axios
@@ -129,7 +130,7 @@
 // export default Dashboard;
 
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, type ComponentType, type ReactNode } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
 import {
@@ -138,11 +139,12 @@ import {
 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import type { ExerciseDetail } from '@/types/practice'
 
 const SERVER = import.meta.env.VITE_SERVER?.replace(/\/$/, '')
 
 function authHeaders() {
-  const auth = JSON.parse(localStorage.getItem('AuthState'))
+  const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
   return { Authorization: `Bearer ${auth?.token}` }
 }
 
@@ -153,14 +155,16 @@ function greeting() {
   return 'Good evening'
 }
 
-const diffColor = {
+const diffColor: Record<string, string> = {
   easy:   'border-emerald-400/30 bg-emerald-400/10 text-emerald-300',
   medium: 'border-amber-400/30  bg-amber-400/10  text-amber-300',
   hard:   'border-rose-400/30   bg-rose-400/10   text-rose-300',
 }
 
 // ── Quick-link card ──────────────────────────────────────────────────────────
-function QuickCard({ to, icon: Icon, iconBg, iconColor, title, sub }) {
+function QuickCard({ to, icon: Icon, iconBg, iconColor, title, sub }: {
+  to: string; icon: ComponentType<{ className?: string }>; iconBg: string; iconColor: string; title: ReactNode; sub: ReactNode
+}) {
   return (
     <Link to={to}>
       <Card className="group border-white/10 bg-[#111] hover:border-white/25 hover:bg-[#151515] transition-all cursor-pointer h-full">
@@ -182,7 +186,7 @@ function QuickCard({ to, icon: Icon, iconBg, iconColor, title, sub }) {
 }
 
 // ── Exercise card (expandable) ───────────────────────────────────────────────
-function ExerciseCard({ exercise }) {
+function ExerciseCard({ exercise }: { exercise: ExerciseDetail }) {
   const [open, setOpen] = useState(false)
 
   const pct = exercise.problemCount > 0
@@ -264,14 +268,14 @@ function ExerciseCard({ exercise }) {
 
 // ── Dashboard ────────────────────────────────────────────────────────────────
 const Dashboard = () => {
-  const auth    = JSON.parse(localStorage.getItem('AuthState'))
+  const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
   const isGuest = !!auth?.guest
 
   const [ready,            setReady]            = useState(false)
   const [displayName,      setDisplayName]      = useState('')
   const [isAdmin,          setIsAdmin]          = useState(false)
   const [isSuperAdmin,     setIsSuperAdmin]     = useState(false)
-  const [exercises,        setExercises]        = useState([])
+  const [exercises,        setExercises]        = useState<ExerciseDetail[]>([])
   const [loadingExercises, setLoadingExercises] = useState(true)
   const nav = useNavigate()
 

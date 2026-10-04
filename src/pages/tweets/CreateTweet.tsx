@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, type FormEvent } from "react";
 import axios from "axios";
+import { axiosResponse } from "../../lib/http";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import type { AuthState } from "../../context/AuthContext";
 
 const CreateTweet = () => {
   const [text, setText] = useState("");
@@ -9,9 +11,9 @@ const CreateTweet = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const server = import.meta.env.VITE_SERVER;
-  const auth = JSON.parse(localStorage.getItem("AuthState"));
+  const auth: AuthState = JSON.parse(localStorage.getItem("AuthState") ?? "null")
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!text.trim() && !mediaUrls.trim()) {
       toast.error("Tweet must have text or media");
@@ -40,7 +42,7 @@ const CreateTweet = () => {
         toast.error(data.message || "Failed to post");
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || "Something went wrong");
+      toast.error(axiosResponse(err)?.data?.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -55,7 +57,7 @@ const CreateTweet = () => {
             value={text}
             onChange={(e) => setText(e.target.value.slice(0, 280))}
             placeholder="What's happening? (use @username to mention)"
-            rows="4"
+            rows={4}
             className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:outline-none focus:border-blue-500"
           />
           <div className="text-right text-gray-400 text-sm">

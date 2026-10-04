@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, type ChangeEvent, type FormEvent } from 'react';
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../co
 import { Toaster, toast } from 'react-hot-toast';
 
 import axios from 'axios';
+import { axiosResponse } from '../lib/http';
 import Nav from '../components/Nav';
 import Footer from '../components/Footer';
 import Background from '../components/Background';
@@ -50,11 +51,11 @@ export default function BuildWeekForm() {
 
   const [membershipCardPhoto, setMembershipCardPhoto] = useState(null);
 
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<Record<string, string | null>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null);
+  const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
 
-  const handleInputChange = useCallback((e) => {
+  const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -65,7 +66,7 @@ export default function BuildWeekForm() {
   
 
   const validateForm = () => {
-    const newErrors = {};
+    const newErrors: Record<string, string> = {};
     if (!formData.name.trim() || !nameRegex.test(formData.name)) {
         newErrors.name = 'Please enter a valid name (letters and spaces only).';
     }
@@ -92,7 +93,7 @@ export default function BuildWeekForm() {
     return Object.keys(newErrors).length === 0;
     };
 
-  const handleSubmit = useCallback(async (e) => {
+  const handleSubmit = useCallback(async (e: FormEvent) => {
     e.preventDefault();
     if (!validateForm()) {
         return;
@@ -144,10 +145,10 @@ export default function BuildWeekForm() {
       
 
     } catch (error) {
-      if (error?.response?.status === 401) {
-        toast.error(error?.response?.data?.message );
+      if (axiosResponse(error)?.status === 401) {
+        toast.error(axiosResponse(error)?.data?.message );
       } else {
-        toast.error(error?.response?.data?.message );
+        toast.error(axiosResponse(error)?.data?.message );
       }
       setSubmitStatus('error');
     } finally {
