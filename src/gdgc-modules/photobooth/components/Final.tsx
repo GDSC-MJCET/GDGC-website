@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import '../../loop13/styles/adsophos.css'
 
 const Final = () => {
-  const [hovered, setHovered] = useState(null);
+  const [hovered, setHovered] = useState<number | null>(null);
   const [scrollY, setScrollY] = useState(0);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [mounted, setMounted] = useState(false);
@@ -18,7 +18,7 @@ const Final = () => {
     setMounted(true);
 
     const handleScroll = () => setScrollY(window.scrollY);
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       const x = (e.clientX / window.innerWidth - 0.5) * 2;
       const y = (e.clientY / window.innerHeight - 0.5) * 2;
       setMousePos({ x, y });

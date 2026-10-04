@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import "./styles/adsophos.css";
 import eyes from "./public/eyes.svg";
-import Final from "../photobooth/components/Final.jsx";
-import PixelSkyline from "../photobooth/components/PixelSkyline.jsx";
+import Final from "../photobooth/components/Final";
+import PixelSkyline from "../photobooth/components/PixelSkyline";
 import clocker from "./public/clocker.svg";
 import timetraveler from "./public/time_travel.svg"
 const equipmentItems = [

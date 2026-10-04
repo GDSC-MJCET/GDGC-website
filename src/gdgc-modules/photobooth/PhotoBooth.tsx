@@ -7,7 +7,7 @@ import Booth from './components/Booth';
 export const PhotoBooth = () => {
   const [activePalette, setActivePalette] = useState(['#EA4335', '#FF00A2']);
 
-  const palettes = {
+  const palettes: Record<string, string[]> = {
     'hero-section': ['#EA4335', '#FF00A2'],
     'room1-section': ['#2BDDE1', '#0DEBFF'],
     'room2-section': ['#686868', '#FFFFFF', '#EA4336'],
@@ -22,7 +22,7 @@ export const PhotoBooth = () => {
       threshold: 0,
     };
 
-    const observerCallback = (entries) => {
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const sectionId = entry.target.id;

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import '../styles/photobooth.css';
 
 /* ─── tiny lerp helper ─────────────────────────────────────── */
-const lerp = (a, b, t) => a + (b - a) * t;
+const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 const Booth = () => {
   /* raw targets — written by event listeners */
@@ -17,13 +17,13 @@ const Booth = () => {
 
   /* ref to the background <img> and board wrapper so we
      can mutate their transforms directly — no re-renders */
-  const bgRef = useRef(null);
-  const imageRef = useRef(null);
-  const rafId = useRef(null);
+  const bgRef = useRef<HTMLImageElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const rafId = useRef(0);
 
   useEffect(() => {
     const onScroll = () => { targetScroll.current = window.scrollY; };
-    const onMouse = (e) => {
+    const onMouse = (e: MouseEvent) => {
       targetMouseX.current = (e.clientX / window.innerWidth - 0.5) * 2;
       targetMouseY.current = (e.clientY / window.innerHeight - 0.5) * 2;
     };
