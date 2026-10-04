@@ -12,8 +12,15 @@ const ROT = [0, 38, 48, 55, 60, 62];
 const SCALE = [1, 0.88, 0.78, 0.7, 0.62, 0.56];
 const DIM = [0, 0.22, 0.4, 0.55, 0.68, 0.75];
 
-const SPIN_SPEED = 0.45; // cards per second, flowing to the left
-const IDLE_RESUME_MS = 2500; // after a manual move or release, wait this long before spinning again
+// Speeds in cards per second (the ring turns to the left): once, shortly after the page loads, the ring is
+// flung at KICK_SPEED, bleeds off speed with time constant SLOW_TAU and never stops, settling into a slow
+// merry-go-round drift at CRUISE_SPEED.
+const KICK_SPEED = 42;
+const CRUISE_SPEED = 0.5;
+const SLOW_TAU = 0.9; // seconds; smaller = brakes harder
+const FIRST_KICK_MS = 2000; // the one fling, this long after the page loads
+const CALM_SPEED = 1.5; // below this the ring counts as "slow" and the card in the centre is highlighted
+const IDLE_RESUME_MS = 2500; // after a manual move or release, wait this long before drifting again
 const REFLECTION = 0.42; // reflection height as a fraction of the card height
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -44,13 +51,14 @@ type CardProps = {
   cw: number;
   ch: number;
   eager: boolean;
+  settled: boolean; // false while the ring is whipping round: nobody is "shown" yet
   onSelect: () => void;
 };
 
-const MemberCard = ({ member, offset, visible, cw, ch, eager, onSelect }: CardProps) => {
+const MemberCard = ({ member, offset, visible, cw, ch, eager, settled, onSelect }: CardProps) => {
   const abs = Math.abs(offset);
   const sign = Math.sign(offset);
-  const isActive = abs < 0.5;
+  const isActive = settled && abs < 0.5;
   const color = member.color ?? "#4285F4";
 
   const opacity = clamp01(visible + 1 - abs);
@@ -169,6 +177,7 @@ export function ThreeDPhotoCarousel({ items }: { items: Member[] }) {
   const length = items.length;
   // `pos` is the (fractional) index sitting at the centre; it keeps drifting so the ring turns like a merry-go-round.
   const [pos, setPos] = useState(0);
+  const [settled, setSettled] = useState(true);
   const [stageW, setStageW] = useState(1200);
   const stageRef = useRef<HTMLDivElement>(null);
   const dragged = useRef(false);
@@ -178,6 +187,9 @@ export function ThreeDPhotoCarousel({ items }: { items: Member[] }) {
   const targetRef = useRef<number | null>(null); // set while easing to a chosen member
   const holdUntil = useRef(0); // spinning is paused until this time (touch, manual moves)
   const holding = useRef(false); // finger/pointer currently down
+  const velRef = useRef(CRUISE_SPEED); // current speed of the drift/fling, cards per second
+  const nextKick = useRef(0); // when the next fling happens
+  const calmRef = useRef(true);
 
   useLayoutEffect(() => {
     const el = stageRef.current;
@@ -189,12 +201,13 @@ export function ThreeDPhotoCarousel({ items }: { items: Member[] }) {
     return () => ro.disconnect();
   }, []);
 
-  // Animation loop: ease to a manual target, otherwise drift to the right.
+  // Animation loop: ease to a manual target; otherwise drift, after one fast fling at the start that slows back to the drift.
   useEffect(() => {
     if (length < 2) return;
     const reduced = prefersReducedMotion();
     let raf = 0;
     let last = performance.now();
+    nextKick.current = last + FIRST_KICK_MS;
     const frame = (now: number) => {
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
@@ -206,8 +219,21 @@ export function ThreeDPhotoCarousel({ items }: { items: Member[] }) {
           p = target;
           targetRef.current = null;
         }
+        velRef.current = CRUISE_SPEED;
+        nextKick.current = Math.max(nextKick.current, holdUntil.current + 1500);
       } else if (!reduced && !holding.current && now >= holdUntil.current && !document.hidden) {
-        p += SPIN_SPEED * dt; // cards travel to the left
+        if (now >= nextKick.current) {
+          velRef.current = KICK_SPEED;
+          nextKick.current = Infinity; // only the one fling
+        }
+        // exponential brake toward the cruising speed, never below it
+        velRef.current = CRUISE_SPEED + (velRef.current - CRUISE_SPEED) * Math.exp(-dt / SLOW_TAU);
+        p += velRef.current * dt;
+      }
+      const calm = velRef.current < CALM_SPEED;
+      if (calm !== calmRef.current) {
+        calmRef.current = calm;
+        setSettled(calm);
       }
       if (p !== posRef.current) {
         posRef.current = p; // unbounded; offsets wrap on their own
@@ -222,6 +248,7 @@ export function ThreeDPhotoCarousel({ items }: { items: Member[] }) {
   // Move to the member `by` places along, or to a specific member by the shortest way round.
   const move = useCallback((by: number) => {
     const base = targetRef.current ?? Math.round(posRef.current);
+    velRef.current = CRUISE_SPEED; // a manual move cancels any fling in progress
     targetRef.current = base + by;
     holdUntil.current = performance.now() + IDLE_RESUME_MS;
   }, []);
@@ -230,6 +257,7 @@ export function ThreeDPhotoCarousel({ items }: { items: Member[] }) {
   const goTo = useCallback(
     (i: number) => {
       const from = posRef.current;
+      velRef.current = CRUISE_SPEED;
       targetRef.current = from + getOffset(i, from, length);
       holdUntil.current = performance.now() + IDLE_RESUME_MS;
     },
@@ -330,6 +358,7 @@ export function ThreeDPhotoCarousel({ items }: { items: Member[] }) {
               cw={cw}
               ch={ch}
               eager={i < 5}
+              settled={settled}
               onSelect={() => {
                 if (dragged.current || Math.abs(offset) < 0.5) return;
                 goTo(i);
