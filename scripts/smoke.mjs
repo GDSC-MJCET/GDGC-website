@@ -18,7 +18,7 @@ const ORIGIN = `http://localhost:${PORT}`;
 
 const publicRoutes = [
   "/", "/initialsetup/test", "/contact", "/login", "/forgotpassword", "/signup-guest",
-  "/techfaceoff", "/buildweek-form", "/score", "/events", "/event-details", "/team-page",
+  "/techfaceoff", "/buildweek-form", "/score", "/events", "/event-details", "/team-page", "/gallery",
   "/adsophos", "/photobooth", "/heist", "/loop13", "/practice/test", "/this-route-does-not-exist",
 ];
 const teamRoutes = [

@@ -14,6 +14,7 @@ import {
 import { ArrowUpRight } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { Link, useLocation } from "react-router";
+import { menuItems } from "./navItems";
 // Light/dark toggle disabled for now, see index.css — re-enable by
 // uncommenting the light palette there and restoring this import + usage.
 // import { ModeToggle } from "./mode-toggle";
@@ -45,8 +46,6 @@ const Nav = (_props: { bgColor?: string }) => {
       href: "https://www.youtube.com/@gdgcmjcet",
     },
   ];
-
-  const menuItems = { "Home": "/", "Tech Face-off": "/techfaceoff", "Events": "/events", "Adsophos": "/adsophos", "Team": "/team-page", "Contact Us": "/contact" };
 
   return (
     <div>
