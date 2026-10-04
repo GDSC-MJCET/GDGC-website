@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { FloatingDock } from "@/components/ui/floating-dock";
+import { ReplayIntroButton } from "@/components/ui/replay-intro-button";
 import {
   IconBrandGithubFilled,
   IconBrandInstagramFilled,
@@ -84,6 +85,15 @@ const Nav = (_props: { bgColor?: string }) => {
 
           <div className="flex items-center justify-end gap-2">
             {/* <ModeToggle /> */}
+            <ReplayIntroButton
+              variant="ghost"
+              size="icon"
+              title="Replay intro"
+              aria-label="Replay intro"
+              className="h-9 w-9 rounded-full text-foreground/70 hover:bg-accent hover:text-foreground"
+            >
+              <span className="sr-only">Replay intro</span>
+            </ReplayIntroButton>
             <a
               target="_blank"
               rel="noopener noreferrer"
