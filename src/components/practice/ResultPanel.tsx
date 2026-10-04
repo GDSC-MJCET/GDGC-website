@@ -3,8 +3,9 @@ import { AlertCircle, CheckCircle2, Clock3, Play, Send, Terminal, TerminalSquare
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
+import type { ExampleRunResult, ExecutionState } from "@/types/practice"
 
-const statusStyles = {
+const statusStyles: Record<string, string> = {
   accepted: "border-emerald-500/30 bg-emerald-500/10 text-emerald-200",
   wrong_answer: "border-amber-500/30 bg-amber-500/10 text-amber-200",
   compile_error: "border-rose-500/30 bg-rose-500/10 text-rose-200",
@@ -12,17 +13,17 @@ const statusStyles = {
   time_limit_exceeded: "border-fuchsia-500/30 bg-fuchsia-500/10 text-fuchsia-200",
 }
 
-const formatStatus = (status) =>
+const formatStatus = (status?: string | null) =>
   String(status || "idle")
     .split("_")
     .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
     .join(" ")
 
-const isEofError = (stderr) =>
+const isEofError = (stderr: unknown) =>
   typeof stderr === "string" && stderr.includes("EOFError")
 
 // ─── per-example card used in Run results ───────────────────────────────────
-const ExampleResult = ({ result, index }) => {
+const ExampleResult = ({ result, index }: { result: ExampleRunResult; index: number }) => {
   const { passed, stdout, stderr, timedOut, exitCode, expectedOutput, input } = result
   const label = timedOut ? "Time Limit" : passed ? "Passed" : "Wrong Answer"
   const color = timedOut
@@ -95,6 +96,16 @@ const ResultPanel = ({
   resultTab,
   runState,
   submitState,
+}: {
+  customInput: string
+  customRunState?: ExecutionState
+  lastResultType: string
+  onCustomInputChange: (value: string) => void
+  onCustomRun: () => void
+  onResultTabChange: (tab: string) => void
+  resultTab: string
+  runState: ExecutionState
+  submitState: ExecutionState
 }) => {
   const activeExecution = lastResultType === "submit" ? submitState : runState
   const activeData = activeExecution.data || {}
@@ -109,7 +120,7 @@ const ResultPanel = ({
   const runResults = activeData.results || []
   const allRunPassed = runResults.length > 0 && runResults.every((r) => r.passed)
 
-  const resultsRef = useRef(null)
+  const resultsRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     if (activeExecution.status === "success" && resultsRef.current) {
       resultsRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" })
@@ -250,7 +261,7 @@ const ResultPanel = ({
               <>
                 <div className={cn(
                   "flex items-center justify-between rounded-xl border px-4 py-4",
-                  statusStyles[submitStatus] || "border-border bg-background text-white"
+                  statusStyles[submitStatus ?? ""] || "border-border bg-background text-white"
                 )}>
                   <div className="flex items-center gap-3">
                     {submitStatus === "accepted"

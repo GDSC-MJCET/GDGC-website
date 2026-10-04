@@ -1,6 +1,11 @@
 import { useState } from "react";
 
-function TabButton({ id, label, active, setActive }) {
+function TabButton({ id, label, active, setActive }: {
+  id: string;
+  label: string;
+  active: string;
+  setActive: (id: string) => void;
+}) {
   return (
     <button
       onClick={() => setActive(id)}

@@ -1,4 +1,6 @@
-export const MOCK_PROBLEMS = {
+import type { Problem } from "@/types/practice"
+
+export const MOCK_PROBLEMS: Record<string, Problem> = {
   "two-sum": {
     id: "two-sum",
     slug: "two-sum",
@@ -118,7 +120,7 @@ export const MOCK_PROBLEMS = {
   },
 }
 
-export const getMockProblem = (problemId) => MOCK_PROBLEMS[problemId] || null
+export const getMockProblem = (problemId: string) => MOCK_PROBLEMS[problemId] || null
 
 export function getMockProblemList() {
   return Object.values(MOCK_PROBLEMS).map((problem) => ({

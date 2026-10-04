@@ -1,7 +1,24 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-function TopBadge({ debate }) {
+type Speaker = { _id: string; name: string };
+type Debate = {
+  date?: string;
+  status?: string;
+  isLive?: boolean;
+  break?: boolean;
+  leftTeam: string;
+  rightTeam: string;
+  votesLeft?: number;
+  votesRight?: number;
+  Topic?: string;
+  leftLogo?: string;
+  rightLogo?: string;
+  speakersLeft?: Speaker[];
+  speakersRight?: Speaker[];
+};
+
+function TopBadge({ debate }: { debate: Debate | null }) {
   let dateDisplay = "11 Feb, 2026";
 
   if (debate && debate.date) {
@@ -46,40 +63,40 @@ function TopBadge({ debate }) {
 }
 
 export default function LiveScoreCard() {
-  const [debate, setDebate] = useState(null);
+  const [debate, setDebate] = useState<Debate | null>(null);
   const [noLiveMatch, setNoLiveMatch] = useState(true);
   const [voteCountLeft, setVoteCountLeft] = useState(0);
   const [voteCountRight, setVoteCountRight] = useState(0);
   const [disable,setDisable] = useState(false)
   // Function to handle audience voting
-  const handleVote = async (side) => {
+  const handleVote = async (side: "left" | "right") => {
     if (disable) return; // Prevent multiple votes
     setDisable(true)
     try {
       // Make API call to backend FIRST
-      console.log("Submitting vote for side:", side, debate.leftTeam, debate.rightTeam);
+      console.log("Submitting vote for side:", side, debate!.leftTeam, debate!.rightTeam);
       
       // Update state OPTIMISTICALLY (show immediate UI update)
       if (side === "left") {
         setVoteCountLeft(prev => prev + 1);
         // Also update debate state for immediate UI consistency
         setDebate(prev => ({
-          ...prev,
-          votesLeft: (prev.votesLeft || 0) + 1
+          ...prev!,
+          votesLeft: (prev!.votesLeft || 0) + 1
         }));
       } else {
         setVoteCountRight(prev => prev + 1);
         // Also update debate state for immediate UI consistency
         setDebate(prev => ({
-          ...prev,
-          votesRight: (prev.votesRight || 0) + 1
+          ...prev!,
+          votesRight: (prev!.votesRight || 0) + 1
         }));
       }
       
       // Then make the API call
       const response = await axios.post(
         `${import.meta.env.VITE_SERVER}/api/v1/techdebate/vote`,
-        { leftTeam: debate.leftTeam, rightTeam: debate.rightTeam, side },
+        { leftTeam: debate!.leftTeam, rightTeam: debate!.rightTeam, side },
       );
       
       // Update with server response (ensures sync)
@@ -95,14 +112,14 @@ export default function LiveScoreCard() {
       if (side === "left") {
         setVoteCountLeft(prev => Math.max(0, prev - 1));
         setDebate(prev => ({
-          ...prev,
-          votesLeft: Math.max(0, (prev.votesLeft || 1) - 1)
+          ...prev!,
+          votesLeft: Math.max(0, (prev!.votesLeft || 1) - 1)
         }));
       } else {
         setVoteCountRight(prev => Math.max(0, prev - 1));
         setDebate(prev => ({
-          ...prev,
-          votesRight: Math.max(0, (prev.votesRight || 1) - 1)
+          ...prev!,
+          votesRight: Math.max(0, (prev!.votesRight || 1) - 1)
         }));
       }
       // Show error feedback to user
@@ -118,7 +135,7 @@ export default function LiveScoreCard() {
         // const res = await axios.get(
         //   `${import.meta.env.VITE_SERVER}`+`/api/v1/techdebate/get-score`
         // );
-        const res = null;
+        const res = null as { data: { sendingData: Debate & { votesLeft: number; votesRight: number } } } | null;
         if (res) {
           setDebate(res.data.sendingData);
           setVoteCountLeft(res.data.sendingData.votesLeft);

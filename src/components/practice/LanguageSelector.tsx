@@ -6,7 +6,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-const LANGUAGE_LABELS = {
+const LANGUAGE_LABELS: Record<string, string> = {
   javascript: "JavaScript",
   python: "Python",
   python_ml: "Python (ML)",
@@ -14,7 +14,11 @@ const LANGUAGE_LABELS = {
   java: "Java",
 }
 
-const LanguageSelector = ({ languages, onValueChange, value }) => {
+const LanguageSelector = ({ languages, onValueChange, value }: {
+  languages: string[]
+  onValueChange: (value: string) => void
+  value: string
+}) => {
   return (
     <Select onValueChange={onValueChange} value={value}>
       <SelectTrigger className="w-[170px] rounded-xl border-white/10 bg-black/[0.3] text-white shadow-none">

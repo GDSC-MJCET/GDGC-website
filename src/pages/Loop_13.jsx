@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import "../components/adsophos/adsophos.css";
 import eyes from "../../public/eyes.svg";
-import Final from "../components/adsophos/Final.jsx";
+import Final from "../components/adsophos/Final";
 import PixelSkyline from "../components/photobooth/PixelSkyline";
 
 const equipmentItems = [

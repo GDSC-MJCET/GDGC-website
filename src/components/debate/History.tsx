@@ -1,22 +1,57 @@
 import axios from "axios"
 import { useEffect, useState, useRef } from "react"
 
+type DebateMember = { name: string; isLeader?: boolean }
+type DebateTeam = { name: string; image: string; members: DebateMember[] }
+type ApiDebate = {
+    leftTeam: DebateTeam
+    rightTeam: DebateTeam
+    date: string
+    topic: string
+    leftScore: number
+    rightScore: number
+    winner: string
+    isLive: boolean
+    status: string
+    startDate: string
+    endDate: string
+}
+type Round = {
+    match: string
+    date: string
+    topic: string
+    teamA: string
+    teamB: string
+    coverA: string
+    coverB: string
+    leftMembers: DebateMember[]
+    rightMembers: DebateMember[]
+    leftScore: number
+    rightScore: number
+    isAWinner: boolean
+    isBWinner: boolean
+    isLive: boolean
+    status: string
+    startAt: string
+    endAt: string
+}
+
 const History = () => {
-    const [rounds, setRounds] = useState([])
+    const [rounds, setRounds] = useState<Round[]>([])
     const [showAll, setShowAll] = useState(false)
-    const [hoveredRound, setHoveredRound] = useState(null)
+    const [hoveredRound, setHoveredRound] = useState<number | null>(null)
     const [loading, setLoading] = useState(false)
-    const hoverTimeoutRef = useRef(null)
+    const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
     // helper: format like "Feb 26, 6:26"
-    const formatDateTime = (iso) => {
+    const formatDateTime = (iso?: string) => {
         if (!iso) return ""
         const d = new Date(iso)
-        if (isNaN(d)) return ""
+        if (isNaN(d.getTime())) return ""
         const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
         const month = months[d.getMonth()]
         const day = d.getDate()
-        let hour = d.getHours() // 0-23
+        const hour = d.getHours() // 0-23
         const displayHour = hour % 12 === 0 ? 12 : hour % 12 // 12-hour without AM/PM
         const minute = d.getMinutes().toString().padStart(2, "0")
         return `${month} ${day}, ${displayHour}:${minute}`
@@ -34,7 +69,7 @@ const History = () => {
                 const data = response.data.history
                 if (!isMounted) return
                 
-                const mappedRounds = data.map(debate => ({
+                const mappedRounds = data.map((debate: ApiDebate) => ({
                     match: debate.leftTeam.name + ' vs ' + debate.rightTeam.name,
                     date: new Date(debate.date).toLocaleDateString('en-US', { 
                         year: 'numeric', 
@@ -79,7 +114,7 @@ const History = () => {
 
     const displayedRounds = showAll ? rounds : rounds.slice(0, 5)
     // console.log(displayedRounds)
-    const handleMouseEnter = (index) => {
+    const handleMouseEnter = (index: number) => {
         if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current)
         setHoveredRound(index)
     }

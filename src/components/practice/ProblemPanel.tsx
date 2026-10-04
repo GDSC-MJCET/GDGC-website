@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, type ReactNode } from "react"
 import axios from "axios"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { CheckCircle2, XCircle, Clock, AlertTriangle, Loader2, FileText, History } from "lucide-react"
+import type { AuthState } from "@/context/AuthContext"
+import type { Problem, Submission } from "@/types/practice"
 
 const SERVER = import.meta.env.VITE_SERVER?.replace(/\/$/, "")
 
 // ── helpers ──────────────────────────────────────────────────────────────────
-const difficultyClassNames = {
+const difficultyClassNames: Record<string, string> = {
   Easy: "border-emerald-400/30 bg-emerald-400/[0.12] text-emerald-200",
   easy: "border-emerald-400/30 bg-emerald-400/[0.12] text-emerald-200",
   Medium: "border-amber-400/30 bg-amber-400/[0.12] text-amber-200",
@@ -17,7 +19,7 @@ const difficultyClassNames = {
   hard: "border-rose-400/30 bg-rose-400/[0.12] text-rose-200",
 }
 
-const verdictMeta = {
+const verdictMeta: Record<string, { label: string; color: string; bg: string; Icon: typeof Clock }> = {
   accepted:            { label: "Accepted",            color: "text-emerald-400", bg: "bg-emerald-400/10 border-emerald-400/30", Icon: CheckCircle2 },
   wrong_answer:        { label: "Wrong Answer",         color: "text-rose-400",    bg: "bg-rose-400/10 border-rose-400/30",       Icon: XCircle },
   time_limit_exceeded: { label: "Time Limit Exceeded",  color: "text-amber-400",   bg: "bg-amber-400/10 border-amber-400/30",     Icon: Clock },
@@ -25,29 +27,29 @@ const verdictMeta = {
   pending:             { label: "Pending",              color: "text-gray-400",    bg: "bg-gray-400/10 border-gray-400/20",       Icon: Loader2 },
 }
 
-const LANG_LABEL = { javascript: "JS", python: "PY", cpp: "C++", java: "Java" }
+const LANG_LABEL: Record<string, string> = { javascript: "JS", python: "PY", cpp: "C++", java: "Java" }
 
-function fmtDate(iso) {
+function fmtDate(iso: string) {
   const d = new Date(iso)
   return d.toLocaleDateString(undefined, { month: "short", day: "numeric" }) +
     " · " + d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })
 }
 
-function fmtElapsed(ms) {
+function fmtElapsed(ms?: number | null) {
   if (ms == null) return null
   if (ms < 1000) return `${ms}ms`
   return `${(ms / 1000).toFixed(1)}s`
 }
 
 // ── code sample ──────────────────────────────────────────────────────────────
-const CodeSample = ({ children }) => (
+const CodeSample = ({ children }: { children: ReactNode }) => (
   <pre className="overflow-x-auto rounded-xl border border-border bg-background p-4 text-sm leading-7 text-gray-200">
     <code>{children}</code>
   </pre>
 )
 
 // ── inline code: renders `backtick` spans, everything else plain text ─────────
-function InlineText({ children }) {
+function InlineText({ children }: { children?: ReactNode }) {
   if (!children) return null
   const parts = String(children).split(/(`[^`]+`)/)
   return (
@@ -62,14 +64,14 @@ function InlineText({ children }) {
 }
 
 // ── Submissions tab ───────────────────────────────────────────────────────────
-function SubmissionsTab({ problemId, refreshToken }) {
-  const [submissions, setSubmissions] = useState([])
+function SubmissionsTab({ problemId, refreshToken }: { problemId?: string; refreshToken: unknown }) {
+  const [submissions, setSubmissions] = useState<Submission[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
 
   useEffect(() => {
     if (!problemId || !SERVER) { setLoading(false); return }
-    const auth = JSON.parse(localStorage.getItem("AuthState"))
+    const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
     if (!auth?.token) { setLoading(false); return }
 
     setLoading(true)
@@ -129,7 +131,7 @@ function SubmissionsTab({ problemId, refreshToken }) {
 
             {/* Stats row */}
             <div className="flex items-center gap-4 text-xs text-gray-500 flex-wrap">
-              {s.totalCount > 0 && (
+              {(s.totalCount ?? 0) > 0 && (
                 <span>
                   <span className={s.allPassed ? "text-emerald-400 font-medium" : "text-rose-400 font-medium"}>
                     {s.passedCount}/{s.totalCount}
@@ -153,7 +155,7 @@ function SubmissionsTab({ problemId, refreshToken }) {
 }
 
 // ── ProblemPanel ─────────────────────────────────────────────────────────────
-const ProblemPanel = ({ problem, submissionRefreshToken }) => {
+const ProblemPanel = ({ problem, submissionRefreshToken }: { problem: Problem; submissionRefreshToken: unknown }) => {
   const [tab, setTab] = useState("description")
 
   const tabs = [

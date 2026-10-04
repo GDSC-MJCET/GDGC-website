@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 
-const GridTrail = ({ palette = ['#ea4336', '#2bdde1', '#ff00a2', '#ffffff'] }) => {
-  const canvasRef = useRef(null);
+const GridTrail = ({ palette = ['#ea4336', '#2bdde1', '#ff00a2', '#ffffff'] }: { palette?: string[] }) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const paletteRef = useRef(palette);
 
   // Update ref when palette changes without resetting effect
@@ -17,9 +17,10 @@ const GridTrail = ({ palette = ['#ea4336', '#2bdde1', '#ff00a2', '#ffffff'] }) =
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
-    let tiles = {};
-    let keys = [];
+    const ctx = canvas.getContext('2d')!;
+    type Tile = { gx: number; gy: number; col: string; born: number; sz: number };
+    const tiles: Record<string, Tile> = {};
+    let keys: string[] = [];
     let isMobile = window.innerWidth < 768;
 
     const resize = () => {
@@ -31,7 +32,7 @@ const GridTrail = ({ palette = ['#ea4336', '#2bdde1', '#ff00a2', '#ffffff'] }) =
     resize();
     window.addEventListener('resize', resize);
 
-    const spawnAround = (cx, cy) => {
+    const spawnAround = (cx: number, cy: number) => {
       const now = Date.now();
       const currentPalette = paletteRef.current;
       
@@ -73,7 +74,7 @@ const GridTrail = ({ palette = ['#ea4336', '#2bdde1', '#ff00a2', '#ffffff'] }) =
       }
     };
 
-    let animationFrameId;
+    let animationFrameId = 0;
     const loop = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const now = Date.now();
@@ -96,7 +97,7 @@ const GridTrail = ({ palette = ['#ea4336', '#2bdde1', '#ff00a2', '#ffffff'] }) =
         
         alive.push(k);
         const prog = age / LIFE;
-        let op = prog < 0.2 ? prog / 0.2 : 1 - (prog - 0.2) / 0.8;
+        const op = prog < 0.2 ? prog / 0.2 : 1 - (prog - 0.2) / 0.8;
         
         ctx.globalAlpha = Math.max(0, op) * 0.8;
         ctx.fillStyle = t.col;
@@ -118,7 +119,7 @@ const GridTrail = ({ palette = ['#ea4336', '#2bdde1', '#ff00a2', '#ffffff'] }) =
     loop();
 
     let lastGX = -99, lastGY = -99;
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       if (isMobile) return;
       
       const gx = Math.floor(e.clientX / G);

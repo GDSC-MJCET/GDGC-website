@@ -8,8 +8,9 @@ import { CheckCircle2, Play, Send, Terminal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import LanguageSelector from "@/components/practice/LanguageSelector"
 import ResultPanel from "@/components/practice/ResultPanel"
+import type { ExecutionState } from "@/types/practice"
 
-const languageExtensions = {
+const languageExtensions: Record<string, ReturnType<typeof javascript>> = {
   javascript: javascript(),
   python: python(),
   cpp: cpp(),
@@ -34,6 +35,24 @@ const CodeWorkspace = ({
   runState,
   selectedLanguage,
   submitState,
+}: {
+  allowedLanguages: string[]
+  code: string
+  customInput: string
+  customRunState?: ExecutionState
+  isSolved?: boolean
+  lastResultType: string
+  onCodeChange: (value: string) => void
+  onCustomInputChange: (value: string) => void
+  onCustomRun: () => void
+  onLanguageChange: (value: string) => void
+  onResultTabChange: (tab: string) => void
+  onRun: () => void
+  onSubmit: () => void
+  resultTab: string
+  runState: ExecutionState
+  selectedLanguage: string
+  submitState: ExecutionState
 }) => {
   const editorExtension = languageExtensions[selectedLanguage] || javascript()
   const customRunPending = customRunState?.status === "loading"
