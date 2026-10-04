@@ -1,4 +1,5 @@
-import { useState, useContext, useRef } from 'react'
+import { useState, useContext, useRef, type RefObject } from 'react'
+import type { AuthState } from './context/AuthContext'
 import './App.css'
 // import {Navibar} from './components/Navbar'
 // import { HiringPage } from './pages/HiringPage'
@@ -74,8 +75,8 @@ import TeamMemberManager from './pages/TeamMemberManager';
 // import TweetHomeLayout from './pages/TweetHome';
 
 function App() {
-  const [isVerified, setIsVerified] = useState(null);
-  const auth = JSON.parse(localStorage.getItem("AuthState"));
+  const [isVerified, setIsVerified] = useState<boolean | null>(null);
+  const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
   const nav = useNavigate();
   useEffect(() => {
     const verifyUser = async () => {
@@ -120,10 +121,15 @@ function App() {
   );
 }
 
-function PopUpMenu({ name, email, closePopup, triggerRef }) {
+function PopUpMenu({ name, email, closePopup, triggerRef }: {
+  name: string;
+  email: string;
+  closePopup: () => void;
+  triggerRef: RefObject<HTMLElement | null>;
+}) {
   const { authState, setAuthState } = useContext(AuthContext)
   const nav = useNavigate()
-  const menuRef = useRef(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState({ top: 0, right: 0 });
 
   useEffect(() => {
@@ -147,7 +153,7 @@ function PopUpMenu({ name, email, closePopup, triggerRef }) {
     window.addEventListener("scroll", updatePos, true);
     window.addEventListener("resize", updatePos);
 
-    const onPointerDown = (e) => {
+    const onPointerDown = (e: PointerEvent) => {
       const target = e.target;
       if (!(target instanceof Node)) return;
       if (menuRef.current?.contains(target)) return;
@@ -155,7 +161,7 @@ function PopUpMenu({ name, email, closePopup, triggerRef }) {
       closePopup();
     };
 
-    const onKeyDown = (e) => {
+    const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") closePopup();
     };
 
@@ -175,7 +181,7 @@ function PopUpMenu({ name, email, closePopup, triggerRef }) {
     nav("/login")
   }
 
-  const handleNavigate = (route) => {
+  const handleNavigate = (route: string) => {
     closePopup()
     nav(route)
   }
@@ -208,7 +214,7 @@ function PopUpMenu({ name, email, closePopup, triggerRef }) {
     document.body
   );
 }
-function MenuItem({ label, shortcut, active, danger }) {
+function MenuItem({ label, shortcut, active, danger }: { label: string; shortcut?: string; active?: boolean; danger?: boolean }) {
   return (
     <div
       className={`flex items-center justify-between px-3 py-2 rounded cursor-pointer 
@@ -230,7 +236,7 @@ function TeamLayout() {
   const handleOpenPopup = () => {
     setopenPopup(!openPopup)
   }
-  const auth = JSON.parse(localStorage.getItem("AuthState"))
+  const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
 
   const getDataAboutUser = async () => {
     const response = await axios.get(import.meta.env.VITE_SERVER + '/api/v1/dashboard/get-dashboard', {
@@ -300,7 +306,7 @@ function AppWithRouter() {
     token: "nothing"
   }
   useEffect(() => {
-    const initLogged = JSON.parse(localStorage.getItem("AuthState"))
+    const initLogged: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
     if (initLogged && initLogged.loggedIn) {
       setAuthState(initLogged)
     }
