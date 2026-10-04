@@ -4,18 +4,20 @@ import { FaComment, FaArrowUp, FaReply } from "react-icons/fa";
 import axios from "axios";
 import {toast,Toaster} from 'react-hot-toast';
 import { useParams } from "react-router-dom";
+import type { AuthState } from "../context/AuthContext";
+import type { BlogComment, BlogDetail, CommentNode } from "../types/blog";
 
 const SpecificBlog = () => {
   const server = import.meta.env.VITE_SERVER;
   const authRaw = typeof window !== "undefined" ? localStorage.getItem("AuthState") : null;
-  const auth = authRaw ? JSON.parse(authRaw) : null;
+  const auth: AuthState | null = authRaw ? JSON.parse(authRaw) : null;
 
-  const [blog, setBlog] = useState(null);
+  const [blog, setBlog] = useState<BlogDetail | null>(null);
   const [liked, setLiked] = useState(false);
   const [commentInput, setCommentInput] = useState("");
-  const [replyInputs, setReplyInputs] = useState({});
-  const [replyVisible, setReplyVisible] = useState({});
-  const replyInputRefs = useRef({});
+  const [replyInputs, setReplyInputs] = useState<Record<string, string>>({});
+  const [replyVisible, setReplyVisible] = useState<Record<string, boolean>>({});
+  const replyInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const [name, setName] = useState("");
   const { blogId } = useParams();
 
@@ -31,7 +33,7 @@ const SpecificBlog = () => {
       .then((res) => {
         const b = res?.data || null;
         if (!b) return console.warn("get-blog returned nothing");
-        const comments = (b.comments || []).map((c) => ({ ...c, showReplies: !!c.showReplies }));
+        const comments = (b.comments || []).map((c: BlogComment) => ({ ...c, showReplies: !!c.showReplies }));
         setBlog({ ...b, comments });
         setLiked(Boolean(b.isLiked));
         setName(res?.data?.Name || "");
@@ -42,10 +44,11 @@ const SpecificBlog = () => {
 
   // Click outside to collapse reply inputs
   useEffect(() => {
-    const handler = (e) => {
-      const clickedInsideReplyBox = e.target.closest(".reply-box");
-      const clickedReplyToggle = e.target.closest(".reply-toggle");
-      const clickedShowReplies = e.target.closest(".show-replies-toggle");
+    const handler = (e: MouseEvent) => {
+      const target = e.target as Element;
+      const clickedInsideReplyBox = target.closest(".reply-box");
+      const clickedReplyToggle = target.closest(".reply-toggle");
+      const clickedShowReplies = target.closest(".show-replies-toggle");
       if (!clickedInsideReplyBox && !clickedReplyToggle && !clickedShowReplies) {
         setReplyVisible({});
       }
@@ -67,20 +70,21 @@ const SpecificBlog = () => {
           if (typeof el.setSelectionRange === "function") {
             el.setSelectionRange(val.length, val.length);
           }
-        } catch (e) {}
+        } catch (e) { // noop
+        }
       }
     });
   }, [replyVisible, replyInputs]);
 
   // Build comment tree
-  const buildCommentTree = (comments) => {
+  const buildCommentTree = (comments?: BlogComment[]) => {
     if (!Array.isArray(comments) || comments.length === 0) return [];
-    const commentMap = new Map();
-    const roots = [];
+    const commentMap = new Map<string, CommentNode>();
+    const roots: CommentNode[] = [];
     comments.forEach((c) => commentMap.set(String(c._id), { ...c, replies: [] }));
     commentMap.forEach((c) => {
       if (c.replyTo && commentMap.has(String(c.replyTo))) {
-        commentMap.get(String(c.replyTo)).replies.push(c);
+        commentMap.get(String(c.replyTo))!.replies.push(c);
       } else {
         roots.push(c);
       }
@@ -89,7 +93,7 @@ const SpecificBlog = () => {
   };
 
   // Optimistic update helper
-  const replaceOrAppendCommentLocal = (tempId, realComment) => {
+  const replaceOrAppendCommentLocal = (tempId: string, realComment: BlogComment) => {
     setBlog((prev) => {
       if (!prev) return prev;
       const comments = Array.isArray(prev.comments) ? prev.comments.slice() : [];
@@ -145,7 +149,7 @@ const SpecificBlog = () => {
     const text = (commentInput || "").trim();
     if (!text || !blog) return;
     const tempId = `temp-${Date.now()}`;
-    const newComment = {
+    const newComment: BlogComment = {
       _id: tempId,
       text,
       commentedBy: { name: name || "You" },
@@ -177,7 +181,7 @@ const SpecificBlog = () => {
   };
 
   // Add reply
-  const handleAddReply = async (parentComment) => {
+  const handleAddReply = async (parentComment: BlogComment) => {
 
     if (!blog || !auth?.token) return toast.error("You must be logged in to perform this action.");
     const parentIdStr = String(parentComment._id);
@@ -216,17 +220,17 @@ const SpecificBlog = () => {
     }
   };
 
-  const handleReplyChange = (commentId, value) => {
+  const handleReplyChange = (commentId: string, value: string) => {
     setReplyInputs((prev) => ({ ...prev, [String(commentId)]: value }));
   };
 
-  const toggleReplyVisible = (commentId) => {
+  const toggleReplyVisible = (commentId: string) => {
     const key = String(commentId);
     setReplyVisible((prev) => ({ ...prev, [key]: !prev[key] }));
     if (!replyInputRefs.current[key]) replyInputRefs.current[key] = null;
   };
 
-  const toggleShowReplies = (commentId) => {
+  const toggleShowReplies = (commentId: string) => {
     setBlog((prev) => {
       if (!prev) return prev;
       const comments = Array.isArray(prev.comments)
@@ -237,10 +241,10 @@ const SpecificBlog = () => {
   };
 
   // Memoized comment component (styled)
-  const CommentItem = memo(function CommentItem({ comment }) {
+  const CommentItem = memo(function CommentItem({ comment }: { comment: CommentNode }) {
     const idStr = String(comment._id);
     const visible = Boolean(replyVisible[idStr]);
-    const assignRef = useCallback((el) => {
+    const assignRef = useCallback((el: HTMLInputElement | null) => {
       replyInputRefs.current[idStr] = el;
     }, []);
 

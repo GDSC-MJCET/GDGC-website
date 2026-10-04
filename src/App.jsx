@@ -24,8 +24,8 @@ import Portfolio from './pages/Socials'
 import SideBae from './components/SideBae'
 import BlogWrite from './pages/BlogWrite'
 import { Card, CardHeader } from './components/ui/card'
-import BlogHome from './pages/BlogHomePage.jsx';
-import SpecificBlog from './pages/SpecificBlogPage.jsx';
+import BlogHome from './pages/BlogHomePage';
+import SpecificBlog from './pages/SpecificBlogPage';
 import BlogHelp from './pages/BlogHelp';
 import BlogLand from './pages/BlogLand';
 import { useEffect } from 'react';
@@ -62,14 +62,14 @@ import SuperAdminContacts from './pages/SuperAdminContacts';
 import { PhotoBooth } from './gdgc-modules/photobooth/PhotoBooth';
 import TheHeistAdsophos from './gdgc-modules/heist/TheHeistAdsophos';
 import Loop13 from './gdgc-modules/loop13/Loop_13';
-import MyBlogs from './pages/MyBlogs.jsx';
+import MyBlogs from './pages/MyBlogs';
 import ImageManager from './pages/ImageManager';
 import PracticeListPage from './pages/PracticeListPage'
 import ProblemAdminPage from './pages/ProblemAdminPage';
 import ExercisesPage from './pages/ExercisesPage';
 import ExerciseDetailPage from './pages/ExerciseDetailPage';
 import ContentManagementPage from './pages/ContentManagementPage';
-import SuperAdminBlogPanel from './pages/SuperAdminBlog.jsx';
+import SuperAdminBlogPanel from './pages/SuperAdminBlog';
 import TeamMemberManager from './pages/TeamMemberManager';
 // import TweetHomeLayout from './pages/TweetHome';
 

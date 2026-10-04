@@ -1,9 +1,14 @@
 "use client";
-import React, { useEffect, useRef, useState, useCallback, memo } from "react";
+import React, { useEffect, useRef, useState, useCallback, memo, type Dispatch, type SetStateAction, type MutableRefObject } from "react";
 import { FaComment, FaArrowUp, FaReply, FaTrash, FaCheckCircle, FaShieldAlt, FaCrown } from "react-icons/fa";
 import { MdVerified, MdBlock } from "react-icons/md";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import type { AuthState } from "../context/AuthContext";
+import type { Blog, BlogComment, CommentNode } from "../types/blog";
+
+type PendingCommentDelete = { commentId: string; blogId: string };
+type SetBlogs = Dispatch<SetStateAction<Blog[]>>;
 
 const server = import.meta.env.VITE_SERVER;
 
@@ -12,11 +17,22 @@ const CommentItem = memo(function CommentItem({
   comment, blogId, replyVisible, replyInputs,
   replyInputRefs, handleReplyChange, toggleReplyVisible,
   handleAddReply, setBlogs, handleDeleteComment
+}: {
+  comment: CommentNode;
+  blogId: string;
+  replyVisible: Record<string, boolean>;
+  replyInputs: Record<string, string>;
+  replyInputRefs: MutableRefObject<Record<string, HTMLInputElement | null>>;
+  handleReplyChange: (id: string, val: string) => void;
+  toggleReplyVisible: (id: string) => void;
+  handleAddReply: (blogId: string, parent: BlogComment) => void;
+  setBlogs: SetBlogs;
+  handleDeleteComment: (commentId: string, blogId: string) => void;
 }) {
   const idStr = String(comment._id);
   const visible = Boolean(replyVisible[idStr]);
 
-  const assignRef = useCallback((el) => {
+  const assignRef = useCallback((el: HTMLInputElement | null) => {
     replyInputRefs.current[idStr] = el;
   }, [idStr]);
 
@@ -50,7 +66,7 @@ const CommentItem = memo(function CommentItem({
                 if (b._id !== blogId) return b;
                 return {
                   ...b,
-                  comments: b.comments.map((c) =>
+                  comments: (b.comments ?? []).map((c) =>
                     String(c._id) === idStr ? { ...c, showReplies: !comment.showReplies } : c
                   )
                 };
@@ -114,22 +130,22 @@ const CommentItem = memo(function CommentItem({
 // ─── Main Page ────────────────────────────────────────────────────────────────
 const SuperAdminBlogPanel = () => {
   const nav = useNavigate();
-  const auth = JSON.parse(localStorage.getItem("AuthState"));
+  const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
 
   const [checking, setChecking] = useState(true);
-  const [blogs, setBlogs] = useState([]);
-  const [liked, setLiked] = useState([]);
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [liked, setLiked] = useState<string[]>([]);
   const [name, setName] = useState("");
-  const [openCommentsId, setOpenCommentsId] = useState(null);
-  const [commentInputs, setCommentInputs] = useState({});
-  const [replyInputs, setReplyInputs] = useState({});
-  const [replyVisible, setReplyVisible] = useState({});
-  const [confirmingBlogId, setConfirmingBlogId] = useState(null);
-  const [confirmingCommentId, setConfirmingCommentId] = useState(null);
+  const [openCommentsId, setOpenCommentsId] = useState<string | null>(null);
+  const [commentInputs, setCommentInputs] = useState<Record<string, string>>({});
+  const [replyInputs, setReplyInputs] = useState<Record<string, string>>({});
+  const [replyVisible, setReplyVisible] = useState<Record<string, boolean>>({});
+  const [confirmingBlogId, setConfirmingBlogId] = useState<string | null>(null);
+  const [confirmingCommentId, setConfirmingCommentId] = useState<PendingCommentDelete | null>(null);
   const [filter, setFilter] = useState("all"); // all | validated | unvalidated
   const [search, setSearch] = useState("");
 
-  const replyInputRefs = useRef({});
+  const replyInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   // ── Step 1: verify superadmin ──────────────────────────────────────────────
   useEffect(() => {
@@ -149,15 +165,15 @@ const SuperAdminBlogPanel = () => {
   useEffect(() => {
     if (checking) return;
     axios.get(server + "/api/v1/blog/get-unvalidated-blogs", {
-      headers: { Authorization: `Bearer ${auth.token}` }
+      headers: { Authorization: `Bearer ${auth!.token}` }
     }).then((res) => {
       const raw = res?.data?.BlogArray || [];
       console.log("Fetched blogs:", raw);
-      setBlogs(raw.map(b => ({
+      setBlogs(raw.map((b: Blog) => ({
         ...b,
-        comments: (b.comments || []).map(c => ({ ...c, showReplies: false }))
+        comments: (b.comments || []).map((c: BlogComment) => ({ ...c, showReplies: false }))
       })));
-      setLiked((res?.data?.LikedArray || []).map(i => String(i._id)));
+      setLiked((res?.data?.LikedArray || []).map((i: { _id: string }) => String(i._id)));
       setName(res?.data?.Name || "");
     }).catch(console.error);
    
@@ -165,8 +181,9 @@ const SuperAdminBlogPanel = () => {
 
   // ── outside click collapse reply ──────────────────────────────────────────
   useEffect(() => {
-    const handler = (e) => {
-      if (!e.target.closest(".reply-box") && !e.target.closest(".reply-toggle") && !e.target.closest(".show-replies-toggle")) {
+    const handler = (e: MouseEvent) => {
+      const target = e.target as Element;
+      if (!target.closest(".reply-box") && !target.closest(".reply-toggle") && !target.closest(".show-replies-toggle")) {
         setReplyVisible({});
       }
     };
@@ -180,26 +197,26 @@ const SuperAdminBlogPanel = () => {
       if (!replyVisible[id]) return;
       const el = replyInputRefs.current[id];
       if (el && document.activeElement !== el) {
-        try { el.focus(); } catch (_) {}
+        try { el.focus(); } catch (_) { /* noop */ }
       }
     });
   }, [replyVisible]);
 
   // ── helpers ────────────────────────────────────────────────────────────────
-  const buildCommentTree = (comments) => {
+  const buildCommentTree = (comments?: BlogComment[]) => {
     if (!Array.isArray(comments) || !comments.length) return [];
-    const map = new Map();
-    const roots = [];
+    const map = new Map<string, CommentNode>();
+    const roots: CommentNode[] = [];
     comments.forEach(c => map.set(String(c._id), { ...c, replies: [] }));
     map.forEach(c => {
       if (c.replyTo && map.has(String(c.replyTo))) {
-        map.get(String(c.replyTo)).replies.push(c);
+        map.get(String(c.replyTo))!.replies.push(c);
       } else roots.push(c);
     });
     return roots;
   };
 
-  const replaceOrAppend = (prev, blogId, tempId, real) =>
+  const replaceOrAppend = (prev: Blog[], blogId: string, tempId: string, real: BlogComment) =>
     prev.map(b => {
       if (b._id !== blogId) return b;
       const cs = Array.isArray(b.comments) ? [...b.comments] : [];
@@ -208,70 +225,70 @@ const SuperAdminBlogPanel = () => {
     });
 
   // ── like / unlike ──────────────────────────────────────────────────────────
-  const handleLike = async (blog_id) => {
-    const { data } = await axios.post(server + "/api/v1/blog/like-blog", { _id: blog_id }, { headers: { Authorization: `Bearer ${auth.token}` } });
+  const handleLike = async (blog_id: string) => {
+    const { data } = await axios.post(server + "/api/v1/blog/like-blog", { _id: blog_id }, { headers: { Authorization: `Bearer ${auth!.token}` } });
     if (data?.message === "You have already upvoted this blog") return handleUnlike(blog_id);
     setLiked(p => p.includes(String(blog_id)) ? p : [...p, String(blog_id)]);
     setBlogs(p => p.map(b => b._id === blog_id ? { ...b, activity: { ...b.activity, total_upvotes: (b.activity?.total_upvotes || 0) + 1 } } : b));
   };
-  const handleUnlike = async (blog_id) => {
-    await axios.post(server + "/api/v1/blog/unlike-blog", { _id: blog_id }, { headers: { Authorization: `Bearer ${auth.token}` } });
+  const handleUnlike = async (blog_id: string) => {
+    await axios.post(server + "/api/v1/blog/unlike-blog", { _id: blog_id }, { headers: { Authorization: `Bearer ${auth!.token}` } });
     setLiked(p => p.filter(id => id !== String(blog_id)));
     setBlogs(p => p.map(b => b._id === blog_id ? { ...b, activity: { ...b.activity, total_upvotes: Math.max(0, (b.activity?.total_upvotes || 0) - 1) } } : b));
   };
 
   // ── comments ───────────────────────────────────────────────────────────────
-  const handleAddComment = async (blogId) => {
+  const handleAddComment = async (blogId: string) => {
     const text = (commentInputs[String(blogId)] || "").trim();
     if (!text) return;
     const tempId = String(Date.now());
-    const newC = { _id: tempId, text, commentedBy: { name: name || "You" }, level: 0, replyTo: null, createdAt: new Date().toISOString() };
+    const newC: BlogComment = { _id: tempId, text, commentedBy: { name: name || "You" }, level: 0, replyTo: null, createdAt: new Date().toISOString() };
     setBlogs(p => p.map(b => b._id === blogId ? { ...b, comments: [...(b.comments || []), newC], activity: { ...b.activity, total_comments: (b.activity?.total_comments || 0) + 1 } } : b));
     setCommentInputs(p => ({ ...p, [String(blogId)]: "" }));
-    const res = await axios.post(server + "/api/v1/blog/add-comment", { _id: blogId, text, level: 0, replyTo: null, isReply: false }, { headers: { Authorization: `Bearer ${auth.token}` } });
+    const res = await axios.post(server + "/api/v1/blog/add-comment", { _id: blogId, text, level: 0, replyTo: null, isReply: false }, { headers: { Authorization: `Bearer ${auth!.token}` } });
     if (res?.data?.comment) setBlogs(p => replaceOrAppend(p, blogId, tempId, res.data.comment));
   };
 
-  const handleAddReply = async (blogId, parent) => {
+  const handleAddReply = async (blogId: string, parent: BlogComment) => {
     const key = String(parent._id);
     const text = (replyInputs[key] || "").trim();
     if (!text) return;
     const tempId = String(Date.now()) + "-r";
-    const newR = { _id: tempId, text, commentedBy: { name: name || "You" }, level: (parent.level || 0) + 1, replyTo: parent._id, createdAt: new Date().toISOString() };
+    const newR: BlogComment = { _id: tempId, text, commentedBy: { name: name || "You" }, level: (parent.level || 0) + 1, replyTo: parent._id, createdAt: new Date().toISOString() };
     setBlogs(p => p.map(b => b._id === blogId ? { ...b, comments: [...(b.comments || []), newR], activity: { ...b.activity, total_comments: (b.activity?.total_comments || 0) + 1 } } : b));
     setReplyInputs(p => ({ ...p, [key]: "" }));
     setReplyVisible(p => ({ ...p, [key]: false }));
-    const res = await axios.post(server + "/api/v1/blog/add-comment", { _id: blogId, text, level: parent.level + 1, replyTo: parent._id, isReply: true }, { headers: { Authorization: `Bearer ${auth.token}` } });
+    const res = await axios.post(server + "/api/v1/blog/add-comment", { _id: blogId, text, level: parent.level + 1, replyTo: parent._id, isReply: true }, { headers: { Authorization: `Bearer ${auth!.token}` } });
     if (res?.data?.comment) setBlogs(p => replaceOrAppend(p, blogId, tempId, res.data.comment));
   };
 
-  const toggleReplyVisible = (id) => setReplyVisible(p => ({ ...p, [id]: !p[id] }));
-  const handleReplyChange = (id, val) => setReplyInputs(p => ({ ...p, [id]: val }));
+  const toggleReplyVisible = (id: string) => setReplyVisible(p => ({ ...p, [id]: !p[id] }));
+  const handleReplyChange = (id: string, val: string) => setReplyInputs(p => ({ ...p, [id]: val }));
 
   // ── delete blog ────────────────────────────────────────────────────────────
-  const handleDeleteBlog = async (blogId) => {
+  const handleDeleteBlog = async (blogId: string) => {
     await axios.delete(server + "/api/v1/blog/delete-blog", {
       data: { _id: blogId },
-      headers: { Authorization: `Bearer ${auth.token}` }
+      headers: { Authorization: `Bearer ${auth!.token}` }
     });
     setBlogs(p => p.filter(b => b._id !== blogId));
     setConfirmingBlogId(null);
   };
 
   // ── delete comment ─────────────────────────────────────────────────────────
-  const handleDeleteComment = (commentId, blogId) => {
+  const handleDeleteComment = (commentId: string, blogId: string) => {
     setConfirmingCommentId({ commentId, blogId });
   };
   const confirmDeleteComment = async () => {
-    const { commentId, blogId } = confirmingCommentId;
-    await axios.post(server + "/api/v1/blog/remove-comment", { _id: commentId }, { headers: { Authorization: `Bearer ${auth.token}` } });
-    setBlogs(p => p.map(b => b._id !== blogId ? b : { ...b, comments: b.comments.filter(c => String(c._id) !== String(commentId) && String(c.replyTo) !== String(commentId)) }));
+    const { commentId, blogId } = confirmingCommentId!;
+    await axios.post(server + "/api/v1/blog/remove-comment", { _id: commentId }, { headers: { Authorization: `Bearer ${auth!.token}` } });
+    setBlogs(p => p.map(b => b._id !== blogId ? b : { ...b, comments: (b.comments ?? []).filter(c => String(c._id) !== String(commentId) && String(c.replyTo) !== String(commentId)) }));
     setConfirmingCommentId(null);
   };
 
   // ── validate blog ──────────────────────────────────────────────────────────
-  const handleValidate = async (blogId) => {
-    const res = await axios.post(server + "/api/v1/blog/validate-blog", { _id: blogId }, { headers: { Authorization: `Bearer ${auth.token}` } });
+  const handleValidate = async (blogId: string) => {
+    const res = await axios.post(server + "/api/v1/blog/validate-blog", { _id: blogId }, { headers: { Authorization: `Bearer ${auth!.token}` } });
     if (res?.data?.blog || res?.data?.message?.includes("success")) {
       setBlogs(p => p.map(b => b._id === blogId ? { ...b, validated: true } : b));
     }
@@ -348,7 +365,7 @@ const SuperAdminBlogPanel = () => {
               </div>
 
               {/* Blog meta */}
-              <p className="text-xs text-zinc-500 mb-1">{blog.author?.name || blog.author || "unknown author"}</p>
+              <p className="text-xs text-zinc-500 mb-1">{blog.author?.name || (blog.author as string | undefined) || "unknown author"}</p>
               <h2
                 className="text-lg font-bold text-white mb-2 cursor-pointer hover:text-amber-400 transition-colors pr-20"
                 onClick={() => nav(`/blog/blog/${blog._id}`)}

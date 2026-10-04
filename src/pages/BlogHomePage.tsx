@@ -3,64 +3,54 @@ import React, { useEffect, useRef, useState, useCallback, memo } from "react";
 import { FaComment, FaArrowUp, FaReply, FaTrash } from "react-icons/fa";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import type { AuthState } from "../context/AuthContext";
+import type { Blog, BlogComment, CommentNode } from "../types/blog";
 
-const MyBlogs = () => {
-  const [openCommentsId, setOpenCommentsId] = useState(null);
-  const [commentInputs, setCommentInputs] = useState({});
-  const [replyInputs, setReplyInputs] = useState({});
-  const [replyVisible, setReplyVisible] = useState({});
-  const [blogs, setBlogs] = useState([]);
-  const [liked, setLiked] = useState([]);
+const BlogHome = () => {
+  const [openCommentsId, setOpenCommentsId] = useState<string | null>(null);
+  const [commentInputs, setCommentInputs] = useState<Record<string, string>>({});
+  const [replyInputs, setReplyInputs] = useState<Record<string, string>>({});
+  const [replyVisible, setReplyVisible] = useState<Record<string, boolean>>({});
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [liked, setLiked] = useState<string[]>([]);
+  const [ownerIds, setOwnerIds] = useState<string[]>([]); // Store IDs of blogs owned by current user
   const [name, setName] = useState("");
-  const [error, setError] = useState("");
-  const [confirmingBlogId, setConfirmingBlogId] = useState(null); // State for delete confirmation
+  const [confirmingBlogId, setConfirmingBlogId] = useState<string | null>(null); // For delete confirmation
   const server = import.meta.env.VITE_SERVER;
- const auth = JSON.parse(localStorage.getItem("AuthState") ) || {};
+const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null");
+  const replyInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
-
-  const replyInputRefs = useRef({});
-
-  // Fetch user's own blogs
   useEffect(() => {
     if (!auth?.token) return;
-    setError("");
     axios
-      .get(server + "/api/v1/blog/my-blogs", {
+      .get(server + "/api/v1/blog/get-blogs", {
         headers: { Authorization: `Bearer ${auth.token}` },
       })
       .then((res) => {
-        console.log("fetched my-blogs:", res.data);
-        if (res.data.error) {
-          setError(res.data.error);
-          setBlogs([]);
-          return;
-        }
-        const blogsArr = res?.data?.BlogArray || [];
-        // Initialize showReplies for all comments (same as original)
-        const blogsWithShowReplies = blogsArr.map((blog) => ({
+        const blogs = res?.data?.BlogArray || [];
+        console.log("Fetched blogs:", blogs);
+        const blogsWithShowReplies = blogs.map((blog: Blog) => ({
           ...blog,
-          comments: (blog.comments || []).map((c) => ({ ...c, showReplies: false })),
+          comments: (blog.comments || []).map((c: BlogComment) => ({ ...c, showReplies: false }))
         }));
         setBlogs(blogsWithShowReplies);
-        const arr = res?.data?.LikedArray?.map((i) => String(i._id)) || [];
+      
+        const arr = res?.data?.LikedArray?.map((i: { _id: string }) => String(i._id)) || [];
         setLiked(arr);
-        // Set name: prefer response Name, fallback to auth user name, then empty
-        const userName = res?.data?.Name || auth?.name || auth?.user?.name || "";
-        setName(userName);
+        const ownerArr = res?.data?.OwnerArray || [];
+        setOwnerIds(ownerArr);
+        setName(res?.data?.Name || "");
       })
-      .catch((err) => {
-        console.error("fetch my-blogs error:", err);
-        setError("Failed to load your blogs. Please try again later.");
-        setBlogs([]);
-      });
+      .catch((err) => console.error("fetch blogs:", err));
   }, [server, auth?.token]);
 
   // Collapse reply inputs when clicking outside
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      const clickedInsideReplyBox = e.target.closest(".reply-box");
-      const clickedReplyToggle = e.target.closest(".reply-toggle");
-      const clickedShowReplies = e.target.closest(".show-replies-toggle");
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Element;
+      const clickedInsideReplyBox = target.closest(".reply-box");
+      const clickedReplyToggle = target.closest(".reply-toggle");
+      const clickedShowReplies = target.closest(".show-replies-toggle");
       if (!clickedInsideReplyBox && !clickedReplyToggle && !clickedShowReplies) {
         setReplyVisible({});
       }
@@ -83,14 +73,14 @@ const MyBlogs = () => {
             el.setSelectionRange(val.length, val.length);
           }
         } catch (e) {
-          // ignore
+          // noop
         }
       }
     });
   }, [replyVisible, replyInputs]);
 
-  // Like / Unlike handlers (identical to original)
-  const handleLike = async (blog_id) => {
+  // Like / unlike handlers
+  const handleLike = async (blog_id: string) => {
     if (!auth?.token) return;
     try {
       const { data } = await axios.post(
@@ -122,7 +112,7 @@ const MyBlogs = () => {
     }
   };
 
-  const handleUnlike = async (blog_id) => {
+  const handleUnlike = async (blog_id: string) => {
     if (!auth?.token) return;
     try {
       await axios.post(
@@ -150,26 +140,26 @@ const MyBlogs = () => {
     }
   };
 
-  const toggleComments = (blogId) => {
+  const toggleComments = (blogId: string) => {
     setOpenCommentsId((cur) => (cur === blogId ? null : blogId));
   };
 
-  const handleCommentChange = (blogId, value) => {
+  const handleCommentChange = (blogId: string, value: string) => {
     setCommentInputs((prev) => ({ ...prev, [String(blogId)]: value }));
   };
 
-  const handleReplyChange = (commentId, value) => {
+  const handleReplyChange = (commentId: string, value: string) => {
     const key = String(commentId);
     setReplyInputs((prev) => ({ ...prev, [key]: value }));
   };
 
-  const toggleReplyVisible = (commentId) => {
+  const toggleReplyVisible = (commentId: string) => {
     const key = String(commentId);
     setReplyVisible((prev) => ({ ...prev, [key]: !prev[key] }));
     if (!replyInputRefs.current[key]) replyInputRefs.current[key] = null;
   };
 
-  const replaceOrAppendComment = (prevBlogs, blogId, tempId, realComment) =>
+  const replaceOrAppendComment = (prevBlogs: Blog[], blogId: string, tempId: string, realComment: BlogComment) =>
     prevBlogs.map((b) => {
       if (b._id !== blogId) return b;
       const comments = Array.isArray(b.comments) ? b.comments.slice() : [];
@@ -180,12 +170,12 @@ const MyBlogs = () => {
       return { ...b, comments: updatedComments };
     });
 
-  const handleAddComment = async (blogId) => {
+  const handleAddComment = async (blogId: string) => {
     const text = (commentInputs[String(blogId)] || "").trim();
     if (!text) return;
 
     const tempId = String(Date.now());
-    const newComment = {
+    const newComment: BlogComment = {
       _id: tempId,
       text,
       commentedBy: { name: name || "You" },
@@ -229,13 +219,13 @@ const MyBlogs = () => {
     }
   };
 
-  const handleAddReply = async (blogId, parentComment) => {
+  const handleAddReply = async (blogId: string, parentComment: BlogComment) => {
     const parentIdStr = String(parentComment._id);
     const text = (replyInputs[parentIdStr] || "").trim();
     if (!text) return;
 
     const tempId = String(Date.now()) + "-reply";
-    const newReply = {
+    const newReply: BlogComment = {
       _id: tempId,
       text,
       commentedBy: { name: name || "You" },
@@ -287,8 +277,9 @@ const MyBlogs = () => {
   };
 
   // Delete handler with confirmation
-  const handleDeleteBlog = async (blogId) => {
+ const handleDeleteBlog = async (blogId: string) => {
     if (!auth?.token) return;
+    console.log("Attempting to delete blog with ID:", blogId,auth.token);
     try {
       await axios.delete(server + "/api/v1/blog/delete-blog", {
   data: { _id: blogId },
@@ -306,16 +297,16 @@ const MyBlogs = () => {
     }
   };
 
-  const buildCommentTree = (comments) => {
+  const buildCommentTree = (comments?: BlogComment[]) => {
     if (!Array.isArray(comments) || comments.length === 0) return [];
-    const commentMap = new Map();
-    const roots = [];
+    const commentMap = new Map<string, CommentNode>();
+    const roots: CommentNode[] = [];
 
     comments.forEach((c) => commentMap.set(String(c._id), { ...c, replies: [] }));
 
     commentMap.forEach((c) => {
       if (c.replyTo && commentMap.has(String(c.replyTo))) {
-        commentMap.get(String(c.replyTo)).replies.push(c);
+        commentMap.get(String(c.replyTo))!.replies.push(c);
       } else {
         roots.push(c);
       }
@@ -324,11 +315,11 @@ const MyBlogs = () => {
     return roots;
   };
 
-  const CommentItem = memo(function CommentItem({ comment, blogId }) {
+  const CommentItem = memo(function CommentItem({ comment, blogId }: { comment: CommentNode; blogId: string }) {
     const idStr = String(comment._id);
     const visible = Boolean(replyVisible[idStr]);
 
-    const assignRef = useCallback((el) => {
+    const assignRef = useCallback((el: HTMLInputElement | null) => {
       replyInputRefs.current[idStr] = el;
     }, []);
 
@@ -342,24 +333,14 @@ const MyBlogs = () => {
             <span className="text-xs text-gray-500">{new Date(comment.createdAt).toLocaleString()}</span>
           </div>
           <p className="text-gray-200 text-sm mt-1">{comment.text}</p>
-          <p
-            className={
-              "text-xs text-gray-400 cursor-pointer hover:text-green-400 mt-1 flex items-center gap-1 show-replies-toggle " +
-              (comment.replies.length > 0 ? "" : " hidden")
-            }
-            onClick={() => {
-              setBlogs((prev) =>
-                prev.map((b) => {
-                  if (b._id !== blogId) return b;
-                  const comments = Array.isArray(b.comments) ? b.comments.slice() : [];
-                  const updatedComments = comments.map((c) =>
-                    String(c._id) === idStr ? { ...c, showReplies: !comment.showReplies } : c
-                  );
-                  return { ...b, comments: updatedComments };
-                })
-              );
-            }}
-          >
+          <p className={"text-xs text-gray-400 cursor-pointer hover:text-green-400 mt-1 flex items-center gap-1 show-replies-toggle " + (comment.replies.length > 0 ? "" : " hidden")} onClick={() => {
+            setBlogs((prev) => prev.map((b) => {
+              if (b._id !== blogId) return b;
+              const comments = Array.isArray(b.comments) ? b.comments.slice() : [];
+              const updatedComments = comments.map((c) => String(c._id) === idStr ? { ...c, showReplies: !comment.showReplies } : c);
+              return { ...b, comments: updatedComments };
+            }))
+          }}>
             Previous Replies
           </p>
           <button
@@ -401,44 +382,21 @@ const MyBlogs = () => {
   });
 
   const nav = useNavigate();
-  const handleBlogOnClick = (blogId) => {
+  const handleBlogOnClick = (blogId: string) => {
     nav(`/blog/blog/${blogId}`);
-  };
-
-  // Empty state or error message
-  if (error) {
-    return (
-      <div className="relative h-full w-full bg-black pt-16">
-        <div className="text-center text-red-400 font-mono mt-20">{error}</div>
-      </div>
-    );
-  }
-
-  if (blogs.length === 0 && !error) {
-    return (
-      <div className="relative h-full w-full bg-black pt-16">
-        <div className="text-center text-gray-300 font-mono mt-20">
-          You haven't uploaded any blogs yet.
-        </div>
-      </div>
-    );
   }
 
   return (
-    <div className="relative pt-16">
-      <section className=" grid grid-cols-1 md:grid-cols-3 relative z-10 pt-18 font-mono">
+    <div className="relative min-h-screen w-full bg-black pt-16">
+     <section className="grid grid-cols-1 md:grid-cols-3 relative z-10 pt-18 font-mono">
         {blogs.map((blog) => (
           <div
             key={String(blog._id)}
             className="m-4 p-4 border border-white rounded-lg transition hover:border-green-400 hover:shadow-[0_0_10px_#4ade80]"
           >
-            <h2
-              className="text-2xl font-bold text-white mb-2 cursor-pointer"
-              onClick={() => handleBlogOnClick(blog._id)}
-            >
-              {blog.title}
-            </h2>
-            {blog.banner && <img src={blog.banner} alt="Blog Banner" className="w-full h-auto mb-4 rounded" />}
+            <h2 className="text-2xl font-bold text-white mb-2 cursor-pointer" onClick={() => handleBlogOnClick(blog._id)}>{blog.title}</h2>
+            <p className="text-gray-400 text-xs mb-2">by {blog.author?.name || "Unknown"}</p>  
+            {blog.banner && <img src={blog.banner} alt="Blog Banner" className="w-full max-h-48  mb-4 rounded" />}
             <p className="text-white mb-4">{blog.des}</p>
 
             <div className="flex gap-4 items-center">
@@ -462,17 +420,19 @@ const MyBlogs = () => {
                 </span>
               </button>
 
-              {/* Delete Button */}
-              <button
-                className="text-red-400 text-sm flex gap-2 items-center hover:text-red-600 transition ml-auto"
-                onClick={() => setConfirmingBlogId(blog._id)}
-              >
-                <FaTrash className="cursor-pointer" />
-                <span>Delete</span>
-              </button>
+              {/* Delete button - only visible if blog is owned by current user */}
+              {ownerIds.includes(String(blog._id)) && (
+                <button
+                  className="text-red-400 text-sm flex gap-2 items-center hover:text-red-600 transition ml-auto"
+                  onClick={() => setConfirmingBlogId(blog._id)}
+                >
+                  <FaTrash className="cursor-pointer" />
+                  <span>Delete</span>
+                </button>
+              )}
             </div>
 
-            {/* Confirmation UI */}
+            {/* Delete confirmation UI */}
             {confirmingBlogId === blog._id && (
               <div className="mt-4 p-3 bg-red-900/50 border border-red-500 rounded-md">
                 <p className="text-white text-sm mb-2">Are you sure you want to delete this blog?</p>
@@ -529,4 +489,4 @@ const MyBlogs = () => {
   );
 };
 
-export default MyBlogs;
+export default BlogHome;
