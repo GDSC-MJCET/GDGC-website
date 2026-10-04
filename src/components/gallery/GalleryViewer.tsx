@@ -68,7 +68,7 @@ export default function GalleryViewer({ list, index, onIndexChange, onClose }: P
                 key={item.id}
                 src={item.f}
                 alt={`Photo ${index + 1} of ${list.length}`}
-                className="max-h-[84vh] max-w-full rounded-2xl object-contain"
+                className="max-h-[84dvh] max-w-full rounded-2xl object-contain"
                 style={{ boxShadow: "0 0 0 1px rgba(255,255,255,0.12), 0 24px 80px rgba(0,0,0,0.6)" }}
                 draggable={false}
               />
@@ -90,7 +90,7 @@ export default function GalleryViewer({ list, index, onIndexChange, onClose }: P
                 type="button"
                 aria-label="Previous photo"
                 onClick={() => step(-1)}
-                className="absolute top-1/2 left-3 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/50 text-white transition-colors hover:bg-white/15 sm:left-6"
+                className="absolute top-1/2 left-3 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/50 text-white transition-colors hover:bg-white/15 sm:left-6 sm:flex"
               >
                 <ChevronLeft size={20} />
               </button>
@@ -98,7 +98,7 @@ export default function GalleryViewer({ list, index, onIndexChange, onClose }: P
                 type="button"
                 aria-label="Next photo"
                 onClick={() => step(1)}
-                className="absolute top-1/2 right-3 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/50 text-white transition-colors hover:bg-white/15 sm:right-6"
+                className="absolute top-1/2 right-3 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/50 text-white transition-colors hover:bg-white/15 sm:right-6 sm:flex"
               >
                 <ChevronRight size={20} />
               </button>

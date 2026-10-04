@@ -202,7 +202,7 @@ export default function IntroSplash({ onLeave }: { onLeave?: () => void }) {
                 GDGC MJCET
               </motion.div>
 
-              <h1 className="mt-7 text-[clamp(2.75rem,6vw,6.25rem)] leading-[0.95] font-black tracking-[-0.03em]">
+              <h1 className="mt-4 sm:mt-7 text-[clamp(2.25rem,min(6vw,13dvh),6.25rem)] leading-[0.95] font-black tracking-[-0.03em]">
                 <span className="block overflow-hidden pb-1">
                   <motion.span
                     className="block"
@@ -234,7 +234,7 @@ export default function IntroSplash({ onLeave }: { onLeave?: () => void }) {
               </h1>
 
               <motion.p
-                className="mt-7 text-[10px] font-medium tracking-[0.65em] text-white/70 sm:text-[12px]"
+                className="mt-4 text-[10px] font-medium tracking-[0.65em] sm:mt-7 text-white/70 sm:text-[12px]"
                 {...fade(2.5, 8)}
               >
                 GO FURTHER.

@@ -243,7 +243,7 @@ export default function IntroScene({
 
     const frame = (now: number) => {
       const t = reduced ? 8 : (now - start) / 1000;
-      const narrow = W < 700;
+      const narrow = W < 700 || H < 520; // small or short (sideways phone): drop the tiny orbit labels
       // Portrait phones: scale to width (the rings bleed off the sides) and drop the labels.
       const s = sceneScale();
       const ox0 = (W - VW * s) / 2;
@@ -465,7 +465,7 @@ export default function IntroScene({
 
         // leader line + label (they fade out as the planet leaves its orbit)
         const labelA = a * (1 - clamp01(m * 3));
-        if (labelA > 0.01) {
+        if (labelA > 0.01 && !narrow) {
           ctx.globalAlpha = 0.35 * labelA;
           ctx.strokeStyle = "#ffffff";
           ctx.lineWidth = 1;
