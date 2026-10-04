@@ -1,6 +1,7 @@
 export type Example = {
   id?: string;
   input?: string;
+  stdin?: string;
   output?: string;
   explanation?: string;
 };
@@ -39,6 +40,7 @@ export type Submission = {
 };
 
 export type ExampleRunResult = {
+  index?: number;
   passed: boolean;
   stdout?: string;
   stderr?: string;
@@ -55,6 +57,12 @@ export type ExecutionData = {
   totalCount?: number;
   stdout?: string;
   stderr?: string;
+  exitCode?: number;
+  timedOut?: boolean;
+  runtimeMs?: number | null;
+  memoryKb?: number | null;
+  message?: string;
+  error?: string;
 };
 
 export type ExecutionState = {

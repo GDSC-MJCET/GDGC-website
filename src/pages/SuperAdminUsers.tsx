@@ -3,13 +3,15 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { Switch } from "@/components/ui/switch";
+import type { AuthState } from "../context/AuthContext";
+import type { AppUser } from "../types/user";
 
 const SuperAdminUsers = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<AppUser[]>([]);
   const [stats, setStats] = useState({ totalUsers: 0, totalAdmins: 0, totalSuperAdmins: 0 });
   const [loading, setLoading] = useState(true);
   const [checkingAuth, setCheckingAuth] = useState(true);
-  const [confirmState, setConfirmState] = useState({
+  const [confirmState, setConfirmState] = useState<{ open: boolean; user: AppUser | null; role?: string; make: boolean; loading?: boolean }>({
     open: false,
     user: null,
     role: "admin",
@@ -18,13 +20,13 @@ const SuperAdminUsers = () => {
   });
 
   const nav = useNavigate();
-  const auth = JSON.parse(localStorage.getItem("AuthState"));
+  const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
   const server = import.meta.env.VITE_SERVER;
 
   const fetchStats = async () => {
     try {
       const res = await axios.get(`${server}/api/v1/admin/stats`, {
-        headers: { Authorization: `Bearer ${auth.token}` },
+        headers: { Authorization: `Bearer ${auth!.token}` },
       });
       if (res.data.success) setStats(res.data.stats);
     } catch {
@@ -67,7 +69,7 @@ const SuperAdminUsers = () => {
 
   if (checkingAuth) return <div className="bg-black min-h-screen" />;
 
-  const openConfirm = (user, role, make) =>
+  const openConfirm = (user: AppUser, role: string, make: boolean) =>
     setConfirmState({ open: true, user, role, make, loading: false });
 
   const closeConfirm = () =>
@@ -90,7 +92,7 @@ const SuperAdminUsers = () => {
       const workDone = await axios.post(
         `${server}${endpoint}`,
         { id: user._id },
-        { headers: { Authorization: `Bearer ${auth.token}` } }
+        { headers: { Authorization: `Bearer ${auth!.token}` } }
       );
 
       if (workDone.data.success) {

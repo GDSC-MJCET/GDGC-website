@@ -3,12 +3,14 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { Switch } from "@/components/ui/switch";
+import type { AuthState } from "../context/AuthContext";
+import type { AppUser } from "../types/user";
 
 const AdminUsers = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<AppUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [checkingAuth, setCheckingAuth] = useState(true);
-  const [confirmState, setConfirmState] = useState({
+  const [confirmState, setConfirmState] = useState<{ open: boolean; user: AppUser | null; make: boolean; loading: boolean }>({
     open: false,
     user: null,
     make: true,
@@ -16,7 +18,7 @@ const AdminUsers = () => {
   });
 
   const nav = useNavigate();
-  const auth = JSON.parse(localStorage.getItem("AuthState"));
+  const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
   const server = import.meta.env.VITE_SERVER;
 
   useEffect(() => {
@@ -60,7 +62,7 @@ const AdminUsers = () => {
   const superAdmins = users.filter((u) => !!u.superadmin);
   const others = users.filter((u) => !u.superadmin);
 
-  const openConfirm = (user) => {
+  const openConfirm = (user: AppUser) => {
     setConfirmState({
       open: true,
       user,
@@ -93,7 +95,7 @@ const AdminUsers = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${auth.token}`,
+            Authorization: `Bearer ${auth!.token}`,
           },
         }
       );

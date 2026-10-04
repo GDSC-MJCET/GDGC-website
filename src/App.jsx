@@ -44,14 +44,14 @@ import TeamPage from './pages/TeamPage';
 import GalleryPage from './pages/GalleryPage';
 import ContactUsPage from './pages/ContactUsPage';
 import NotFound from './pages/NotFound';
-import PracticePage from './pages/PracticePage.jsx';
+import PracticePage from './pages/PracticePage';
 import SuperAdminDashboard from './pages/SuperAdminDashboard';
-import SuperAdminUsers from './pages/SuperAdminUsers.jsx';
+import SuperAdminUsers from './pages/SuperAdminUsers';
 import BlogPosts from './pages/BlogPosts';
-import AdminUsers from './pages/AdminUsers.jsx';
+import AdminUsers from './pages/AdminUsers';
 import ScorePage from './pages/ScorePage';
-import HrInterface from './pages/HrInterface.jsx';
-import HrControlInterface from './pages/HrControlInterface.jsx';
+import HrInterface from './pages/HrInterface';
+import HrControlInterface from './pages/HrControlInterface';
 import BuildWeekForm from './pages/BuildWeekForm';
 // import TDForm from './pages/TDForm';
 import { Navigate } from 'react-router-dom';
@@ -63,14 +63,14 @@ import { PhotoBooth } from './gdgc-modules/photobooth/PhotoBooth';
 import TheHeistAdsophos from './gdgc-modules/heist/TheHeistAdsophos';
 import Loop13 from './gdgc-modules/loop13/Loop_13';
 import MyBlogs from './pages/MyBlogs.jsx';
-import ImageManager from './pages/ImageManager.jsx';
+import ImageManager from './pages/ImageManager';
 import PracticeListPage from './pages/PracticeListPage'
-import ProblemAdminPage from './pages/ProblemAdminPage.jsx';
+import ProblemAdminPage from './pages/ProblemAdminPage';
 import ExercisesPage from './pages/ExercisesPage';
 import ExerciseDetailPage from './pages/ExerciseDetailPage';
-import ContentManagementPage from './pages/ContentManagementPage.jsx';
+import ContentManagementPage from './pages/ContentManagementPage';
 import SuperAdminBlogPanel from './pages/SuperAdminBlog.jsx';
-import TeamMemberManager from './pages/TeamMemberManager.jsx';
+import TeamMemberManager from './pages/TeamMemberManager';
 // import TweetHomeLayout from './pages/TweetHome';
 
 function App() {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, type FormEvent, type ReactNode } from 'react'
 import axios from 'axios'
 import {
   Plus, Pencil, Trash2, ListChecks, X, Import, CheckCircle2,
@@ -7,12 +7,48 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent } from '@/components/ui/card'
+import type { AuthState } from "../context/AuthContext";
+import { axiosResponse } from "../lib/http";
+
+type ExampleForm = { input: string; output: string; explanation: string }
+type ProblemFormState = {
+  _id?: string
+  title: string
+  difficulty: string
+  tags: string
+  allowedLanguages: string[]
+  defaultLanguage: string
+  statement: {
+    paragraphs: string
+    constraints: string
+    inputFormat?: string
+    outputFormat?: string
+    examples: ExampleForm[]
+  }
+}
+type ProblemPayload = {
+  title: string
+  difficulty: string
+  tags: string[]
+  allowedLanguages: string[]
+  defaultLanguage: string
+  statement: { paragraphs: string[]; constraints: string[]; examples: ExampleForm[] }
+}
+type ProblemRow = { _id: string; title: string; difficulty: string; tags?: string[] }
+type TestCase = { _id: string; input: string; expectedOutput: string; isSample: boolean }
+type ExerciseRow = {
+  _id: string
+  title: string
+  description?: string
+  problemCount?: number
+  problems?: (string | { _id: string })[]
+}
 
 const SERVER = import.meta.env.VITE_SERVER?.replace(/\/$/, '')
 const DIFFICULTIES = ['easy', 'medium', 'hard']
 const LANGUAGES = ['javascript', 'python', 'python_ml', 'cpp', 'java']
 
-const LANGUAGE_DISPLAY_LABELS = {
+const LANGUAGE_DISPLAY_LABELS: Record<string, string> = {
   javascript: 'JavaScript',
   python: 'Python',
   python_ml: 'Python (ML)',
@@ -21,11 +57,11 @@ const LANGUAGE_DISPLAY_LABELS = {
 }
 
 function authHeaders() {
-  const auth = JSON.parse(localStorage.getItem('AuthState'))
+  const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
   return { Authorization: `Bearer ${auth?.token}` }
 }
 
-const emptyProblem = () => ({
+const emptyProblem = (): ProblemFormState => ({
   title: '',
   difficulty: 'easy',
   tags: '',
@@ -41,7 +77,7 @@ const emptyProblem = () => ({
 })
 
 // ── Modal ────────────────────────────────────────────────────────────────────
-function Modal({ title, onClose, children }) {
+function Modal({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/70 px-4 py-8 overflow-y-auto">
       <div className="w-full max-w-2xl rounded-2xl border border-white/10 bg-[#111] p-6 shadow-2xl">
@@ -58,17 +94,22 @@ function Modal({ title, onClose, children }) {
 }
 
 // ── Problem form ─────────────────────────────────────────────────────────────
-function ProblemForm({ initial, onSave, onCancel, saving }) {
-  const [form, setForm] = useState(initial)
+function ProblemForm({ initial, onSave, onCancel, saving }: {
+  initial: ProblemFormState
+  onSave: (payload: ProblemPayload) => void
+  onCancel: () => void
+  saving: boolean
+}) {
+  const [form, setForm] = useState<ProblemFormState>(initial)
 
-  const set = (path, value) =>
+  const set = (path: string, value: string) =>
     setForm((f) => {
-      const copy = structuredClone(f)
+      const copy = structuredClone(f) as unknown as Record<string, unknown>
       const keys = path.split('.')
       let obj = copy
-      for (let i = 0; i < keys.length - 1; i++) obj = obj[keys[i]]
+      for (let i = 0; i < keys.length - 1; i++) obj = obj[keys[i]] as Record<string, unknown>
       obj[keys[keys.length - 1]] = value
-      return copy
+      return copy as unknown as ProblemFormState
     })
 
   const addExample = () =>
@@ -77,20 +118,20 @@ function ProblemForm({ initial, onSave, onCancel, saving }) {
       statement: { ...f.statement, examples: [...f.statement.examples, { input: '', output: '', explanation: '' }] },
     }))
 
-  const removeExample = (i) =>
+  const removeExample = (i: number) =>
     setForm((f) => ({
       ...f,
       statement: { ...f.statement, examples: f.statement.examples.filter((_, idx) => idx !== i) },
     }))
 
-  const setExample = (i, field, value) =>
+  const setExample = (i: number, field: keyof ExampleForm, value: string) =>
     setForm((f) => {
       const examples = [...f.statement.examples]
       examples[i] = { ...examples[i], [field]: value }
       return { ...f, statement: { ...f.statement, examples } }
     })
 
-  const toggleLanguage = (lang) =>
+  const toggleLanguage = (lang: string) =>
     setForm((f) => ({
       ...f,
       allowedLanguages: f.allowedLanguages.includes(lang)
@@ -98,7 +139,7 @@ function ProblemForm({ initial, onSave, onCancel, saving }) {
         : [...f.allowedLanguages, lang],
     }))
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     onSave({
       title: form.title.trim(),
@@ -198,8 +239,8 @@ function ProblemForm({ initial, onSave, onCancel, saving }) {
 }
 
 // ── Test case manager ────────────────────────────────────────────────────────
-function TestCaseManager({ problem, onClose }) {
-  const [testCases, setTestCases] = useState([])
+function TestCaseManager({ problem, onClose }: { problem: ProblemRow; onClose: () => void }) {
+  const [testCases, setTestCases] = useState<TestCase[]>([])
   const [newInput, setNewInput] = useState('')
   const [newExpected, setNewExpected] = useState('')
   const [newIsSample, setNewIsSample] = useState(false)
@@ -220,12 +261,12 @@ function TestCaseManager({ problem, onClose }) {
     await load(); setSaving(false)
   }
 
-  const toggleSample = async (tc) => {
+  const toggleSample = async (tc: TestCase) => {
     await axios.patch(`${SERVER}/api/problems/${problem._id}/testcases/${tc._id}`, { isSample: !tc.isSample }, { headers: authHeaders() })
     await load()
   }
 
-  const remove = async (tcId) => {
+  const remove = async (tcId: string) => {
     await axios.delete(`${SERVER}/api/problems/${problem._id}/testcases/${tcId}`, { headers: authHeaders() })
     await load()
   }
@@ -297,14 +338,14 @@ function TestCaseManager({ problem, onClose }) {
 }
 
 // ── Exercise manager ─────────────────────────────────────────────────────────
-function ExerciseManager({ allProblems }) {
-  const [exercises, setExercises] = useState([])
+function ExerciseManager({ allProblems }: { allProblems: ProblemRow[] }) {
+  const [exercises, setExercises] = useState<ExerciseRow[]>([])
   const [showForm, setShowForm] = useState(false)
-  const [editTarget, setEditTarget] = useState(null)
+  const [editTarget, setEditTarget] = useState<ExerciseRow | null>(null)
   const [saving, setSaving] = useState(false)
   const [formTitle, setFormTitle] = useState('')
   const [formDesc, setFormDesc] = useState('')
-  const [formProblems, setFormProblems] = useState([])
+  const [formProblems, setFormProblems] = useState<string[]>([])
 
   const iCls = 'bg-[#0a0a0a] border-white/10 text-white placeholder:text-gray-600'
 
@@ -316,13 +357,13 @@ function ExerciseManager({ allProblems }) {
   useEffect(() => { load() }, [load])
 
   const openCreate = () => { setEditTarget(null); setFormTitle(''); setFormDesc(''); setFormProblems([]); setShowForm(true) }
-  const openEdit = (ex) => {
+  const openEdit = (ex: ExerciseRow) => {
     setEditTarget(ex); setFormTitle(ex.title); setFormDesc(ex.description || '')
-    setFormProblems((ex.problems || []).map(p => String(p._id || p)))
+    setFormProblems((ex.problems || []).map(p => String(typeof p === 'string' ? p : p._id || p)))
     setShowForm(true)
   }
 
-  const toggleProblem = (id) => {
+  const toggleProblem = (id: string) => {
     const sid = String(id)
     setFormProblems(prev => prev.includes(sid) ? prev.filter(x => x !== sid) : [...prev, sid])
   }
@@ -338,17 +379,17 @@ function ExerciseManager({ allProblems }) {
         await axios.post(`${SERVER}/api/exercises`, payload, { headers: authHeaders() })
       }
       await load(); setShowForm(false)
-    } catch (e) { alert(e?.response?.data?.message || 'Save failed') }
+    } catch (e) { alert(axiosResponse(e)?.data?.message || 'Save failed') }
     setSaving(false)
   }
 
-  const del = async (id) => {
+  const del = async (id: string) => {
     if (!confirm('Delete this exercise?')) return
     await axios.delete(`${SERVER}/api/exercises/${id}`, { headers: authHeaders() })
     await load()
   }
 
-  const diffColor = { easy: 'text-emerald-400', medium: 'text-amber-400', hard: 'text-rose-400' }
+  const diffColor: Record<string, string> = { easy: 'text-emerald-400', medium: 'text-amber-400', hard: 'text-rose-400' }
 
   return (
     <div className="space-y-3">
@@ -433,10 +474,10 @@ function ExerciseManager({ allProblems }) {
 // ── Main page ────────────────────────────────────────────────────────────────
 export default function ContentManagementPage() {
   const [activeTab, setActiveTab] = useState('problems')
-  const [problems, setProblems] = useState([])
+  const [problems, setProblems] = useState<ProblemRow[]>([])
   const [showForm, setShowForm] = useState(false)
-  const [editTarget, setEditTarget] = useState(null)
-  const [tcTarget, setTcTarget] = useState(null)
+  const [editTarget, setEditTarget] = useState<ProblemFormState | null>(null)
+  const [tcTarget, setTcTarget] = useState<ProblemRow | null>(null)
   const [saving, setSaving] = useState(false)
   const [showImport, setShowImport] = useState(false)
   const [importUrl, setImportUrl] = useState('')
@@ -451,7 +492,7 @@ export default function ContentManagementPage() {
   useEffect(() => { load() }, [load])
 
   const openCreate = () => { setEditTarget(null); setShowForm(true) }
-  const openEdit = async (p) => {
+  const openEdit = async (p: ProblemRow) => {
     const { data } = await axios.get(`${SERVER}/api/problems/${p._id}`)
     const full = data.problem
     setEditTarget({
@@ -466,7 +507,7 @@ export default function ContentManagementPage() {
     setShowForm(true)
   }
 
-  const save = async (payload) => {
+  const save = async (payload: ProblemPayload) => {
     setSaving(true)
     try {
       if (editTarget?._id) {
@@ -475,11 +516,11 @@ export default function ContentManagementPage() {
         await axios.post(`${SERVER}/api/problems`, payload, { headers: authHeaders() })
       }
       await load(); setShowForm(false)
-    } catch (e) { alert(e?.response?.data?.message || 'Save failed') }
+    } catch (e) { alert(axiosResponse(e)?.data?.message || 'Save failed') }
     setSaving(false)
   }
 
-  const deleteProblem = async (id) => {
+  const deleteProblem = async (id: string) => {
     if (!confirm('Delete this problem?')) return
     await axios.delete(`${SERVER}/api/problems/${id}`, { headers: authHeaders() })
     await load()
@@ -491,11 +532,11 @@ export default function ContentManagementPage() {
     try {
       await axios.post(`${SERVER}/api/problems/import-leetcode`, { url: importUrl }, { headers: authHeaders() })
       await load(); setShowImport(false); setImportUrl('')
-    } catch (e) { setImportError(e?.response?.data?.message || 'Import failed') }
+    } catch (e) { setImportError(axiosResponse(e)?.data?.message || 'Import failed') }
     setImporting(false)
   }
 
-  const diffColor = { easy: 'text-emerald-400', medium: 'text-amber-400', hard: 'text-rose-400' }
+  const diffColor: Record<string, string> = { easy: 'text-emerald-400', medium: 'text-amber-400', hard: 'text-rose-400' }
 
   return (
     <div className="w-full max-w-4xl mx-auto px-4 py-6">

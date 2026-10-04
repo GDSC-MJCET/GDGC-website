@@ -3,6 +3,10 @@ import axios from "axios"
 import { ChevronDown, ChevronRight, Eye, EyeOff, Plus, Trash2, RefreshCw } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { axiosResponse } from "@/lib/http"
+
+type TestCase = { _id: string; input: string; expectedOutput: string; isSample: boolean }
+type AdminProblem = { _id: string; title: string; difficulty?: string; slug?: string }
 
 const server = () => import.meta.env.VITE_SERVER?.replace(/\/$/, "")
 
@@ -15,7 +19,11 @@ const authHeaders = () => {
 const emptyForm = { input: "", expectedOutput: "", isSample: false }
 
 // ─── single test case row ────────────────────────────────────────────────────
-const TestCaseRow = ({ tc, onToggleSample, onDelete }) => (
+const TestCaseRow = ({ tc, onToggleSample, onDelete }: {
+  tc: TestCase
+  onToggleSample: (tc: TestCase) => void
+  onDelete: (id: string) => void
+}) => (
   <div className="flex items-start gap-3 rounded-xl border border-border bg-background px-4 py-3">
     <div className="flex-1 min-w-0 space-y-1">
       <div className="flex items-center gap-2 flex-wrap">
@@ -60,7 +68,7 @@ const TestCaseRow = ({ tc, onToggleSample, onDelete }) => (
 )
 
 // ─── add form ────────────────────────────────────────────────────────────────
-const AddTestCaseForm = ({ problemId, onAdded }) => {
+const AddTestCaseForm = ({ problemId, onAdded }: { problemId: string; onAdded: () => void }) => {
   const [form, setForm] = useState(emptyForm)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState("")
@@ -81,7 +89,7 @@ const AddTestCaseForm = ({ problemId, onAdded }) => {
       setForm(emptyForm)
       onAdded()
     } catch (e) {
-      setError(e?.response?.data?.message || "Failed to add test case.")
+      setError(axiosResponse(e)?.data?.message || "Failed to add test case.")
     } finally {
       setSaving(false)
     }
@@ -144,9 +152,9 @@ const AddTestCaseForm = ({ problemId, onAdded }) => {
 }
 
 // ─── problem accordion ───────────────────────────────────────────────────────
-const ProblemAccordion = ({ problem }) => {
+const ProblemAccordion = ({ problem }: { problem: AdminProblem }) => {
   const [open, setOpen] = useState(false)
-  const [testCases, setTestCases] = useState([])
+  const [testCases, setTestCases] = useState<TestCase[]>([])
   const [loading, setLoading] = useState(false)
 
   const fetchTestCases = async () => {
@@ -169,7 +177,7 @@ const ProblemAccordion = ({ problem }) => {
     setOpen(o => !o)
   }
 
-  const handleToggleSample = async (tc) => {
+  const handleToggleSample = async (tc: TestCase) => {
     try {
       await axios.patch(
         `${server()}/api/problems/${problem._id}/testcases/${tc._id}`,
@@ -178,11 +186,11 @@ const ProblemAccordion = ({ problem }) => {
       )
       fetchTestCases()
     } catch (e) {
-      alert(e?.response?.data?.message || "Failed to update.")
+      alert(axiosResponse(e)?.data?.message || "Failed to update.")
     }
   }
 
-  const handleDelete = async (tcId) => {
+  const handleDelete = async (tcId: string) => {
     if (!confirm("Delete this test case?")) return
     try {
       await axios.delete(
@@ -191,7 +199,7 @@ const ProblemAccordion = ({ problem }) => {
       )
       fetchTestCases()
     } catch (e) {
-      alert(e?.response?.data?.message || "Failed to delete.")
+      alert(axiosResponse(e)?.data?.message || "Failed to delete.")
     }
   }
 
@@ -255,7 +263,7 @@ const ProblemAccordion = ({ problem }) => {
 
 // ─── page ────────────────────────────────────────────────────────────────────
 const ProblemAdminPage = () => {
-  const [problems, setProblems] = useState([])
+  const [problems, setProblems] = useState<AdminProblem[]>([])
   const [loading, setLoading] = useState(true)
 
   const fetchProblems = async () => {

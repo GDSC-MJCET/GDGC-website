@@ -1,10 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import { Trash2, Copy, Pencil, Check, X, ExternalLink, Plus } from "lucide-react";
 import { supabase } from "../utils/supabase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
 import heic2any from "heic2any";
+import type { AuthState } from "../context/AuthContext";
+import { axiosResponse } from "../lib/http";
+
+type TeamMember = {
+  _id: string;
+  name: string;
+  image: string;
+  domain: string;
+  role: string;
+  linkedin?: string;
+  github?: string;
+  instagram?: string;
+};
 
 const SERVER = import.meta.env.VITE_SERVER?.replace(/\/$/, "");
 const DOMAINS = [
@@ -14,16 +27,16 @@ const DOMAINS = [
 const ROLES = ["EXECOM", "CORE"];
 
 function authHeaders() {
-  const auth = JSON.parse(localStorage.getItem("AuthState"));
+  const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
   return { Authorization: `Bearer ${auth?.token}` };
 }
 
 const TeamMemberManager = () => {
-  const [members, setMembers] = useState([]);
+  const [members, setMembers] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showForm, setShowForm] = useState(false);
-  const [editingId, setEditingId] = useState(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [roleFilter, setRoleFilter] = useState("ALL");
 
   const [formData, setFormData] = useState({
@@ -35,7 +48,7 @@ const TeamMemberManager = () => {
     github: "",
     instagram: "",
   });
-  const [imageFile, setImageFile] = useState(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState("");
 
   const fetchMembers = async () => {
@@ -53,25 +66,25 @@ const TeamMemberManager = () => {
     fetchMembers();
   }, [roleFilter]);
 
-  const handleImageSelect = (e) => {
-    const file = e.target.files[0];
+  const handleImageSelect = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files![0];
     if (!file) return;
 
     setImageFile(file);
     setImagePreview(URL.createObjectURL(file));
   };
 
-  const uploadImage = async (file) => {
+  const uploadImage = async (file: File) => {
     let fileToUpload = file;
-    let finalExt = file.name.split(".").pop()?.toLowerCase();
+    let finalExt: string | undefined = file.name.split(".").pop()?.toLowerCase();
 
-    if (["heic", "heif"].includes(finalExt)) {
+    if (["heic", "heif"].includes(finalExt as string)) {
       const blob = await heic2any({
         blob: file,
         toType: "image/jpeg",
         quality: 0.9,
       });
-      fileToUpload = new File([blob], file.name.replace(/\.(heic|heif)$/i, ".jpg"), {
+      fileToUpload = new File([blob as Blob], file.name.replace(/\.(heic|heif)$/i, ".jpg"), {
         type: "image/jpeg",
       });
       finalExt = "jpg";
@@ -93,7 +106,7 @@ const TeamMemberManager = () => {
     return urlData.publicUrl;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError("");
 
@@ -109,7 +122,7 @@ const TeamMemberManager = () => {
 
       if (imageFile) {
         if (formData.image) {
-          await supabase.storage.from("images").remove([formData.image.split("/").pop()]);
+          await supabase.storage.from("images").remove([formData.image.split("/").pop()!]);
         }
         imageUrl = await uploadImage(imageFile);
       }
@@ -129,13 +142,13 @@ const TeamMemberManager = () => {
       fetchMembers();
     } catch (err) {
       console.error("Submit error:", err);
-      setError(err.response?.data?.message || "Failed to save");
+      setError(axiosResponse(err)?.data?.message || "Failed to save");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleEdit = (member) => {
+  const handleEdit = (member: TeamMember) => {
     setEditingId(member._id);
     setFormData({
       name: member.name,
@@ -151,7 +164,7 @@ const TeamMemberManager = () => {
     setShowForm(true);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: string) => {
     if (!confirm("Delete this team member?")) return;
 
     try {

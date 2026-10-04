@@ -7,6 +7,14 @@ import { FaSyncAlt, FaPlus, FaTimes, FaCheck, FaQuestionCircle } from "react-ico
 
 const SERVER = import.meta.env.VITE_SERVER; // <-- replace with your server base
 
+type Team = {
+  clubName: string;
+  logoUrl: string | null;
+  speakers: { name: string }[];
+  description?: string;
+};
+type Side = "left" | "right";
+
 export default function HrControlInterface() {
   const nav = useNavigate();
   const location = useLocation();
@@ -18,8 +26,8 @@ export default function HrControlInterface() {
     }
   }, [leftTeamName, rightTeamName, nav]);
 
-  const [leftTeam, setLeftTeam] = useState(null); // expected shape: { clubName, logoUrl, speakers: [...] }
-  const [rightTeam, setRightTeam] = useState(null);
+  const [leftTeam, setLeftTeam] = useState<Team | null>(null); // expected shape: { clubName, logoUrl, speakers: [...] }
+  const [rightTeam, setRightTeam] = useState<Team | null>(null);
   const [leftScore, setLeftScore] = useState(0);
   const [rightScore, setRightScore] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -33,20 +41,17 @@ export default function HrControlInterface() {
     if (!leftTeamName || !rightTeamName) return;
     setLoading(true);
     try {
-      const res = await axios.get(SERVER + "api/v1/techdebate/get-score", {
-        leftTeam: leftTeamName,
-        rightTeam: rightTeamName,
-      });
+      const res = await axios.get(SERVER + "api/v1/techdebate/get-score");
       
       const data = res.data;
       console.log("fetchTeams response:", data);
       if (data.success) {
-        let leftTeamStr = {
+        const leftTeamStr = {
           clubName: data.sendingData.leftTeam || leftTeamName,
           logoUrl: data.sendingData.leftLogo || null,
           speakers: data.sendingData.speakersLeft|| [],
         }
-        let rightTeamStr = {
+        const rightTeamStr = {
           clubName: data.sendingData.rightTeam || rightTeamName,
           logoUrl: data.sendingData.rightLogo || null,
           speakers: data.sendingData.speakersRight|| [],
@@ -82,7 +87,7 @@ export default function HrControlInterface() {
   };
 
   // increment handler: optimistic update then POST to backend to persist
-  const incrementScore = async (side) => {
+  const incrementScore = async (side: Side) => {
     if (side !== "left" && side !== "right") return;
     setIncLoading((s) => ({ ...s, [side]: true }));
     // optimistic update
@@ -129,7 +134,7 @@ export default function HrControlInterface() {
       } 
     } catch (err) {
       console.error("Final submit error:", err);
-      alert("Final submit failed: " + (err.message || "unknown"));
+      alert("Final submit failed: " + ((err as Error).message || "unknown"));
     } finally {
       setFinalSubmitting(false);
       setShowConfirm(false);
@@ -137,7 +142,8 @@ export default function HrControlInterface() {
   };
 
   // small presentational helpers
-  const TeamCard = ({ team, side }) => {
+  const TeamCard = ({ team, side }: { team: Team | null; side: Side }) => {
+    console.log("Rendering speakers for", side, team);
     return (
       <div className="w-[40%] min-h-[320px] flex flex-col items-center rounded-lg p-6 shadow-md">
         <div className="flex flex-col items-center">
@@ -156,7 +162,6 @@ export default function HrControlInterface() {
           <h3 className="text-sm text-white font-medium mb-2">Speakers</h3>
           <ul className="space-y-1 text-white max-h-40 overflow-auto">
             {
-              console.log("Rendering speakers for", side, team) ||
               leftTeam && side === "left" ? leftTeam.speakers.map((speaker, index) => (
                 <li key={index} className="text-sm text-white">
                   {speaker.name}

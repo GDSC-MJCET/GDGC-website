@@ -6,12 +6,19 @@ import { Button } from "@/components/ui/button"
 import ProblemPanel from "@/components/practice/ProblemPanel"
 import CodeWorkspace from "@/components/practice/CodeWorkspace"
 import LoadingState from "@/components/practice/LoadingState"
+import type { AuthState } from "../context/AuthContext";
+import { axiosResponse } from "../lib/http";
+import type { Example, ExecutionState, Problem } from "../types/practice";
+
+// Backend payloads come in several shapes (see normalizeProblem), so they are read loosely.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Raw = Record<string, any>;
 
 const SUPPORTED_LANGUAGES = ["javascript", "python", "python_ml", "cpp", "java"]
 
 // Shown when a problem has no starter code defined for that language,
 // or when the user switches to a language they haven't typed in yet.
-const DEFAULT_TEMPLATES = {
+const DEFAULT_TEMPLATES: Record<string, string> = {
   python: `# Read input\n# e.g. n = int(input())\n\n# Write your solution here\n`,
   python_ml: `import numpy as np\nimport pandas as pd\n\n# Read input from stdin\ndata = input().split()\n\n# Write your solution here\nprint("Hello from Python ML!")\n`,
   javascript: `const lines = require('fs').readFileSync('/dev/stdin','utf8').trim().split('\\n')\n\n// Write your solution here\n`,
@@ -19,7 +26,7 @@ const DEFAULT_TEMPLATES = {
   java: `import java.util.*;\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // Read input: e.g. int n = sc.nextInt();\n        // Write your solution here\n    }\n}\n`,
 }
 
-const LANGUAGE_ALIASES = {
+const LANGUAGE_ALIASES: Record<string, string> = {
   js: "javascript",
   javascript: "javascript",
   node: "javascript",
@@ -34,7 +41,7 @@ const LANGUAGE_ALIASES = {
   java: "java",
 }
 
-const MOCK_PROBLEMS = {
+const MOCK_PROBLEMS: Record<string, Raw> = {
   "two-sum": {
     id: "two-sum",
     slug: "two-sum",
@@ -81,12 +88,12 @@ const MOCK_PROBLEMS = {
   },
 }
 
-const normalizeLanguage = (language) => {
+const normalizeLanguage = (language: unknown) => {
   if (!language) return ""
   return LANGUAGE_ALIASES[String(language).trim().toLowerCase()] || ""
 }
 
-const toList = (value) => {
+const toList = (value: unknown): string[] => {
   if (Array.isArray(value)) return value.filter(Boolean)
   if (typeof value === "string") {
     return value
@@ -97,7 +104,7 @@ const toList = (value) => {
   return []
 }
 
-const normalizeExamples = (value) => {
+const normalizeExamples = (value: unknown): Example[] => {
   if (!Array.isArray(value)) return []
 
   return value
@@ -122,10 +129,10 @@ const normalizeExamples = (value) => {
     .filter((example) => example.input || example.output || example.explanation)
 }
 
-const normalizeProblem = (rawProblem, fallbackId) => {
-  const source = rawProblem?.problem || rawProblem?.data?.problem || rawProblem?.data || rawProblem
+const normalizeProblem = (rawProblem: Raw, fallbackId?: string): Problem => {
+  const source: Raw = rawProblem?.problem || rawProblem?.data?.problem || rawProblem?.data || rawProblem
   const starterCodeSource = source?.starterCode || source?.starter_code || {}
-  const starterCode = {}
+  const starterCode: Record<string, string> = {}
 
   Object.entries(starterCodeSource).forEach(([language, code]) => {
     const normalizedLanguage = normalizeLanguage(language)
@@ -155,7 +162,7 @@ const normalizeProblem = (rawProblem, fallbackId) => {
     source?.body ||
     []
 
-  const normalizedStarterCode = {}
+  const normalizedStarterCode: Record<string, string> = {}
   orderedLanguages.forEach((language) => {
     normalizedStarterCode[language] = starterCode[language] || ""
   })
@@ -166,8 +173,8 @@ const normalizeProblem = (rawProblem, fallbackId) => {
     "javascript"
 
   return {
-    id: source?.id || source?._id || fallbackId,
-    slug: source?.slug || fallbackId,
+    id: source?.id || source?._id || (fallbackId as string),
+    slug: source?.slug || (fallbackId as string),
     title: source?.title || "Untitled Problem",
     difficulty: source?.difficulty || "Unrated",
     tags: toList(source?.tags || source?.topics),
@@ -182,16 +189,16 @@ const normalizeProblem = (rawProblem, fallbackId) => {
   }
 }
 
-const getMockProblem = (problemId) => {
-  console.log("bloddy mock problem",MOCK_PROBLEMS[problemId]);
-  return MOCK_PROBLEMS[problemId] || null
+const getMockProblem = (problemId?: string) => {
+  console.log("bloddy mock problem",MOCK_PROBLEMS[problemId as string]);
+  return MOCK_PROBLEMS[problemId as string] || null
 }
 
-const wait = (ms) => new Promise((resolve) => {
+const wait = (ms: number) => new Promise((resolve) => {
   window.setTimeout(resolve, ms)
 })
 
-const emptyExecutionState = {
+const emptyExecutionState: ExecutionState = {
   status: "idle",
   data: null,
   error: "",
@@ -202,26 +209,26 @@ const PracticePage = () => {
   const nav = useNavigate()
   const server = import.meta.env.VITE_SERVER?.replace(/\/$/, "")
 
-  const [problem, setProblem] = useState(null)
+  const [problem, setProblem] = useState<Problem | null>(null)
   const [isMockProblem, setIsMockProblem] = useState(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [selectedLanguage, setSelectedLanguage] = useState("")
-  const [codeByLanguage, setCodeByLanguage] = useState({})
+  const [codeByLanguage, setCodeByLanguage] = useState<Record<string, string>>({})
   const [resultTab, setResultTab] = useState("testcase")
   const [lastResultType, setLastResultType] = useState("run")
   const [customInput, setCustomInput] = useState("")
   const [activeMobilePane, setActiveMobilePane] = useState("problem")
-  const [customRunState, setCustomRunState] = useState(emptyExecutionState)
-  const [runState, setRunState] = useState(emptyExecutionState)
-  const [submitState, setSubmitState] = useState(emptyExecutionState)
+  const [customRunState, setCustomRunState] = useState<ExecutionState>(emptyExecutionState)
+  const [runState, setRunState] = useState<ExecutionState>(emptyExecutionState)
+  const [submitState, setSubmitState] = useState<ExecutionState>(emptyExecutionState)
   // isSolved: true if user has ever accepted this problem (history or current session)
   const [isSolved, setIsSolved] = useState(false)
   // bumped after every submit so ProblemPanel's Submissions tab auto-refreshes
   const [submissionRefreshToken, setSubmissionRefreshToken] = useState(0)
   // we need to add authentication on this route
   useEffect(() => {
-    const auth = JSON.parse(localStorage.getItem("AuthState"));
+    const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
     if (!auth?.token || !auth?.loggedIn) {
       nav("/login", { replace: true });
       return;
@@ -235,7 +242,7 @@ const PracticePage = () => {
       if (!server) {
         if (mockProblem) {
           const normalizedProblem = normalizeProblem(mockProblem, problemId)
-          const initialCode = {}
+          const initialCode: Record<string, string> = {}
 
           normalizedProblem.allowedLanguages.forEach((language) => {
             initialCode[language] = normalizedProblem.starterCode[language] || DEFAULT_TEMPLATES[language] || ""
@@ -274,7 +281,7 @@ const PracticePage = () => {
 
         const normalizedProblem = normalizeProblem(response.data, problemId)
         const initialLanguage = normalizedProblem.defaultLanguage
-        const initialCode = {}
+        const initialCode: Record<string, string> = {}
 
         normalizedProblem.allowedLanguages.forEach((language) => {
           initialCode[language] = normalizedProblem.starterCode[language] || DEFAULT_TEMPLATES[language] || ""
@@ -287,14 +294,14 @@ const PracticePage = () => {
         setIsMockProblem(false)
 
         // Check if the user has already solved this problem
-        const auth = JSON.parse(localStorage.getItem("AuthState"))
+        const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
         if (auth?.token) {
           axios
             .get(`${server}/api/submissions?problemId=${problemId}`, {
               headers: { Authorization: `Bearer ${auth.token}` },
             })
             .then((r) => {
-              if (!cancelled && (r.data.submissions || []).some((s) => s.verdict === "accepted")) {
+              if (!cancelled && (r.data.submissions || []).some((s: { verdict: string }) => s.verdict === "accepted")) {
                 setIsSolved(true)
               }
             })
@@ -305,7 +312,7 @@ const PracticePage = () => {
 
         if (mockProblem) {
           const normalizedProblem = normalizeProblem(mockProblem, problemId)
-          const initialCode = {}
+          const initialCode: Record<string, string> = {}
 
           normalizedProblem.allowedLanguages.forEach((language) => {
             initialCode[language] = normalizedProblem.starterCode[language] || DEFAULT_TEMPLATES[language] || ""
@@ -327,7 +334,7 @@ const PracticePage = () => {
           console.log("we have a mock problem");
           if (mockProblem) {
             const normalizedProblem = normalizeProblem(mockProblem, problemId)
-            const initialCode = {}
+            const initialCode: Record<string, string> = {}
   
             normalizedProblem.allowedLanguages.forEach((language) => {
               initialCode[language] = normalizedProblem.starterCode[language] || DEFAULT_TEMPLATES[language] || ""
@@ -366,14 +373,14 @@ const PracticePage = () => {
 
   const currentCode = codeByLanguage[selectedLanguage] || ""
 
-  const updateCode = (value) => {
+  const updateCode = (value: string) => {
     setCodeByLanguage((currentState) => ({
       ...currentState,
       [selectedLanguage]: value,
     }))
   }
 
-  const handleLanguageChange = (language) => {
+  const handleLanguageChange = (language: string) => {
     setSelectedLanguage(language)
     setCodeByLanguage((currentState) => {
       // Only keep existing code if the user has actually typed something.
@@ -400,7 +407,7 @@ const PracticePage = () => {
         setCustomRunState({ status: "success", data: { stdout: "mock output\n", stderr: "", exitCode: 0, timedOut: false }, error: "" })
         return
       }
-      const auth = JSON.parse(localStorage.getItem("AuthState"))
+      const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
       const response = await axios.post(
         `${server}/api/submissions/custom-run`,
         { code: currentCode, language: selectedLanguage, input: customInput },
@@ -408,7 +415,7 @@ const PracticePage = () => {
       )
       setCustomRunState({ status: "success", data: response.data, error: "" })
     } catch (err) {
-      setCustomRunState({ status: "error", data: null, error: err?.response?.data?.message || "Custom run failed." })
+      setCustomRunState({ status: "error", data: null, error: axiosResponse(err)?.data?.message || "Custom run failed." })
     }
   }
 
@@ -439,7 +446,7 @@ const PracticePage = () => {
         return
       }
 
-      const auth = JSON.parse(localStorage.getItem("AuthState"))
+      const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
       const response = await axios.post(
         `${server}/api/submissions/run`,
         { code: currentCode, language: selectedLanguage, problemId: problem.id },
@@ -454,10 +461,10 @@ const PracticePage = () => {
     } catch (runError) {
       setRunState({
         status: "error",
-        data: runError?.response?.data || null,
+        data: axiosResponse(runError)?.data || null,
         error:
-          runError?.response?.data?.message ||
-          runError?.response?.data?.error ||
+          axiosResponse(runError)?.data?.message ||
+          axiosResponse(runError)?.data?.error ||
           "Run failed. Please try again.",
       })
     }
@@ -493,7 +500,7 @@ const PracticePage = () => {
         return
       }
 
-      const auth = JSON.parse(localStorage.getItem("AuthState"))
+      const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
       const authHeaders = { Authorization: `Bearer ${auth?.token}` }
 
       const { data: createData } = await axios.post(
@@ -525,7 +532,7 @@ const PracticePage = () => {
         status: "success",
         data: {
           status: verdict,
-          passedCount: results.filter((r) => r.passed).length,
+          passedCount: results.filter((r: { passed: boolean }) => r.passed).length,
           totalCount: results.length,
           runtimeMs: null,
           memoryKb: null,
@@ -539,10 +546,10 @@ const PracticePage = () => {
     } catch (submitError) {
       setSubmitState({
         status: "error",
-        data: submitError?.response?.data || null,
+        data: axiosResponse(submitError)?.data || null,
         error:
-          submitError?.response?.data?.message ||
-          submitError?.response?.data?.error ||
+          axiosResponse(submitError)?.data?.message ||
+          axiosResponse(submitError)?.data?.error ||
           "Submission failed. Please try again.",
       })
     }

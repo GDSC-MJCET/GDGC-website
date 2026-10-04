@@ -1,19 +1,21 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, type FormEvent } from "react";
 import { Trash2, Copy, Pencil, Check, X, ExternalLink } from "lucide-react";
 import { supabase } from "../utils/supabase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import heic2any from "heic2any";
 
+type StoredImage = { name: string; publicUrl: string; displayTitle: string };
+
 const ImageManager = () => {
   const [title, setTitle] = useState("");
-  const [file, setFile] = useState(null);
-  const [images, setImages] = useState([]);
+  const [file, setFile] = useState<File | null>(null);
+  const [images, setImages] = useState<StoredImage[]>([]);
   const [loading, setLoading] = useState(false);
-  const [deletingId, setDeletingId] = useState(null);
-  const [copiedId, setCopiedId] = useState(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
   const [error, setError] = useState("");
-  const [editingName, setEditingName] = useState(null);
+  const [editingName, setEditingName] = useState<string | null>(null);
   const [editNewName, setEditNewName] = useState("");
 
   const fetchImages = async () => {
@@ -51,7 +53,7 @@ const ImageManager = () => {
     fetchImages();
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError("");
 
@@ -64,16 +66,16 @@ const ImageManager = () => {
 
     try {
       let fileToUpload = file;
-      let finalExt = file.name.split(".").pop()?.toLowerCase();
+      let finalExt: string | undefined = file.name.split(".").pop()?.toLowerCase();
 
-      if (["heic", "heif"].includes(finalExt)) {
+      if (["heic", "heif"].includes(finalExt as string)) {
         setError("Converting HEIC to JPEG...");
         const blob = await heic2any({
           blob: file,
           toType: "image/jpeg",
           quality: 0.9,
         });
-        fileToUpload = new File([blob], file.name.replace(/\.(heic|heif)$/i, ".jpg"), {
+        fileToUpload = new File([blob as Blob], file.name.replace(/\.(heic|heif)$/i, ".jpg"), {
           type: "image/jpeg",
         });
         finalExt = "jpg";
@@ -99,13 +101,13 @@ const ImageManager = () => {
       fetchImages();
     } catch (err) {
       console.error("Upload error:", err);
-      setError(err.message || "Upload failed");
+      setError((err as Error).message || "Upload failed");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDelete = async (fileName) => {
+  const handleDelete = async (fileName: string) => {
     if (!confirm("Delete this image?")) return;
 
     setDeletingId(fileName);
@@ -124,7 +126,7 @@ const ImageManager = () => {
     }
   };
 
-  const handleCopy = async (fileName, url) => {
+  const handleCopy = async (fileName: string, url: string) => {
     try {
       await navigator.clipboard.writeText(url);
       setCopiedId(fileName);
@@ -134,7 +136,7 @@ const ImageManager = () => {
     }
   };
 
-  const handleRename = async (oldName) => {
+  const handleRename = async (oldName: string) => {
     const sanitizedName = editNewName.trim().replace(/[^a-zA-Z0-9 _-]/g, "");
     if (!sanitizedName) {
       setError("Invalid name");
@@ -173,7 +175,7 @@ const ImageManager = () => {
     }
   };
 
-  const startRename = (img) => {
+  const startRename = (img: StoredImage) => {
     setEditingName(img.name);
     setEditNewName(img.displayTitle);
   };
@@ -195,7 +197,7 @@ const ImageManager = () => {
           <input
             type="file"
             accept="image/*"
-            onChange={(e) => setFile(e.target.files[0])}
+            onChange={(e) => setFile(e.target.files![0])}
             className="text-sm border px-4 py-2 border-white rounded"
           />
 

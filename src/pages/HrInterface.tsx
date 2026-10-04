@@ -1,14 +1,20 @@
 import axios from "axios";
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef, type ChangeEvent, type ReactNode, type RefObject } from "react"
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { FaCaretUp, FaCaretDown, FaQuestion, FaSyncAlt, FaPlus, FaTimes, FaCheck, FaPause, FaPlay } from "react-icons/fa";
 import { FaQuestionCircle } from "react-icons/fa";
 import {Toaster,toast} from "react-hot-toast"
+import type { AuthState } from "../context/AuthContext";
+import { axiosResponse } from "../lib/http";
+
+type Team = { clubName: string; logoUrl: string | null; speakers: { name: string }[]; description?: string };
+type Club = { _id: string; clubName: string; clubImageUrl?: string };
+type Side = "left" | "right";
 
 // Portal-based dropdown that escapes overflow-hidden/scroll containers
-function PortalDropdown({ triggerRef, isOpen, children }) {
+function PortalDropdown({ triggerRef, isOpen, children }: { triggerRef: RefObject<HTMLElement | null>; isOpen: boolean; children: ReactNode }) {
   const [pos, setPos] = useState({ top: 0, left: 0, width: 0 });
 
   useEffect(() => {
@@ -55,8 +61,8 @@ export default function HrInterface() {
   const [viewMode, setViewMode] = useState("selection"); // "selection" or "control"
   
   // Control interface states
-  const [leftTeam, setLeftTeam] = useState(null);
-  const [rightTeam, setRightTeam] = useState(null);
+  const [leftTeam, setLeftTeam] = useState<Team | null>(null);
+  const [rightTeam, setRightTeam] = useState<Team | null>(null);
   const [leftScore, setLeftScore] = useState(0);
   const [rightScore, setRightScore] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -71,16 +77,16 @@ export default function HrInterface() {
   const stageOptions = ["League", "SemiFinal", "Final","QuaraterFinal"];
   const nav = useNavigate()
   const server = import.meta.env.VITE_SERVER;
-  const [radios, setRadios] = useState([]);
+  const [radios, setRadios] = useState<Club[]>([]);
   const [clubsLoading, setClubsLoading] = useState(true);
   const [clubsError, setClubsError] = useState("");
   const [paused,setPaused] = useState(false)
-  const auth = JSON.parse(localStorage.getItem("AuthState"))
+  const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
   const [already,setAlready] = useState(false)
 
   // refs for portal dropdown positioning
-  const leftBtnRef = useRef(null);
-  const rightBtnRef = useRef(null);
+  const leftBtnRef = useRef<HTMLButtonElement>(null);
+  const rightBtnRef = useRef<HTMLButtonElement>(null);
 
   // Debug: log state after it actually updates
   useEffect(() => {
@@ -125,7 +131,7 @@ export default function HrInterface() {
       } catch (err) {
         console.error("Failed to fetch clubs:", err);
         setRadios([]);
-        setClubsError(err?.response?.data?.error || err?.message || "Failed to load teams");
+        setClubsError(axiosResponse(err)?.data?.error || (err as Error)?.message || "Failed to load teams");
       } finally {
         setClubsLoading(false);
       }
@@ -134,7 +140,7 @@ export default function HrInterface() {
     init();
   }, []);
 
-  const handleTopicChange = (e) => {
+  const handleTopicChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const val = e.target.value;
     // enforce 200 char limit 
     if (val.length <= 200) setTopic(val);
@@ -154,12 +160,12 @@ export default function HrInterface() {
         const rightName = data.sendingData.rightTeam || selectedRight;
         setSelectedLeft(leftName);
         setSelectedRight(rightName);
-        let leftTeamStr = {
+        const leftTeamStr = {
           clubName: leftName,
           logoUrl: data.sendingData.leftLogo || null,
           speakers: data.sendingData.speakersLeft|| [],
         }
-        let rightTeamStr = {
+        const rightTeamStr = {
           clubName: rightName,
           logoUrl: data.sendingData.rightLogo || null,
           speakers: data.sendingData.speakersRight|| [],
@@ -215,7 +221,7 @@ export default function HrInterface() {
         }
       } catch(err){
         console.error("Resume error:", err);
-        alert("Failed to resume debate: " + (err.message || "unknown error"))
+        alert("Failed to resume debate: " + ((err as Error).message || "unknown error"))
       }
     } else {
       // currently running -> pause
@@ -232,13 +238,13 @@ export default function HrInterface() {
         }
       } catch (err) {
         console.error("Toggle pause error:", err);
-        alert("Failed to toggle pause: " + (err.message || "unknown error"));
+        alert("Failed to toggle pause: " + ((err as Error).message || "unknown error"));
       }
     }
   };
 
   // increment score handler
-  const incrementScore = async (side) => {
+  const incrementScore = async (side: Side) => {
     if (side !== "left" && side !== "right") return;
     setIncLoading((s) => ({ ...s, [side]: true }));
     // optimistic update
@@ -313,7 +319,7 @@ export default function HrInterface() {
       }
     } catch (err) {
       console.error("Final submit error:", err);
-      alert("Final submit failed: " + (err.message || "unknown"));
+      alert("Final submit failed: " + ((err as Error).message || "unknown"));
     } finally {
       setFinalSubmitting(false);
       setShowConfirm(false);
@@ -345,7 +351,7 @@ export default function HrInterface() {
         setTimeout(() => fetchTeams(), 500);
       }
     }).catch((err) => {
-      const errorMsg = err.response?.data?.error || err.message;
+      const errorMsg = axiosResponse(err)?.data?.error || (err as Error).message;
       // If debate already exists, just go to the control view
       
         alert("Error starting debate: " + errorMsg);
@@ -355,7 +361,7 @@ export default function HrInterface() {
 
   const startDisabled = !selectedLeft || !selectedRight || topic.trim().length === 0|| !stage;
 
-  const TeamCard = ({ team, side }) => {
+  const TeamCard = ({ team, side }: { team: Team | null; side: Side }) => {
     return (
       <div className="w-full lg:w-[40%] min-h-[320px] flex flex-col items-center rounded-lg p-6 shadow-md border border-white/10 ">
         <div className="flex flex-col items-center">
