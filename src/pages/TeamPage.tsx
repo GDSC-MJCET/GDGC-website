@@ -1,5 +1,5 @@
 import React from "react";
-import TeamTimeline from "../components/team/TeamTimeline";
+import GoverningBodyShowcase from "../components/team/GoverningBodyShowcase";
 import Nav from "../components/Nav";
 import Background from "../components/Background";
 import Footer from "../components/Footer";
@@ -7,9 +7,9 @@ import Footer from "../components/Footer";
 const TeamPage = () => {
   return (
     <Background>
-      <div className="min-screen overflow-hidden">
+      <div className="min-h-screen overflow-hidden">
         <Nav />
-        <TeamTimeline />
+        <GoverningBodyShowcase />
         <Footer />
       </div>
     </Background>
