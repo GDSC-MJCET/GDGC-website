@@ -1,16 +1,17 @@
 import { Link, useNavigate } from "react-router-dom"
-import EditorJS from "@editorjs/editorjs"
+import EditorJS, { type OutputData } from "@editorjs/editorjs"
 import axios from 'axios'
 import { Toaster, toast } from "react-hot-toast"
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useState, type ChangeEvent, type DragEvent, type KeyboardEvent } from "react"
 import { EditorContext } from "../pages/EditorPage"
 import { tools } from "./tools"
 import logo from "../assets/gdg-logo.png"
 import defaultBanner from "../assets/random.png"
 import Background from "./Background"
 import { FaHome } from "react-icons/fa";
+import type { AuthState } from "../context/AuthContext"
 
-const BlogEditor = ({ }) => {
+const BlogEditor = () => {
     const { blog, blog: { title, content, des, banner }, setBlog, textEditor, setTextEditor } = useContext(EditorContext)
     const [confirmed, setConfirmed] = useState(false)
     const [isDragging, setIsDragging] = useState(false)
@@ -28,7 +29,7 @@ const BlogEditor = ({ }) => {
         if (!textEditor.isReady) {
             setTextEditor(new EditorJS({
                 holder: "textEditor",
-                data: Array.isArray(content) ? content[0] : content,
+                data: (Array.isArray(content) ? content[0] : content) as OutputData,
                 placeholder: "Give your ideas a Virtual Existence...",
                 tools: tools,
                 defaultBlock: 'paragraph',
@@ -37,8 +38,8 @@ const BlogEditor = ({ }) => {
         }
     }, [])
 
-    const imageUploadHandler = async (e) => {
-        const file = e.target.files?.[0] || e.dataTransfer?.files?.[0]
+    const imageUploadHandler = async (e: ChangeEvent<HTMLInputElement> | DragEvent<HTMLDivElement>) => {
+        const file = (e.target as HTMLInputElement).files?.[0] || (e as DragEvent<HTMLDivElement>).dataTransfer?.files?.[0]
         if (!file) return
 
         const toastId = toast.loading("Uploading Banner...")
@@ -59,7 +60,7 @@ const BlogEditor = ({ }) => {
         }
     }
 
-    const handleTitleOnChange = (e) => {
+    const handleTitleOnChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
         const input = e.target
         input.style.height = "auto"
         input.style.height = `${input.scrollHeight}px`
@@ -71,7 +72,7 @@ const BlogEditor = ({ }) => {
         if (!title.trim()) return toast.error("Title cannot be empty")
 
         if (textEditor.isReady) {
-            textEditor.save().then(data => {
+            textEditor.save!().then(data => {
                 if (data.blocks.length) {
                     setBlog({ ...blog, content: data })
                     toast.success("Content saved! Click publish again to submit.")
@@ -80,9 +81,9 @@ const BlogEditor = ({ }) => {
                 }
             })
         }
-        let auth = JSON.parse(localStorage.getItem("AuthState"))
+        const auth: AuthState = JSON.parse(localStorage.getItem("AuthState") ?? "null")
                 const tl = toast.loading ("Submitting blog...")
-                const content = await textEditor.save()
+                const content = await textEditor.save!()
                 const blogtosent = {
                     ...blog,content
                 }
@@ -108,13 +109,13 @@ const BlogEditor = ({ }) => {
              
     }
 
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === 'Enter') {
             e.preventDefault()
         }
     }
 
-    const handleDragOver = (e) => {
+    const handleDragOver = (e: DragEvent) => {
         e.preventDefault()
         setIsDragging(true)
     }
@@ -123,7 +124,7 @@ const BlogEditor = ({ }) => {
         setIsDragging(false)
     }
 
-    const handleDrop = (e) => {
+    const handleDrop = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault()
         setIsDragging(false)
         imageUploadHandler(e)

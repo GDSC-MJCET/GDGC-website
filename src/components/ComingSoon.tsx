@@ -3,7 +3,7 @@ import Nav from "./Nav";
 import Background from "./Background";
 import Footer from "./Footer";
 import { motion } from "motion/react"
-const ComingSoon = () => {
+const ComingSoon = (_props: { pageName?: string }) => {
   return (
     <Background bgColor="#000000">
       <Nav />

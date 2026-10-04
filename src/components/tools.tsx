@@ -1,3 +1,4 @@
+import type { EditorConfig } from "@editorjs/editorjs"
 import Embed from "@editorjs/embed"
 import InlineCode from "@editorjs/inline-code"
 import Image from "@editorjs/image"
@@ -81,6 +82,7 @@ const uploadImageByFile = async (file: File | null | undefined) => {
         };
     }
 };
+// The @editorjs/* plugin typings disagree with EditorConfig['tools'] (e.g. Header's constructor args).
 export const tools = {
     embed : Embed,
     inlineCode:InlineCode,
@@ -110,4 +112,4 @@ export const tools = {
     class: Paragraph,
     inlineToolbar: true,
   }
-}
+} as unknown as EditorConfig["tools"]

@@ -22,12 +22,12 @@ import Dashboard from './pages/Dashboard.jsx'
 import QrChange from './pages/QrChange.jsx'
 import Portfolio from './pages/Socials.jsx'
 import SideBae from './components/SideBae'
-import BlogWrite from './pages/BlogWrite.jsx'
+import BlogWrite from './pages/BlogWrite'
 import { Card, CardHeader } from './components/ui/card'
 import BlogHome from './pages/BlogHomePage.jsx';
 import SpecificBlog from './pages/SpecificBlogPage.jsx';
-import BlogHelp from './pages/BlogHelp.jsx';
-import BlogLand from './pages/BlogLand.jsx';
+import BlogHelp from './pages/BlogHelp';
+import BlogLand from './pages/BlogLand';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from './context/AuthContext';
@@ -37,19 +37,19 @@ import Leaderboard from "./pages/LeaderBoard.jsx";
 import { NavLink, useNavigate } from 'react-router-dom';
 
 import ChangePassword from './pages/ChangePassword.jsx';
-import HomePage from './pages/HomePage.jsx';
-import TechDebatePage from './pages/TechDebatePage.jsx';
-import EventsPage from './pages/EventsPage.jsx';
-import TeamPage from './pages/TeamPage.jsx';
-import GalleryPage from './pages/GalleryPage.jsx';
+import HomePage from './pages/HomePage';
+import TechDebatePage from './pages/TechDebatePage';
+import EventsPage from './pages/EventsPage';
+import TeamPage from './pages/TeamPage';
+import GalleryPage from './pages/GalleryPage';
 import ContactUsPage from './pages/ContactUsPage.jsx';
-import NotFound from './pages/NotFound.jsx';
+import NotFound from './pages/NotFound';
 import PracticePage from './pages/PracticePage.jsx';
-import SuperAdminDashboard from './pages/SuperAdminDashboard.jsx';
+import SuperAdminDashboard from './pages/SuperAdminDashboard';
 import SuperAdminUsers from './pages/SuperAdminUsers.jsx';
-import BlogPosts from './pages/BlogPosts.jsx';
+import BlogPosts from './pages/BlogPosts';
 import AdminUsers from './pages/AdminUsers.jsx';
-import ScorePage from './pages/ScorePage.jsx';
+import ScorePage from './pages/ScorePage';
 import HrInterface from './pages/HrInterface.jsx';
 import HrControlInterface from './pages/HrControlInterface.jsx';
 import BuildWeekForm from './pages/BuildWeekForm.jsx';

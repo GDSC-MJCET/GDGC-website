@@ -1,6 +1,6 @@
 import React from "react";
 
-const Footer = () => {
+const Footer = (_props: { bgColor?: string }) => {
   return (
     <footer className="relative mt-20 overflow-hidden">
       

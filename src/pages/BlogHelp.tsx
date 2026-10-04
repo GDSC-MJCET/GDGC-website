@@ -55,7 +55,7 @@ export default function BlogHelp() {
   );
 }
 
-function Section({ question, answer }) {
+function Section({ question, answer }: { question: string; answer: string }) {
   return (
     <div className=" rounded-xl p-6">
       <h2 className="text-xl font-semibold mb-3 text-zinc-100">

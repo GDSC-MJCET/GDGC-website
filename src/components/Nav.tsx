@@ -17,7 +17,8 @@ import { Link, useLocation } from "react-router";
 // uncommenting the light palette there and restoring this import + usage.
 // import { ModeToggle } from "./mode-toggle";
 
-const Nav = () => {
+// bgColor is accepted for callers' sake but not used by the pill navbar.
+const Nav = (_props: { bgColor?: string }) => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
 
