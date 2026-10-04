@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom
 // import HomePage from './pages/HomePage';
 // import AboutPage from './pages/AboutPage';
 import { ThemeProvider } from './components/theme-provider';
+import IntroSplash from './components/intro/IntroSplash';
 import gdg from "./assets/silkbg.png"
 import LiquidEther from './components/LiquidEther';
 
@@ -316,6 +317,7 @@ function AppWithRouter() {
   return (
     <AuthContext.Provider value={{ authState, setAuthState }}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <IntroSplash />
         <Router>
           <Routes>
             {/* Public   pages */}
