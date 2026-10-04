@@ -1,8 +1,6 @@
 // Shared by scripts/build-gallery.mjs and the dev-only gallery editor (scripts/vite-gallery-editor.mjs).
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import sharp from "sharp";
-import convert from "heic-convert";
 
 export const ROOT = path.resolve(import.meta.dirname, "..");
 export const SRC = path.join(ROOT, "gallery-source");
@@ -48,8 +46,12 @@ export async function exists(p) {
 }
 
 // sharp's prebuilt binaries cannot decode iPhone HEIC (no HEVC decoder), so those go through heic-convert first.
+// (sharp and heic-convert are dev-only native/heavy packages, so they are imported lazily: vite.config.js pulls
+// this file in on every build, and a production build must not need them just to load the config.)
 async function openImage(input) {
+  const { default: sharp } = await import("sharp");
   if (typeof input === "string" && /\.hei[cf]$/i.test(input)) {
+    const { default: convert } = await import("heic-convert");
     const jpeg = await convert({ buffer: await fs.readFile(input), format: "JPEG", quality: 0.92 });
     return sharp(Buffer.from(jpeg), { failOn: "none" });
   }
