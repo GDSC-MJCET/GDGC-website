@@ -62,3 +62,24 @@ export type ExecutionState = {
   data?: ExecutionData | null;
   error?: string | null;
 };
+
+export type ProblemSummary = {
+  id?: string;
+  _id?: string;
+  slug?: string;
+  title: string;
+  difficulty?: string;
+  tags?: string[];
+  summary?: string;
+  solved?: boolean;
+};
+
+export type Exercise = {
+  _id: string;
+  title: string;
+  description?: string;
+  problemCount: number;
+  solvedCount: number;
+};
+
+export type ExerciseDetail = Exercise & { problems: ProblemSummary[] };

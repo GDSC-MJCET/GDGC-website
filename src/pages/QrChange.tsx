@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import type { AuthState } from "../context/AuthContext";
 
 const QrChange = () => {
-  const auth   = JSON.parse(localStorage.getItem("AuthState"));
+  const auth: AuthState = JSON.parse(localStorage.getItem("AuthState") ?? "null")
   const server = import.meta.env.VITE_SERVER?.replace(/\/$/, "");
   const nav    = useNavigate();
 
@@ -14,7 +15,7 @@ const QrChange = () => {
   const [currentUrl,    setCurrentUrl]    = useState("");
   const [showPopUp,     setShowPopUp]     = useState(false);
   const [checkingAuth,  setCheckingAuth]  = useState(true);
-  const [fetchError,    setFetchError]    = useState(null);
+  const [fetchError,    setFetchError]    = useState<string | null>(null);
 
   // Fetch current QR destination once on mount
   useEffect(() => {

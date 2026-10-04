@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,6 +12,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import SignUpPage from './SignUpPage';
+import type { AuthState } from "../context/AuthContext";
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -41,7 +42,7 @@ export default function LoginPage() {
       localStorage.setItem("AuthState", JSON.stringify(authState));
     }
   },[authState])
-  const auth = JSON.parse(localStorage.getItem("AuthState"))
+  const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
   useEffect(()=>{
     axios.get(import.meta.env.VITE_SERVER+"/api/v1/auth/simple-verify",{headers:{
     Authorization:`Bearer ${auth?.token}`
@@ -61,7 +62,7 @@ export default function LoginPage() {
     return <div className='bg-white dark:bg-black'></div>;
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);

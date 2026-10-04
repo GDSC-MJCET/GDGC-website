@@ -12,15 +12,15 @@ import LiquidEther from './components/LiquidEther';
 
 
 
-import SignUpPage from './pages/SignUpPage.jsx';
+import SignUpPage from './pages/SignUpPage';
 import Footer from './components/footer/footer';
 import HeadingSection from './components/heading-section'
-import LoginPage from './pages/LoginPage.jsx'
-import ForgotPassword from './pages/ForgotPassword.jsx';
-import InitialSetup from './pages/InitialSetup.jsx'
+import LoginPage from './pages/LoginPage'
+import ForgotPassword from './pages/ForgotPassword';
+import InitialSetup from './pages/InitialSetup'
 import Dashboard from './pages/Dashboard.jsx'
-import QrChange from './pages/QrChange.jsx'
-import Portfolio from './pages/Socials.jsx'
+import QrChange from './pages/QrChange'
+import Portfolio from './pages/Socials'
 import SideBae from './components/SideBae'
 import BlogWrite from './pages/BlogWrite'
 import { Card, CardHeader } from './components/ui/card'
@@ -31,12 +31,12 @@ import BlogLand from './pages/BlogLand';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from './context/AuthContext';
-import Socials from './pages/Socials.jsx';
+import Socials from './pages/Socials';
 
 import Leaderboard from "./pages/LeaderBoard.jsx";
 import { NavLink, useNavigate } from 'react-router-dom';
 
-import ChangePassword from './pages/ChangePassword.jsx';
+import ChangePassword from './pages/ChangePassword';
 import HomePage from './pages/HomePage';
 import TechDebatePage from './pages/TechDebatePage';
 import EventsPage from './pages/EventsPage';
@@ -57,17 +57,17 @@ import BuildWeekForm from './pages/BuildWeekForm.jsx';
 import { Navigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import EventDetails from './components/events/EventDetails';
-import Adsophos from './pages/Adsophos.jsx';
-import SuperAdminContacts from './pages/SuperAdminContacts.jsx';
+import Adsophos from './pages/Adsophos';
+import SuperAdminContacts from './pages/SuperAdminContacts';
 import { PhotoBooth } from './gdgc-modules/photobooth/PhotoBooth';
 import TheHeistAdsophos from './gdgc-modules/heist/TheHeistAdsophos';
-import Loop13 from './gdgc-modules/loop13/Loop_13.jsx';
+import Loop13 from './gdgc-modules/loop13/Loop_13';
 import MyBlogs from './pages/MyBlogs.jsx';
 import ImageManager from './pages/ImageManager.jsx';
-import PracticeListPage from './pages/PracticeListPage.jsx'
+import PracticeListPage from './pages/PracticeListPage'
 import ProblemAdminPage from './pages/ProblemAdminPage.jsx';
-import ExercisesPage from './pages/ExercisesPage.jsx';
-import ExerciseDetailPage from './pages/ExerciseDetailPage.jsx';
+import ExercisesPage from './pages/ExercisesPage';
+import ExerciseDetailPage from './pages/ExerciseDetailPage';
 import ContentManagementPage from './pages/ContentManagementPage.jsx';
 import SuperAdminBlogPanel from './pages/SuperAdminBlog.jsx';
 import TeamMemberManager from './pages/TeamMemberManager.jsx';

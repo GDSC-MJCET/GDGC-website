@@ -5,8 +5,10 @@ import axios from "axios"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { getMockProblemList } from "@/components/practice/mockProblems"
+import type { AuthState } from "../context/AuthContext";
+import type { ProblemSummary } from "@/types/practice";
 
-const difficultyClassNames = {
+const difficultyClassNames: Record<string, string> = {
   Easy: "border-emerald-400/30 bg-emerald-400/[0.12] text-emerald-200",
   easy: "border-emerald-400/30 bg-emerald-400/[0.12] text-emerald-200",
   Medium: "border-amber-400/30 bg-amber-400/[0.12] text-amber-200",
@@ -17,9 +19,9 @@ const difficultyClassNames = {
 
 const PracticeListPage = () => {
   const server = import.meta.env.VITE_SERVER?.replace(/\/$/, "")
-  const [problems, setProblems] = useState([])
+  const [problems, setProblems] = useState<ProblemSummary[]>([])
   const [isMock, setIsMock] = useState(false)
-  const [solvedIds, setSolvedIds] = useState(new Set())
+  const [solvedIds, setSolvedIds] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     if (!server) {
@@ -45,7 +47,7 @@ const PracticeListPage = () => {
       })
 
     // Fetch solved problems for logged-in users
-    const auth = JSON.parse(localStorage.getItem('AuthState'))
+    const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
     if (auth?.token) {
       axios
         .get(`${server}/api/submissions/solved`, {
@@ -60,7 +62,7 @@ const PracticeListPage = () => {
     }
   }, [server])
 
-  const getSlug = (problem) => problem.slug || problem._id || problem.id
+  const getSlug = (problem: ProblemSummary) => problem.slug || problem._id || problem.id
 
   return (
     <div className="min-h-full bg-background px-4 py-6 md:px-6 md:py-8">
@@ -119,7 +121,7 @@ const PracticeListPage = () => {
                             </Badge>
                           ))}
                           <Badge
-                            className={`rounded-full border px-3 py-1 text-xs font-medium ${difficultyClassNames[problem.difficulty] || "border-white/15 bg-white/10 text-white/75"}`}
+                            className={`rounded-full border px-3 py-1 text-xs font-medium ${difficultyClassNames[problem.difficulty ?? ""] || "border-white/15 bg-white/10 text-white/75"}`}
                             variant="outline"
                           >
                             {problem.difficulty}

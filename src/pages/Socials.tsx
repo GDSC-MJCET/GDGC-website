@@ -5,10 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Linkedin, Github, Twitter } from "lucide-react";
 import instaLogo from "../assets/instagram.png";
 import leetcodeLogo from "../assets/leetcode.png";
+import type { AuthState } from "../context/AuthContext";
 
 const Socials = () => {
 
-  const auth = JSON.parse(localStorage.getItem("AuthState"));
+  const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
 
   const [error, setError] = useState("");
 

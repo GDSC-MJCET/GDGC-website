@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import type { AuthState } from "../context/AuthContext";
 
 const SuperAdminContacts = () => {
   const server = import.meta.env.VITE_SERVER;
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState<{ _id: string; name: string; email: string; subject: string; message: string; createdAt: string }[]>([]);
   const [loading, setLoading] = useState(true);
   const nav = useNavigate();
-  const auth = JSON.parse(localStorage.getItem("AuthState"));
+  const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
   useEffect(() => {
     if (!auth?.token) {
       nav("/login");

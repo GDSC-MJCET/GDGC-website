@@ -1,13 +1,14 @@
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import {Eye,EyeOff} from "lucide-react";
+import type { AuthState } from "../context/AuthContext";
 
 const ChangePassword = () => {
-  const auth = JSON.parse(localStorage.getItem("AuthState"));
+  const auth: AuthState = JSON.parse(localStorage.getItem("AuthState") ?? "null")
   const [newPassword,setNewPassword] = useState("");
   const [confirmPassword,setConfirmPassword] = useState("");
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -47,7 +48,7 @@ const ChangePassword = () => {
 if(checkingAuth){
     return <div className="bg-black"></div>
 }
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if(newPassword.length<6||confirmPassword.length<6){
         toast.error("Password should be of minimum 6 characters")
@@ -86,7 +87,7 @@ if(checkingAuth){
             
              return
     }
-        toast.error("There was an error while saving your changes " + er);
+        toast.error("There was an error while saving your changes " + err);
         
         return
       }}).finally(()=>{
@@ -103,7 +104,7 @@ if(checkingAuth){
         <h1 className="text-xl font-semibold">Change Password</h1>
       {/* Current URL Display */}
       <form className="space-y-3" onSubmit={handleSubmit}>
-        <label className="text-sm font-medium text-muted-foreground" for="new-password">
+        <label className="text-sm font-medium text-muted-foreground" htmlFor="new-password">
           New Password
         </label>
         <div className="relative">
@@ -129,7 +130,7 @@ if(checkingAuth){
       </button>
 
         </div>
-        <label className="text-sm font-medium text-muted-foreground" for="confirm-password">
+        <label className="text-sm font-medium text-muted-foreground" htmlFor="confirm-password">
           Confirm Password
         </label>
         <div className="relative">

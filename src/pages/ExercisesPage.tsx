@@ -3,16 +3,18 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { ArrowRight, BookOpen, CheckCircle2, Lock } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
+import type { AuthState } from "../context/AuthContext";
+import type { Exercise } from "@/types/practice";
 
 const SERVER = import.meta.env.VITE_SERVER?.replace(/\/$/, '')
 
 function authHeaders() {
-  const auth = JSON.parse(localStorage.getItem('AuthState'))
+  const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
   return auth?.token ? { Authorization: `Bearer ${auth.token}` } : {}
 }
 
 export default function ExercisesPage() {
-  const [exercises, setExercises] = useState([])
+  const [exercises, setExercises] = useState<Exercise[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {

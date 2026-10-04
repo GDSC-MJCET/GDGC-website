@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const SignUpPage = ({ guest, setGuest }) => {
+const SignUpPage = ({ setGuest }: { guest?: boolean; setGuest?: (value: boolean) => void }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -13,7 +13,7 @@ const SignUpPage = ({ guest, setGuest }) => {
   const [name, setName] = useState("");
 
   // Send email + name to backend
-  const handleGuestSignup = async (e) => {
+  const handleGuestSignup = async (e: FormEvent) => {
     e.preventDefault();
     setError("");
     setSuccess("");
@@ -25,10 +25,10 @@ const SignUpPage = ({ guest, setGuest }) => {
         name,
       });
       setSuccess(response.data.message || "Verification email sent! Redirecting to login...");
-      setGuest(false);
+      setGuest?.(false);
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
-      setError(err.response?.data?.message || "Signup failed. Please try again.");
+      setError((axios.isAxiosError(err) ? err.response?.data?.message : undefined) || "Signup failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -94,7 +94,7 @@ const SignUpPage = ({ guest, setGuest }) => {
         <p className="text-center text-gray-700 dark:text-zinc-500 text-sm mt-6">
           Already have an account?{" "}
           <button
-            onClick={() => {setGuest(false)
+            onClick={() => {setGuest?.(false)
               navigate("/login")
             }}
             className="text-blue-400 hover:underline"

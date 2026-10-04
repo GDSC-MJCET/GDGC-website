@@ -3,6 +3,8 @@ import { createContext, type Dispatch, type SetStateAction } from "react"
 export interface AuthState {
   loggedIn: boolean;
   token: string;
+  guest?: boolean;
+  name?: string;
 }
 
 export interface AuthContextValue {

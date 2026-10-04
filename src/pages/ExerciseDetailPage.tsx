@@ -4,24 +4,26 @@ import axios from 'axios'
 import { ArrowLeft, ArrowRight, CheckCircle2, Circle } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import type { AuthState } from "../context/AuthContext";
+import type { ExerciseDetail } from "@/types/practice";
 
 const SERVER = import.meta.env.VITE_SERVER?.replace(/\/$/, '')
 
-const diffColor = {
+const diffColor: Record<string, string> = {
   easy: 'border-emerald-400/30 bg-emerald-400/10 text-emerald-300',
   medium: 'border-amber-400/30 bg-amber-400/10 text-amber-300',
   hard: 'border-rose-400/30 bg-rose-400/10 text-rose-300',
 }
 
 function authHeaders() {
-  const auth = JSON.parse(localStorage.getItem('AuthState'))
+  const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
   return auth?.token ? { Authorization: `Bearer ${auth.token}` } : {}
 }
 
 export default function ExerciseDetailPage() {
   const { exerciseId } = useParams()
   const nav = useNavigate()
-  const [exercise, setExercise] = useState(null)
+  const [exercise, setExercise] = useState<ExerciseDetail | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 

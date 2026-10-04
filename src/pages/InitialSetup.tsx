@@ -7,6 +7,7 @@ import { Card, CardDescription, CardFooter, CardHeader } from '@/components/ui/c
 import { useNavigate, useParams } from 'react-router-dom';
 import {Toaster,toast} from "react-hot-toast"
 import axios from 'axios';
+import type { AuthState } from "../context/AuthContext";
 
 
 export default function InitialSetup() {
@@ -22,7 +23,7 @@ export default function InitialSetup() {
   const [authMessage,setAuthMessage]=useState(false)
 
   // useEffect(()=>{
-  //   let identifier = parseInt(id)/parseInt(import.meta.env.VITE_DIVISOR)
+  //   let identifier = parseInt(id!)/parseInt(import.meta.env.VITE_DIVISOR)
   //   const server = import.meta.env.VITE_SERVER || "http://localhost:3009"
   //   axios.post(server+"/api/v1/auth/confirm",{
   //     identifier
@@ -32,9 +33,9 @@ export default function InitialSetup() {
   //     }
   //   }).catch((err)=>console.error(err))
   // },[])
-  const auth = JSON.parse(localStorage.getItem("AuthState"))
+  const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
   useEffect(()=>{
-    if(parseInt(id)%parseInt(import.meta.env.VITE_DIVISOR)!=0){
+    if(parseInt(id!)%parseInt(import.meta.env.VITE_DIVISOR)!=0){
     
     toast.error("Unauthorized Page")
     nav("/")
@@ -56,7 +57,7 @@ export default function InitialSetup() {
       }
         setCheckingAuth(false)
     })
-    let identifier = parseInt(id)/parseInt(import.meta.env.VITE_DIVISOR)
+    const identifier = parseInt(id!)/parseInt(import.meta.env.VITE_DIVISOR)
     const server = import.meta.env.VITE_SERVER || "http://localhost:3009"
     axios.post(server+"/api/v1/auth/confirm",{
       identifier
@@ -110,7 +111,7 @@ export default function InitialSetup() {
         nav("/login");
       }
     } catch (err) {
-      toast.error(err?.response?.data?.message || "Unable to complete signup");
+      toast.error((axios.isAxiosError(err) ? err.response?.data?.message : undefined) || "Unable to complete signup");
     } finally {
       setIsLoading(false);
     }

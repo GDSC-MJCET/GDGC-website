@@ -1,11 +1,12 @@
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardDescription, CardTitle,CardFooter, CardHeader } from '@/components/ui/card';
 import { useNavigate, useParams } from 'react-router-dom';
 import {Toaster,toast} from "react-hot-toast"
 import axios from 'axios';
+import type { AuthState } from "../context/AuthContext";
 
 
 export default function ForgotPassword() {
@@ -16,7 +17,7 @@ export default function ForgotPassword() {
   const { id} = useParams();
   const nav = useNavigate()
   const [checkingAuth, setCheckingAuth]=useState(true)
-  const auth = JSON.parse(localStorage.getItem("AuthState"))
+  const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
   useEffect(()=>{
     axios.get(import.meta.env.VITE_SERVER+"/api/v1/auth/simple-verify",{headers:{
     Authorization:`Bearer ${auth?.token}`
@@ -35,7 +36,7 @@ export default function ForgotPassword() {
   if(checkingAuth){
     return <div className='bg-black'></div>;
   }
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     setError('');
     setIsLoading(true);
@@ -63,7 +64,7 @@ export default function ForgotPassword() {
         if (err.response?.status === 401) {
           if(err.response?.data.message=="email not found") toast.error("Email not found")
              }
-        toast.error("There was an error while saving your changes " + er);
+        toast.error("There was an error while saving your changes " + err);
         
         return
       }).finally(()=>{
