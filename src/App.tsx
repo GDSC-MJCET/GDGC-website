@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom
 // import AboutPage from './pages/AboutPage';
 import { ThemeProvider } from './components/theme-provider';
 import IntroSplash from './components/intro/IntroSplash';
+import { shouldShowIntro } from './components/intro/introEvents';
 import gdg from "./assets/silkbg.png"
 import LiquidEther from './components/LiquidEther';
 
@@ -313,12 +314,15 @@ function AppWithRouter() {
     }
   }, [])
   const [authState, setAuthState] = useState(initialAuthContext);
+  // While the intro plays, the site behind it stays unmounted so its heavy animations
+  // (fluid sim, particle globe) don't compete with the intro for the frame budget.
+  const [appReady, setAppReady] = useState(() => !shouldShowIntro());
 
   return (
     <AuthContext.Provider value={{ authState, setAuthState }}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <IntroSplash />
-        <Router>
+        <IntroSplash onLeave={() => setAppReady(true)} />
+        {appReady && <Router>
           <Routes>
             {/* Public   pages */}
             <Route path="/" element={<HomePage />} />
@@ -334,7 +338,7 @@ function AppWithRouter() {
               <Route path="events" element={<EventsPage />} />
               <Route path="event-details" element={<EventDetails />} />
               <Route path="team-page" element={<TeamPage />} />
-              {/* <Route path="gallery" element={<GalleryPage />} /> */}
+              <Route path="gallery" element={<GalleryPage />} />
               <Route path='adsophos' element={<Adsophos />}>
             </Route>
             <Route path='photobooth' element={<PhotoBooth />} />
@@ -403,7 +407,7 @@ function AppWithRouter() {
             {/* Catch-all 404 route */}
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </Router>
+        </Router>}
       </ThemeProvider>
     </AuthContext.Provider>
   )

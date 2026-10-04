@@ -79,6 +79,8 @@ export default function ParticleGlobe({ className = "" }: { className?: string }
 
     let raf = 0;
     const t0 = performance.now();
+    // The intro splash reads this so its satellites orbit in step with this globe at hand-off.
+    wrap.dataset.t0 = String(t0);
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const draw = (now: number) => {
@@ -210,7 +212,7 @@ export default function ParticleGlobe({ className = "" }: { className?: string }
   }, []);
 
   return (
-    <div ref={wrapRef} className={`relative ${className}`}>
+    <div ref={wrapRef} data-hero-globe="" className={`relative ${className}`}>
       <canvas ref={canvasRef} className="block h-full w-full" aria-hidden="true" />
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
         <div className="space-y-1 text-center text-[10px] leading-[1.5] tracking-[0.22em] text-foreground/55 sm:text-[11px]">

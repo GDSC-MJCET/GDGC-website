@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type RefObject } from "react";
+import { MORPH_MS, MORPH_DELAY_MS, type ExitState } from "./introEvents";
 
 // Virtual canvas the composition is authored on; scaled to fit the viewport.
 const VW = 1600;
@@ -14,6 +15,35 @@ const GREEN = "#34A853";
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 const easeOut = (v: number) => 1 - Math.pow(1 - clamp01(v), 3);
 const ramp = (t: number, from: number, to: number) => easeOut((t - from) / (to - from));
+const easeInOut = (v: number) => {
+  const x = clamp01(v);
+  return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+};
+const lerp = (a: number, b: number, k: number) => a + (b - a) * k;
+
+const hexToRgb = (hex: string) => {
+  const n = parseInt(hex.slice(1), 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+};
+const mix = (a: string, b: string, k: number) => {
+  const [r1, g1, b1] = hexToRgb(a);
+  const [r2, g2, b2] = hexToRgb(b);
+  return [Math.round(lerp(r1, r2, k)), Math.round(lerp(g1, g2, k)), Math.round(lerp(b1, b2, k))];
+};
+const rgba = ([r, g, b]: number[], a: number) => `rgba(${r},${g},${b},${a})`;
+
+// The hero globe's satellites and rings (same values as ParticleGlobe) that the planets land on.
+const SAT = [
+  { color: "#4285F4", ring: 0, t: 0.2, r: 7, sp: 0.16, pulsePhase: 0 },
+  { color: "#EA4335", ring: 1, t: 1.6, r: 8, sp: 0.13, pulsePhase: 1.5 },
+  { color: "#FBBC05", ring: 0, t: 3.4, r: 7, sp: 0.16, pulsePhase: 3 },
+  { color: "#34A853", ring: 1, t: 4.9, r: 8, sp: 0.13, pulsePhase: 4.5 },
+];
+const HERO_RINGS = [
+  { tilt: 0.5, spinBase: 0.4, spinRate: 0.11, rad: 1.15 },
+  { tilt: -1.15, spinBase: 1.2, spinRate: -0.08, rad: 1.22 },
+];
+const CAMERA = 10;
 
 type Orbit = { cx: number; cy: number; rx: number; ry: number; rot: number };
 
@@ -29,12 +59,13 @@ const onOrbit = (o: Orbit, u: number) => {
   return { x: o.cx + x * c - y * s, y: o.cy + x * s + y * c };
 };
 
-type Planet = { label: string; color: string; orbit: Orbit; u: number; dir: number; r: number; at: number };
+// `sat` is the hero-globe satellite each planet lands on at the end of the intro.
+type Planet = { label: string; color: string; orbit: Orbit; u: number; dir: number; r: number; at: number; sat: number };
 const PLANETS: Planet[] = [
-  { label: "LEARN", color: BLUE, orbit: ORBIT_A, u: -2.32, dir: 1, r: 12, at: 1.0 },
-  { label: "BUILD", color: YELLOW, orbit: ORBIT_A, u: -0.74, dir: 1, r: 12, at: 1.15 },
-  { label: "CONNECT", color: RED, orbit: ORBIT_B, u: 2.9, dir: -1, r: 13, at: 1.3 },
-  { label: "GROW", color: GREEN, orbit: ORBIT_B, u: 0.73, dir: -1, r: 12, at: 1.45 },
+  { label: "LEARN", color: BLUE, orbit: ORBIT_A, u: -2.32, dir: 1, r: 12, at: 1.0, sat: 0 },
+  { label: "BUILD", color: YELLOW, orbit: ORBIT_A, u: -0.74, dir: 1, r: 12, at: 1.15, sat: 2 },
+  { label: "CONNECT", color: RED, orbit: ORBIT_B, u: 2.9, dir: -1, r: 13, at: 1.3, sat: 1 },
+  { label: "GROW", color: GREEN, orbit: ORBIT_B, u: 0.73, dir: -1, r: 12, at: 1.45, sat: 3 },
 ];
 
 type Node = { label: string; orbit: Orbit | null; u: number; x: number; y: number; at: number };
@@ -66,9 +97,9 @@ const makeStars = (): Star[] => {
   }));
 };
 
-const SPHERE_COUNT = 1900;
+const SPHERE_COUNT = 2600; // same count as the hero globe, so the dot density matches at hand-off
 const SPHERE_R = 330;
-type SpherePoint = { x: number; y: number; z: number; s: number; ph: number };
+type SpherePoint = { x: number; y: number; z: number; s: number; hs: number; ph: number };
 const makeSphere = (): SpherePoint[] => {
   const rand = makeRand(21);
   return Array.from({ length: SPHERE_COUNT }, (_, i) => {
@@ -80,6 +111,7 @@ const makeSphere = (): SpherePoint[] => {
       y: Math.cos(phi),
       z: Math.sin(phi) * Math.sin(theta),
       s: 0.6 + rand() * 0.9,
+      hs: 0.7 + rand() * 0.7, // dot radius on the hero globe
       ph: rand() * Math.PI * 2,
     };
   });
@@ -87,7 +119,18 @@ const makeSphere = (): SpherePoint[] => {
 
 type TextCtx = CanvasRenderingContext2D & { letterSpacing: string };
 
-export default function IntroScene({ reduced }: { reduced: boolean }) {
+// The intro is two stacked canvases. "back" (corner glows, stars, nodes) lives inside the shutter
+// panel and rides up with it; "front" (globe, orbits, planets) stays put above the shutter and
+// morphs into the hero globe.
+export default function IntroScene({
+  reduced,
+  exitRef,
+  layer,
+}: {
+  reduced: boolean;
+  exitRef: RefObject<ExitState | null>;
+  layer: "back" | "front";
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -103,38 +146,15 @@ export default function IntroScene({ reduced }: { reduced: boolean }) {
     let dpr = 1;
 
     const resize = () => {
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       W = window.innerWidth;
       H = window.innerHeight;
       canvas.width = Math.round(W * dpr);
       canvas.height = Math.round(H * dpr);
     };
     resize();
-    window.addEventListener("resize", resize);
 
-    // One corner's glow arcs, authored for the top-left and mirrored/scaled for the others.
-    const cornerArcs = (color: string, a: number, ox: number, oy: number, sx: number, k: number, s: number) => {
-      ctx.setTransform(dpr * s * sx * k, 0, 0, dpr * s * k, dpr * ox, dpr * oy);
-      const strokeArc = (path: () => void, width: number, alpha: number, blur: number) => {
-        const g = ctx.createLinearGradient(0, 0, 260, 380);
-        g.addColorStop(0, color + "00");
-        g.addColorStop(0.35, color);
-        g.addColorStop(1, color + "00");
-        ctx.save();
-        ctx.globalAlpha = a * alpha;
-        ctx.shadowColor = color;
-        ctx.shadowBlur = blur;
-        ctx.strokeStyle = g;
-        ctx.lineWidth = width;
-        ctx.beginPath();
-        path();
-        ctx.stroke();
-        ctx.restore();
-      };
-      strokeArc(() => { ctx.moveTo(0, 40); ctx.quadraticCurveTo(120, 160, 205, 345); }, 2.2, 0.95, 26);
-      strokeArc(() => { ctx.moveTo(0, 70); ctx.quadraticCurveTo(140, 180, 245, 330); }, 1, 0.5, 14);
-      strokeArc(() => { ctx.moveTo(0, 8); ctx.quadraticCurveTo(95, 100, 160, 270); }, 4, 0.25, 40);
-    };
+    const sceneScale = () => (W < 700 ? W / 1000 : Math.min(W / VW, H / VH));
 
     const label = (text: string, x: number, y: number, alpha: number, size = 11, color = "#ffffff") => {
       ctx.save();
@@ -147,19 +167,35 @@ export default function IntroScene({ reduced }: { reduced: boolean }) {
       ctx.restore();
     };
 
-    const start = performance.now();
-    let raf = 0;
+    // ── back layer: corner glows ─────────────────────────────────────────────
+    // One corner's glow arcs, authored for the top-left and mirrored/scaled for the others.
+    const cornerArcs = (
+      c: CanvasRenderingContext2D, color: string, a: number, ox: number, oy: number, sx: number, k: number, s: number
+    ) => {
+      c.setTransform(dpr * s * sx * k, 0, 0, dpr * s * k, dpr * ox, dpr * oy);
+      const strokeArc = (path: () => void, width: number, alpha: number, blur: number) => {
+        const g = c.createLinearGradient(0, 0, 260, 380);
+        g.addColorStop(0, color + "00");
+        g.addColorStop(0.35, color);
+        g.addColorStop(1, color + "00");
+        c.save();
+        c.globalAlpha = a * alpha;
+        c.shadowColor = color;
+        c.shadowBlur = blur;
+        c.strokeStyle = g;
+        c.lineWidth = width;
+        c.beginPath();
+        path();
+        c.stroke();
+        c.restore();
+      };
+      strokeArc(() => { c.moveTo(0, 40); c.quadraticCurveTo(120, 160, 205, 345); }, 2.2, 0.95, 26);
+      strokeArc(() => { c.moveTo(0, 70); c.quadraticCurveTo(140, 180, 245, 330); }, 1, 0.5, 14);
+      strokeArc(() => { c.moveTo(0, 8); c.quadraticCurveTo(95, 100, 160, 270); }, 4, 0.25, 40);
+    };
 
-    const frame = (now: number) => {
-      const t = reduced ? 8 : (now - start) / 1000;
-      const narrow = W < 700;
-      // Portrait phones: scale to width (the rings bleed off the sides) and drop the labels.
-      const s = narrow ? W / 1000 : Math.min(W / VW, H / VH);
-
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // ── corner nebulae (screen space) ─────────────────────────────────────
+    const drawGlows = (c: CanvasRenderingContext2D, t: number, s: number) => {
+      c.setTransform(1, 0, 0, 1, 0, 0);
       const glowR = Math.max(W, H) * 0.55;
       const corners: [number, number, string, number][] = [
         [0, 0, BLUE, 0.3],
@@ -168,52 +204,122 @@ export default function IntroScene({ reduced }: { reduced: boolean }) {
         [W, H, GREEN, 0.26],
       ];
       corners.forEach(([x, y, color, strength], i) => {
-        const g = ctx.createRadialGradient(x * dpr, y * dpr, 0, x * dpr, y * dpr, glowR * dpr);
+        const g = c.createRadialGradient(x * dpr, y * dpr, 0, x * dpr, y * dpr, glowR * dpr);
         g.addColorStop(0, color + "ff");
         g.addColorStop(0.35, color + "40");
         g.addColorStop(1, color + "00");
-        ctx.globalAlpha = strength * ramp(t, 0.1 + i * 0.1, 1.3 + i * 0.1) * 0.95;
-        ctx.fillStyle = g;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        c.globalAlpha = strength * ramp(t, 0.1 + i * 0.1, 1.3 + i * 0.1) * 0.95;
+        c.fillStyle = g;
+        c.fillRect(0, 0, canvas.width, canvas.height);
       });
-      ctx.globalAlpha = 1;
+      c.globalAlpha = 1;
+      cornerArcs(c, BLUE, ramp(t, 0.2, 1.5), 0, 0, 1, 1, s);
+      cornerArcs(c, YELLOW, ramp(t, 0.3, 1.6), W, 70 * s, -1, 0.9, s);
+      cornerArcs(c, RED, ramp(t, 0.1, 1.4), 0, H - 390 * s, 1, 1.25, s);
+      cornerArcs(c, GREEN, ramp(t, 0.4, 1.7), W, H - 300 * s, -1, 1.1, s);
+    };
 
-      // ── corner arc streaks ────────────────────────────────────────────────
-      cornerArcs(BLUE, ramp(t, 0.2, 1.5), 0, 0, 1, 1, s);
-      cornerArcs(YELLOW, ramp(t, 0.3, 1.6), W, 70 * s, -1, 0.9, s);
-      cornerArcs(RED, ramp(t, 0.1, 1.4), 0, H - 390 * s, 1, 1.25, s);
-      cornerArcs(GREEN, ramp(t, 0.4, 1.7), W, H - 300 * s, -1, 1.1, s);
+    // The glows stop changing once they have faded in, and they are the costliest thing to
+    // draw (blurred strokes), so they are baked once per size and blitted from then on.
+    let glowBake: HTMLCanvasElement | null = null;
+    const bakeGlows = () => {
+      if (layer !== "back") return;
+      const bake = document.createElement("canvas");
+      bake.width = canvas.width;
+      bake.height = canvas.height;
+      const bctx = bake.getContext("2d");
+      if (bctx) drawGlows(bctx, 99, sceneScale());
+      glowBake = bake;
+    };
+    bakeGlows();
+    const onResize = () => {
+      resize();
+      bakeGlows();
+    };
+    window.addEventListener("resize", onResize);
 
-      // ── composition space ─────────────────────────────────────────────────
-      ctx.setTransform(dpr * s, 0, 0, dpr * s, (dpr * (W - VW * s)) / 2, (dpr * (H - VH * s)) / 2);
+    const start = performance.now();
+    let raf = 0;
 
-      // stars + plus marks
-      stars.forEach((st) => {
-        const tw = 0.55 + 0.45 * Math.sin(t * 1.6 + st.phase);
-        ctx.globalAlpha = 0.5 * tw * ramp(t, 0.2, 1.2);
-        ctx.fillStyle = st.color;
-        ctx.beginPath();
-        ctx.arc(st.x, st.y, st.r, 0, Math.PI * 2);
-        ctx.fill();
-      });
-      ctx.globalAlpha = 0.3 * ramp(t, 0.6, 1.6);
-      ctx.strokeStyle = "#ffffff";
-      ctx.lineWidth = 1;
-      [[556, 82], [252, 170], [118, 382]].forEach(([x, y]) => {
-        ctx.beginPath();
-        ctx.moveTo(x - 5, y);
-        ctx.lineTo(x + 5, y);
-        ctx.moveTo(x, y - 5);
-        ctx.lineTo(x, y + 5);
-        ctx.stroke();
-      });
+    const frame = (now: number) => {
+      const t = reduced ? 8 : (now - start) / 1000;
+      const narrow = W < 700;
+      // Portrait phones: scale to width (the rings bleed off the sides) and drop the labels.
+      const s = sceneScale();
+      const ox0 = (W - VW * s) / 2;
+      const oy0 = (H - VH * s) / 2;
+      const ex = exitRef.current;
 
-      // ── globe ─────────────────────────────────────────────────────────────
+      // ══ back layer: nothing here moves on its own once the shutter starts rising ══
+      if (layer === "back") {
+        if (!ex) {
+          ctx.setTransform(1, 0, 0, 1, 0, 0);
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          if (t > 1.8 && glowBake) ctx.drawImage(glowBake, 0, 0);
+          else drawGlows(ctx, t, s);
+
+          ctx.setTransform(dpr * s, 0, 0, dpr * s, dpr * ox0, dpr * oy0);
+          stars.forEach((st) => {
+            const tw = 0.55 + 0.45 * Math.sin(t * 1.6 + st.phase);
+            ctx.globalAlpha = 0.5 * tw * ramp(t, 0.2, 1.2);
+            ctx.fillStyle = st.color;
+            ctx.beginPath();
+            ctx.arc(st.x, st.y, st.r, 0, Math.PI * 2);
+            ctx.fill();
+          });
+          ctx.globalAlpha = 0.3 * ramp(t, 0.6, 1.6);
+          ctx.strokeStyle = "#ffffff";
+          ctx.lineWidth = 1;
+          [[556, 82], [252, 170], [118, 382]].forEach(([x, y]) => {
+            ctx.beginPath();
+            ctx.moveTo(x - 5, y);
+            ctx.lineTo(x + 5, y);
+            ctx.moveTo(x, y - 5);
+            ctx.lineTo(x, y + 5);
+            ctx.stroke();
+          });
+
+          NODES.forEach((n, i) => {
+            const a = ramp(t, n.at, n.at + 0.6);
+            if (a <= 0) return;
+            const pos = n.orbit ? onOrbit(n.orbit, n.u + t * 0.02) : { x: n.x, y: n.y + Math.sin(t + i) * 3 };
+            ctx.globalAlpha = a;
+            ctx.fillStyle = "#ffffff";
+            ctx.beginPath();
+            ctx.arc(pos.x, pos.y, n.label ? 2.8 : 1.8, 0, Math.PI * 2);
+            ctx.fill();
+            if (n.label && !narrow) label(n.label, pos.x + 22, pos.y + 4, 0.6 * a, 10);
+          });
+          ctx.globalAlpha = 1;
+        }
+        raf = requestAnimationFrame(frame);
+        return;
+      }
+
+      // ══ front layer: globe, orbits, planets (and their hand-off to the hero globe) ══
+      // how far the hand-off has progressed (0 = intro globe, 1 = sitting on the hero globe)
+      const m = ex ? easeInOut((now - ex.t0 - MORPH_DELAY_MS) / (MORPH_MS - MORPH_DELAY_MS)) : 0;
+      const heroT = ex ? (now - ex.heroT0) / 1000 : 0;
+      // the hero globe, in virtual coordinates
+      const tcx = ex ? (ex.cx - ox0) / s : CX;
+      const tcy = ex ? (ex.cy - oy0) / s : CY;
+      const tR = ex ? (ex.size * 0.36) / s : SPHERE_R;
+      const gcx = lerp(CX, tcx, m);
+      const gcy = lerp(CY, tcy, m);
+      const gR = lerp(SPHERE_R, tR, m);
+
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.setTransform(dpr * s, 0, 0, dpr * s, dpr * ox0, dpr * oy0);
+
+      // ── globe: stays on screen and glides onto the hero globe ────────────
       const globeIn = ramp(t, 0.4, 2.0);
-      const ry = t * 0.12 + 0.8;
-      const cy = Math.cos(ry);
-      const sy = Math.sin(ry);
-      const tilt = -0.35;
+      const introYaw = t * 0.12 + 0.8;
+      const heroYaw = heroT * 0.07 + Math.sin(heroT * 0.037) * 0.03;
+      const yaw = lerp(introYaw, heroYaw, m);
+      const tilt = lerp(-0.35, 0, m);
+      const cy = Math.cos(yaw);
+      const sy = Math.sin(yaw);
       const ct = Math.cos(tilt);
       const st = Math.sin(tilt);
       ctx.fillStyle = "#ffffff";
@@ -226,12 +332,21 @@ export default function IntroScene({ reduced }: { reduced: boolean }) {
         const z1 = -p.x * sy + p.z * cy;
         const y2 = p.y * ct - z1 * st;
         const z2 = p.y * st + z1 * ct;
-        const scale = 10 / (10 - z2);
+        const scale = CAMERA / (CAMERA - z2);
         const shimmer = 0.75 + 0.25 * Math.sin(t * 1.4 + p.ph);
-        ctx.globalAlpha = (0.18 + 0.5 * ((z2 + 1) / 2)) * shimmer * own;
-        ctx.beginPath();
-        ctx.arc(CX + x1 * SPHERE_R * scale, CY + y2 * SPHERE_R * scale, p.s * 0.95 * scale, 0, Math.PI * 2);
-        ctx.fill();
+        const introAlpha = (0.18 + 0.5 * ((z2 + 1) / 2)) * shimmer;
+        const heroAlpha = 0.42 * (0.85 + 0.15 * Math.sin(heroT * 1.6 + p.ph));
+        const px = gcx + x1 * gR * scale;
+        const py = gcy + y2 * gR * scale;
+        ctx.globalAlpha = lerp(introAlpha, heroAlpha, m) * own;
+        if (m > 0) {
+          ctx.beginPath();
+          ctx.arc(px, py, lerp(p.s * 0.95 * scale, p.hs / s, m), 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          const d = p.s * 0.95 * scale * 2;
+          ctx.fillRect(px - d / 2, py - d / 2, d, d);
+        }
       }
 
       // ── orbit rings (drawn in) ────────────────────────────────────────────
@@ -254,62 +369,112 @@ export default function IntroScene({ reduced }: { reduced: boolean }) {
         ctx.stroke();
         ctx.restore();
       };
-      ring(ORBIT_A, ramp(t, 0.5, 2.0), 0.75, false);
-      ring(ORBIT_B, ramp(t, 0.7, 2.2), 0.55, false);
-      ring(ORBIT_C, ramp(t, 0.9, 2.0), 0.28 * ramp(t, 0.9, 2.0), true);
+      // The orbits shrink along with the globe and fade, handing over to the hero's own rings.
+      const orbitA = (1 - m) * (1 - m);
+      if (orbitA > 0.01) {
+        ctx.save();
+        const k = 1 - 0.55 * m;
+        ctx.translate(gcx, gcy);
+        ctx.scale(k, k);
+        ctx.translate(-CX, -CY);
+        ring(ORBIT_A, ramp(t, 0.5, 2.0), 0.75 * orbitA, false);
+        ring(ORBIT_B, ramp(t, 0.7, 2.2), 0.55 * orbitA, false);
+        ring(ORBIT_C, ramp(t, 0.9, 2.0), 0.28 * ramp(t, 0.9, 2.0) * orbitA, true);
+        ctx.restore();
+      }
 
-      // ── white nodes ───────────────────────────────────────────────────────
-      NODES.forEach((n, i) => {
-        const a = ramp(t, n.at, n.at + 0.6);
-        if (a <= 0) return;
-        const pos = n.orbit ? onOrbit(n.orbit, n.u + t * 0.02) : { x: n.x, y: n.y + Math.sin(t + i) * 3 };
-        ctx.globalAlpha = a;
-        ctx.shadowColor = "#ffffff";
-        ctx.shadowBlur = 10;
-        ctx.fillStyle = "#ffffff";
-        ctx.beginPath();
-        ctx.arc(pos.x, pos.y, n.label ? 2.8 : 1.8, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.shadowBlur = 0;
-        if (n.label && !narrow) label(n.label, pos.x + 22, pos.y + 4, 0.6 * a, 10);
-      });
+      // The hero globe's rings and satellites (same maths as ParticleGlobe, seen head-on).
+      const heroRing = (ri: number, ang: number) => {
+        const r = HERO_RINGS[ri];
+        const spin = r.spinBase + heroT * r.spinRate;
+        const x0 = Math.cos(ang) * r.rad;
+        const z0 = Math.sin(ang) * r.rad;
+        const y1 = -z0 * Math.sin(r.tilt);
+        const z1 = z0 * Math.cos(r.tilt);
+        const x2 = x0 * Math.cos(spin) + z1 * Math.sin(spin);
+        const z2 = -x0 * Math.sin(spin) + z1 * Math.cos(spin);
+        const scale = CAMERA / (CAMERA - z2);
+        return { x: gcx + x2 * gR * scale, y: gcy - y1 * gR * scale, scale };
+      };
+      const ringAlpha = 0.22 * clamp01((m - 0.2) / 0.6);
+      if (ringAlpha > 0) {
+        ctx.lineWidth = 1 / s;
+        ctx.strokeStyle = "#ffffff";
+        ctx.globalAlpha = ringAlpha;
+        for (let ri = 0; ri < HERO_RINGS.length; ri++) {
+          ctx.beginPath();
+          for (let a = 0; a <= 128; a++) {
+            const q = heroRing(ri, (a / 128) * Math.PI * 2);
+            if (a === 0) ctx.moveTo(q.x, q.y);
+            else ctx.lineTo(q.x, q.y);
+          }
+          ctx.closePath();
+          ctx.stroke();
+        }
+      }
 
-      // ── planets ───────────────────────────────────────────────────────────
+      // ── planets: ride their orbits, then fly to the hero globe's satellites ─
+      const mm = easeInOut(clamp01((m - 0.3) / 0.7));
       PLANETS.forEach((p) => {
         const a = ramp(t, p.at, p.at + 0.7);
         if (a <= 0) return;
-        const pos = onOrbit(p.orbit, p.u + p.dir * t * 0.035);
-        const pop = 0.4 + 0.6 * a;
-        const r = p.r * pop;
+        const base = onOrbit(p.orbit, p.u + p.dir * t * 0.035);
+        const k = 1 - 0.55 * m;
+        let x = gcx + (base.x - CX) * k;
+        let y = gcy + (base.y - CY) * k;
+        let r = p.r * (0.4 + 0.6 * a);
+        // no glow while riding the orbit; the hero globe's soft halo fades in as the planet lands on it
+        let haloR = r * 4;
+        let haloA = 0;
+        let color = hexToRgb(p.color);
+        let hi = [255, 255, 255];
+        if (mm > 0) {
+          const sat = SAT[p.sat];
+          const q = heroRing(sat.ring, sat.t + heroT * sat.sp);
+          const pulse = 1 + 0.15 * Math.sin(heroT * ((2 * Math.PI) / 3) + sat.pulsePhase);
+          const radPx = sat.r * q.scale * (ex ? ex.size / 520 : 1) * pulse;
+          x = lerp(x, q.x, mm);
+          y = lerp(y, q.y, mm);
+          r = lerp(r, Math.max(radPx, 3) / s, mm);
+          haloR = lerp(haloR, (radPx * 4) / s, mm);
+          haloA = lerp(haloA, 0.4, mm);
+          color = mix(p.color, sat.color, mm);
+          hi = mix("#ffffff", sat.color, mm);
+        }
 
-        const halo = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, r * 5);
-        halo.addColorStop(0, p.color + "bb");
-        halo.addColorStop(1, p.color + "00");
-        ctx.globalAlpha = a * (0.8 + 0.2 * Math.sin(t * 2 + p.u));
-        ctx.fillStyle = halo;
-        ctx.beginPath();
-        ctx.arc(pos.x, pos.y, r * 5, 0, Math.PI * 2);
-        ctx.fill();
+        if (haloA > 0.01) {
+          const halo = ctx.createRadialGradient(x, y, 0, x, y, haloR);
+          halo.addColorStop(0, rgba(color, haloA));
+          halo.addColorStop(1, rgba(color, 0));
+          ctx.globalAlpha = a;
+          ctx.fillStyle = halo;
+          ctx.beginPath();
+          ctx.arc(x, y, haloR, 0, Math.PI * 2);
+          ctx.fill();
+        }
 
-        const body = ctx.createRadialGradient(pos.x - r * 0.35, pos.y - r * 0.4, r * 0.1, pos.x, pos.y, r);
-        body.addColorStop(0, "#ffffff");
-        body.addColorStop(0.3, p.color);
-        body.addColorStop(1, "#00000099");
+        const body = ctx.createRadialGradient(x - r * 0.35, y - r * 0.4, r * 0.1, x, y, r);
+        body.addColorStop(0, rgba(hi, 1));
+        body.addColorStop(0.3, rgba(color, 1));
+        body.addColorStop(1, mm > 0 ? rgba(color, 1) : "#00000099");
         ctx.globalAlpha = a;
         ctx.fillStyle = body;
         ctx.beginPath();
-        ctx.arc(pos.x, pos.y, r, 0, Math.PI * 2);
+        ctx.arc(x, y, r, 0, Math.PI * 2);
         ctx.fill();
 
-        // leader line + label
-        ctx.globalAlpha = 0.35 * a;
-        ctx.strokeStyle = "#ffffff";
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(pos.x + r + 18, pos.y - 14);
-        ctx.lineTo(pos.x + r + 40, pos.y - 14);
-        ctx.stroke();
-        if (!narrow) label(p.label, pos.x + r + 50, pos.y - 13, 0.9 * a, 11);
+        // leader line + label (they fade out as the planet leaves its orbit)
+        const labelA = a * (1 - clamp01(m * 3));
+        if (labelA > 0.01) {
+          ctx.globalAlpha = 0.35 * labelA;
+          ctx.strokeStyle = "#ffffff";
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(x + r + 18, y - 14);
+          ctx.lineTo(x + r + 40, y - 14);
+          ctx.stroke();
+          if (!narrow) label(p.label, x + r + 50, y - 13, 0.9 * labelA, 11);
+        }
       });
 
       ctx.globalAlpha = 1;
@@ -319,9 +484,15 @@ export default function IntroScene({ reduced }: { reduced: boolean }) {
 
     return () => {
       cancelAnimationFrame(raf);
-      window.removeEventListener("resize", resize);
+      window.removeEventListener("resize", onResize);
     };
-  }, [reduced]);
+  }, [reduced, exitRef, layer]);
 
-  return <canvas ref={canvasRef} aria-hidden="true" className="absolute inset-0 h-full w-full" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      aria-hidden="true"
+      className={`absolute inset-0 h-full w-full${layer === "front" ? " pointer-events-none" : ""}`}
+    />
+  );
 }
