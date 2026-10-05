@@ -39,7 +39,7 @@ src/
 │   └── ...                     # Other assets
 ├── App.jsx                     # Main app component with routing
 ├── App.css                     # Global styles
-└── main.jsx                    # Entry point
+└── main.tsx                    # Entry point
 ```
 
 ## 🚀 Getting Started
