@@ -2,43 +2,92 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, Calendar, MapPin } from "lucide-react";
 
+type UpcomingEvent = {
+  title: string;
+  /** e.g. "11 Sept 2026 · 2 PM – 4 PM" */
+  when: string;
+  where: string;
+  /** registration / details link */
+  href: string;
+  /** image shown at the bottom of the card, from public/ */
+  image: string;
+};
+
+// Put the next event here and the card shows it. Leave it null and the card reads "No Upcoming Events".
+// (The last one was GDGC 101: "11 Sept 2026 · 2 PM – 4 PM", "Seminar Hall, Block 4",
+// https://forms.gle/hVxqpPMvK6VjU6yT7, image /gdg_101.jpeg.)
+const UPCOMING_EVENT = null as UpcomingEvent | null;
+
 const HighlightsRow = () => {
   return (
     <div className="px-6 md:px-20 py-16">
       <div className="max-w-6xl mx-auto grid grid-cols-1 gap-8 lg:grid-cols-[2fr_1.5fr_2fr] lg:gap-6 items-stretch">
-        <a
-          href="https://forms.gle/hVxqpPMvK6VjU6yT7"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rounded-2xl border border-border bg-card overflow-hidden flex flex-col transition-opacity duration-200 hover:opacity-90"
-        >
-          <div className="p-5 flex flex-col gap-3">
-            <div className="flex items-center justify-between">
-              <span className="flex items-center gap-2 text-[11px] tracking-[0.2em] uppercase text-muted-foreground">
-                <span className="h-1.5 w-1.5 rounded-full bg-google-red" />
-                Upcoming Event
-              </span>
-              <ArrowUpRight size={16} className="text-muted-foreground" />
+        {UPCOMING_EVENT ? (
+          <a
+            href={UPCOMING_EVENT.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-2xl border border-border bg-card overflow-hidden flex flex-col transition-opacity duration-200 hover:opacity-90"
+          >
+            <div className="p-5 flex flex-col gap-3">
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-2 text-[11px] tracking-[0.2em] uppercase text-muted-foreground">
+                  <span className="h-1.5 w-1.5 rounded-full bg-google-red" />
+                  Upcoming Event
+                </span>
+                <ArrowUpRight size={16} className="text-muted-foreground" />
+              </div>
+
+              <h3 className="text-xl font-bold text-foreground leading-snug">{UPCOMING_EVENT.title}</h3>
+
+              <div className="flex flex-col gap-1.5 text-sm text-muted-foreground">
+                <span className="flex items-center gap-2">
+                  <Calendar size={14} />
+                  {UPCOMING_EVENT.when}
+                </span>
+                <span className="flex items-center gap-2">
+                  <MapPin size={14} />
+                  {UPCOMING_EVENT.where}
+                </span>
+              </div>
             </div>
 
-            <h3 className="text-xl font-bold text-foreground leading-snug">GDGC 101</h3>
-
-            <div className="flex flex-col gap-1.5 text-sm text-muted-foreground">
-              <span className="flex items-center gap-2">
-                <Calendar size={14} />
-                11 Sept 2026 &middot; 2 PM &ndash; 4 PM
-              </span>
-              <span className="flex items-center gap-2">
-                <MapPin size={14} />
-                Seminar Hall, Block 4
-              </span>
+            <div className="mt-auto h-40">
+              <img src={UPCOMING_EVENT.image} alt={UPCOMING_EVENT.title} className="w-full h-full object-cover" />
             </div>
-          </div>
+          </a>
+        ) : (
+          <a
+            href="https://www.instagram.com/gdgc.mjcet/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-2xl border border-border bg-card overflow-hidden flex flex-col transition-opacity duration-200 hover:opacity-90"
+          >
+            <div className="p-5 flex flex-col gap-3">
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-2 text-[11px] tracking-[0.2em] uppercase text-muted-foreground">
+                  <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/50" />
+                  Upcoming Events
+                </span>
+                <ArrowUpRight size={16} className="text-muted-foreground" />
+              </div>
 
-          <div className="mt-auto h-40">
-            <img src="/gdg_101.jpeg" alt="GDGC 101" className="w-full h-full object-cover" />
-          </div>
-        </a>
+              <h3 className="text-xl font-bold text-foreground leading-snug">No Upcoming Events</h3>
+
+              <p className="text-sm text-muted-foreground">
+                Something is cooking. Follow @gdgc.mjcet to be the first to know.
+              </p>
+            </div>
+
+            {/* soft Google-colour glow where the event photo used to be */}
+            <div aria-hidden className="relative mt-auto h-40 overflow-hidden">
+              <span className="absolute -bottom-10 left-[8%] h-28 w-28 rounded-full bg-google-blue opacity-30 blur-3xl" />
+              <span className="absolute -bottom-12 left-[32%] h-28 w-28 rounded-full bg-google-red opacity-25 blur-3xl" />
+              <span className="absolute -bottom-10 left-[56%] h-28 w-28 rounded-full bg-google-yellow opacity-25 blur-3xl" />
+              <span className="absolute -bottom-12 left-[78%] h-28 w-28 rounded-full bg-google-green opacity-30 blur-3xl" />
+            </div>
+          </a>
+        )}
 
         <div className="flex flex-col justify-center gap-4 pl-0 lg:pl-6 lg:border-l lg:border-border">
           <span className="text-[11px] tracking-[0.22em] uppercase text-muted-foreground">
