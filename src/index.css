@@ -390,3 +390,11 @@ body {
   height: 45px !important;
  color: white !important; /* white background for visibility */
 }
+
+/* The intro splash flies its own globe onto the hero globe, then hands over to it. */
+[data-hero-globe] {
+  transition: opacity 0.6s ease-in-out;
+}
+html.intro-morph [data-hero-globe] {
+  opacity: 0;
+}

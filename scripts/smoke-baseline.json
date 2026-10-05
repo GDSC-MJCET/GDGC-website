@@ -1,0 +1,143 @@
+{
+  "/": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ"
+  ],
+  "/initialsetup/test": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ",
+    "console: Failed to load resource: net::ERR_CONNECTION_REFUSED"
+  ],
+  "/contact": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ"
+  ],
+  "/login": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ"
+  ],
+  "/forgotpassword": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ"
+  ],
+  "/signup-guest": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ"
+  ],
+  "/techfaceoff": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ"
+  ],
+  "/buildweek-form": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ"
+  ],
+  "/score": [
+    "console: Error fetching debate history: TypeError: Cannot read properties of undefined (reading 'map') at http://localhost:N/assets/*:688:N",
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ"
+  ],
+  "/events": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ"
+  ],
+  "/event-details": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ"
+  ],
+  "/team-page": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ"
+  ],
+  "/gallery": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ"
+  ],
+  "/adsophos": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ"
+  ],
+  "/photobooth": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ"
+  ],
+  "/heist": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ"
+  ],
+  "/loop13": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ"
+  ],
+  "/practice/test": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ"
+  ],
+  "/this-route-does-not-exist": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ"
+  ],
+  "/team/dashboard": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ",
+    "pageerror: Cannot read properties of undefined (reading 'email')"
+  ],
+  "/team/practice": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ",
+    "pageerror: Cannot read properties of undefined (reading 'email')"
+  ],
+  "/team/practice/test": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ",
+    "pageerror: Cannot read properties of undefined (reading 'email')"
+  ],
+  "/team/exercises": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ",
+    "pageerror: Cannot read properties of undefined (reading 'email')"
+  ],
+  "/team/exercises/test": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ",
+    "pageerror: Cannot read properties of undefined (reading 'email')"
+  ],
+  "/team/leaderboard": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ",
+    "empty #root",
+    "pageerror: Cannot read properties of undefined (reading 'email')",
+    "pageerror: Cannot read properties of undefined (reading 'map')"
+  ],
+  "/team/customization/qrchange": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ",
+    "pageerror: Cannot read properties of undefined (reading 'email')"
+  ],
+  "/team/customization/socials": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ",
+    "pageerror: Cannot read properties of undefined (reading 'email')"
+  ],
+  "/team/customization/changepassword": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ",
+    "pageerror: Cannot read properties of undefined (reading 'email')"
+  ],
+  "/team/admin/users": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ",
+    "pageerror: Cannot read properties of undefined (reading 'email')"
+  ],
+  "/team/admin/hr-interface": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ",
+    "pageerror: Cannot read properties of undefined (reading 'email')"
+  ],
+  "/team/admin/images": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ",
+    "console: Failed to load resource: net::ERR_NAME_NOT_RESOLVED",
+    "console: Fetch error: StorageUnknownError: Failed to fetch at http://localhost:N/assets/*:N:N at Generator.next (<anonymous>) at s (http://localhost:N/assets/*:N:N)",
+    "pageerror: Cannot read properties of undefined (reading 'email')"
+  ],
+  "/team/admin/team": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ",
+    "pageerror: Cannot read properties of undefined (reading 'email')"
+  ],
+  "/team/admin/problems": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ",
+    "pageerror: Cannot read properties of undefined (reading 'email')"
+  ],
+  "/team/admin/content": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ",
+    "pageerror: Cannot read properties of undefined (reading 'email')"
+  ],
+  "/team/superadmin": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ",
+    "pageerror: Cannot read properties of undefined (reading 'email')"
+  ],
+  "/team/superadmin/users": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ",
+    "pageerror: Cannot read properties of undefined (reading 'email')"
+  ],
+  "/team/superadmin/contacts": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ",
+    "pageerror: Cannot read properties of undefined (reading 'email')"
+  ],
+  "/team/superadmin/images": [
+    "console: Failed to find a valid digest in the 'integrity' attribute for resource 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' with computed SHA-512 integrity 'iecdLmaskl7CVkqkXNQ",
+    "console: Failed to load resource: net::ERR_NAME_NOT_RESOLVED",
+    "console: Fetch error: StorageUnknownError: Failed to fetch at http://localhost:N/assets/*:N:N at Generator.next (<anonymous>) at s (http://localhost:N/assets/*:N:N)",
+    "pageerror: Cannot read properties of undefined (reading 'email')"
+  ]
+}

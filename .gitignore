@@ -26,3 +26,7 @@ dist-ssr
 *.sw?
 .env
 .gstack/
+
+# raw event photos for the gallery (the processed copies in public/gallery are committed)
+gallery-source/
+zips/

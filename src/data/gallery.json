@@ -1,0 +1,420 @@
+{
+  "events": [
+    {
+      "slug": "orientation-day-26-27",
+      "title": "Orientation Day 26-27",
+      "date": null,
+      "color": "#4285F4",
+      "photos": [
+        {
+          "id": "orientation-day-26-27/2",
+          "w": 900,
+          "h": 1600,
+          "t": "/gallery/orientation-day-26-27/t/2.webp",
+          "f": "/gallery/orientation-day-26-27/f/2.webp",
+          "src": "Orientation Day 26-27/Afzal/19d47f14-cf9c-4bb2-a950-c1ad12f95a79.jpg"
+        },
+        {
+          "id": "orientation-day-26-27/3",
+          "w": 900,
+          "h": 1600,
+          "t": "/gallery/orientation-day-26-27/t/3.webp",
+          "f": "/gallery/orientation-day-26-27/f/3.webp",
+          "src": "Orientation Day 26-27/Basith/19532a45-092b-4523-86af-ff14a8a7fc72.JPG"
+        },
+        {
+          "id": "orientation-day-26-27/4",
+          "w": 900,
+          "h": 1600,
+          "t": "/gallery/orientation-day-26-27/t/4.webp",
+          "f": "/gallery/orientation-day-26-27/f/4.webp",
+          "src": "Orientation Day 26-27/Faizan/B8122575-75FF-4EC6-A71C-71EA90AA3B32.jpg"
+        },
+        {
+          "id": "orientation-day-26-27/5",
+          "w": 1600,
+          "h": 1200,
+          "t": "/gallery/orientation-day-26-27/t/5.webp",
+          "f": "/gallery/orientation-day-26-27/f/5.webp",
+          "src": "Orientation Day 26-27/Faizan/IMG_1585.JPG"
+        },
+        {
+          "id": "orientation-day-26-27/6",
+          "w": 1600,
+          "h": 1200,
+          "t": "/gallery/orientation-day-26-27/t/6.webp",
+          "f": "/gallery/orientation-day-26-27/f/6.webp",
+          "src": "Orientation Day 26-27/Faizan/IMG_1586.JPG"
+        },
+        {
+          "id": "orientation-day-26-27/7",
+          "w": 1600,
+          "h": 1200,
+          "t": "/gallery/orientation-day-26-27/t/7.webp",
+          "f": "/gallery/orientation-day-26-27/f/7.webp",
+          "src": "Orientation Day 26-27/Faizan/IMG_1588.JPG"
+        },
+        {
+          "id": "orientation-day-26-27/8",
+          "w": 1600,
+          "h": 1200,
+          "t": "/gallery/orientation-day-26-27/t/8.webp",
+          "f": "/gallery/orientation-day-26-27/f/8.webp",
+          "src": "Orientation Day 26-27/Faizan/IMG_1591.JPG"
+        },
+        {
+          "id": "orientation-day-26-27/9",
+          "w": 1600,
+          "h": 1200,
+          "t": "/gallery/orientation-day-26-27/t/9.webp",
+          "f": "/gallery/orientation-day-26-27/f/9.webp",
+          "src": "Orientation Day 26-27/Faizan/IMG_1592.JPG"
+        },
+        {
+          "id": "orientation-day-26-27/10",
+          "w": 1600,
+          "h": 1200,
+          "t": "/gallery/orientation-day-26-27/t/10.webp",
+          "f": "/gallery/orientation-day-26-27/f/10.webp",
+          "src": "Orientation Day 26-27/Faizan/IMG_1593.JPG"
+        },
+        {
+          "id": "orientation-day-26-27/11",
+          "w": 1600,
+          "h": 1200,
+          "t": "/gallery/orientation-day-26-27/t/11.webp",
+          "f": "/gallery/orientation-day-26-27/f/11.webp",
+          "src": "Orientation Day 26-27/Faizan/IMG_1594.JPG"
+        },
+        {
+          "id": "orientation-day-26-27/12",
+          "w": 1200,
+          "h": 1600,
+          "t": "/gallery/orientation-day-26-27/t/12.webp",
+          "f": "/gallery/orientation-day-26-27/f/12.webp",
+          "src": "Orientation Day 26-27/Faizan/IMG_1600.JPG"
+        },
+        {
+          "id": "orientation-day-26-27/13",
+          "w": 900,
+          "h": 1600,
+          "t": "/gallery/orientation-day-26-27/t/13.webp",
+          "f": "/gallery/orientation-day-26-27/f/13.webp",
+          "src": "Orientation Day 26-27/Basith/IMG_2315.JPG"
+        },
+        {
+          "id": "orientation-day-26-27/14",
+          "w": 1600,
+          "h": 1200,
+          "t": "/gallery/orientation-day-26-27/t/14.webp",
+          "f": "/gallery/orientation-day-26-27/f/14.webp",
+          "src": "Orientation Day 26-27/Afzal/IMG_4093.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/15",
+          "w": 1600,
+          "h": 1200,
+          "t": "/gallery/orientation-day-26-27/t/15.webp",
+          "f": "/gallery/orientation-day-26-27/f/15.webp",
+          "src": "Orientation Day 26-27/GB's/IMG_5368.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/16",
+          "w": 1600,
+          "h": 1200,
+          "t": "/gallery/orientation-day-26-27/t/16.webp",
+          "f": "/gallery/orientation-day-26-27/f/16.webp",
+          "src": "Orientation Day 26-27/GB's/IMG_5370.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/17",
+          "w": 1600,
+          "h": 1200,
+          "t": "/gallery/orientation-day-26-27/t/17.webp",
+          "f": "/gallery/orientation-day-26-27/f/17.webp",
+          "src": "Orientation Day 26-27/GB's/IMG_5371.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/18",
+          "w": 1600,
+          "h": 1200,
+          "t": "/gallery/orientation-day-26-27/t/18.webp",
+          "f": "/gallery/orientation-day-26-27/f/18.webp",
+          "src": "Orientation Day 26-27/GB's/IMG_5372.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/19",
+          "w": 900,
+          "h": 1600,
+          "t": "/gallery/orientation-day-26-27/t/19.webp",
+          "f": "/gallery/orientation-day-26-27/f/19.webp",
+          "src": "Orientation Day 26-27/GB's/IMG_5384.JPG"
+        },
+        {
+          "id": "orientation-day-26-27/20",
+          "w": 1600,
+          "h": 1200,
+          "t": "/gallery/orientation-day-26-27/t/20.webp",
+          "f": "/gallery/orientation-day-26-27/f/20.webp",
+          "src": "Orientation Day 26-27/GB's/IMG_5385.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/21",
+          "w": 1600,
+          "h": 1200,
+          "t": "/gallery/orientation-day-26-27/t/21.webp",
+          "f": "/gallery/orientation-day-26-27/f/21.webp",
+          "src": "Orientation Day 26-27/GB's/IMG_5386.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/22",
+          "w": 1600,
+          "h": 1200,
+          "t": "/gallery/orientation-day-26-27/t/22.webp",
+          "f": "/gallery/orientation-day-26-27/f/22.webp",
+          "src": "Orientation Day 26-27/GB's/IMG_5389.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/23",
+          "w": 1600,
+          "h": 1200,
+          "t": "/gallery/orientation-day-26-27/t/23.webp",
+          "f": "/gallery/orientation-day-26-27/f/23.webp",
+          "src": "Orientation Day 26-27/GB's/IMG_5390.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/24",
+          "w": 1600,
+          "h": 1200,
+          "t": "/gallery/orientation-day-26-27/t/24.webp",
+          "f": "/gallery/orientation-day-26-27/f/24.webp",
+          "src": "Orientation Day 26-27/GB's/IMG_5392.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/25",
+          "w": 1600,
+          "h": 1200,
+          "t": "/gallery/orientation-day-26-27/t/25.webp",
+          "f": "/gallery/orientation-day-26-27/f/25.webp",
+          "src": "Orientation Day 26-27/GB's/IMG_5395.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/26",
+          "w": 1600,
+          "h": 900,
+          "t": "/gallery/orientation-day-26-27/t/26.webp",
+          "f": "/gallery/orientation-day-26-27/f/26.webp",
+          "src": "Orientation Day 26-27/GB's/IMG_5402.JPG"
+        },
+        {
+          "id": "orientation-day-26-27/27",
+          "w": 1600,
+          "h": 900,
+          "t": "/gallery/orientation-day-26-27/t/27.webp",
+          "f": "/gallery/orientation-day-26-27/f/27.webp",
+          "src": "Orientation Day 26-27/GB's/IMG_5403.JPG"
+        },
+        {
+          "id": "orientation-day-26-27/28",
+          "w": 1600,
+          "h": 900,
+          "t": "/gallery/orientation-day-26-27/t/28.webp",
+          "f": "/gallery/orientation-day-26-27/f/28.webp",
+          "src": "Orientation Day 26-27/GB's/IMG_5404.JPG"
+        },
+        {
+          "id": "orientation-day-26-27/29",
+          "w": 1200,
+          "h": 1600,
+          "t": "/gallery/orientation-day-26-27/t/29.webp",
+          "f": "/gallery/orientation-day-26-27/f/29.webp",
+          "src": "Orientation Day 26-27/Xenia/IMG_9812.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/30",
+          "w": 1200,
+          "h": 1600,
+          "t": "/gallery/orientation-day-26-27/t/30.webp",
+          "f": "/gallery/orientation-day-26-27/f/30.webp",
+          "src": "Orientation Day 26-27/Xenia/IMG_9813.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/31",
+          "w": 1200,
+          "h": 1600,
+          "t": "/gallery/orientation-day-26-27/t/31.webp",
+          "f": "/gallery/orientation-day-26-27/f/31.webp",
+          "src": "Orientation Day 26-27/Xenia/IMG_9814.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/32",
+          "w": 1200,
+          "h": 1600,
+          "t": "/gallery/orientation-day-26-27/t/32.webp",
+          "f": "/gallery/orientation-day-26-27/f/32.webp",
+          "src": "Orientation Day 26-27/Xenia/IMG_9815.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/33",
+          "w": 1200,
+          "h": 1600,
+          "t": "/gallery/orientation-day-26-27/t/33.webp",
+          "f": "/gallery/orientation-day-26-27/f/33.webp",
+          "src": "Orientation Day 26-27/Xenia/IMG_9816.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/34",
+          "w": 1200,
+          "h": 1600,
+          "t": "/gallery/orientation-day-26-27/t/34.webp",
+          "f": "/gallery/orientation-day-26-27/f/34.webp",
+          "src": "Orientation Day 26-27/Xenia/IMG_9817.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/35",
+          "w": 1200,
+          "h": 1600,
+          "t": "/gallery/orientation-day-26-27/t/35.webp",
+          "f": "/gallery/orientation-day-26-27/f/35.webp",
+          "src": "Orientation Day 26-27/Xenia/IMG_9818.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/36",
+          "w": 1200,
+          "h": 1600,
+          "t": "/gallery/orientation-day-26-27/t/36.webp",
+          "f": "/gallery/orientation-day-26-27/f/36.webp",
+          "src": "Orientation Day 26-27/Xenia/IMG_9819.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/38",
+          "w": 1200,
+          "h": 1600,
+          "t": "/gallery/orientation-day-26-27/t/38.webp",
+          "f": "/gallery/orientation-day-26-27/f/38.webp",
+          "src": "Orientation Day 26-27/Xenia/IMG_9821.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/44",
+          "w": 1200,
+          "h": 1600,
+          "t": "/gallery/orientation-day-26-27/t/44.webp",
+          "f": "/gallery/orientation-day-26-27/f/44.webp",
+          "src": "Orientation Day 26-27/Xenia/IMG_9829.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/45",
+          "w": 1200,
+          "h": 1600,
+          "t": "/gallery/orientation-day-26-27/t/45.webp",
+          "f": "/gallery/orientation-day-26-27/f/45.webp",
+          "src": "Orientation Day 26-27/Xenia/IMG_9830.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/46",
+          "w": 1200,
+          "h": 1600,
+          "t": "/gallery/orientation-day-26-27/t/46.webp",
+          "f": "/gallery/orientation-day-26-27/f/46.webp",
+          "src": "Orientation Day 26-27/Xenia/IMG_9830(1).HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/47",
+          "w": 1200,
+          "h": 1600,
+          "t": "/gallery/orientation-day-26-27/t/47.webp",
+          "f": "/gallery/orientation-day-26-27/f/47.webp",
+          "src": "Orientation Day 26-27/Xenia/IMG_9831.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/48",
+          "w": 1200,
+          "h": 1600,
+          "t": "/gallery/orientation-day-26-27/t/48.webp",
+          "f": "/gallery/orientation-day-26-27/f/48.webp",
+          "src": "Orientation Day 26-27/Xenia/IMG_9832.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/49",
+          "w": 1200,
+          "h": 1600,
+          "t": "/gallery/orientation-day-26-27/t/49.webp",
+          "f": "/gallery/orientation-day-26-27/f/49.webp",
+          "src": "Orientation Day 26-27/Xenia/IMG_9833.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/50",
+          "w": 1200,
+          "h": 1600,
+          "t": "/gallery/orientation-day-26-27/t/50.webp",
+          "f": "/gallery/orientation-day-26-27/f/50.webp",
+          "src": "Orientation Day 26-27/Xenia/IMG_9834.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/51",
+          "w": 1200,
+          "h": 1600,
+          "t": "/gallery/orientation-day-26-27/t/51.webp",
+          "f": "/gallery/orientation-day-26-27/f/51.webp",
+          "src": "Orientation Day 26-27/Xenia/IMG_9835.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/52",
+          "w": 1200,
+          "h": 1600,
+          "t": "/gallery/orientation-day-26-27/t/52.webp",
+          "f": "/gallery/orientation-day-26-27/f/52.webp",
+          "src": "Orientation Day 26-27/Xenia/IMG_9840.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/53",
+          "w": 1600,
+          "h": 1200,
+          "t": "/gallery/orientation-day-26-27/t/53.webp",
+          "f": "/gallery/orientation-day-26-27/f/53.webp",
+          "src": "Orientation Day 26-27/Xenia/IMG_9841.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/54",
+          "w": 1600,
+          "h": 1200,
+          "t": "/gallery/orientation-day-26-27/t/54.webp",
+          "f": "/gallery/orientation-day-26-27/f/54.webp",
+          "src": "Orientation Day 26-27/Xenia/IMG_9842.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/55",
+          "w": 1600,
+          "h": 1200,
+          "t": "/gallery/orientation-day-26-27/t/55.webp",
+          "f": "/gallery/orientation-day-26-27/f/55.webp",
+          "src": "Orientation Day 26-27/Xenia/IMG_9843.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/56",
+          "w": 1600,
+          "h": 1200,
+          "t": "/gallery/orientation-day-26-27/t/56.webp",
+          "f": "/gallery/orientation-day-26-27/f/56.webp",
+          "src": "Orientation Day 26-27/Xenia/IMG_9843(1).HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/57",
+          "w": 1600,
+          "h": 1200,
+          "t": "/gallery/orientation-day-26-27/t/57.webp",
+          "f": "/gallery/orientation-day-26-27/f/57.webp",
+          "src": "Orientation Day 26-27/Xenia/IMG_9844.HEIC"
+        },
+        {
+          "id": "orientation-day-26-27/59",
+          "w": 900,
+          "h": 1600,
+          "t": "/gallery/orientation-day-26-27/t/59.webp",
+          "f": "/gallery/orientation-day-26-27/f/59.webp",
+          "src": "Orientation Day 26-27/Ayesha/IMG-20261003-WA0015.jpeg"
+        }
+      ]
+    }
+  ]
+}
