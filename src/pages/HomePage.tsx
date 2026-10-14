@@ -3,9 +3,11 @@ import Nav from "../components/Nav";
 import Background from "../components/Background";
 import Hero from "../components/Hero";
 import HighlightsRow from "../components/HighlightsRow";
-import Events from "../components/Events";
-import About from "../components/About";
-import Idk from "../components/Idk";
+import PastEventsShowcase from "../components/home/PastEventsShowcase";
+import AmbientGlow from "../components/home/AmbientGlow";
+import CommunityInMotion from "../components/home/CommunityInMotion";
+import ThreePillars from "../components/home/ThreePillars";
+import CommunityStrip from "../components/home/CommunityStrip";
 import Portfolio from "../components/Portfolio";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
@@ -29,11 +31,18 @@ const HomePage = () => {
     <Background>
       {/* {showPopup && <WinnerPopup onClose={handleClosePopup} />} */}
       <Nav />
-      <Hero />
-      <HighlightsRow />
-      <Events />
-      <About />
-      <Idk />
+      {/* the hero and the sections below it share one soft colour-wash background */}
+      <div className="relative">
+        <AmbientGlow />
+        <div className="relative">
+          <Hero />
+          <HighlightsRow />
+          <PastEventsShowcase />
+          <CommunityInMotion />
+          <ThreePillars />
+          <CommunityStrip />
+        </div>
+      </div>
       {/* <Portfolio /> */}
       <Footer />
     </Background>

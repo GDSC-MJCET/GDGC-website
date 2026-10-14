@@ -3,7 +3,7 @@ export const REPLAY_EVENT = "gdgc:replay-intro";
 
 export const replayIntro = () => {
   try {
-    sessionStorage.removeItem(SEEN_KEY);
+    localStorage.removeItem(SEEN_KEY);
   } catch {
     // storage unavailable: the replay still works for this page view
   }
@@ -14,7 +14,10 @@ export const shouldShowIntro = () => {
   try {
     if (navigator.webdriver) return false;
     if (new URLSearchParams(window.location.search).has("nosplash")) return false;
-    return !sessionStorage.getItem(SEEN_KEY);
+    // only on the landing page, and only the first time this browser ever visits
+    const path = window.location.pathname.replace(/\/+$/, "");
+    if (path !== "") return false;
+    return !localStorage.getItem(SEEN_KEY);
   } catch {
     return false;
   }

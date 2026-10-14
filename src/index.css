@@ -398,3 +398,9 @@ body {
 html.intro-morph [data-hero-globe] {
   opacity: 0;
 }
+
+/* Lenis smooth scrolling (home page) */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
