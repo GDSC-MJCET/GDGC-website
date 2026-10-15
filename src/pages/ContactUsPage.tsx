@@ -1,323 +1,259 @@
 import React, { useState, type ChangeEvent, type FormEvent } from "react";
+import { motion, useReducedMotion } from "motion/react";
+import { ArrowUpRight, Check } from "lucide-react";
+import {
+  IconBrandGithub,
+  IconBrandInstagram,
+  IconBrandLinkedin,
+  IconBrandYoutube,
+  IconClock,
+  IconMail,
+  IconMapPin,
+  IconPhone,
+} from "@tabler/icons-react";
+import axios from "axios";
 import Background from "../components/Background";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
-import { IconMail, IconPhone, IconMapPin, IconClock, IconBrandInstagram, IconBrandLinkedin, IconBrandGithub, IconBrandYoutube } from "@tabler/icons-react";
-import axios from "axios";
+import AmbientGlow from "../components/home/AmbientGlow";
 import { axiosResponse } from "../lib/http";
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+const CHANNELS = [
+  { label: "Email", value: "gdscmjcet@gmail.com", href: "mailto:gdscmjcet@gmail.com", icon: IconMail, tone: "text-white" },
+  { label: "Phone", value: "+91 73962 11824", href: "tel:+917396211824", icon: IconPhone, tone: "text-google-green" },
+  {
+    label: "Location",
+    value: "Muffakham Jah College of Engineering & Technology, Hyderabad",
+    href: "https://maps.app.goo.gl/?q=Muffakham+Jah+College+of+Engineering+and+Technology",
+    icon: IconMapPin,
+    tone: "text-white",
+  },
+  { label: "Office Hours", value: "Mon–Fri, 9AM–6PM", icon: IconClock, tone: "text-google-green" },
+] as const;
+
+const SOCIALS = [
+  { label: "YouTube", href: "https://www.youtube.com/@gdgcmjcet", icon: IconBrandYoutube },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/gdgmjcet", icon: IconBrandLinkedin },
+  { label: "Instagram", href: "https://www.instagram.com/gdgc.mjcet/", icon: IconBrandInstagram },
+  { label: "GitHub", href: "https://github.com/GDSC-MJCET", icon: IconBrandGithub },
+];
+
+const card =
+  "rounded-2xl border border-white/15 bg-white/[0.03] p-6 shadow-[0_8px_32px_rgba(0,0,0,0.3)] backdrop-blur-sm sm:p-9";
+const field =
+  "w-full rounded-lg border border-white/20 bg-white/[0.04] px-4 py-3 text-white placeholder-white/40 transition-colors focus:border-white/50 focus:outline-none";
+const label = "mb-2 block text-sm text-white/70";
+
+// A small orbit drawing for the hero: rings, a vertical axis, and dots on the rings.
+function Orbit() {
+  const rings = [
+    { r: 150, dots: [[-58, "#4285F4", 9], [62, "#EA4335", 9]] },
+    { r: 92, dots: [[-30, "#34A853", 10], [115, "#FBBC05", 9]] },
+  ] as const;
+  return (
+    <svg aria-hidden viewBox="-170 -170 340 340" className="h-full w-full">
+      <line x1="0" y1="-170" x2="0" y2="170" stroke="rgba(255,255,255,0.22)" strokeWidth="1" />
+      {rings.map((ring) => (
+        <g key={ring.r}>
+          <circle r={ring.r} fill="none" stroke="rgba(255,255,255,0.22)" strokeWidth="1" />
+          {ring.dots.map(([deg, c, s]) => {
+            const t = (deg * Math.PI) / 180;
+            return <circle key={deg} cx={ring.r * Math.cos(t)} cy={ring.r * Math.sin(t)} r={s / 1.6} fill={c} />;
+          })}
+        </g>
+      ))}
+      <circle r="30" fill="none" stroke="rgba(255,255,255,0.22)" strokeWidth="1" />
+      <circle r="165" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1" strokeDasharray="1 6" />
+    </svg>
+  );
+}
+
+type Status = "idle" | "sending" | "sent" | "error";
+
 const ContactUsPage = () => {
-  const server = import.meta.env.VITE_SERVER
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
+  const reduce = !!useReducedMotion();
+  const server = import.meta.env.VITE_SERVER;
+  const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
+  const [status, setStatus] = useState<Status>("idle");
+  const [error, setError] = useState("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (status === "sent" || status === "error") setStatus("idle");
   };
 
   const handleSubmit = async (e: FormEvent) => {
-  e.preventDefault();
-
-  try {
-    const res = await axios.post(
-      `${server}/api/v1/contact`,
-      formData
-    );
-
-    if (res.data.success) {
-      // alert("Message sent successfully");
-      setFormData({ name: "", email: "", subject: "", message: "" });
+    e.preventDefault();
+    setStatus("sending");
+    try {
+      const res = await axios.post(`${server}/api/v1/contact`, formData);
+      if (res.data.success) {
+        setFormData({ name: "", email: "", subject: "", message: "" });
+        setStatus("sent");
+      } else {
+        setError("Something went wrong. Please try again.");
+        setStatus("error");
+      }
+    } catch (err) {
+      console.error(err);
+      setError(axiosResponse(err)?.data?.msg || "Server error. Please try again in a moment.");
+      setStatus("error");
     }
-  } catch (err) {
-    console.error(err);
-    alert(axiosResponse(err)?.data?.msg || "Server error");
-  }
-};
+  };
+
+  const rise = (delay = 0) => ({
+    initial: reduce ? false : { opacity: 0, y: 24 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.8, delay, ease: EASE },
+  });
 
   return (
-    <Background bgColor="black">
+    <Background>
       <Nav />
-      <main className="min-h-screen flex items-center justify-center px-4 py-16">
-        <div className="w-full max-w-6xl">
-          <div className="text-center mb-12">
-            <h1
-              className="text-4xl md:text-6xl font-bold mb-4"
-              style={{
-                background: "linear-gradient(to right, #f8d8d8, #cdf6c5)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
-              Get In Touch
-            </h1>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Have questions or want to collaborate? We'd love to hear from you.
-            </p>
+      <div className="relative overflow-hidden">
+        <AmbientGlow />
+        <main className="relative mx-auto max-w-[1300px] px-6 pt-10 pb-24 sm:px-10">
+          {/* hero */}
+          <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_260px]">
+            <motion.div {...rise()}>
+              <p className="flex items-center gap-3 text-[11px] font-medium tracking-[0.3em] text-white/60 uppercase">
+                <span aria-hidden className="h-2 w-2 rounded-full bg-google-green shadow-[0_0_10px_#34A853]" />
+                Get in touch / GDGC MJCET
+              </p>
+              <h1 className="mt-5 text-[clamp(2.4rem,5.2vw,4.5rem)] leading-[1] font-black tracking-[-0.03em] text-white">
+                Have a question?
+                <span className="mt-1 block lg:whitespace-nowrap">
+                  <span className="text-transparent" style={{ WebkitTextStroke: "2px #4285F4", paintOrder: "stroke fill" }}>
+                    Let&apos;s
+                  </span>{" "}
+                  <span className="text-transparent" style={{ WebkitTextStroke: "2px #34A853", paintOrder: "stroke fill" }}>
+                    build
+                  </span>{" "}
+                  <span
+                    className="text-transparent"
+                    style={{ WebkitTextStroke: "2px rgba(255,255,255,0.92)", paintOrder: "stroke fill" }}
+                  >
+                    something
+                  </span>
+                  <span className="ml-[0.04em] inline-block h-[0.13em] w-[0.13em] rounded-full bg-google-red align-baseline" />
+                </span>
+              </h1>
+              <p className="mt-6 max-w-[34rem] text-lg leading-relaxed text-white/65">
+                Have questions or want to collaborate? We&apos;d love to hear from you. Let&apos;s connect and build
+                something amazing together.
+              </p>
+            </motion.div>
+            <motion.div {...rise(0.15)} className="mx-auto hidden aspect-square w-full max-w-[300px] lg:block">
+              <Orbit />
+            </motion.div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Info Card */}
-            <div
-              className="p-8 rounded-2xl"
-              style={{
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                backdropFilter: "blur(10px)",
-                WebkitBackdropFilter: "blur(10px)",
-                boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
-              }}
-            >
-              <h2 className="text-2xl font-semibold text-foreground mb-6">Contact Information</h2>
+          {/* channels and the form */}
+          <div className="mt-14 grid gap-6 lg:grid-cols-2 lg:gap-8">
+            <motion.section {...rise(0.1)} className={card}>
+              <h2 className="text-2xl font-semibold text-white">Find your people</h2>
+              <p className="mt-1.5 text-sm text-white/60">Reach out to us through any of the following channels.</p>
 
-              <div className="space-y-6">
-                <div className="flex items-center gap-4">
-                  <div
-                    className="p-3 rounded-full"
-                    style={{
-                      background: "rgba(248,216,216,0.1)",
-                      border: "1px solid rgba(248,216,216,0.2)",
-                    }}
-                  >
-                    <IconMail size={20} color="#f8d8d8" />
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground text-sm">Email</p>
-                    <p className="text-foreground">gdscmjcet@gmail.com</p>
-                  </div>
-                </div>
+              <ul className="mt-7">
+                {CHANNELS.map(({ label: l, value, icon: Icon, tone, ...rest }) => {
+                  const href = "href" in rest ? rest.href : undefined;
+                  const body = (
+                    <>
+                      <span
+                        className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/12 bg-white/[0.05] ${tone}`}
+                      >
+                        <Icon size={20} />
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block text-sm text-white/55">{l}</span>
+                        <span className="mt-0.5 block text-lg leading-snug text-white">{value}</span>
+                      </span>
+                    </>
+                  );
+                  return (
+                    <li key={l} className="border-b border-white/10 last:border-b-0">
+                      {href ? (
+                        <a
+                          href={href}
+                          target={href.startsWith("http") ? "_blank" : undefined}
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-5 py-4 transition-opacity hover:opacity-80"
+                        >
+                          {body}
+                        </a>
+                      ) : (
+                        <div className="flex items-center gap-5 py-4">{body}</div>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
 
-                <div className="flex items-center gap-4">
-                  <div
-                    className="p-3 rounded-full"
-                    style={{
-                      background: "rgba(205,246,197,0.1)",
-                      border: "1px solid rgba(205,246,197,0.2)",
-                    }}
+              <p className="mt-6 text-sm text-white/55">Follow us for the latest updates, events and announcements.</p>
+              <div className="mt-4 flex gap-3">
+                {SOCIALS.map(({ label: l, href, icon: Icon }) => (
+                  <a
+                    key={l}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={l}
+                    className="flex h-12 w-12 items-center justify-center rounded-full border border-white/25 text-white transition-colors hover:border-white/70 hover:bg-white/10"
                   >
-                    <IconPhone size={20} color="#cdf6c5" />
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground text-sm">Phone</p>
-                    <p className="text-white">+91 73962 11824</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <div
-                    className="p-3 rounded-full"
-                    style={{
-                      background: "rgba(248,216,216,0.1)",
-                      border: "1px solid rgba(248,216,216,0.2)",
-                    }}
-                  >
-                    <IconMapPin size={20} color="#f8d8d8" />
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground text-sm">Address</p>
-                    <p className="text-white">Muffakham Jah College of Engineering & Technology, Hyderabad</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <div
-                    className="p-3 rounded-full"
-                    style={{
-                      background: "rgba(205,246,197,0.1)",
-                      border: "1px solid rgba(205,246,197,0.2)",
-                    }}
-                  >
-                    <IconClock size={20} color="#cdf6c5" />
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground text-sm">Office Hours</p>
-                    <p className="text-white">Mon-Fri: 9AM-6PM</p>
-                  </div>
-                </div>
+                    <Icon size={20} />
+                  </a>
+                ))}
               </div>
+            </motion.section>
 
-              <div className="mt-8 pt-6 border-t border-white/10">
-                <p className="text-muted-foreground text-sm mb-4">
-                  Follow us on social media for updates and announcements.
-                </p>
-                <div className="flex gap-4">
-                  <a
-                    href="https://www.instagram.com/gdgc.mjcet/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 rounded-full transition-all duration-200 hover:scale-110"
-                    style={{
-                      background: "rgba(248,216,216,0.1)",
-                      border: "1px solid rgba(248,216,216,0.2)",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = "rgba(248,216,216,0.2)";
-                      e.currentTarget.style.borderColor = "rgba(248,216,216,0.4)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = "rgba(248,216,216,0.1)";
-                      e.currentTarget.style.borderColor = "rgba(248,216,216,0.2)";
-                    }}
-                  >
-                    <IconBrandInstagram size={20} color="#f8d8d8" />
-                  </a>
-                  <a
-                    href="https://www.linkedin.com/company/gdgmjcet"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 rounded-full transition-all duration-200 hover:scale-110"
-                    style={{
-                      background: "rgba(205,246,197,0.1)",
-                      border: "1px solid rgba(205,246,197,0.2)",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = "rgba(205,246,197,0.2)";
-                      e.currentTarget.style.borderColor = "rgba(205,246,197,0.4)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = "rgba(205,246,197,0.1)";
-                      e.currentTarget.style.borderColor = "rgba(205,246,197,0.2)";
-                    }}
-                  >
-                    <IconBrandLinkedin size={20} color="#cdf6c5" />
-                  </a>
-                  <a
-                    href="https://github.com/GDSC-MJCET"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 rounded-full transition-all duration-200 hover:scale-110"
-                    style={{
-                      background: "rgba(248,216,216,0.1)",
-                      border: "1px solid rgba(248,216,216,0.2)",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = "rgba(248,216,216,0.2)";
-                      e.currentTarget.style.borderColor = "rgba(248,216,216,0.4)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = "rgba(248,216,216,0.1)";
-                      e.currentTarget.style.borderColor = "rgba(248,216,216,0.2)";
-                    }}
-                  >
-                    <IconBrandGithub size={20} color="#f8d8d8" />
-                  </a>
-                  <a
-                    href="https://www.youtube.com/@gdgcmjcet"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 rounded-full transition-all duration-200 hover:scale-110"
-                    style={{
-                      background: "rgba(205,246,197,0.1)",
-                      border: "1px solid rgba(205,246,197,0.2)",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = "rgba(205,246,197,0.2)";
-                      e.currentTarget.style.borderColor = "rgba(205,246,197,0.4)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = "rgba(205,246,197,0.1)";
-                      e.currentTarget.style.borderColor = "rgba(205,246,197,0.2)";
-                    }}
-                  >
-                    <IconBrandYoutube size={20} color="#cdf6c5" />
-                  </a>
-                </div>
-              </div>
-            </div>
+            <motion.section {...rise(0.2)} className={card}>
+              <h2 className="text-2xl font-semibold text-white">Send a message</h2>
+              <p className="mt-1.5 text-sm text-white/60">Tell us what you&apos;re working on. We&apos;ll get back to you soon.</p>
 
-            {/* Contact Form */}
-            <div
-              className="p-8 rounded-2xl"
-              style={{
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                backdropFilter: "blur(10px)",
-                WebkitBackdropFilter: "blur(10px)",
-                boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
-              }}
-            >
-              <h2 className="text-2xl font-semibold text-foreground mb-6">Send us a Message</h2>
-
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <form onSubmit={handleSubmit} className="mt-7 space-y-5">
+                <div className="grid gap-5 sm:grid-cols-2">
                   <div>
-                    <label className="block text-muted-foreground text-sm mb-2">Name</label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/40 transition-colors"
-                      placeholder="Your Name"
-                    />
+                    <label htmlFor="c-name" className={label}>Name</label>
+                    <input id="c-name" type="text" name="name" value={formData.name} onChange={handleChange} required className={field} placeholder="Your Name" autoComplete="name" />
                   </div>
                   <div>
-                    <label className="block text-muted-foreground text-sm mb-2">Email</label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/40 transition-colors"
-                      placeholder="your@email.com"
-                    />
+                    <label htmlFor="c-email" className={label}>Email</label>
+                    <input id="c-email" type="email" name="email" value={formData.email} onChange={handleChange} required className={field} placeholder="your@email.com" autoComplete="email" />
                   </div>
                 </div>
-
                 <div>
-                  <label className="block text-muted-foreground text-sm mb-2">Subject</label>
-                  <input
-                    type="text"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/40 transition-colors"
-                    placeholder="What's this about?"
-                  />
+                  <label htmlFor="c-subject" className={label}>Subject</label>
+                  <input id="c-subject" type="text" name="subject" value={formData.subject} onChange={handleChange} required className={field} placeholder="What's this about?" />
+                </div>
+                <div>
+                  <label htmlFor="c-message" className={label}>Message</label>
+                  <textarea id="c-message" name="message" value={formData.message} onChange={handleChange} required rows={5} className={`${field} resize-none`} placeholder="Tell us more..." />
                 </div>
 
-                <div>
-                  <label className="block text-muted-foreground text-sm mb-2">Message</label>
-                  <textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    rows={5}
-                    className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/40 transition-colors resize-none"
-                    placeholder="Tell us more..."
-                  />
+                <div className="flex flex-wrap items-center gap-4">
+                  <button
+                    type="submit"
+                    disabled={status === "sending"}
+                    className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-black transition-transform hover:scale-[1.03] disabled:opacity-60"
+                  >
+                    {status === "sending" ? "Sending…" : "Send message"} <ArrowUpRight size={15} />
+                  </button>
+                  <p role="status" aria-live="polite" className="text-sm">
+                    {status === "sent" && (
+                      <span className="inline-flex items-center gap-2 text-google-green">
+                        <Check size={16} /> Message sent. Thank you!
+                      </span>
+                    )}
+                    {status === "error" && <span className="text-google-red">{error}</span>}
+                  </p>
                 </div>
-
-                <button
-                  type="submit"
-                  className="w-full py-3 px-6 rounded-lg font-semibold transition-all duration-200 hover:scale-105"
-                  style={{
-                    background: "linear-gradient(to right, rgba(248,216,216,0.2), rgba(205,246,197,0.2))",
-                    border: "1px solid rgba(255,255,255,0.2)",
-                    color: "white",
-                    boxShadow: "0 4px 16px rgba(0,0,0,0.2)",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = "linear-gradient(to right, rgba(248,216,216,0.3), rgba(205,246,197,0.3))";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = "linear-gradient(to right, rgba(248,216,216,0.2), rgba(205,246,197,0.2))";
-                  }}
-                >
-                  Send Message
-                </button>
               </form>
-            </div>
+            </motion.section>
           </div>
-        </div>
-      </main>
+        </main>
+      </div>
       <Footer />
     </Background>
   );

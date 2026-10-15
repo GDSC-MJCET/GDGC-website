@@ -18,7 +18,7 @@ const SHUTTER_EASE = [0.76, 0, 0.24, 1] as const;
 
 const markSeen = () => {
   try {
-    sessionStorage.setItem(SEEN_KEY, "1");
+    localStorage.setItem(SEEN_KEY, "1");
   } catch {
     // storage unavailable: the intro may replay, which is harmless
   }

@@ -1,9 +1,9 @@
 // Site navigation, shared by the navbar and the gallery's full-screen menu.
 export const menuItems = {
   "Home": "/",
-  "Tech Face-off": "/techfaceoff",
   "Events": "/events",
-  "Adsophos": "/adsophos",
+  "Projects": "/projects",
+  "Blogs": "/blogs",
   "Team": "/team-page",
   "Gallery": "/gallery",
   "Contact Us": "/contact",

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { ChevronDown } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export type PastEvent = {
   title: string;
@@ -17,10 +17,30 @@ export type PastEvent = {
   image2: string;
   image3: string;
   highlights?: string[];
+  /** the event's own page on this site, shown as a "Visit … page" button on its card */
+  page?: { to: string; label: string };
 };
 
 export const eventsByYear: Record<string, PastEvent[]> = {
 "2025-26":[
+  // ADSOPHOS (date and copy are placeholders to fill in)
+  {
+    title: "ADSOPHOS",
+    date: "TBA",
+    month: "2026",
+    desc: "Adsophos is GDGC MJCET's creative showdown — puzzles, games and a photo booth packed into one event.",
+    overview: "Adsophos 2026 brought students together for a day of creative challenges, games and fun. Visit the Adsophos page for the full experience.",
+    neque: "",
+    neque1: "",
+    nequeimg: "/adsophos-1.JPG",
+    bg: "#fbbf24",
+    poster: "/adsophos-1.JPG",
+    image1: "/adsophos-1.JPG",
+    image2: "/adsophos-2.jpg",
+    image3: "/adsophos-3.JPG",
+    page: { to: "/adsophos", label: "Visit Adsophos page" },
+  },
+
   // 1. ANTIGRAVITY 2.0
   {
     title: "ANTIGRAVITY 2.0",
@@ -112,6 +132,7 @@ export const eventsByYear: Record<string, PastEvent[]> = {
   // 5. TECH FACE-OFF
   {
     title: "TECH FACE-OFF",
+    page: { to: "/techfaceoff", label: "Visit Tech Face-Off page" },
     date: "12th & 13th",
     month: "February, 2026",
     desc: "Tech Face-Off: The Verdict, GDGC MJCET's flagship event, was a two-day inter-club debate that brought together top student chapters to engage in high-level discussions on real-world technology issues.",
@@ -319,6 +340,7 @@ export const eventsByYear: Record<string, PastEvent[]> = {
   },
   {
     title: "TECH FACE-OFF '24",
+    page: { to: "/techfaceoff", label: "Visit Tech Face-Off page" },
     date: "17th, 18th & 20th",
     month: "December, 2024",
     desc: "A three-day inter-club debate competition bringing together technical societies to discuss emerging tech topics, fostering critical thinking, collaboration and impactful dialogue.",
@@ -502,7 +524,7 @@ export const eventsByYear: Record<string, PastEvent[]> = {
 ],
 };
 
-const YEARS = ["2025-26", "2024-25", "2023-24"]
+export const YEARS = ["2025-26", "2024-25", "2023-24"]
 
 const EventCard = ({ event, onMoreInfo, scale = 1 }: { event: PastEvent; onMoreInfo: (event: PastEvent) => void; scale?: number }) => (
   <div
@@ -547,6 +569,15 @@ const EventCard = ({ event, onMoreInfo, scale = 1 }: { event: PastEvent; onMoreI
             </div>
           </div>
 
+          <div className='flex flex-wrap items-center justify-end gap-2'>
+          {event.page && (
+            <Link
+              to={event.page.to}
+              className='rounded-full border border-black/40 px-5 py-2.5 text-sm font-medium text-black transition-colors hover:bg-black hover:text-white sm:px-6 sm:py-3 sm:text-base'
+            >
+              {event.page.label}
+            </Link>
+          )}
           <button
             onClick={() => onMoreInfo(event)}
             className={`relative bg-black/90 hover:bg-black text-white border border-white/30 hover:border-white/50 rounded-full font-medium transition-all duration-300 hover:shadow-lg hover:shadow-black/25 transform hover:scale-105 active:scale-95 overflow-hidden group/button px-6 sm:px-8 py-2.5 sm:py-3 text-sm sm:text-base`}
@@ -557,6 +588,7 @@ const EventCard = ({ event, onMoreInfo, scale = 1 }: { event: PastEvent; onMoreI
             </span>
             <div className='absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover/button:opacity-100 transition-opacity duration-300'></div>
           </button>
+          </div>
         </div>
       </div>
     </div>

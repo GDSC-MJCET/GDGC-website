@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom
 // import HomePage from './pages/HomePage';
 // import AboutPage from './pages/AboutPage';
 import { ThemeProvider } from './components/theme-provider';
+import SiteEffects from './components/fx/SiteEffects';
 import IntroSplash from './components/intro/IntroSplash';
 import { shouldShowIntro } from './components/intro/introEvents';
 import gdg from "./assets/silkbg.png"
@@ -45,6 +46,7 @@ import TechDebatePage from './pages/TechDebatePage';
 import EventsPage from './pages/EventsPage';
 import TeamPage from './pages/TeamPage';
 import GalleryPage from './pages/GalleryPage';
+import ComingSoon from './components/ComingSoon';
 import ContactUsPage from './pages/ContactUsPage';
 import NotFound from './pages/NotFound';
 import PracticePage from './pages/PracticePage';
@@ -323,6 +325,7 @@ function AppWithRouter() {
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <IntroSplash onLeave={() => setAppReady(true)} />
         {appReady && <Router>
+          <SiteEffects />
           <Routes>
             {/* Public   pages */}
             <Route path="/" element={<HomePage />} />
@@ -339,6 +342,8 @@ function AppWithRouter() {
               <Route path="event-details" element={<EventDetails />} />
               <Route path="team-page" element={<TeamPage />} />
               <Route path="gallery" element={<GalleryPage />} />
+              <Route path="projects" element={<ComingSoon pageName="Projects" />} />
+              <Route path="blogs" element={<ComingSoon pageName="Blogs" />} />
               <Route path='adsophos' element={<Adsophos />}>
             </Route>
             <Route path='photobooth' element={<PhotoBooth />} />

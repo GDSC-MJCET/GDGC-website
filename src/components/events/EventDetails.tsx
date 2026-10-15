@@ -1,198 +1,230 @@
-import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
-import Nav from '../Nav';
-import { eventsByYear, type PastEvent } from './PastEvents';
+import React from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { motion, useReducedMotion } from "motion/react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays } from "lucide-react";
+import Nav from "../Nav";
+import Footer from "../Footer";
+import Background from "../Background";
+import AmbientGlow from "../home/AmbientGlow";
+import { Dot } from "../home/SectionHeading";
+import { eventsByYear, type PastEvent } from "./PastEvents";
+import { dateOf, metaOf, nameOf } from "./eventMeta";
+
+// One event's page, in the same look as the events archive: a hero with the poster, then the overview,
+// the story told in alternating text and photos, highlights, and links to the neighbouring events.
+
+const EASE = [0.22, 1, 0.36, 1] as const;
+const RIM = "linear-gradient(120deg, rgba(66,133,244,0.75), rgba(234,67,53,0.6), rgba(251,188,5,0.7), rgba(52,168,83,0.65))";
+const HIGHLIGHT_DOTS = ["bg-google-blue", "bg-google-red", "bg-google-yellow", "bg-google-green"];
+
+function Photo({ src, alt, tilt = 0 }: { src: string; alt: string; tilt?: number }) {
+  return (
+    <div
+      className="rounded-[20px] border border-white/20 bg-white/[0.05] p-[6px] shadow-[0_30px_70px_rgba(0,0,0,0.55)] backdrop-blur-md"
+      style={{ transform: `perspective(1200px) rotateY(${tilt}deg)` }}
+    >
+      <img src={src} alt={alt} loading="lazy" className="aspect-[4/3] w-full rounded-[14px] object-cover" />
+    </div>
+  );
+}
+
+function Label({ n, text }: { n: string; text: string }) {
+  return (
+    <p className="flex items-center gap-3 text-[11px] font-medium tracking-[0.3em] text-white/55 uppercase">
+      <span className="text-white">{n}</span>
+      <span aria-hidden className="h-px w-8 bg-white/30" />
+      {text}
+    </p>
+  );
+}
 
 const EventDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const event = location.state?.event;
-  const year: string = location.state?.year || '2025-26';
+  const reduce = !!useReducedMotion();
+  const event: PastEvent | undefined = location.state?.event;
+  const year: string = location.state?.year || "2025-26";
+
+  const rise = (delay = 0) => ({
+    initial: reduce ? false : { opacity: 0, y: 24 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, amount: 0.25 },
+    transition: { duration: 0.8, delay, ease: EASE },
+  });
 
   if (!event) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center px-4">
-        <div className="text-center max-w-md mx-auto">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">Event Not Found</h1>
+      <Background>
+        <Nav />
+        <div className="flex min-h-[70vh] flex-col items-center justify-center gap-6 px-4 text-center">
+          <h1 className="text-4xl font-black tracking-[-0.03em] text-white">
+            Event not found
+            <Dot color="bg-google-red" />
+          </h1>
           <button
-            onClick={() => navigate('/events')}
-            className="bg-white text-black px-6 py-3 rounded-full hover:bg-gray-200 transition-colors text-sm sm:text-base"
+            onClick={() => navigate("/events")}
+            className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition-transform hover:scale-[1.03]"
           >
             Back to Events
           </button>
         </div>
-      </div>
+        <Footer />
+      </Background>
     );
   }
 
-  const currentYearEvents = eventsByYear[year] || [];
-  const currentIndex = currentYearEvents.findIndex(e => e.title === event.title && e.bg === event.bg);
-  const prevEvent = currentIndex > 0 ? currentYearEvents[currentIndex - 1] : null;
-  const nextEvent = currentIndex < currentYearEvents.length - 1 ? currentYearEvents[currentIndex + 1] : null;
-
-  const navigateToEvent = (targetEvent: PastEvent) => {
-    navigate('/event-details', { state: { event: targetEvent, year } });
+  const list = eventsByYear[year] || [];
+  const i = list.findIndex((e) => e.title === event.title && e.bg === event.bg);
+  const prev = i > 0 ? list[i - 1] : null;
+  const next = i >= 0 && i < list.length - 1 ? list[i + 1] : null;
+  const meta = metaOf(event);
+  const story = [
+    { text: event.neque, image: event.image1, title: "The story" },
+    { text: event.neque1, image: event.image2, title: "The impact" },
+  ].filter((s) => s.text?.trim());
+  const go = (target: PastEvent) => {
+    navigate("/event-details", { state: { event: target, year } });
     window.scrollTo(0, 0);
   };
 
-  return (
-    <div className="min-h-screen bg-black text-white">
-        <Nav />
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <button
-          onClick={() => navigate('/events')}
-          className="flex items-center gap-2 mb-6 sm:mb-8 text-white hover:text-gray-300 transition-colors"
+  const NeighbourCard = ({ e, dir }: { e: PastEvent | null; dir: "prev" | "next" }) =>
+    e ? (
+      <button
+        type="button"
+        onClick={() => go(e)}
+        className={`group flex flex-1 items-center gap-4 rounded-2xl border border-white/15 bg-white/[0.02] p-3 transition-colors hover:border-white/40 ${
+          dir === "next" ? "flex-row-reverse text-right" : "text-left"
+        }`}
+      >
+        <img src={e.poster} alt="" loading="lazy" className="h-16 w-24 shrink-0 rounded-lg object-cover" />
+        <span className="min-w-0 flex-1">
+          <span className="block text-[11px] tracking-[0.2em] text-white/50 uppercase">
+            {dir === "prev" ? "Previous" : "Next"}
+          </span>
+          <span className="mt-1 block truncate font-bold text-white uppercase">{nameOf(e)}</span>
+        </span>
+        <span
+          aria-hidden
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/60 text-white transition-colors group-hover:bg-white group-hover:text-black"
         >
-          <ArrowLeft size={20} />
-          Back to Events
-        </button>
+          {dir === "prev" ? <ArrowLeft size={17} /> : <ArrowRight size={17} />}
+        </span>
+      </button>
+    ) : (
+      <span className="hidden flex-1 sm:block" />
+    );
 
-        <div className="max-w-4xl mx-auto">
-          <div className="rounded-xl sm:rounded-2xl overflow-hidden mb-6 sm:mb-8" style={{ backgroundColor: event.bg }}>
-            <div className="p-4 sm:p-6 lg:p-8">
-              <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-                <div className="flex-shrink-0">
-                  <img
-                    src={event.poster}
-                    alt={event.title}
-                    className="w-full mx-auto lg:mx-0 lg:w-96 h-auto object-cover rounded-lg lg:rounded-xl"
-                  />
-                </div>
-                <div className="flex-1 text-black">
-                    <div className='flex flex-col justify-between h-full'>
-                        <div>
-                            <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-3 sm:mb-4 leading-tight">
-                                {event.title}
-                            </h1>
-                            
-                            <p className="text-base sm:text-lg leading-relaxed mb-6 sm:mb-8">
-                                {event.desc}
-                            </p>
-                        </div>
-                        <div className="bg-black/20 rounded-lg sm:rounded-xl p-4 sm:p-6">
-                                <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-3 sm:mb-4">Event Details</h2>
-                            <div className="space-y-2 sm:space-y-3">
-                                <div className="text-sm sm:text-base">
-                                    <span className="font-semibold">Date:</span> {event.date} {event.month}
-                                </div>
-                                    
-                                <div className="text-sm sm:text-base">
-                                    <span className="font-semibold">Year:</span> {location.state?.year || '2025-26'}
-                                </div>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  return (
+    <Background>
+      <Nav />
+      <div className="relative overflow-hidden">
+        <AmbientGlow />
+        <div className="relative mx-auto max-w-[1400px] px-6 pt-6 pb-16 sm:px-10">
+          <Link to="/events" className="inline-flex items-center gap-2 text-sm text-white/70 transition-colors hover:text-white">
+            <ArrowLeft size={18} /> Back to Events
+          </Link>
 
-          <div className="border border-white/90 rounded-xl p-4 sm:p-6 lg:p-8">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold mb-3 sm:mb-4">Overview</h2>
-            <p className="text-gray-300 leading-relaxed text-sm sm:text-base">
-              {event.overview}
-            </p>
-          </div>
-          
-          <div className="space-y-12 sm:space-y-16 lg:space-y-22 mt-8 sm:mt-12">
-            <div className='flex flex-col lg:flex-row gap-6 sm:gap-8 items-center'>
-                <div className='flex-1 order-2 lg:order-1'>
-                    <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">Description</h2>
-                    <p className="text-gray-300 leading-relaxed text-sm sm:text-base">{event.neque}</p>
-                </div>
-                <div className='relative overflow-hidden rounded-xl shadow-md group-hover:shadow-xl transition-shadow duration-300 flex-shrink-0 order-1 lg:order-2 flex-1'>
-                    <img
-                        src={event.image1}
-                        alt={event.title}
-                        className='w-screen h-32 md:w-full   md:h-100   object-cover transform group-hover:scale-105 transition-transform duration-500 '
-                    />
-                    <div className='absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
-                </div>
-            </div>
-            <div className='flex flex-col-reverse md:flex-col lg:flex-row-reverse gap-6 sm:gap-8 lg:gap-12 xl:gap-22 items-center'>
-                <div className='flex-1'>
-                    {/* <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">Neque</h2> */}
-                    <p className="text-gray-300 leading-relaxed text-sm sm:text-base">{event.neque1}</p>
-                </div>
-                <div className='relative overflow-hidden rounded-xl shadow-md group-hover:shadow-xl transition-shadow duration-300 flex-shrink-0 flex-1'>
-                    <img
-                        src={event.image2}
-                        alt={event.title}
-                        className='w-screen h-32 md:w-full   md:h-100   object-cover transform group-hover:scale-105 transition-transform duration-500 '
-                    />
-                    <div className='absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
-                </div>
-            </div>
-          </div>
-                      {/* THIRD IMAGE SECTION (New) */}
-            <div className='flex flex-col lg:flex-row gap-6 sm:gap-8 items-center'>
-                <div className='flex-1 order-2 lg:order-1'>
-                    <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">Highlights</h2>
-                    <p className="text-gray-300 leading-relaxed text-sm sm:text-base">
-                        {event.highlights || "Additional highlights from the event."}
-                    </p>
-                </div>
-                <div className='relative overflow-hidden rounded-xl shadow-md group-hover:shadow-xl transition-shadow duration-300 flex-shrink-0 order-1 lg:order-2 flex-1'>
-                    <img
-                        src={event.image3}  // <-- Uses your 3rd image
-                        alt={event.title}
-                        className='w-screen h-32 md:w-full md:h-100 object-cover transform group-hover:scale-105 transition-transform duration-500'
-                    />
-                    <div className='absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
-                </div>
-            </div>
+          {/* hero */}
+          <div className="mt-8 grid items-center gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-14">
+            <motion.div {...rise()}>
+              <p className="flex flex-wrap items-center gap-3 text-[11px] font-medium tracking-[0.3em] text-white/55 uppercase">
+                GDGC MJCET / {year} / {meta.category}
+                <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-google-yellow" />
+              </p>
+              <h1 className="mt-4 text-[clamp(2.4rem,5vw,4.75rem)] leading-[0.95] font-black tracking-[-0.03em] text-white uppercase">
+                {nameOf(event)}
+                <Dot color="bg-google-red" />
+              </h1>
+              <div className="mt-5 flex flex-wrap gap-2">
+                {meta.tags.map((t) => (
+                  <span key={t} className="rounded-full border border-white/25 px-3 py-1 text-xs text-white/80">
+                    {t}
+                  </span>
+                ))}
+              </div>
+              <p className="mt-5 flex items-center gap-2 text-sm text-white/80">
+                <CalendarDays size={16} /> {dateOf(event)}
+              </p>
+              <p className="mt-5 max-w-[38rem] text-base leading-relaxed text-white/70 sm:text-lg">{event.desc}</p>
+              {event.page && (
+                <Link
+                  to={event.page.to}
+                  className="mt-7 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition-transform hover:scale-[1.03]"
+                >
+                  {event.page.label} <ArrowUpRight size={15} />
+                </Link>
+              )}
+            </motion.div>
 
-          <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 sm:gap-0 mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-gray-700">
-            <button
-              onClick={() => prevEvent && navigateToEvent(prevEvent)}
-              disabled={!prevEvent}
-              className={`flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-3 rounded-full shadow-sm shadow-white transition-all border border-white/60  duration-300 text-left w-full sm:w-auto ${
-                prevEvent
-                  ? ' text-white hover:translate-x-1'
-                  : ' text-gray-600 cursor-not-allowed'
-              }`}
-            >
-              <ChevronLeft size={20} />
-              <div className="min-w-0 flex-1">
-                <div className="text-xs sm:text-sm text-gray-400">Previous</div>
-                <div className="text-xs sm:text-sm font-medium truncate">
-                  {prevEvent?.title}
+            <motion.div {...rise(0.1)} className="mx-auto w-full max-w-[460px]">
+              <div className="rounded-[22px] p-[1.5px] shadow-[0_0_60px_rgba(66,133,244,0.18)]" style={{ background: RIM }}>
+                <div className="rounded-[21px] bg-[#0d0f0e] p-3">
+                  <img src={event.poster} alt={`${nameOf(event)} poster`} className="w-full rounded-[16px] object-cover" />
                 </div>
               </div>
-            </button>
+            </motion.div>
+          </div>
 
-            <button
-              onClick={() => navigate('/events')}
-              className="border border-white shadow-sm shadow-white rounded-full text-white px-4 sm:px-6 py-3 transition-all duration-300 text-center "
-            >
-              <span className="hidden sm:inline">View All Events</span>
-              <span className="sm:hidden">All Events</span>
-            </button>
+          {/* overview */}
+          <motion.section {...rise()} className="mt-20 rounded-2xl border border-white/15 bg-white/[0.02] p-6 backdrop-blur-sm sm:p-10">
+            <Label n="01" text="Overview" />
+            <p className="mt-5 max-w-[60rem] text-lg leading-relaxed text-white/80 sm:text-xl">{event.overview}</p>
+          </motion.section>
 
-            <button
-              onClick={() => nextEvent && navigateToEvent(nextEvent)}
-              disabled={!nextEvent}
-              className={`flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-3 rounded-full shadow-sm shadow-white transition-all border border-white/60  duration-300 text-right w-full sm:w-auto ${
-                nextEvent
-                  ? ' text-white hover:-translate-x-1'
-                  : ' text-gray-600 cursor-not-allowed'
-              }`}
+          {/* the story, text and photos alternating */}
+          {story.map((s, k) => (
+            <motion.section
+              {...rise()}
+              key={s.title}
+              className={`mt-20 grid items-center gap-10 lg:grid-cols-2 lg:gap-16 ${k % 2 ? "lg:[&>*:first-child]:order-2" : ""}`}
             >
-              <div className="min-w-0 flex-1">
-                <div className="text-xs sm:text-sm text-gray-400">Next</div>
-                <div className="text-xs sm:text-sm font-medium truncate">
-                  {nextEvent?.title}
-                </div>
+              <div>
+                <Label n={String(k + 2).padStart(2, "0")} text={s.title} />
+                <p className="mt-5 text-base leading-relaxed text-white/70">{s.text}</p>
               </div>
-              <ChevronRight size={20} />
-            </button>
+              <Photo src={s.image} alt={`${nameOf(event)}, photo ${k + 1}`} tilt={k % 2 ? 6 : -6} />
+            </motion.section>
+          ))}
+
+          {/* highlights */}
+          <motion.section {...rise()} className="mt-20 grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+            <div>
+              <Label n={String(story.length + 2).padStart(2, "0")} text="Highlights" />
+              {event.highlights?.length ? (
+                <ul className="mt-6 space-y-3">
+                  {event.highlights.map((h, k) => (
+                    <li
+                      key={h}
+                      className="flex items-center gap-4 rounded-xl border border-white/12 bg-white/[0.02] px-5 py-4 text-white/85"
+                    >
+                      <span aria-hidden className={`h-2 w-2 shrink-0 rounded-full ${HIGHLIGHT_DOTS[k % 4]}`} />
+                      {h}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-5 text-base leading-relaxed text-white/60">Moments from the day.</p>
+              )}
+            </div>
+            <Photo src={event.image3} alt={`${nameOf(event)}, photo 3`} tilt={-6} />
+          </motion.section>
+
+          {/* neighbours */}
+          <div className="mt-20 flex flex-col gap-4 border-t border-white/10 pt-10 sm:flex-row sm:items-center">
+            <NeighbourCard e={prev} dir="prev" />
+            <Link
+              to="/events"
+              className="shrink-0 self-center rounded-full border border-white/30 px-6 py-3 text-sm text-white transition-colors hover:border-white/70"
+            >
+              View all events
+            </Link>
+            <NeighbourCard e={next} dir="next" />
           </div>
         </div>
       </div>
-    </div>
+      <Footer />
+    </Background>
   );
 };
 
 export default EventDetails;
-
