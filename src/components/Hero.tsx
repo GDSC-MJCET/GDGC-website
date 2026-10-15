@@ -2,11 +2,20 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import ParticleGlobe from "./ParticleGlobe";
+import Magnet from "./fx/Magnet";
 
 const Hero = () => {
   return (
-    <section className="relative overflow-hidden bg-background">
-      <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
+    <section className="relative overflow-hidden">
+      {/* the wedges fade out toward the bottom, so the hero runs into the next section without a hard edge */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-0"
+        style={{
+          maskImage: "linear-gradient(to bottom, black 45%, transparent 98%)",
+          WebkitMaskImage: "linear-gradient(to bottom, black 45%, transparent 98%)",
+        }}
+      >
         <div
           className="absolute -bottom-24 -left-40 h-[520px] w-[520px] bg-google-red opacity-[0.18] blur-[130px]"
           style={{ clipPath: "polygon(70% 0%, 100% 15%, 40% 50%, 100% 85%, 70% 100%, 0% 50%)" }}
@@ -62,14 +71,16 @@ const Hero = () => {
               </p>
 
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-                <a
-                  href="https://gdg.community.dev/gdg-on-campus-muffakham-jah-college-of-engineering-and-technology-hyderabad-india/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-7 py-4 text-sm font-semibold text-primary-foreground transition-all duration-200 hover:opacity-85 hover:scale-[1.03]"
-                >
-                  Join the Community <ArrowUpRight size={15} />
-                </a>
+                <Magnet>
+                  <a
+                    href="https://gdg.community.dev/gdg-on-campus-muffakham-jah-college-of-engineering-and-technology-hyderabad-india/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-7 py-4 text-sm font-semibold text-primary-foreground transition-all duration-200 hover:opacity-85 hover:scale-[1.03]"
+                  >
+                    Join the Community <ArrowUpRight size={15} />
+                  </a>
+                </Magnet>
                 <Link
                   to="/events"
                   className="inline-flex items-center justify-center rounded-full border border-border px-7 py-4 text-sm font-medium text-foreground transition-colors duration-200 hover:bg-primary hover:text-primary-foreground"

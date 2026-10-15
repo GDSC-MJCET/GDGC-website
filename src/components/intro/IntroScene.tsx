@@ -47,9 +47,9 @@ const CAMERA = 10;
 
 type Orbit = { cx: number; cy: number; rx: number; ry: number; rot: number };
 
-const ORBIT_A: Orbit = { cx: 815, cy: 432, rx: 655, ry: 255, rot: -0.02 };
-const ORBIT_B: Orbit = { cx: 800, cy: 440, rx: 560, ry: 205, rot: 0.1 };
-const ORBIT_C: Orbit = { cx: 790, cy: 430, rx: 705, ry: 285, rot: 0.06 };
+// Two wide orbits tilted opposite ways, crossing in front of the globe like an X.
+const ORBIT_A: Orbit = { cx: CX, cy: CY, rx: 760, ry: 200, rot: 0.24 };
+const ORBIT_B: Orbit = { cx: CX, cy: CY, rx: 760, ry: 200, rot: -0.24 };
 
 const onOrbit = (o: Orbit, u: number) => {
   const x = o.rx * Math.cos(u);
@@ -62,20 +62,18 @@ const onOrbit = (o: Orbit, u: number) => {
 // `sat` is the hero-globe satellite each planet lands on at the end of the intro.
 type Planet = { label: string; color: string; orbit: Orbit; u: number; dir: number; r: number; at: number; sat: number };
 const PLANETS: Planet[] = [
-  { label: "LEARN", color: BLUE, orbit: ORBIT_A, u: -2.32, dir: 1, r: 12, at: 1.0, sat: 0 },
-  { label: "BUILD", color: YELLOW, orbit: ORBIT_A, u: -0.74, dir: 1, r: 12, at: 1.15, sat: 2 },
-  { label: "CONNECT", color: RED, orbit: ORBIT_B, u: 2.9, dir: -1, r: 13, at: 1.3, sat: 1 },
-  { label: "GROW", color: GREEN, orbit: ORBIT_B, u: 0.73, dir: -1, r: 12, at: 1.45, sat: 3 },
+  { label: "LEARN", color: BLUE, orbit: ORBIT_A, u: -2.45, dir: 1, r: 12, at: 1.0, sat: 0 },
+  { label: "BUILD", color: YELLOW, orbit: ORBIT_B, u: -0.7, dir: -1, r: 12, at: 1.15, sat: 2 },
+  { label: "CONNECT", color: RED, orbit: ORBIT_B, u: 2.6, dir: -1, r: 13, at: 1.3, sat: 1 },
+  { label: "GROW", color: GREEN, orbit: ORBIT_A, u: 0.55, dir: 1, r: 12, at: 1.45, sat: 3 },
 ];
 
 type Node = { label: string; orbit: Orbit | null; u: number; x: number; y: number; at: number };
 const NODES: Node[] = [
-  { label: "STUDENTS", orbit: ORBIT_A, u: -1.92, x: 0, y: 0, at: 1.5 },
-  { label: "IDEAS", orbit: null, u: 0, x: 1045, y: 380, at: 1.65 },
-  { label: "TECHNOLOGY", orbit: ORBIT_B, u: 2.25, x: 0, y: 0, at: 1.8 },
-  { label: "IMPACT", orbit: ORBIT_B, u: 1.6, x: 0, y: 0, at: 1.95 },
-  { label: "", orbit: ORBIT_C, u: 0.9, x: 0, y: 0, at: 1.7 },
-  { label: "", orbit: ORBIT_C, u: -1.55, x: 0, y: 0, at: 1.85 },
+  { label: "STUDENTS", orbit: ORBIT_A, u: -1.95, x: 0, y: 0, at: 1.5 },
+  { label: "IDEAS", orbit: ORBIT_B, u: -1.3, x: 0, y: 0, at: 1.65 },
+  { label: "TECHNOLOGY", orbit: ORBIT_B, u: 1.95, x: 0, y: 0, at: 1.8 },
+  { label: "IMPACT", orbit: ORBIT_A, u: 1.25, x: 0, y: 0, at: 1.95 },
 ];
 
 // Deterministic pseudo-random so stars stay put between frames and reloads.
@@ -377,9 +375,8 @@ export default function IntroScene({
         ctx.translate(gcx, gcy);
         ctx.scale(k, k);
         ctx.translate(-CX, -CY);
-        ring(ORBIT_A, ramp(t, 0.5, 2.0), 0.75 * orbitA, false);
-        ring(ORBIT_B, ramp(t, 0.7, 2.2), 0.55 * orbitA, false);
-        ring(ORBIT_C, ramp(t, 0.9, 2.0), 0.28 * ramp(t, 0.9, 2.0) * orbitA, true);
+        ring(ORBIT_A, ramp(t, 0.5, 2.0), 0.7 * orbitA, false);
+        ring(ORBIT_B, ramp(t, 0.7, 2.2), 0.7 * orbitA, false);
         ctx.restore();
       }
 
