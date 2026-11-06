@@ -1,22 +1,21 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { animate, motion, useMotionValue } from "motion/react";
-import { BARS, INTRO_PHOTOS, MARK_VIEWBOX, MARK_WIDTH, barRect, barTransform, markIntroSeen } from "./mark";
+import HoneycombMark from "./Honeycomb";
+import { INTRO_PHOTOS, MARK_WIDTH, markIntroSeen } from "./mark";
 
 type Phase = "load" | "flip" | "title" | "exit";
 
-const FLIP_MS = 130;
 const ZOOM_MS = 4600;
 const EXIT_MS = 1100;
 const START_SCALE = 2.6;
 const PULL_EASE = [0.25, 0.1, 0.2, 1] as const;
 
-// The home page's opening titles. A giant GDG mark sits dead centre, its four bars windows onto photos from
-// our events, flipping fast and, while the camera slowly pulls back until the mark
-// is exactly the size of the one behind the hero. The name comes up, then the black fades away and the mark
-// simply stays: it is the hero's backdrop. Click or press a key to skip.
+// The home page's opening titles. A giant GDG mark sits dead centre, filled with a honeycomb of photos from
+// our events whose cells flip fast, while the camera slowly pulls back until the mark is exactly the size of the
+// one behind the hero. The name comes up, then the black fades away and the mark simply stays: it is the hero's
+// backdrop (same cells). Click or press a key to skip.
 export default function CinemaIntro({ onDone }: { onDone: () => void }) {
   const [phase, setPhase] = useState<Phase>("load");
-  const [tick, setTick] = useState(0);
   const timers = useRef<number[]>([]);
   const zoom = useMotionValue(START_SCALE);
 
@@ -69,13 +68,6 @@ export default function CinemaIntro({ onDone }: { onDone: () => void }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [started]);
 
-  // flip the photos (until the name comes up)
-  useEffect(() => {
-    if (phase !== "flip") return;
-    const id = window.setInterval(() => setTick((t) => t + 1), FLIP_MS);
-    return () => window.clearInterval(id);
-  }, [phase]);
-
   // hold the page still underneath
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -98,8 +90,6 @@ export default function CinemaIntro({ onDone }: { onDone: () => void }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [skip]);
 
-  const n = INTRO_PHOTOS.length;
-
   return (
     <motion.div
       role="dialog"
@@ -111,30 +101,7 @@ export default function CinemaIntro({ onDone }: { onDone: () => void }) {
     >
       <div className="absolute inset-0 flex items-center justify-center">
         <motion.div className="shrink-0" style={{ width: MARK_WIDTH, scale: zoom }}>
-          <svg viewBox={MARK_VIEWBOX} className="block w-full overflow-visible" aria-hidden>
-            <defs>
-              {BARS.map((b) => (
-                <clipPath key={b.id} id={`cinema-bar-${b.id}`}>
-                  <rect {...barRect} transform={barTransform(b)} />
-                </clipPath>
-              ))}
-            </defs>
-            {BARS.map((b, i) => (
-              <g key={b.id} clipPath={`url(#cinema-bar-${b.id})`}>
-                <rect x="0" y="0" width="200" height="100" fill="#111" />
-                {started && (
-                  <image
-                    href={INTRO_PHOTOS[(tick + i * 4) % n]}
-                    x={i < 2 ? 0 : 100}
-                    y="0"
-                    width="100"
-                    height="100"
-                    preserveAspectRatio="xMidYMid slice"
-                  />
-                )}
-              </g>
-            ))}
-          </svg>
+          <HoneycombMark mode={phase === "flip" ? "fast" : "calm"} running={started} />
         </motion.div>
       </div>
 

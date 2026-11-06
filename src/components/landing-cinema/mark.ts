@@ -28,24 +28,26 @@ export const barRect = {
 
 export const barTransform = (b: Bar) => `translate(${b.x} ${b.y}) rotate(${b.angle})`;
 
-// Photos the intro flips through inside the bars (web-sized copies in public/home/community/).
+// Photos the intro (and the hero backdrop) flips through inside the bars, from the current phases only:
+// Phase Three events (Tech Face-Off, Pixel X, Adsophos, Antigravity, FPTR) alternating with Phase Four's
+// Orientation Day (the orientation-* photos come from the gallery). Web-sized copies in public/home/community/.
 export const INTRO_PHOTOS = [
   "/home/community/tech-faceoff-2.webp",
+  "/home/community/orientation-14.webp",
   "/home/community/pixelx-2.webp",
+  "/home/community/orientation-48.webp",
   "/home/community/adsophos-1.webp",
-  "/home/community/doodle3.webp",
-  "/home/community/au2.webp",
+  "/home/community/orientation-26.webp",
   "/home/community/tech-faceoff-1.webp",
-  "/home/community/dy1.webp",
-  "/home/community/aig3.webp",
+  "/home/community/orientation-8.webp",
   "/home/community/antigravityiii.webp",
-  "/home/community/dev-arena-1.webp",
+  "/home/community/orientation-36.webp",
   "/home/community/pixelx-3.webp",
-  "/home/community/tech24-4.webp",
+  "/home/community/orientation-24.webp",
   "/home/community/frtp-2.webp",
-  "/home/community/c9.webp",
-  "/home/community/dy7.webp",
+  "/home/community/orientation-15.webp",
   "/home/community/tech-faceoff-3.webp",
+  "/home/community/orientation-27.webp",
 ];
 
 export const INTRO_KEY = "gdgc-cinema-intro-seen";
