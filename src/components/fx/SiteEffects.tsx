@@ -1,12 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ClickSpark from "./ClickSpark";
-import { setLenis } from "./smooth";
+import { scrollToTop, setLenis } from "./smooth";
 
 gsap.registerPlugin(ScrollTrigger);
+ScrollTrigger.clearScrollMemory("manual");
 
 // Site-wide effects, mounted once inside the router:
 //  - Lenis smooth scrolling on the content pages, driven by GSAP's ticker so ScrollTrigger stays in step
@@ -14,14 +15,18 @@ gsap.registerPlugin(ScrollTrigger);
 //  - a little spark burst where you click
 // The full-screen gallery, the Adsophos experience, the admin screens and the practice editor keep native scrolling.
 
-const SMOOTH = ["/", "/events", "/event-details", "/team-page", "/contact", "/projects", "/blogs", "/techfaceoff", "/buildweek-form", "/score"];
+const SMOOTH = ["/", "/events", "/team-page", "/contact", "/projects", "/blogs", "/techfaceoff", "/buildweek-form", "/score"];
 
 export default function SiteEffects() {
   const { pathname } = useLocation();
-  const smooth = SMOOTH.includes(pathname.replace(/(.)\/+$/, "$1"));
+  const clean = pathname.replace(/(.)\/+$/, "$1");
+  const smooth = SMOOTH.includes(clean) || clean.startsWith("/events/");
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
+  // every page change starts at the top, before the new page is painted
+  useLayoutEffect(() => {
+    // ScrollTrigger puts the browser's own scroll restoration back after every refresh; this keeps it off
+    ScrollTrigger.clearScrollMemory("manual");
+    scrollToTop();
   }, [pathname]);
 
   useEffect(() => {

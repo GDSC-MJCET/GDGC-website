@@ -1,51 +1,40 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Nav from "../components/Nav";
-import Background from "../components/Background";
-import Hero from "../components/Hero";
-import HighlightsRow from "../components/HighlightsRow";
-import PastEventsShowcase from "../components/home/PastEventsShowcase";
-import AmbientGlow from "../components/home/AmbientGlow";
-import CommunityInMotion from "../components/home/CommunityInMotion";
-import ThreePillars from "../components/home/ThreePillars";
-import CommunityStrip from "../components/home/CommunityStrip";
-import Portfolio from "../components/Portfolio";
 import Footer from "../components/Footer";
-import { useNavigate } from "react-router-dom";
-// import WinnerPopup from "../components/WinnerPopup";
+import CinemaIntro from "../components/landing-cinema/CinemaIntro";
+import CinemaHero from "../components/landing-cinema/CinemaHero";
+import ComingSoon from "../components/landing-cinema/ComingSoon";
+import Origin from "../components/landing-cinema/story/Origin";
+import ArchiveTunnel from "../components/landing-cinema/story/ArchiveTunnel";
+import Gather from "../components/landing-cinema/story/Gather";
+import { shouldPlayIntro } from "../components/landing-cinema/mark";
+import { REPLAY_EVENT } from "../components/intro/introEvents";
 
+// Landing page v2: opening titles, the hero, then the club's story told in scroll-driven chapters. (v1 lives at /v1.)
 const HomePage = () => {
-  // const [showPopup, setShowPopup] = useState(false);
+  const [intro, setIntro] = useState(shouldPlayIntro);
 
-  // useEffect(() => {
-  //   const dismissed = sessionStorage.getItem("winner-popup-dismissed");
-  //   if (!dismissed) {
-  //     setShowPopup(true);
-  //   }
-  // }, []);
+  // the nav's "replay intro" button
+  useEffect(() => {
+    const replay = () => setIntro(true);
+    window.addEventListener(REPLAY_EVENT, replay);
+    return () => window.removeEventListener(REPLAY_EVENT, replay);
+  }, []);
 
-  // const handleClosePopup = () => {
-  //   setShowPopup(false);
-  //   sessionStorage.setItem("winner-popup-dismissed", "true");
-  // };
   return (
-    <Background>
-      {/* {showPopup && <WinnerPopup onClose={handleClosePopup} />} */}
-      <Nav />
-      {/* the hero and the sections below it share one soft colour-wash background */}
-      <div className="relative">
-        <AmbientGlow />
-        <div className="relative">
-          <Hero />
-          <HighlightsRow />
-          <PastEventsShowcase />
-          <CommunityInMotion />
-          <ThreePillars />
-          <CommunityStrip />
-        </div>
-      </div>
-      {/* <Portfolio /> */}
+    <div className="min-h-screen bg-[#050506] text-white">
+      {intro && <CinemaIntro onDone={() => setIntro(false)} />}
+      <Nav overlay />
+      <main>
+        <CinemaHero ready={!intro} />
+        {/* the story, in pinned scroll scenes */}
+        <Origin />
+        <ArchiveTunnel />
+        <Gather />
+        <ComingSoon />
+      </main>
       <Footer />
-    </Background>
+    </div>
   );
 };
 
