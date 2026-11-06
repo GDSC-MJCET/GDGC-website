@@ -1,28 +1,18 @@
-import React from "react";
 import Nav from "../components/Nav";
-import Background from "../components/Background";
-import AmbientGlow from "../components/home/AmbientGlow";
-import EventsHero from "../components/events/EventsHero";
-import UpNext from "../components/events/UpNext";
-import EventsArchive from "../components/events/EventsArchive";
 import Footer from "../components/Footer";
+import ArchiveHero from "../components/events/archive/ArchiveHero";
+import Spotlight from "../components/events/archive/Spotlight";
 
-const EventsPage = () => {
-  return (
-    <Background>
-      <Nav />
-      {/* same GDGC colour strips as the home page, behind every section */}
-      <div className="relative overflow-hidden">
-        <AmbientGlow />
-        <div className="relative">
-          <EventsHero />
-          <UpNext />
-          <EventsArchive />
-        </div>
-      </div>
-      <Footer />
-    </Background>
-  );
-};
+// The events archive: a wall of every poster, then each phase as a chapter with its events in the spotlight.
+const EventsPage = () => (
+  <div className="min-h-screen bg-[#050506] text-white">
+    <Nav overlay />
+    <main>
+      <ArchiveHero />
+      <Spotlight />
+    </main>
+    <Footer />
+  </div>
+);
 
 export default EventsPage;

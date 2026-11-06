@@ -1,4 +1,4 @@
-import type { PastEvent } from "./PastEvents";
+import { eventsByYear, type PastEvent } from "./PastEvents";
 
 // Extra details for the events archive: a category for the filter pills, a couple of tags for the cards,
 // and a friendlier display title. Keyed by the event's `title` in PastEvents.tsx.
@@ -43,6 +43,23 @@ export const metaOf = (e: PastEvent): Meta =>
   META[e.title] ?? { category: "Community", tags: [], name: undefined };
 
 export const nameOf = (e: PastEvent) => metaOf(e).name ?? e.title;
+
+/** URL-safe slug derived from the event's title — the identity used in /events/:year/:slug links. */
+export const slugOf = (e: PastEvent) =>
+  e.title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+/** The route to an event's detail page, built from its title + year instead of a stored id. */
+export const eventHref = (e: PastEvent, year: string) => `/events/${encodeURIComponent(year)}/${slugOf(e)}`;
+
+/** Looks an event up by year + slug (as found in the /events/:year/:slug URL), so the detail page
+ * can resolve directly from the route instead of depending only on router navigation state. */
+export const findEventBySlug = (year: string | undefined, slug: string | undefined): PastEvent | undefined => {
+  if (!year || !slug) return undefined;
+  return eventsByYear[year]?.find((e) => slugOf(e) === slug);
+};
 
 /** "12th & 13th" + "February, 2026" -> "12th & 13th Feb, 2026" */
 export const dateOf = (e: PastEvent) => {
