@@ -15,7 +15,7 @@ ScrollTrigger.clearScrollMemory("manual");
 //  - a little spark burst where you click
 // The full-screen gallery, the Adsophos experience, the admin screens and the practice editor keep native scrolling.
 
-const SMOOTH = ["/", "/v1", "/events", "/team-page", "/contact", "/projects", "/blogs", "/techfaceoff", "/buildweek-form", "/score"];
+const SMOOTH = ["/", "/events", "/team-page", "/contact", "/projects", "/blogs", "/techfaceoff", "/buildweek-form", "/score"];
 
 export default function SiteEffects() {
   const { pathname } = useLocation();

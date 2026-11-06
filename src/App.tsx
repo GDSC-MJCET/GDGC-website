@@ -6,7 +6,6 @@ import './App.css'
 // import { ApplicationFormPage } from './pages/ApplicationFormPage'
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 // import HomePage from './pages/HomePage';
-import LandingV1Page from './pages/LandingV1Page';
 import ProjectsPage from './pages/ProjectsPage';
 import BlogsPage from './pages/BlogsPage';
 // import AboutPage from './pages/AboutPage';
@@ -277,7 +276,6 @@ function AppWithRouter() {
           <Routes>
             {/* Public   pages */}
             <Route path="/" element={<HomePage />} />
-              <Route path="v1" element={<LandingV1Page />} />
               <Route path="initialsetup/:id" element={<InitialSetup />} />
               <Route path="contact" element={<ContactUsPage />} />
               <Route path="login" element={<LoginPage />} />

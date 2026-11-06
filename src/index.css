@@ -12,20 +12,6 @@ body {
   overflow-x: clip;
 }
 
-@keyframes landing-marquee {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-.animate-marquee {
-  animation: landing-marquee var(--marquee-duration, 40s) linear infinite;
-}
-
-.animate-marquee-reverse {
-  animation: landing-marquee var(--marquee-duration, 40s) linear infinite reverse;
-}
-
 @keyframes marquee-y {
   to {
     transform: translateY(-50%);
@@ -52,9 +38,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee-y,
-  .animate-marquee-y-reverse,
-  .animate-marquee,
-  .animate-marquee-reverse {
+  .animate-marquee-y-reverse {
     animation: none;
   }
 }
