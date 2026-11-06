@@ -6,28 +6,25 @@ import './App.css'
 // import { ApplicationFormPage } from './pages/ApplicationFormPage'
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 // import HomePage from './pages/HomePage';
+import LandingV1Page from './pages/LandingV1Page';
+import ProjectsPage from './pages/ProjectsPage';
+import BlogsPage from './pages/BlogsPage';
 // import AboutPage from './pages/AboutPage';
 import { ThemeProvider } from './components/theme-provider';
 import SiteEffects from './components/fx/SiteEffects';
-import IntroSplash from './components/intro/IntroSplash';
-import { shouldShowIntro } from './components/intro/introEvents';
 import gdg from "./assets/silkbg.png"
 import LiquidEther from './components/LiquidEther';
 
 
 
 import SignUpPage from './pages/SignUpPage';
-import Footer from './components/footer/footer';
-import HeadingSection from './components/heading-section'
 import LoginPage from './pages/LoginPage'
 import ForgotPassword from './pages/ForgotPassword';
 import InitialSetup from './pages/InitialSetup'
 import Dashboard from './pages/Dashboard'
 import QrChange from './pages/QrChange'
-import Portfolio from './pages/Socials'
 import SideBae from './components/SideBae'
 import BlogWrite from './pages/BlogWrite'
-import { Card, CardHeader } from './components/ui/card'
 import BlogHome from './pages/BlogHomePage';
 import SpecificBlog from './pages/SpecificBlogPage';
 import BlogHelp from './pages/BlogHelp';
@@ -77,53 +74,6 @@ import ContentManagementPage from './pages/ContentManagementPage';
 import SuperAdminBlogPanel from './pages/SuperAdminBlog';
 import TeamMemberManager from './pages/TeamMemberManager';
 // import TweetHomeLayout from './pages/TweetHome';
-
-function App() {
-  const [isVerified, setIsVerified] = useState<boolean | null>(null);
-  const auth: AuthState | null = JSON.parse(localStorage.getItem("AuthState") ?? "null")
-  const nav = useNavigate();
-  useEffect(() => {
-    const verifyUser = async () => {
-      try {
-        const res = await axios.get(
-          (import.meta.env.VITE_SERVER) +
-          "/api/v1/auth/simple-verify",
-          {
-            headers: {
-              Authorization: `Bearer ${auth?.token}`,
-            },
-          }
-        );
-        setIsVerified(res.data.success);
-      } catch {
-        setIsVerified(false);
-      }
-    };
-    verifyUser();
-  }, [auth?.token]);
-  if (isVerified == null) {
-    return <div className='bg-white dark:bg-black'></div>
-  }
-
-  return (
-    <div className=" min-h-screen w-full bg-white dark:bg-black flex flex-col items-center justify-center px-4">
-      <div className="fixed top-4 right-4 z-10">
-        {isVerified ?
-          <button className="border-none text-black dark:text-white px-2 py-1 shadow text-base md:text-lg hover:bg-white hover:text-black hover:border hover:rounded-xl" onClick={() => { nav("/team/dashboard") }}>Dashboard</button>
-          : <button className="border-none text-black dark:text-white px-2 py-1 shadow text-base md:text-lg hover:bg-white hover:text-black hover:border hover:rounded-xl" onClick={() => { nav("/login") }}>Login</button>
-        }
-      </div>
-      <div className="text-center space-y-6">
-        <h1 className="text-4xl md:text-6xl font-bold text-black dark:text-white">
-          Coming Soon
-        </h1>
-        <p className="text-gray-700 dark:text-gray-400 text-lg md:text-xl max-w-md mx-auto">
-          We're working on something exciting. Stay tuned!
-        </p>
-      </div>
-    </div>
-  );
-}
 
 function PopUpMenu({ name, email, closePopup, triggerRef }: {
   name: string;
@@ -318,17 +268,16 @@ function AppWithRouter() {
   const [authState, setAuthState] = useState(initialAuthContext);
   // While the intro plays, the site behind it stays unmounted so its heavy animations
   // (fluid sim, particle globe) don't compete with the intro for the frame budget.
-  const [appReady, setAppReady] = useState(() => !shouldShowIntro());
 
   return (
     <AuthContext.Provider value={{ authState, setAuthState }}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <IntroSplash onLeave={() => setAppReady(true)} />
-        {appReady && <Router>
+        <Router>
           <SiteEffects />
           <Routes>
             {/* Public   pages */}
             <Route path="/" element={<HomePage />} />
+              <Route path="v1" element={<LandingV1Page />} />
               <Route path="initialsetup/:id" element={<InitialSetup />} />
               <Route path="contact" element={<ContactUsPage />} />
               <Route path="login" element={<LoginPage />} />
@@ -339,11 +288,11 @@ function AppWithRouter() {
               <Route path="buildweek-form" element={<BuildWeekForm />} />
               <Route path='score' element={<ScorePage />} />
               <Route path="events" element={<EventsPage />} />
-              <Route path="event-details" element={<EventDetails />} />
+              <Route path="events/:year/:slug" element={<EventDetails />} />
               <Route path="team-page" element={<TeamPage />} />
               <Route path="gallery" element={<GalleryPage />} />
-              <Route path="projects" element={<ComingSoon pageName="Projects" />} />
-              <Route path="blogs" element={<ComingSoon pageName="Blogs" />} />
+              <Route path="projects" element={<ProjectsPage />} />
+              <Route path="blogs" element={<BlogsPage />} />
               <Route path='adsophos' element={<Adsophos />}>
             </Route>
             <Route path='photobooth' element={<PhotoBooth />} />
@@ -412,7 +361,7 @@ function AppWithRouter() {
             {/* Catch-all 404 route */}
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </Router>}
+        </Router>
       </ThemeProvider>
     </AuthContext.Provider>
   )

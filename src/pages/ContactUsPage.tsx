@@ -1,5 +1,5 @@
 import React, { useState, type ChangeEvent, type FormEvent } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowUpRight, Check } from "lucide-react";
 import {
   IconBrandGithub,
@@ -17,8 +17,8 @@ import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import AmbientGlow from "../components/home/AmbientGlow";
 import { axiosResponse } from "../lib/http";
-
-const EASE = [0.22, 1, 0.36, 1] as const;
+import { Dot, GlassCard, Outline } from "../components/fx/designSystem";
+import { EASE, GOOGLE_HEX, HEADLINE_CLAMP } from "../components/fx/tokens";
 
 const CHANNELS = [
   { label: "Email", value: "gdscmjcet@gmail.com", href: "mailto:gdscmjcet@gmail.com", icon: IconMail, tone: "text-white" },
@@ -40,8 +40,6 @@ const SOCIALS = [
   { label: "GitHub", href: "https://github.com/GDSC-MJCET", icon: IconBrandGithub },
 ];
 
-const card =
-  "rounded-2xl border border-white/15 bg-white/[0.03] p-6 shadow-[0_8px_32px_rgba(0,0,0,0.3)] backdrop-blur-sm sm:p-9";
 const field =
   "w-full rounded-lg border border-white/20 bg-white/[0.04] px-4 py-3 text-white placeholder-white/40 transition-colors focus:border-white/50 focus:outline-none";
 const label = "mb-2 block text-sm text-white/70";
@@ -49,8 +47,8 @@ const label = "mb-2 block text-sm text-white/70";
 // A small orbit drawing for the hero: rings, a vertical axis, and dots on the rings.
 function Orbit() {
   const rings = [
-    { r: 150, dots: [[-58, "#4285F4", 9], [62, "#EA4335", 9]] },
-    { r: 92, dots: [[-30, "#34A853", 10], [115, "#FBBC05", 9]] },
+    { r: 150, dots: [[-58, GOOGLE_HEX.blue, 9], [62, GOOGLE_HEX.red, 9]] },
+    { r: 92, dots: [[-30, GOOGLE_HEX.green, 10], [115, GOOGLE_HEX.yellow, 9]] },
   ] as const;
   return (
     <svg aria-hidden viewBox="-170 -170 340 340" className="h-full w-full">
@@ -116,28 +114,23 @@ const ContactUsPage = () => {
         <AmbientGlow />
         <main className="relative mx-auto max-w-[1300px] px-6 pt-10 pb-24 sm:px-10">
           {/* hero */}
-          <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_260px]">
+          <div className="grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_260px]">
             <motion.div {...rise()}>
               <p className="flex items-center gap-3 text-[11px] font-medium tracking-[0.3em] text-white/60 uppercase">
                 <span aria-hidden className="h-2 w-2 rounded-full bg-google-green shadow-[0_0_10px_#34A853]" />
                 Get in touch / GDGC MJCET
               </p>
-              <h1 className="mt-5 text-[clamp(2.4rem,5.2vw,4.5rem)] leading-[1] font-black tracking-[-0.03em] text-white">
+              <h1 className={`mt-5 leading-[1] font-black tracking-[-0.03em] text-white ${HEADLINE_CLAMP}`}>
                 Have a question?
-                <span className="mt-1 block lg:whitespace-nowrap">
-                  <span className="text-transparent" style={{ WebkitTextStroke: "2px #4285F4", paintOrder: "stroke fill" }}>
+                <span className="mt-1 block md:whitespace-nowrap">
+                  <span className="text-transparent" style={{ WebkitTextStroke: `2px ${GOOGLE_HEX.blue}`, paintOrder: "stroke fill" }}>
                     Let&apos;s
                   </span>{" "}
-                  <span className="text-transparent" style={{ WebkitTextStroke: "2px #34A853", paintOrder: "stroke fill" }}>
+                  <span className="text-transparent" style={{ WebkitTextStroke: `2px ${GOOGLE_HEX.green}`, paintOrder: "stroke fill" }}>
                     build
                   </span>{" "}
-                  <span
-                    className="text-transparent"
-                    style={{ WebkitTextStroke: "2px rgba(255,255,255,0.92)", paintOrder: "stroke fill" }}
-                  >
-                    something
-                  </span>
-                  <span className="ml-[0.04em] inline-block h-[0.13em] w-[0.13em] rounded-full bg-google-red align-baseline" />
+                  <Outline>something</Outline>
+                  <Dot color="bg-google-red" />
                 </span>
               </h1>
               <p className="mt-6 max-w-[34rem] text-lg leading-relaxed text-white/65">
@@ -145,112 +138,142 @@ const ContactUsPage = () => {
                 something amazing together.
               </p>
             </motion.div>
-            <motion.div {...rise(0.15)} className="mx-auto hidden aspect-square w-full max-w-[300px] lg:block">
+            <motion.div {...rise(0.15)} className="mx-auto hidden aspect-square w-full max-w-[300px] md:block">
               <Orbit />
             </motion.div>
           </div>
 
           {/* channels and the form */}
-          <div className="mt-14 grid gap-6 lg:grid-cols-2 lg:gap-8">
-            <motion.section {...rise(0.1)} className={card}>
-              <h2 className="text-2xl font-semibold text-white">Find your people</h2>
-              <p className="mt-1.5 text-sm text-white/60">Reach out to us through any of the following channels.</p>
+          <div className="mt-14 grid gap-6 md:grid-cols-2 md:gap-8">
+            <motion.div {...rise(0.1)}>
+              <GlassCard className="p-6 shadow-[0_8px_32px_rgba(0,0,0,0.3)] sm:p-9">
+                <h2 className="text-2xl font-semibold text-white">Find your people</h2>
+                <p className="mt-1.5 text-sm text-white/60">Reach out to us through any of the following channels.</p>
 
-              <ul className="mt-7">
-                {CHANNELS.map(({ label: l, value, icon: Icon, tone, ...rest }) => {
-                  const href = "href" in rest ? rest.href : undefined;
-                  const body = (
-                    <>
-                      <span
-                        className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/12 bg-white/[0.05] ${tone}`}
-                      >
-                        <Icon size={20} />
-                      </span>
-                      <span className="min-w-0">
-                        <span className="block text-sm text-white/55">{l}</span>
-                        <span className="mt-0.5 block text-lg leading-snug text-white">{value}</span>
-                      </span>
-                    </>
-                  );
-                  return (
-                    <li key={l} className="border-b border-white/10 last:border-b-0">
-                      {href ? (
-                        <a
-                          href={href}
-                          target={href.startsWith("http") ? "_blank" : undefined}
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-5 py-4 transition-opacity hover:opacity-80"
+                <ul className="mt-7">
+                  {CHANNELS.map(({ label: l, value, icon: Icon, tone, ...rest }, i) => {
+                    const href = "href" in rest ? rest.href : undefined;
+                    const body = (
+                      <>
+                        <span
+                          className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/12 bg-white/[0.05] ${tone}`}
                         >
-                          {body}
-                        </a>
-                      ) : (
-                        <div className="flex items-center gap-5 py-4">{body}</div>
+                          <Icon size={20} />
+                        </span>
+                        <span className="min-w-0">
+                          <span className="block text-sm text-white/55">{l}</span>
+                          <span className="mt-0.5 block text-lg leading-snug text-white">{value}</span>
+                        </span>
+                      </>
+                    );
+                    return (
+                      <motion.li
+                        key={l}
+                        className="border-b border-white/10 last:border-b-0"
+                        initial={reduce ? false : { opacity: 0, x: -12 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.6, delay: 0.3 + i * 0.07, ease: EASE }}
+                      >
+                        {href ? (
+                          <a
+                            href={href}
+                            target={href.startsWith("http") ? "_blank" : undefined}
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-5 py-4 transition-opacity hover:opacity-80"
+                          >
+                            {body}
+                          </a>
+                        ) : (
+                          <div className="flex items-center gap-5 py-4">{body}</div>
+                        )}
+                      </motion.li>
+                    );
+                  })}
+                </ul>
+
+                <p className="mt-6 text-sm text-white/55">Follow us for the latest updates, events and announcements.</p>
+                <div className="mt-4 flex gap-3">
+                  {SOCIALS.map(({ label: l, href, icon: Icon }) => (
+                    <a
+                      key={l}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={l}
+                      className="flex h-12 w-12 items-center justify-center rounded-full border border-white/25 text-white transition-colors hover:border-white/70 hover:bg-white/10"
+                    >
+                      <Icon size={20} />
+                    </a>
+                  ))}
+                </div>
+              </GlassCard>
+            </motion.div>
+
+            <motion.div {...rise(0.2)}>
+              <GlassCard className="p-6 shadow-[0_8px_32px_rgba(0,0,0,0.3)] sm:p-9">
+                <h2 className="text-2xl font-semibold text-white">Send a message</h2>
+                <p className="mt-1.5 text-sm text-white/60">Tell us what you&apos;re working on. We&apos;ll get back to you soon.</p>
+
+                <form onSubmit={handleSubmit} className="mt-7 space-y-5">
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <div>
+                      <label htmlFor="c-name" className={label}>Name</label>
+                      <input id="c-name" type="text" name="name" value={formData.name} onChange={handleChange} required className={field} placeholder="Your Name" autoComplete="name" />
+                    </div>
+                    <div>
+                      <label htmlFor="c-email" className={label}>Email</label>
+                      <input id="c-email" type="email" name="email" value={formData.email} onChange={handleChange} required className={field} placeholder="your@email.com" autoComplete="email" />
+                    </div>
+                  </div>
+                  <div>
+                    <label htmlFor="c-subject" className={label}>Subject</label>
+                    <input id="c-subject" type="text" name="subject" value={formData.subject} onChange={handleChange} required className={field} placeholder="What's this about?" />
+                  </div>
+                  <div>
+                    <label htmlFor="c-message" className={label}>Message</label>
+                    <textarea id="c-message" name="message" value={formData.message} onChange={handleChange} required rows={5} className={`${field} resize-none`} placeholder="Tell us more..." />
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-4">
+                    <button
+                      type="submit"
+                      disabled={status === "sending"}
+                      className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-black shadow-[0_0_0_rgba(255,255,255,0)] transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_28px_rgba(255,255,255,0.35)] disabled:opacity-60"
+                    >
+                      {status === "sending" ? "Sending…" : "Send message"} <ArrowUpRight size={15} />
+                    </button>
+                    <AnimatePresence mode="wait">
+                      {status === "sent" && (
+                        <motion.p
+                          key="sent"
+                          role="status"
+                          aria-live="polite"
+                          initial={{ opacity: 0, y: 6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -6 }}
+                          className="inline-flex items-center gap-2 text-sm text-google-green"
+                        >
+                          <Check size={16} /> Message sent. Thank you!
+                        </motion.p>
                       )}
-                    </li>
-                  );
-                })}
-              </ul>
-
-              <p className="mt-6 text-sm text-white/55">Follow us for the latest updates, events and announcements.</p>
-              <div className="mt-4 flex gap-3">
-                {SOCIALS.map(({ label: l, href, icon: Icon }) => (
-                  <a
-                    key={l}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={l}
-                    className="flex h-12 w-12 items-center justify-center rounded-full border border-white/25 text-white transition-colors hover:border-white/70 hover:bg-white/10"
-                  >
-                    <Icon size={20} />
-                  </a>
-                ))}
-              </div>
-            </motion.section>
-
-            <motion.section {...rise(0.2)} className={card}>
-              <h2 className="text-2xl font-semibold text-white">Send a message</h2>
-              <p className="mt-1.5 text-sm text-white/60">Tell us what you&apos;re working on. We&apos;ll get back to you soon.</p>
-
-              <form onSubmit={handleSubmit} className="mt-7 space-y-5">
-                <div className="grid gap-5 sm:grid-cols-2">
-                  <div>
-                    <label htmlFor="c-name" className={label}>Name</label>
-                    <input id="c-name" type="text" name="name" value={formData.name} onChange={handleChange} required className={field} placeholder="Your Name" autoComplete="name" />
+                      {status === "error" && (
+                        <motion.p
+                          key="error"
+                          role="status"
+                          aria-live="polite"
+                          initial={{ opacity: 0, y: 6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -6 }}
+                          className="text-sm text-google-red"
+                        >
+                          {error}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
                   </div>
-                  <div>
-                    <label htmlFor="c-email" className={label}>Email</label>
-                    <input id="c-email" type="email" name="email" value={formData.email} onChange={handleChange} required className={field} placeholder="your@email.com" autoComplete="email" />
-                  </div>
-                </div>
-                <div>
-                  <label htmlFor="c-subject" className={label}>Subject</label>
-                  <input id="c-subject" type="text" name="subject" value={formData.subject} onChange={handleChange} required className={field} placeholder="What's this about?" />
-                </div>
-                <div>
-                  <label htmlFor="c-message" className={label}>Message</label>
-                  <textarea id="c-message" name="message" value={formData.message} onChange={handleChange} required rows={5} className={`${field} resize-none`} placeholder="Tell us more..." />
-                </div>
-
-                <div className="flex flex-wrap items-center gap-4">
-                  <button
-                    type="submit"
-                    disabled={status === "sending"}
-                    className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-black transition-transform hover:scale-[1.03] disabled:opacity-60"
-                  >
-                    {status === "sending" ? "Sending…" : "Send message"} <ArrowUpRight size={15} />
-                  </button>
-                  <p role="status" aria-live="polite" className="text-sm">
-                    {status === "sent" && (
-                      <span className="inline-flex items-center gap-2 text-google-green">
-                        <Check size={16} /> Message sent. Thank you!
-                      </span>
-                    )}
-                    {status === "error" && <span className="text-google-red">{error}</span>}
-                  </p>
-                </div>
-              </form>
-            </motion.section>
+                </form>
+              </GlassCard>
+            </motion.div>
           </div>
         </main>
       </div>
