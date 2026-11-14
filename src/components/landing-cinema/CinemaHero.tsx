@@ -1,17 +1,20 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import MarkBackdrop from "./MarkBackdrop";
 import { Dot, Outline } from "../fx/designSystem";
 import { EASE } from "../fx/tokens";
+import { useQuality } from "../fx/quality";
 import { JOIN_URL, WRAP } from "./theme";
 
 // The hero is a scene you scroll through. It stays pinned while: the line lifts and blurs away, the camera
 // flies into the GDG mark (the intro settles into this same mark), a caption passes in the dark, and then the
 // page carries on.
 export default function CinemaHero({ ready }: { ready: boolean }) {
-  const reduce = !!useReducedMotion();
+  const quality = useQuality();
+  const reduce = quality === "static";
+  const full = quality === "full";
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress: p } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
@@ -20,7 +23,8 @@ export default function CinemaHero({ ready }: { ready: boolean }) {
   const shade = useTransform(p, [0, 0.3], [1, 0.4]);
   const textOpacity = useTransform(p, [0, 0.28], [1, 0]);
   const textY = useTransform(p, [0, 0.28], [0, reduce ? 0 : -110]);
-  const textBlur = useTransform(p, [0, 0.28], ["blur(0px)", reduce ? "blur(0px)" : "blur(12px)"]);
+  // blurring the type as it leaves repaints it on every scroll frame, so only the full tier does it
+  const textBlur = useTransform(p, [0, 0.28], ["blur(0px)", "blur(12px)"]);
   const capOpacity = useTransform(p, [0.42, 0.55, 0.78, 0.92], [0, 1, 1, 0]);
   const capScale = useTransform(p, [0.42, 0.92], [0.92, 1.08]);
   const cueOpacity = useTransform(p, [0, 0.08], [1, 0]);
@@ -64,7 +68,7 @@ export default function CinemaHero({ ready }: { ready: boolean }) {
           </p>
         </motion.div>
 
-        <motion.div className={`${WRAP} pb-10 sm:pb-14`} style={{ opacity: textOpacity, y: textY, filter: textBlur }}>
+        <motion.div className={`${WRAP} pb-10 sm:pb-14`} style={{ opacity: textOpacity, y: textY, filter: full ? textBlur : undefined }}>
           <motion.p {...enter(0.05, 12)} className="flex items-center gap-2 text-[10px] font-medium tracking-[0.18em] whitespace-nowrap text-white/70 uppercase sm:gap-3 sm:text-[11px] sm:tracking-[0.3em]">
             Students <span className="text-white/35">×</span> Technology <span className="text-white/35">×</span> Real Impact
             <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-google-yellow" />

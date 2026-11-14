@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { animate, motion, useMotionValue } from "motion/react";
 import HoneycombMark from "./Honeycomb";
-import { INTRO_PHOTOS, MARK_WIDTH, markIntroSeen } from "./mark";
+import MarkLoop from "./MarkLoop";
+import { INTRO_PHOTOS, MARK_WIDTH, heroLoop, markIntroSeen } from "./mark";
+import { getQuality, holdFrameWatch } from "../fx/quality";
 
 type Phase = "load" | "flip" | "title" | "exit";
 
@@ -14,10 +16,16 @@ const PULL_EASE = [0.25, 0.1, 0.2, 1] as const;
 // our events whose cells flip fast, while the camera slowly pulls back until the mark is exactly the size of the
 // one behind the hero. The name comes up, then the black fades away and the mark simply stays: it is the hero's
 // backdrop (same cells). Click or press a key to skip.
+// The fast-flipping honeycomb is drawn live, which is heavy, so only the full tier gets it; the others pull
+// back from the hero's own video loop instead.
 export default function CinemaIntro({ onDone }: { onDone: () => void }) {
   const [phase, setPhase] = useState<Phase>("load");
   const timers = useRef<number[]>([]);
   const zoom = useMotionValue(START_SCALE);
+  const [live] = useState(() => getQuality() === "full");
+
+  // the intro is heavy on purpose: it should not count against the device in the frame watch
+  useEffect(() => holdFrameWatch(), []);
 
   const later = (ms: number, fn: () => void) => timers.current.push(window.setTimeout(fn, ms));
   const clearTimers = () => {
@@ -40,7 +48,7 @@ export default function CinemaIntro({ onDone }: { onDone: () => void }) {
   // wait (briefly) for the photos, so the first frames are not empty
   useEffect(() => {
     let alive = true;
-    const loads = INTRO_PHOTOS.map(
+    const loads = (live ? INTRO_PHOTOS : [heroLoop(960).still]).map(
       (src) =>
         new Promise<void>((resolve) => {
           const img = new Image();
@@ -54,7 +62,7 @@ export default function CinemaIntro({ onDone }: { onDone: () => void }) {
     return () => {
       alive = false;
     };
-  }, []);
+  }, [live]);
 
   // the timeline, once the photos are in
   const started = phase !== "load";
@@ -101,7 +109,7 @@ export default function CinemaIntro({ onDone }: { onDone: () => void }) {
     >
       <div className="absolute inset-0 flex items-center justify-center">
         <motion.div className="shrink-0" style={{ width: MARK_WIDTH, scale: zoom }}>
-          <HoneycombMark mode={phase === "flip" ? "fast" : "calm"} running={started} />
+          {live ? <HoneycombMark mode={phase === "flip" ? "fast" : "calm"} running={started} /> : <MarkLoop />}
         </motion.div>
       </div>
 

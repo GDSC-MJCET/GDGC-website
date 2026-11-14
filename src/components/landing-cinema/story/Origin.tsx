@@ -1,10 +1,11 @@
 import { useEffect, useRef } from "react";
 import { createNoise3D } from "simplex-noise";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { clamp01, seeded, smooth } from "./rand";
 import { BARS, BAR_LENGTH, BAR_THICKNESS } from "../mark";
 import { Dot, Outline } from "../../fx/designSystem";
 import { GOOGLE_HEX } from "../../fx/tokens";
+import { useQuality } from "../../fx/quality";
 
 const FIRST = 5; // the founding handful
 const BIRTH_START = 0.04;
@@ -30,8 +31,8 @@ type Particle = Target & { r0: number; sx: number; sy: number; birth: number; de
 
 // Where every dot ends up for a w x h screen: the GDG mark with the three pillars written beneath it, all on
 // one dot grid, so mark and words read as a single picture. Each shape is drawn off-screen and a dot is
-// placed on every lit cell of the grid.
-function layout(w: number, h: number): Target[] {
+// placed on every lit cell of the grid. spacing > 1 spreads the grid out, for fewer (and bigger) dots.
+function layout(w: number, h: number, spacing = 1): Target[] {
   const rand = seeded(2023);
   const narrow = w < 768;
   const targets: Target[] = [];
@@ -50,7 +51,7 @@ function layout(w: number, h: number): Target[] {
   const fit = narrow ? (w * 0.84) / Math.max(...widths()) : (w * 0.86) / (widths().reduce((a, b) => a + b, 0) + gapEm * size * (WORDS.length - 1));
   size = Math.min(size * fit, narrow ? 80 : 110);
   ctx.font = font(size);
-  const step = Math.max(4, size * 0.085);
+  const step = Math.max(4, size * 0.085) * spacing;
 
   const sample = (draw: () => void, color: string, group: number, orderOf: (x: number) => number, orderOfY?: (x: number, y: number) => number) => {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -142,8 +143,12 @@ function makeParticles(targets: Target[]): Particle[] {
 // "Our Pillars": five glowing dots multiply into a restless, noise-driven crowd. Then, in turn, dots break
 // away to build one picture: the GDG mark bar by bar, then Community, Learning and Outreach, each written
 // left to right. Even once formed, every dot keeps trembling and flickering with noise.
+// It only draws while it is on screen. The lite tier gets fewer dots on a smaller canvas, and the static
+// tier a single finished frame.
 export default function Origin() {
-  const reduce = !!useReducedMotion();
+  const quality = useQuality();
+  const reduce = quality === "static";
+  const lite = quality !== "full";
   const ref = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { scrollYProgress: p } = useScroll({ target: ref, offset: ["start start", "end end"] });
@@ -157,19 +162,26 @@ export default function Origin() {
     let w = 0;
     let h = 0;
     let particles: Particle[] = [];
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let visible = false;
+    let alive = true;
+    const dpr = Math.min(window.devicePixelRatio || 1, lite ? 1.5 : 2);
     const noise = createNoise3D(seeded(11));
+    const start = () => {
+      if (!raf && visible) raf = requestAnimationFrame(draw);
+    };
     const build = () => {
+      if (!alive) return; // the font can finish loading after the scene is gone
       w = canvas.clientWidth;
       h = canvas.clientHeight;
       canvas.width = w * dpr;
       canvas.height = h * dpr;
-      particles = makeParticles(layout(w, h));
+      particles = makeParticles(layout(w, h, lite ? 1.3 : 1));
+      start();
     };
-    build();
-    // the words are drawn with the page font, so lay them out again once it has loaded
-    document.fonts?.ready.then(build);
-    window.addEventListener("resize", build);
+    // phones fire resize every time the address bar hides or shows: only lay out again if the size changed
+    const onResize = () => {
+      if (canvas.clientWidth !== w || canvas.clientHeight !== h) build();
+    };
 
     const draw = (now: number) => {
       const prog = reduce ? 1 : p.get();
@@ -200,14 +212,25 @@ export default function Origin() {
         ctx.fill();
       }
       ctx.globalAlpha = 1;
-      raf = requestAnimationFrame(draw);
+      // keep going only while the scene is on screen (and not at all when motion is off: one frame is enough)
+      raf = visible && !reduce ? requestAnimationFrame(draw) : 0;
     };
-    raf = requestAnimationFrame(draw);
+    build();
+    // the words are drawn with the page font, so lay them out again once it has loaded
+    document.fonts?.ready.then(build);
+    window.addEventListener("resize", onResize);
+    const seen = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      start();
+    });
+    seen.observe(canvas);
     return () => {
+      alive = false;
       cancelAnimationFrame(raf);
-      window.removeEventListener("resize", build);
+      seen.disconnect();
+      window.removeEventListener("resize", onResize);
     };
-  }, [p, reduce]);
+  }, [p, reduce, lite]);
 
   return (
     <section ref={ref} aria-label="Our pillars" className="relative h-[520vh]">

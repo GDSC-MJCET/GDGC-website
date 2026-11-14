@@ -28,6 +28,21 @@ export const barRect = {
 
 export const barTransform = (b: Bar) => `translate(${b.x} ${b.y}) rotate(${b.angle})`;
 
+// The mark as a CSS mask image (the four bars, solid), for cutting the hero's video loop to the logo's shape.
+const MASK_SVG =
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${MARK_VIEWBOX}" preserveAspectRatio="none">` +
+  BARS.map((b) => `<rect x="${barRect.x}" y="${barRect.y}" width="${barRect.width}" height="${barRect.height}" rx="${barRect.rx}" transform="${barTransform(b)}"/>`).join("") +
+  "</svg>";
+export const MARK_MASK = `url("data:image/svg+xml,${encodeURIComponent(MASK_SVG)}")`;
+
+// The honeycomb loop behind the hero: a short video of the cells swapping photos, baked by `npm run hero`
+// (scripts/bake-hero.mjs) into public/home/hero/. Each size has a still of its first frame beside it.
+export const HERO_LOOP_SIZES = [1280, 960] as const;
+export const heroLoop = (size: (typeof HERO_LOOP_SIZES)[number]) => ({
+  video: `/home/hero/mark-${size}.mp4`,
+  still: `/home/hero/mark-${size}.webp`,
+});
+
 // Photos the intro (and the hero backdrop) flips through inside the bars, from the current phases only:
 // Phase Three events (Tech Face-Off, Pixel X, Adsophos, Antigravity, FPTR) alternating with Phase Four's
 // Orientation Day (the orientation-* photos come from the gallery). Web-sized copies in public/home/community/.
