@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { Hand, Mic, MicOff, MonitorUp, PhoneOff, Users, Video } from "lucide-react";
 
 // A Northiers call, drawn in its own design language (flat GDGC colours, rounded tiles, one floating
-// control bar). The speaker moves around the room and someone raises a hand now and then.
+// control bar). The speaker moves around the room and someone raises a hand now and then, but only while the
+// mock is on screen.
 const PEOPLE = [
   { name: "Afzal", tint: "#4285F4" },
   { name: "Misbah", tint: "#EA4335" },
@@ -17,9 +18,20 @@ export default function CallMock() {
   const reduce = !!useReducedMotion();
   const [speaker, setSpeaker] = useState(0);
   const [hand, setHand] = useState<number | null>(null);
+  const box = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (reduce) return;
+    const el = box.current;
+    if (!el) return;
+    const seen = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting));
+    seen.observe(el);
+    return () => seen.disconnect();
+  }, []);
+
+  const live = visible && !reduce;
+  useEffect(() => {
+    if (!live) return;
     let n = 0;
     const id = window.setInterval(() => {
       n++;
@@ -27,10 +39,10 @@ export default function CallMock() {
       setHand(n % 3 === 0 ? (n * 2) % PEOPLE.length : null);
     }, 2200);
     return () => window.clearInterval(id);
-  }, [reduce]);
+  }, [live]);
 
   return (
-    <div aria-hidden className="overflow-hidden rounded-[1.75rem] bg-white p-3 text-[#202124] shadow-[0_60px_140px_-40px_rgba(66,133,244,0.45)] sm:p-4">
+    <div ref={box} aria-hidden className="overflow-hidden rounded-[1.75rem] bg-white p-3 text-[#202124] shadow-[0_60px_140px_-40px_rgba(66,133,244,0.45)] sm:p-4">
       <div className="flex items-center justify-between px-2 pb-3 text-xs sm:text-sm">
         <span className="flex items-center gap-2 font-bold">
           <span className="rounded-full bg-[#34A853] px-2.5 py-0.5 text-[10px] font-bold tracking-wide text-[#202124] uppercase">Live</span>
@@ -45,18 +57,16 @@ export default function CallMock() {
         {PEOPLE.map((p, i) => {
           const on = i === speaker;
           return (
-            <motion.div
+            <div
               key={p.name}
-              layout
-              className="relative flex aspect-[4/3] items-center justify-center rounded-2xl sm:rounded-3xl"
+              className="relative flex aspect-[4/3] items-center justify-center rounded-2xl transition-colors duration-500 sm:rounded-3xl"
               style={{ background: on ? p.tint : "#F1F3F4" }}
-              transition={{ duration: 0.5 }}
             >
               <motion.span
                 className="flex h-10 w-10 items-center justify-center rounded-full text-base font-black sm:h-14 sm:w-14 sm:text-xl"
                 style={{ background: on ? "#FFFFFF" : p.tint, color: on ? p.tint : "#FFFFFF" }}
-                animate={on && !reduce ? { scale: [1, 1.12, 1] } : { scale: 1 }}
-                transition={{ duration: 0.9, repeat: on ? Infinity : 0 }}
+                animate={on && live ? { scale: [1, 1.12, 1] } : { scale: 1 }}
+                transition={{ duration: 0.9, repeat: on && live ? Infinity : 0 }}
               >
                 {p.name[0]}
               </motion.span>
@@ -74,7 +84,7 @@ export default function CallMock() {
                   <Hand size={13} />
                 </motion.span>
               )}
-            </motion.div>
+            </div>
           );
         })}
       </div>

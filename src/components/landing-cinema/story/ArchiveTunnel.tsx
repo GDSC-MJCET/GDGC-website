@@ -1,65 +1,16 @@
 import { useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
+import { motion, useMotionValueEvent, useScroll, useTransform, type MotionValue } from "motion/react";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Chapter from "./Chapter";
+import { ITEMS, POSTERS, ROMAN, STOPS, type Item } from "./archiveItems";
 import { seeded } from "./rand";
 import { Dot, Outline } from "../../fx/designSystem";
-import { eventsByYear, YEARS, type PastEvent } from "../../events/PastEvents";
-import { dateOf, eventHref, nameOf, sortKey } from "../../events/eventMeta";
 import { JOIN_URL } from "../theme";
-import { CURRENT_EVENTS, CURRENT_YEAR } from "../../events/currentPhase";
 import { scrollToTarget } from "../../fx/smooth";
+import { getQuality } from "../../fx/quality";
 
-const NUMERALS = ["One", "Two", "Three", "Four", "Five"];
-const DOTS = ["bg-google-green", "bg-google-red", "bg-google-blue", "bg-google-yellow"];
-const PER_PHASE = 4;
 const GAP = 900; // px of depth between items
-
-type Poster = { kind: "poster"; key: string; name: string; date: string; image: string; to: string; state?: unknown };
-type Item =
-  | { kind: "intro" }
-  | { kind: "phase"; name: string; year: string; meta: string; dot: string; now: boolean }
-  | Poster
-  | { kind: "end" };
-
-const phaseName = (n: number) => NUMERALS[n - 1] ?? String(n);
-const phaseDot = (n: number) => DOTS[(n - 1) % DOTS.length];
-
-// Oldest year first, so scrolling travels forward in time; within a year its latest few events, in date order.
-const PAST = [...YEARS].reverse();
-const ITEMS: Item[] = [
-  { kind: "intro" },
-  ...PAST.flatMap((year, idx): Item[] => {
-    const n = idx + 1;
-    const all = [...(eventsByYear[year] ?? [])].sort((a, b) => sortKey(b) - sortKey(a));
-    const picks = all.slice(0, PER_PHASE).reverse();
-    return [
-      { kind: "phase", name: phaseName(n), year, meta: `Complete · ${year.replace("-", "–")} · ${all.length} events`, dot: phaseDot(n), now: false },
-      ...picks.map(
-        (e: PastEvent): Poster => ({
-          kind: "poster",
-          key: `${year}-${e.title}`,
-          name: nameOf(e),
-          date: dateOf(e),
-          image: e.poster || e.image1,
-          to: eventHref(e, year),
-          state: { event: e, year },
-        })
-      ),
-    ];
-  }),
-  {
-    kind: "phase",
-    name: phaseName(PAST.length + 1),
-    year: CURRENT_YEAR,
-    meta: `Now Showing · ${CURRENT_YEAR.replace("-", "–")} · Just getting started`,
-    dot: phaseDot(PAST.length + 1),
-    now: true,
-  },
-  ...CURRENT_EVENTS.map((e): Poster => ({ kind: "poster", key: e.key, name: e.name, date: e.date, image: e.image, to: "/events" })),
-  { kind: "end" },
-];
 const TOTAL = (ITEMS.length - 1) * GAP;
 
 // posters alternate sides of the path, with a little jitter
@@ -73,9 +24,6 @@ const PLACES = ITEMS.map((it, i) => {
 const G = GAP / TOTAL; // scroll distance between two items
 const atOf = (i: number) => (i * GAP) / TOTAL; // scroll position where the camera reaches item i
 const isTitle = (it: Item) => it.kind !== "poster";
-
-// the phase titles, for the jump buttons
-const STOPS = ITEMS.flatMap((it, i) => (it.kind === "phase" ? [{ i, name: it.name, year: it.year, now: it.now }] : []));
 
 // When each item fades in, holds, and fades out. Titles take turns in the middle of the screen: each shows
 // only around its own moment and is gone before the next arrives. Posters show from far off, but never while
@@ -126,7 +74,7 @@ function Thing({ item, i, p }: { item: Item; i: number; p: MotionValue<number> }
     body = (
       <Link to={item.to} state={item.state} className="group block w-[min(42vw,20rem)]">
         <div className="aspect-[3/4] overflow-hidden rounded-2xl bg-white/5 shadow-[0_40px_90px_-30px_rgba(0,0,0,0.9)] ring-1 ring-white/15 transition group-hover:ring-2 group-hover:ring-white">
-          <img src={item.image} alt="" loading="lazy" decoding="async" draggable={false} className="h-full w-full object-cover" />
+          <img src={item.thumb} alt="" loading="lazy" decoding="async" draggable={false} className="h-full w-full object-cover" />
         </div>
         <p className="mt-3 text-[11px] font-medium tracking-[0.2em] text-white/55 uppercase">{item.date}</p>
         <p className="mt-1 text-lg leading-tight font-bold text-white">{item.name}</p>
@@ -182,10 +130,9 @@ function Thing({ item, i, p }: { item: Item; i: number; p: MotionValue<number> }
   );
 }
 
-// Chapter 03: the archive as a journey forward in time. The camera travels through space while event posters
-// drift past on either side, each year announced as a phase, ending on the phase now showing and "To Be Continued".
-export default function ArchiveTunnel() {
-  const reduce = !!useReducedMotion();
+// The fly-through: the camera travels through space while event posters drift past on either side, each year
+// announced as a phase, ending on the phase now showing and "To Be Continued".
+function Tunnel() {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress: p } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const camera = useTransform(p, [0, 1], [0, TOTAL]);
@@ -204,22 +151,6 @@ export default function ArchiveTunnel() {
     const top = el.getBoundingClientRect().top + window.scrollY;
     scrollToTarget(top + (el.offsetHeight - window.innerHeight) * atOf(i));
   };
-
-  if (reduce) {
-    return (
-      <section ref={ref} aria-label="Past events" className="mx-auto max-w-[1500px] px-5 py-28 sm:px-10 lg:px-16">
-        <p className="text-[clamp(2.5rem,6vw,5rem)] leading-[0.92] font-black tracking-[-0.04em] text-white">Moments That Built Us</p>
-        <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
-          {ITEMS.filter((it): it is Poster => it.kind === "poster").map((it) => (
-            <Link key={it.key} to={it.to} state={it.state} className="block">
-              <img src={it.image} alt="" loading="lazy" className="aspect-[3/4] w-full rounded-2xl object-cover" />
-              <p className="mt-2 font-bold text-white">{it.name}</p>
-            </Link>
-          ))}
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section ref={ref} aria-label="Past events" className="relative" style={{ height: `${ITEMS.length * 60}vh` }}>
@@ -249,7 +180,7 @@ export default function ArchiveTunnel() {
                   {on && <motion.span layoutId="phase-pill" className="absolute inset-0 rounded-full bg-white" transition={{ type: "spring", stiffness: 420, damping: 34 }} />}
                   <span className="relative flex items-center gap-1.5">
                     {st.now && <span className="h-1.5 w-1.5 rounded-full bg-google-red" />}
-                    <span className="sm:hidden">{["I", "II", "III", "IV", "V"][k]}</span>
+                    <span className="sm:hidden">{ROMAN[k]}</span>
                     <span className="hidden sm:inline">Phase {st.name}</span>
                     <span className={`hidden md:inline ${on ? "text-black/50" : "text-white/35"}`}>{st.year.slice(2).replace("-", "–")}</span>
                   </span>
@@ -264,4 +195,29 @@ export default function ArchiveTunnel() {
       </div>
     </section>
   );
+}
+
+// The plain version for the static tier (reduced motion, data saver): every poster in a grid, no motion.
+function PosterGrid() {
+  return (
+    <section aria-label="Past events" className="mx-auto max-w-[1500px] px-5 py-28 sm:px-10 lg:px-16">
+      <p className="text-[clamp(2.5rem,6vw,5rem)] leading-[0.92] font-black tracking-[-0.04em] text-white">Moments That Built Us</p>
+      <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
+        {POSTERS.map((it) => (
+          <Link key={it.key} to={it.to} state={it.state} className="block">
+            <img src={it.thumb} alt="" loading="lazy" decoding="async" className="aspect-[3/4] w-full rounded-2xl object-cover" />
+            <p className="mt-2 font-bold text-white">{it.name}</p>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// Chapter 02: the archive as a journey forward in time. Every device gets the fly-through above (pinned for
+// many screens of scrolling); only the static tier gets the plain grid.
+// The tier is read once, on arrival: if it steps down mid-visit the scene is not swapped out from under the reader.
+export default function ArchiveTunnel() {
+  const [quality] = useState(getQuality);
+  return quality === "static" ? <PosterGrid /> : <Tunnel />;
 }

@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { Renderer, Program, Mesh, Triangle, Texture } from "ogl";
 import type { GalleryItem } from "./types";
+import { getQuality } from "../fx/quality";
 
 // An endless, draggable wall of photos seen through a lens: flat in the middle, stretching and swelling toward the
 // edges, like the inside of a dome. Every photo is packed into one atlas texture and the grid is drawn by a shader.
 // (The same idea as React Bits' paid "Inverted Dome", written here so it needs no licence.)
+// Below the full quality tier it is drawn at a lower resolution and its idle drift runs at half the frame rate;
+// dragging is always drawn every frame. With motion off it does not drift at all.
 
 const TILE = 210; // tile size in CSS px at the centre of the lens
 const GAP = 14;
@@ -94,7 +97,12 @@ export default function InvertedDome({ items, onOpen }: Props) {
     const shown = items.slice(0, SIDE * SIDE);
     let disposed = false;
     let dirty = true;
-    const renderer = new Renderer({ alpha: true, antialias: false, dpr: Math.min(window.devicePixelRatio || 1, 1.75) });
+    // photos that have landed in the atlas but are not on the GPU yet: sending the whole atlas is costly, so it
+    // goes up a few times a second while photos stream in, not once per photo
+    let atlasDirty = false;
+    let atlasSent = 0;
+    let drifted = 0;
+    const renderer = new Renderer({ alpha: true, antialias: false, dpr: Math.min(window.devicePixelRatio || 1, getQuality() === "full" ? 1.75 : 1.25) });
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
     gl.canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab";
@@ -145,8 +153,7 @@ export default function InvertedDome({ items, onOpen }: Props) {
         ctx.clip();
         ctx.drawImage(img, cx + (CELL - w) / 2, cy + (CELL - h) / 2, w, h);
         ctx.restore();
-        texture.needsUpdate = true;
-        dirty = true;
+        atlasDirty = true;
         setReady(true);
       };
       img.src = item.t;
@@ -174,7 +181,7 @@ export default function InvertedDome({ items, onOpen }: Props) {
     let moved = 0;
     let last = { x: 0, y: 0 };
     let hover: [number, number] | null = null;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduce = getQuality() === "static";
 
     // screen point (CSS px, y down) to grid cell, using the same lens maths as the shader
     const cellAt = (sx: number, sy: number): [number, number] | null => {
@@ -262,11 +269,19 @@ export default function InvertedDome({ items, onOpen }: Props) {
           dirty = true;
         } else if (!reduce && !hover) {
           pos.x += 14 * dt; // a slow drift so it never sits still
-          dirty = true;
+          // the drift alone is drawn at about 30fps below the full tier
+          if (getQuality() === "full" || now - drifted > 30) dirty = true;
         }
+      }
+      if (atlasDirty && now - atlasSent > 250) {
+        atlasDirty = false;
+        atlasSent = now;
+        texture.needsUpdate = true;
+        dirty = true;
       }
       if (!dirty) return;
       dirty = false;
+      drifted = now;
       program.uniforms.uOffset.value = [pos.x * renderer.dpr, pos.y * renderer.dpr];
       program.uniforms.uHover.value = hover ? 1 : 0;
       program.uniforms.uHoverCell.value = hover ?? [1e6, 1e6];

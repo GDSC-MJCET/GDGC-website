@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ClickSpark from "./ClickSpark";
 import { scrollToTop, setLenis } from "./smooth";
+import { watchQuality } from "./quality";
 
 gsap.registerPlugin(ScrollTrigger);
 ScrollTrigger.clearScrollMemory("manual");
@@ -13,6 +14,7 @@ ScrollTrigger.clearScrollMemory("manual");
 //  - Lenis smooth scrolling on the content pages, driven by GSAP's ticker so ScrollTrigger stays in step
 //  - back to the top on every page change
 //  - a little spark burst where you click
+//  - the frame watch that steps the quality tier down on a device that cannot keep up (see ./quality)
 // The full-screen gallery, the Adsophos experience, the admin screens and the practice editor keep native scrolling.
 
 const SMOOTH = ["/", "/events", "/team-page", "/contact", "/projects", "/blogs", "/techfaceoff", "/buildweek-form", "/score"];
@@ -28,6 +30,8 @@ export default function SiteEffects() {
     ScrollTrigger.clearScrollMemory("manual");
     scrollToTop();
   }, [pathname]);
+
+  useEffect(() => watchQuality(), []);
 
   useEffect(() => {
     if (!smooth || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
