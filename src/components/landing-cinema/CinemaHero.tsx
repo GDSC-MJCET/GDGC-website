@@ -27,7 +27,6 @@ export default function CinemaHero({ ready }: { ready: boolean }) {
   const textBlur = useTransform(p, [0, 0.28], ["blur(0px)", "blur(12px)"]);
   const capOpacity = useTransform(p, [0.42, 0.55, 0.78, 0.92], [0, 1, 1, 0]);
   const capScale = useTransform(p, [0.42, 0.92], [0.92, 1.08]);
-  const cueOpacity = useTransform(p, [0, 0.08], [1, 0]);
 
   const enter = (delay: number, y = 30) => ({
     initial: reduce ? false : { opacity: 0, y },
@@ -114,14 +113,6 @@ export default function CinemaHero({ ready }: { ready: boolean }) {
             </motion.div>
           </div>
         </motion.div>
-
-        <motion.span
-          aria-hidden
-          className="absolute bottom-4 left-1/2 hidden -translate-x-1/2 text-[10px] font-medium tracking-[0.3em] text-white/45 uppercase md:block"
-          style={{ opacity: cueOpacity }}
-        >
-          Scroll ↓
-        </motion.span>
       </div>
     </section>
   );

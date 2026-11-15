@@ -3,14 +3,12 @@ import { Link } from "react-router-dom";
 import { motion, useMotionValueEvent, useScroll, useTransform, type MotionValue } from "motion/react";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Chapter from "./Chapter";
-import TicketStack from "./TicketStack";
 import { ITEMS, POSTERS, ROMAN, STOPS, type Item } from "./archiveItems";
 import { seeded } from "./rand";
 import { Dot, Outline } from "../../fx/designSystem";
 import { JOIN_URL } from "../theme";
 import { scrollToTarget } from "../../fx/smooth";
 import { getQuality } from "../../fx/quality";
-import { useMedia } from "../../landing/useMedia";
 
 const GAP = 900; // px of depth between items
 const TOTAL = (ITEMS.length - 1) * GAP;
@@ -76,7 +74,7 @@ function Thing({ item, i, p }: { item: Item; i: number; p: MotionValue<number> }
     body = (
       <Link to={item.to} state={item.state} className="group block w-[min(42vw,20rem)]">
         <div className="aspect-[3/4] overflow-hidden rounded-2xl bg-white/5 shadow-[0_40px_90px_-30px_rgba(0,0,0,0.9)] ring-1 ring-white/15 transition group-hover:ring-2 group-hover:ring-white">
-          <img src={item.image} alt="" loading="lazy" decoding="async" draggable={false} className="h-full w-full object-cover" />
+          <img src={item.thumb} alt="" loading="lazy" decoding="async" draggable={false} className="h-full w-full object-cover" />
         </div>
         <p className="mt-3 text-[11px] font-medium tracking-[0.2em] text-white/55 uppercase">{item.date}</p>
         <p className="mt-1 text-lg leading-tight font-bold text-white">{item.name}</p>
@@ -199,7 +197,7 @@ function Tunnel() {
   );
 }
 
-// The plain version for wide screens that are not on the full tier: every poster in a grid, no motion.
+// The plain version for the static tier (reduced motion, data saver): every poster in a grid, no motion.
 function PosterGrid() {
   return (
     <section aria-label="Past events" className="mx-auto max-w-[1500px] px-5 py-28 sm:px-10 lg:px-16">
@@ -216,14 +214,10 @@ function PosterGrid() {
   );
 }
 
-// Chapter 02: the archive as a journey forward in time, told three ways.
-//   phones               a stack of event tickets to swipe through (native scrolling, one screen tall)
-//   wide, full tier      the fly-through above (pinned for many screens of scrolling)
-//   wide, other tiers    a plain grid of the posters
+// Chapter 02: the archive as a journey forward in time. Every device gets the fly-through above (pinned for
+// many screens of scrolling); only the static tier gets the plain grid.
 // The tier is read once, on arrival: if it steps down mid-visit the scene is not swapped out from under the reader.
 export default function ArchiveTunnel() {
-  const wide = useMedia("(min-width: 768px)");
   const [quality] = useState(getQuality);
-  if (!wide) return <TicketStack />;
-  return quality === "full" ? <Tunnel /> : <PosterGrid />;
+  return quality === "static" ? <PosterGrid /> : <Tunnel />;
 }
