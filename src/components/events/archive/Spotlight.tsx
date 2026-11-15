@@ -6,6 +6,7 @@ import { eventsByYear, type PastEvent } from "../PastEvents";
 import { CURRENT_EVENTS, CURRENT_YEAR } from "../currentPhase";
 import { dateOf, eventHref, metaOf, nameOf, sortKey } from "../eventMeta";
 import { PHASE_YEARS, openWithPoster, phaseDot, phaseName, posterName } from "../openEvent";
+import { thumbOf } from "../posterThumb";
 import { scrollToTarget } from "../../fx/smooth";
 import { useMedia } from "../../landing/useMedia";
 import { Dot, Outline } from "../../fx/designSystem";
@@ -167,7 +168,7 @@ function Chapter({ phase }: { phase: (typeof PHASES)[number] }) {
               >
                 {!wide && (
                   <button type="button" onClick={() => open(it)} disabled={!it.href} className="mb-6 block w-full">
-                    <img src={it.poster} alt="" loading="lazy" decoding="async" className="aspect-[4/5] w-full rounded-2xl object-cover ring-1 ring-white/15" style={{ viewTransitionName: it.transitionName }} />
+                    <img src={thumbOf(it.poster)} alt="" loading="lazy" decoding="async" className="aspect-[4/5] w-full rounded-2xl object-cover ring-1 ring-white/15" style={{ viewTransitionName: it.transitionName }} />
                   </button>
                 )}
                 <p className={`text-sm font-semibold tabular-nums transition-colors duration-500 ${on ? "text-white/60" : "text-white/20"}`}>{String(i + 1).padStart(2, "0")}</p>
