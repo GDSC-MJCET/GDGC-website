@@ -4,6 +4,7 @@ import { GB_MEMBERS, type GoverningMember } from "./governingBody";
 import { scrollToTarget } from "../fx/smooth";
 import { Dot } from "../fx/designSystem";
 import { EASE, GOOGLE_HEX } from "../fx/tokens";
+import { useQuality } from "../fx/quality";
 
 // Top-down: the Chief Coordinators first. `spot` is the colour of the light on that role's part of the stage.
 const ROLES = [
@@ -26,7 +27,7 @@ const SIZE: Record<number, string> = {
   3: "h-[min(48svh,30rem)] max-w-[31vw] max-md:max-w-[44vw]",
 };
 
-function Person({ m, i, count, active, mx, my }: { m: GoverningMember; i: number; count: number; active: boolean; mx: MotionValue<number>; my: MotionValue<number> }) {
+function Person({ m, i, count, active, show, mx, my }: { m: GoverningMember; i: number; count: number; active: boolean; show: boolean; mx: MotionValue<number>; my: MotionValue<number> }) {
   const reduce = !!useReducedMotion();
   const depth = 0.7 + (i % 2) * 0.5;
   const x = useTransform(mx, (v) => v * 26 * depth);
@@ -38,7 +39,7 @@ function Person({ m, i, count, active, mx, my }: { m: GoverningMember; i: number
     <motion.div className={`flex min-w-0 flex-col items-center ${count > 1 ? "max-md:-mx-[5vw]" : ""}`} style={{ x, y, zIndex: i % 2 ? 2 : 1 }}>
       <div className="relative">
         <img
-          src={m.image}
+          src={show ? m.image : undefined}
           alt={`${m.name}, ${m.role}`}
           draggable={false}
           decoding="async"
@@ -51,7 +52,7 @@ function Person({ m, i, count, active, mx, my }: { m: GoverningMember; i: number
         />
         {/* a faint reflection in the floor */}
         <div aria-hidden className="pointer-events-none absolute top-full left-0 h-full w-full opacity-[0.16] [mask-image:linear-gradient(to_bottom,black,transparent_32%)]">
-          <img src={m.image} alt="" draggable={false} className="h-full w-full -scale-y-100 object-contain object-bottom" />
+          <img src={show ? m.image : undefined} alt="" draggable={false} decoding="async" className="h-full w-full -scale-y-100 object-contain object-bottom" />
         </div>
       </div>
 
@@ -78,7 +79,12 @@ function Person({ m, i, count, active, mx, my }: { m: GoverningMember; i: number
 
 function Scene({ r, k, idx, mx, my }: { r: (typeof ROLES)[number]; k: number; idx: number; mx: MotionValue<number>; my: MotionValue<number> }) {
   const reduce = !!useReducedMotion();
+  const full = useQuality() === "full";
   const active = k === idx;
+  // portraits load when their scene is the one showing or the next in either direction, and then stay
+  const near = Math.abs(k - idx) <= 1;
+  const [show, setShow] = useState(near);
+  if (near && !show) setShow(true);
   const count = r.members.length;
   const bgX = useTransform(mx, (v) => v * -22);
   return (
@@ -87,7 +93,7 @@ function Scene({ r, k, idx, mx, my }: { r: (typeof ROLES)[number]; k: number; id
       aria-hidden={!active}
       style={{ pointerEvents: active ? "auto" : "none" }}
       initial={false}
-      animate={active ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: k < idx ? -28 : 28, filter: reduce ? "blur(0px)" : "blur(12px)" }}
+      animate={active ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: k < idx ? -28 : 28, filter: full && !reduce ? "blur(12px)" : "blur(0px)" }}
       transition={{ duration: reduce ? 0 : 0.75, delay: active && !reduce ? 0.18 : 0, ease: EASE }}
     >
       {/* the light on this part of the stage: a cone from above and a glow on the floor */}
@@ -122,7 +128,7 @@ function Scene({ r, k, idx, mx, my }: { r: (typeof ROLES)[number]; k: number; id
 
         <div className="mt-auto flex items-start justify-center gap-[2.4vw] pb-[7svh] max-md:gap-0 max-md:pb-[10svh]">
           {r.members.map((m, i) => (
-            <Person key={m.name} m={m} i={i} count={count} active={active} mx={mx} my={my} />
+            <Person key={m.name} m={m} i={i} count={count} active={active} show={show} mx={mx} my={my} />
           ))}
         </div>
       </div>
@@ -135,6 +141,7 @@ function Scene({ r, k, idx, mx, my }: { r: (typeof ROLES)[number]; k: number; id
 // faint floor reflection, and they shift slightly as you move your cursor, like walking around them.
 export default function GoverningStage() {
   const reduce = !!useReducedMotion();
+  const full = useQuality() === "full";
   const ref = useRef<HTMLElement>(null);
   const stage = useRef<HTMLDivElement>(null);
   const { scrollYProgress: p } = useScroll({ target: ref, offset: ["start start", "end end"] });
@@ -179,7 +186,8 @@ export default function GoverningStage() {
 
         {/* the light that follows your cursor, and a little film grain over everything */}
         <div aria-hidden className="pointer-events-none absolute inset-0 z-20 bg-[radial-gradient(520px_circle_at_var(--lx,50%)_var(--ly,40%),rgba(255,255,255,0.07),transparent_60%)]" />
-        <div aria-hidden className="pointer-events-none absolute inset-0 z-20 opacity-[0.07] mix-blend-overlay" style={{ backgroundImage: GRAIN }} />
+        {/* a blended layer over the whole stage is repainted with everything under it, so only the full tier has it */}
+        {full && <div aria-hidden className="pointer-events-none absolute inset-0 z-20 opacity-[0.07] mix-blend-overlay" style={{ backgroundImage: GRAIN }} />}
 
         <nav aria-label="Roles" className="absolute z-30 flex gap-3 max-md:bottom-3 max-md:left-1/2 max-md:-translate-x-1/2 md:top-1/2 md:right-6 md:-translate-y-1/2 md:flex-col lg:right-10">
           {ROLES.map((r, k) => (

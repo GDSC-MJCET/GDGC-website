@@ -4,6 +4,7 @@ import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { eventsByYear, YEARS } from "../PastEvents";
 import { CURRENT_EVENTS, CURRENT_YEAR } from "../currentPhase";
 import { PHASE_YEARS, phaseName } from "../openEvent";
+import { thumbOf } from "../posterThumb";
 import { scrollToTarget } from "../../fx/smooth";
 import { Dot, Outline } from "../../fx/designSystem";
 import { EASE } from "../../fx/tokens";
@@ -12,7 +13,8 @@ import { EASE } from "../../fx/tokens";
 type Upcoming = { title: string; when: string; href: string };
 const UPCOMING = null as Upcoming | null;
 
-const POSTERS = [...CURRENT_EVENTS.map((e) => e.image), ...YEARS.flatMap((y) => (eventsByYear[y] ?? []).map((e) => e.poster || e.image1))];
+// the wall shows small tiles, so it uses the phone-sized copies of the posters (the originals run to 8 MB each)
+const POSTERS = [...CURRENT_EVENTS.map((e) => e.image), ...YEARS.flatMap((y) => (eventsByYear[y] ?? []).map((e) => e.poster || e.image1))].map(thumbOf);
 const TOTAL = POSTERS.length;
 const COLS = 6;
 // each column gets every sixth poster (offset), so neighbours differ; columns drift at different speeds

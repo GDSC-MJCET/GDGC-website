@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
+/* editor chat logs, not source: a Windows path in one reads as a CSS escape and breaks the build */
+@source not "../.specstory";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
@@ -430,6 +432,63 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-stopped { overflow: hidden; }
+
+/* The archive's ticket row on phones (TicketStack.tsx). The row scrolls natively; these animations are tied
+   to its scroll position by the browser, so they run without any script. Where that is not supported the
+   row is simply a row. */
+@keyframes ticket-pass {
+  0% {
+    opacity: 0.4;
+    transform: translateY(22px) rotate(5deg) scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0.4;
+    transform: translateY(22px) rotate(-5deg) scale(0.9);
+  }
+}
+
+@keyframes ticket-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.ticket-track {
+  display: none;
+}
+
+@supports (animation-timeline: view()) {
+  /* how far along the row you are */
+  .ticket-scope {
+    timeline-scope: --tickets;
+  }
+  .ticket-row {
+    scroll-timeline: --tickets inline;
+  }
+  .ticket-track {
+    display: block;
+  }
+  .ticket-progress {
+    animation: ticket-progress linear both;
+    animation-timeline: --tickets;
+  }
+
+  /* each card tilts in from one side, sits flat in the middle, and tilts away on the other */
+  @media (prefers-reduced-motion: no-preference) {
+    html:not([data-quality="static"]) .ticket-row > * {
+      animation: ticket-pass linear both;
+      animation-timeline: view(inline);
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
 
 @keyframes honey-in {
   from {

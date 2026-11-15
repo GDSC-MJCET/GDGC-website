@@ -7,6 +7,7 @@ import Footer from "../Footer";
 import { eventsByYear, type PastEvent } from "./PastEvents";
 import { dateOf, eventHref, findEventBySlug, metaOf, nameOf, sortKey } from "./eventMeta";
 import { openWithPoster, phaseDot, phaseName, posterName } from "./openEvent";
+import { photoOf, thumbOf } from "./posterThumb";
 import { Dot, Outline } from "../fx/designSystem";
 import { EASE } from "../fx/tokens";
 
@@ -101,9 +102,10 @@ function Episode({ e, year, dir }: { e: PastEvent | null; year: string; dir: "pr
       className={`group relative flex h-56 overflow-hidden rounded-2xl ring-1 ring-white/10 sm:h-64 ${dir === "next" ? "justify-end text-right" : ""}`}
     >
       <img
-        src={e.poster || e.image1}
+        src={thumbOf(e.poster || e.image1)}
         alt=""
         loading="lazy"
+        decoding="async"
         className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
         style={{ viewTransitionName: posterName(e, year) }}
       />
@@ -168,7 +170,9 @@ const EventDetails = () => {
   const next = idx >= 0 && idx < list.length - 1 ? list[idx + 1] : null;
   const meta = metaOf(event);
   const name = nameOf(event);
-  const poster = event.poster || event.image1;
+  // web-sized copies (npm run posters): the originals are camera files of several MB each
+  const poster = photoOf(event.poster || event.image1);
+  const glow = thumbOf(event.poster || event.image1);
   let n = 1;
   const num = () => String(n++).padStart(2, "0");
 
@@ -180,7 +184,7 @@ const EventDetails = () => {
         <section aria-label={name} className="relative isolate overflow-hidden">
           <img
             aria-hidden
-            src={poster}
+            src={glow}
             alt=""
             className="pointer-events-none absolute top-[-30%] left-1/2 -z-10 w-[110%] max-w-none -translate-x-1/2 opacity-[0.22] blur-[140px] saturate-150"
           />
@@ -274,7 +278,7 @@ const EventDetails = () => {
               <p className="mt-6 max-w-[44rem] text-lg leading-relaxed text-white/75 sm:text-xl">{event.neque}</p>
             </motion.div>
           )}
-          {event.image1 && <OpeningShot src={event.image1} alt={`${name}, photo 1`} />}
+          {event.image1 && <OpeningShot src={photoOf(event.image1)} alt={`${name}, photo 1`} />}
         </section>
 
         {/* the impact */}
@@ -285,7 +289,7 @@ const EventDetails = () => {
               <p className="mt-6 text-lg leading-relaxed text-white/75 sm:text-xl">{event.neque1}</p>
             </motion.div>
           )}
-          {event.image2 && event.image3 && <Pair a={event.image2} b={event.image3} alt={name} />}
+          {event.image2 && event.image3 && <Pair a={photoOf(event.image2)} b={photoOf(event.image3)} alt={name} />}
         </section>
 
         {/* highlights */}

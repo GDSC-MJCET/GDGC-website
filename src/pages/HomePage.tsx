@@ -9,10 +9,12 @@ import ArchiveTunnel from "../components/landing-cinema/story/ArchiveTunnel";
 import Gather from "../components/landing-cinema/story/Gather";
 import { shouldPlayIntro } from "../components/landing-cinema/mark";
 import { REPLAY_EVENT } from "../components/intro/introEvents";
+import { getQuality } from "../components/fx/quality";
 
 // Landing page v2: opening titles, the hero, then the club's story told in scroll-driven chapters. (v1 lives at /v1.)
 const HomePage = () => {
-  const [intro, setIntro] = useState(shouldPlayIntro);
+  // no opening titles on the static tier (reduced motion, or the browser asked to save data)
+  const [intro, setIntro] = useState(() => getQuality() !== "static" && shouldPlayIntro());
 
   // the nav's "replay intro" button
   useEffect(() => {

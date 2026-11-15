@@ -9,6 +9,8 @@
     "lint": "eslint .",
     "typecheck": "tsc -b",
     "gallery": "node scripts/build-gallery.mjs",
+    "posters": "node scripts/build-posters.mjs",
+    "hero": "node scripts/bake-hero.mjs",
     "smoke": "node scripts/smoke.mjs",
     "verify": "tsc -b && eslint \"src/**/*.{ts,tsx}\" --no-error-on-unmatched-pattern && vite build && node scripts/smoke.mjs",
     "preview": "vite preview"
