@@ -13,12 +13,124 @@ export type PastEvent = {
   image1: string;
   image2: string;
   image3: string;
+  /** an optional fourth photo, shown on its own below the pair */
+  image4?: string;
   highlights?: string[];
-  /** the event's own page on this site, shown as a "Visit … page" button on its card */
+  /** a button on the event's page: a page on this site, or an https link that opens in a new tab */
   page?: { to: string; label: string };
 };
 
 export const eventsByYear: Record<string, PastEvent[]> = {
+"2026-27":[
+  // GDGC 101: the opening event of the current phase
+  {
+    title: "GDGC 101",
+    date: "11th",
+    month: "September, 2026",
+    desc: "GDGC 101 was our orientation session for students and new members: the journey so far, the projects behind it, what 2026–27 holds, and how to be part of it.",
+    overview: "GDGC 101, held offline on 11 September 2026, was an information and orientation session for students and new GDGC members. It went beyond introducing GDGC as a student community, showing what being part of it involves, what the chapter has accomplished so far, and what students can look forward to in the 2026–27 tenure.",
+    neque: "Ibrahim and Linra opened the session, and Linra, Afra and Rehmath then walked through GDGC MJCET’s journey so far. Moid and Hamza showcased projects built by team members, and Afzal and Liyaqat introduced the GDGC Bulletin: Doodle, which documents the chapter’s activities, achievements, projects and experiences. Afzal and Moid then presented the vision for 2026–27. Ibrahim ran an interactive segment to get the audience involved, and Ayaan spoke about the engineering journey, encouraging students to look beyond academics by exploring different interests, gaining practical experience and making meaningful use of their college years.",
+    neque1: "107 students and members attended. Through the project showcases, the bulletin presentation, the interactive segment and the plans for 2026–27, the session gave the audience a clearer picture of what it means to be part of GDGC MJCET. It closed with why students should join and the reveal of Executive Committee recruitment for the new tenure, marking the start of a new phase for the community and inviting students to take an active role in its future.",
+    nequeimg: "/gdg_101.jpeg",
+    bg: "#4285f4",
+    poster: "/gdg_101.jpeg",
+    image1: "/gdgc-101-1.jpg",
+    image2: "/gdgc-101-2.jpg",
+    image3: "/gdgc-101-3.jpg",
+    image4: "/gdgc-101-4.jpg",
+    highlights: [
+      "107 participants, in person",
+      "Opening and introduction: Ibrahim and Linra",
+      "The GDGC journey so far: Linra, Afra and Rehmath",
+      "Project showcase: Moid and Hamza",
+      "GDGC Bulletin, Doodle: Afzal and Liyaqat",
+      "GDGC 2026–27, the future: Afzal and Moid",
+      "Interactive segment: Ibrahim",
+      "Your engineering journey: Ayaan",
+      "Why should you join?",
+      "Executive Committee recruitment reveal for the new tenure",
+    ],
+  },
+  // GDGC TAKEOFF: the month-long online coding workshop (no event photos yet)
+  {
+    title: "GDGC TAKEOFF",
+    date: "",
+    month: "Oct – Nov, 2026",
+    desc: "A month-long online coding workshop for GDGC members: Python fundamentals through to intermediate concepts across 12 live sessions, ending in a small project.",
+    overview: "GDGC Takeoff was a coding workshop, basics to intermediate, run online by GDG on Campus MJCET for its members from mid-October to early November 2026. Its aim was a structured, hands-on introduction to programming, from fundamentals to intermediate concepts, ending in a small project built by each participant.",
+    neque: "The workshop ran as 12 sessions of 90 minutes, plus a concluding Session 13, in four stages. Week 1, Launchpad, covered setup and a first program, variables and data types, and operators and conditions. Week 2, Ascent, moved on to loops, strings and lists, then tuples, dictionaries and sets. Week 3, Cruise, covered functions, useful patterns and comprehensions, and errors, files and modules. Week 4, Orbit, introduced object-oriented programming, followed by a project lab, a showcase and a review. Every session combined a short recap, a concept walkthrough, guided live coding and a practice task, and each week closed with a guided coding challenge.",
+    neque1: "For members who could not join live, recordings of every completed session were uploaded to YouTube, and reminders went out to members and the execom. Certificates are awarded to members who complete the whole workshop and submit the assigned task. GDGC Takeoff delivered a complete beginner-to-intermediate coding curriculum with recordings for later learning, and future editions will focus on improving live attendance through flexible timing and earlier engagement.",
+    nequeimg: "/gdgc-takeoff.jpg",
+    bg: "#ea4335",
+    poster: "/gdgc-takeoff.jpg",
+    image1: "",
+    image2: "",
+    image3: "",
+    page: { to: "https://www.youtube.com/playlist?list=PLP7g7Paulmzw", label: "Watch the session recordings" },
+    highlights: [
+      "12 sessions of 90 minutes, plus a concluding Session 13",
+      "Four stages: Launchpad, Ascent, Cruise and Orbit",
+      "Online, open to GDGC members",
+      "Each session: recap, concept walkthrough, guided live coding and a practice task",
+      "A guided coding challenge closed every week",
+      "Week 4 ended with a project lab, a showcase and a review",
+      "Recordings of all completed sessions on YouTube",
+      "Certificates for members who finish the workshop and submit the task",
+    ],
+  },
+  // GCC INFO SESSION (the poster file is public/gcc-info-session.jpg; no event photos yet)
+  {
+    title: "GCC INFO SESSION",
+    date: "18th",
+    month: "October, 2026",
+    desc: "An online info session on Google Cloud Learn with Communities: a month of free, hands-on Google Cloud labs, skill badges and rewards.",
+    overview: "The GCC Info Session was held online on 18 October 2026, from 2:00 to 3:00 PM, by GDG on Campus MJCET. It introduced students interested in cloud computing, AI and data to the Google Cloud Learn with Communities (GCC) program, a one-month initiative offering free, hands-on learning in Google Cloud Platform (GCP).",
+    neque: "Samiuddin led the session. He started with the fundamentals of cloud computing, including how websites are deployed and accessed over the internet and why cloud platforms matter in industry, then compared deployment platforms such as Vercel and Railway with cloud providers like AWS, Azure and GCP in terms of infrastructure management and ease of deployment. He gave an overview of Google Cloud and the many tools in its ecosystem, and spoke about the growing role of cloud computing in applications, gaming and AI. The program’s learning areas were outlined: computing infrastructure, cloud storage and databases, application development and AI technologies, learned hands-on at your own pace, with verifiable skill badges to show on LinkedIn and resumes.",
+    neque1: "The rest of the session was practical. Samiuddin walked participants step by step through creating a Google Skills account, registering for the program, setting the skills profile to public and accessing the free credits, explaining that participants receive 9 credits on signing in and showing how credits work with a YouTube video. Afzal explained that completing the first lab earns 200 credits, and Samiuddin gave an overview of the remaining labs and how to approach them. The badge rewards were explained too: five skill badges earn an official branded water bottle, and ten earn a Developer Kit and a T-shirt. The session gave students a clear way to begin their cloud learning journey. The chapter thanks Dr. Maniza Hijab, Faculty Co-ordinator of GDGC, for her guidance and support, Samiuddin for his contributions, and all participants for their enthusiasm.",
+    nequeimg: "/gcc-info-session.jpg",
+    bg: "#34a853",
+    poster: "/gcc-info-session.jpg",
+    image1: "",
+    image2: "",
+    image3: "",
+    highlights: [
+      "75 participants, online",
+      "Speaker: Samiuddin",
+      "Cloud fundamentals: how websites are deployed and accessed",
+      "Vercel and Railway compared with AWS, Azure and GCP",
+      "A tour of Google Cloud and its tools",
+      "Learning areas: infrastructure, storage and databases, app development, AI",
+      "Skill badges for LinkedIn and resumes, with rewards at 5 and 10 badges",
+      "Live walkthrough: Google Skills account, registration, public profile and free credits",
+      "9 credits on sign-in and 200 credits for the first lab",
+      "An overview of the labs ahead",
+    ],
+  },
+  // EXPLORING GEMINI 4: keynote + the Beyond Argon activities (no event photos yet)
+  {
+    title: "EXPLORING GEMINI 4",
+    date: "16th",
+    month: "November, 2026",
+    desc: "A full day on Gemini 4 with Google Developer Expert Jay Thakkar: a keynote on its new model, Argon, followed by an afternoon of activities.",
+    overview: "Exploring Gemini 4: Beyond the usual was held on Monday 16 November 2026 at the Seminar Hall, MJCET, from 10 AM to 4 PM, in collaboration with AI Community Hyderabad. Jay Thakkar, a Google Developer Expert and AI/ML engineer, was the speaker. The day combined an expert-led session on Gemini with a team challenge, giving students a practical introduction to what Gemini 4 can do for development, productivity and problem-solving.",
+    neque: "The day opened with a keynote session from 10:00 AM to 1:30 PM, a deep dive into Gemini’s new model, Argon. Jay Thakkar introduced its capabilities and benefits, showed how Gemini can assist with development, productivity and problem-solving, and gave attendees practical, hands-on exposure through demonstrations and guided activities. The session was open to students from all years and branches, from beginners to experienced developers.",
+    neque1: "The afternoon, from 2:00 PM to 4:00 PM, was given to Beyond Argon, a set of post-event activities that let attendees put what they had learned into practice together before the closing remarks.",
+    nequeimg: "/exploring-gemini-4.jpg",
+    bg: "#4285f4",
+    poster: "/exploring-gemini-4.jpg",
+    image1: "",
+    image2: "",
+    image3: "",
+    highlights: [
+      "Keynote by Jay Thakkar, Google Developer Expert and AI/ML engineer",
+      "A deep dive into Gemini’s new model, Argon",
+      "In collaboration with AI Community Hyderabad",
+      "Hands-on demonstrations of Gemini for development, productivity and problem-solving",
+      "Beyond Argon: post-event activities in the afternoon",
+      "Open to students from all years and branches",
+    ],
+  },
+],
 "2025-26":[
   // ADSOPHOS (date and copy are placeholders to fill in)
   {

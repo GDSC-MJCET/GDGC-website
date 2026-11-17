@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useRef, useState, type ChangeEvent, type FocusEvent, type FormEvent } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowUpRight, Check } from "lucide-react";
 import {
@@ -15,6 +15,7 @@ import axios from "axios";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import { axiosResponse } from "../lib/http";
+import { LIMITS, fieldProblem, validateContact, type ContactErrors, type ContactFields } from "../lib/contactValidation";
 import { Dot, Outline } from "../components/fx/designSystem";
 import { EASE } from "../components/fx/tokens";
 
@@ -40,39 +41,82 @@ const SOCIALS = [
 
 const WRAP = "mx-auto w-full max-w-[1400px] px-5 sm:px-10 lg:px-16";
 // underline fields: no boxes, just a line that lights up
-const field =
-  "w-full border-0 border-b border-white/25 bg-transparent px-0 py-3 text-lg text-white placeholder-white/30 transition-colors focus:border-white focus:outline-none";
+const field = (bad: boolean) =>
+  `w-full border-0 border-b bg-transparent px-0 py-3 text-lg text-white placeholder-white/30 transition-colors focus:outline-none ${
+    bad ? "border-google-red focus:border-google-red" : "border-white/25 focus:border-white"
+  }`;
+const MAIL = "gdscmjcet@gmail.com";
 const label = "block text-[11px] font-medium tracking-[0.25em] text-white/55 uppercase";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
+function FieldError({ id, text }: { id: string; text?: string }) {
+  return text ? (
+    <p id={id} role="alert" className="mt-2 text-sm text-google-red">
+      {text}
+    </p>
+  ) : null;
+}
+
 const ContactUsPage = () => {
   const reduce = !!useReducedMotion();
-  const server = import.meta.env.VITE_SERVER;
-  const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
+  const server = import.meta.env.VITE_SERVER as string | undefined;
+  const [formData, setFormData] = useState<ContactFields>({ name: "", email: "", subject: "", message: "" });
   const [status, setStatus] = useState<Status>("idle");
-  const [error, setError] = useState("");
+  // what went wrong when sending; `mail` adds an "email us instead" link for problems the visitor cannot fix
+  const [failure, setFailure] = useState<{ text: string; mail: boolean }>({ text: "", mail: false });
+  const [errors, setErrors] = useState<ContactErrors>({});
+  const form = useRef<HTMLFormElement>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const key = e.target.name as keyof ContactFields;
+    setFormData({ ...formData, [key]: e.target.value });
     if (status === "sent" || status === "error") setStatus("idle");
+    // a field that was flagged is re-checked as you fix it, so the message goes away the moment it is right
+    if (errors[key]) setErrors((prev) => ({ ...prev, [key]: fieldProblem(key, e.target.value) ?? undefined }));
+  };
+
+  const handleBlur = (e: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const key = e.target.name as keyof ContactFields;
+    if (!e.target.value.trim()) return; // an empty field is only flagged when you try to send
+    setErrors((prev) => ({ ...prev, [key]: fieldProblem(key, e.target.value) ?? undefined }));
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (status === "sending") return;
+    const found = validateContact(formData);
+    if (Object.keys(found).length) {
+      setErrors(found);
+      setStatus("idle");
+      const first = (["name", "email", "subject", "message"] as const).find((k) => found[k]);
+      if (first) form.current?.querySelector<HTMLElement>(`[name="${first}"]`)?.focus();
+      return;
+    }
+    setErrors({});
+    if (!server) {
+      // without the server address the request would go to this site's own "/undefined/..." and fail
+      setFailure({ text: "Messages can't be sent from here right now.", mail: true });
+      setStatus("error");
+      return;
+    }
     setStatus("sending");
+    const clean = { name: formData.name.trim(), email: formData.email.trim(), subject: formData.subject.trim(), message: formData.message.trim() };
     try {
-      const res = await axios.post(`${server}/api/v1/contact`, formData);
-      if (res.data.success) {
+      const res = await axios.post(`${server.replace(/\/+$/, "")}/api/v1/contact`, clean, { timeout: 15000 });
+      if (res.data?.success) {
         setFormData({ name: "", email: "", subject: "", message: "" });
         setStatus("sent");
       } else {
-        setError("Something went wrong. Please try again.");
+        setFailure({ text: "That didn't go through.", mail: true });
         setStatus("error");
       }
     } catch (err) {
       console.error(err);
-      setError(axiosResponse(err)?.data?.msg || "Server error. Please try again in a moment.");
+      const r = axiosResponse(err);
+      // a message from the server (like "invalid email") is shown as it is; anything else means we could not reach it
+      const fromServer = r && r.status >= 400 && r.status < 500 && r.status !== 404 && typeof r.data?.msg === "string" ? r.data.msg : "";
+      setFailure(fromServer ? { text: fromServer, mail: false } : { text: "We couldn't reach the server.", mail: true });
       setStatus("error");
     }
   };
@@ -171,24 +215,28 @@ const ContactUsPage = () => {
           {/* the form */}
           <motion.div {...rise(0.2)}>
             <h2 className="text-[11px] font-medium tracking-[0.3em] text-white/55 uppercase">Send a message</h2>
-            <form onSubmit={handleSubmit} className="mt-5 space-y-8 border-t border-white/15 pt-8">
+            <form ref={form} onSubmit={handleSubmit} noValidate className="mt-5 space-y-8 border-t border-white/15 pt-8">
               <div className="grid gap-8 sm:grid-cols-2">
                 <div>
                   <label htmlFor="c-name" className={label}>Name</label>
-                  <input id="c-name" type="text" name="name" value={formData.name} onChange={handleChange} required className={field} placeholder="Your name" autoComplete="name" />
+                  <input id="c-name" type="text" name="name" value={formData.name} onChange={handleChange} onBlur={handleBlur} required maxLength={LIMITS.name[1] + 20} aria-invalid={!!errors.name} aria-describedby={errors.name ? "c-name-err" : undefined} className={field(!!errors.name)} placeholder="Your name" autoComplete="name" />
+                  <FieldError id="c-name-err" text={errors.name} />
                 </div>
                 <div>
                   <label htmlFor="c-email" className={label}>Email</label>
-                  <input id="c-email" type="email" name="email" value={formData.email} onChange={handleChange} required className={field} placeholder="you@email.com" autoComplete="email" />
+                  <input id="c-email" type="email" inputMode="email" name="email" value={formData.email} onChange={handleChange} onBlur={handleBlur} required autoCapitalize="none" spellCheck={false} aria-invalid={!!errors.email} aria-describedby={errors.email ? "c-email-err" : undefined} className={field(!!errors.email)} placeholder="you@email.com" autoComplete="email" />
+                  <FieldError id="c-email-err" text={errors.email} />
                 </div>
               </div>
               <div>
                 <label htmlFor="c-subject" className={label}>Subject</label>
-                <input id="c-subject" type="text" name="subject" value={formData.subject} onChange={handleChange} required className={field} placeholder="What is this about?" />
+                <input id="c-subject" type="text" name="subject" value={formData.subject} onChange={handleChange} onBlur={handleBlur} required maxLength={LIMITS.subject[1] + 20} aria-invalid={!!errors.subject} aria-describedby={errors.subject ? "c-subject-err" : undefined} className={field(!!errors.subject)} placeholder="What is this about?" />
+                <FieldError id="c-subject-err" text={errors.subject} />
               </div>
               <div>
                 <label htmlFor="c-message" className={label}>Message</label>
-                <textarea id="c-message" name="message" value={formData.message} onChange={handleChange} required rows={5} className={`${field} resize-none`} placeholder="Tell us more…" />
+                <textarea id="c-message" name="message" value={formData.message} onChange={handleChange} onBlur={handleBlur} required rows={5} maxLength={LIMITS.message[1] + 200} aria-invalid={!!errors.message} aria-describedby={errors.message ? "c-message-err" : undefined} className={`${field(!!errors.message)} resize-none`} placeholder="Tell us more…" />
+                <FieldError id="c-message-err" text={errors.message} />
               </div>
 
               <div className="flex flex-wrap items-center gap-5">
@@ -208,7 +256,17 @@ const ContactUsPage = () => {
                   )}
                   {status === "error" && (
                     <motion.p key="error" role="status" aria-live="polite" {...note} className="text-sm text-google-red">
-                      {error}
+                      {failure.text}
+                      {failure.mail && (
+                        <>
+                          {" "}
+                          Please email us at{" "}
+                          <a href={`mailto:${MAIL}`} className="underline underline-offset-4 hover:text-white">
+                            {MAIL}
+                          </a>{" "}
+                          instead.
+                        </>
+                      )}
                     </motion.p>
                   )}
                 </AnimatePresence>

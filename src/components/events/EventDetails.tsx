@@ -87,6 +87,29 @@ function Pair({ a, b, alt }: { a: string; b: string; alt: string }) {
   );
 }
 
+// the event's button under its description: a page on this site, or (an http link) somewhere else in a new tab
+function PageButton({ to, label }: { to: string; label: string }) {
+  const cls =
+    "group mt-8 inline-flex items-center gap-3 rounded-full bg-white py-2 pr-2 pl-6 text-sm font-semibold text-black transition-shadow hover:shadow-[0_0_44px_rgba(66,133,244,0.6)]";
+  const inner = (
+    <>
+      {label}
+      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black text-white transition-transform duration-300 group-hover:rotate-45">
+        <ArrowUpRight size={16} />
+      </span>
+    </>
+  );
+  return /^https?:\/\//.test(to) ? (
+    <a href={to} target="_blank" rel="noopener noreferrer" className={cls}>
+      {inner}
+    </a>
+  ) : (
+    <Link to={to} className={cls}>
+      {inner}
+    </Link>
+  );
+}
+
 function Episode({ e, year, dir }: { e: PastEvent | null; year: string; dir: "prev" | "next" }) {
   const navigate = useNavigate();
   if (!e) return <span className="hidden md:block" />;
@@ -224,15 +247,7 @@ const EventDetails = () => {
               </motion.p>
               {event.page && (
                 <motion.div {...rise(0.44)}>
-                  <Link
-                    to={event.page.to}
-                    className="group mt-8 inline-flex items-center gap-3 rounded-full bg-white py-2 pr-2 pl-6 text-sm font-semibold text-black transition-shadow hover:shadow-[0_0_44px_rgba(66,133,244,0.6)]"
-                  >
-                    {event.page.label}
-                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black text-white transition-transform duration-300 group-hover:rotate-45">
-                      <ArrowUpRight size={16} />
-                    </span>
-                  </Link>
+                  <PageButton to={event.page.to} label={event.page.label} />
                 </motion.div>
               )}
             </div>
@@ -290,6 +305,11 @@ const EventDetails = () => {
             </motion.div>
           )}
           {event.image2 && event.image3 && <Pair a={photoOf(event.image2)} b={photoOf(event.image3)} alt={name} />}
+          {event.image4 && (
+            <motion.div {...reveal()} className="mt-14 flex justify-center md:mt-24">
+              <img src={photoOf(event.image4)} alt={`${name}, photo 4`} loading="lazy" decoding="async" className="aspect-[3/4] w-full max-w-[420px] rounded-2xl object-cover" />
+            </motion.div>
+          )}
         </section>
 
         {/* highlights */}

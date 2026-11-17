@@ -32,3 +32,14 @@ gallery-source/
 portfolio-source/
 concepts/
 zips/
+
+# private live-event screens (not part of the website): src/live, its package builder and output
+src/live/
+scripts/build-live-package.mjs
+vite.live.config.js
+dist-live/
+# the team sheet has phone numbers, roll numbers and birthdays: never commit it
+GDGC Team of 26-27*.csv
+
+# raw photo/export zips dropped in the project root (hundreds of MB): never commit
+/*.zip
