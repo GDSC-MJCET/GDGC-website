@@ -190,29 +190,23 @@ const ProjectsPage = () => {
           <motion.div {...reveal()} className="relative overflow-hidden rounded-[2rem] border border-dashed border-white/25 p-10 text-center md:p-16">
             <Kicker>Project 02</Kicker>
             <p className="mx-auto mt-5 max-w-[44rem] text-[clamp(2.5rem,6vw,5.5rem)] leading-[0.92] font-black tracking-[-0.045em]">
-              Could be <Outline>yours</Outline>
+              Built by <Outline>us</Outline>
               <Dot color="bg-google-yellow" />
             </p>
             <p className="mx-auto mt-5 max-w-[30rem] text-base leading-relaxed text-white/60">
-              Got a problem worth solving? Bring it to us and build it with the community.
+              Our projects are built by our own execom, in the open. The next one will be made the same way. Follow along on GitHub.
             </p>
             <div className="mt-9 flex flex-wrap justify-center gap-3">
-              <Link
-                to="/contact"
-                className="group inline-flex items-center gap-3 rounded-full bg-white py-2 pr-2 pl-6 text-sm font-semibold text-black transition-shadow hover:shadow-[0_0_44px_rgba(66,133,244,0.6)]"
-              >
-                Pitch a project
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black text-white transition-transform duration-300 group-hover:rotate-45">
-                  <ArrowUpRight size={16} />
-                </span>
-              </Link>
               <a
                 href="https://github.com/GDSC-MJCET"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-[15px] text-sm font-medium transition-colors hover:border-white"
+                className="group inline-flex items-center gap-3 rounded-full bg-white py-2 pr-2 pl-6 text-sm font-semibold text-black transition-shadow hover:shadow-[0_0_44px_rgba(66,133,244,0.6)]"
               >
-                Our GitHub <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-1" />
+                Our GitHub
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black text-white transition-transform duration-300 group-hover:rotate-45">
+                  <ArrowUpRight size={16} />
+                </span>
               </a>
             </div>
           </motion.div>

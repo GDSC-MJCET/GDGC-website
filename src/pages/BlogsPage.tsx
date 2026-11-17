@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import Nav from "../components/Nav";
@@ -142,18 +141,20 @@ const BlogsPage = () => {
 
           <motion.div {...reveal()} className="mt-20 flex flex-col items-center gap-6 text-center">
             <p className="text-[clamp(2rem,4.5vw,4rem)] leading-[0.95] font-black tracking-[-0.04em]">
-              Got something to <Outline>write</Outline>?<Dot color="bg-google-green" />
+              Written by <Outline>us</Outline>.<Dot color="bg-google-green" />
             </p>
-            <p className="max-w-[28rem] text-base text-white/60">Members write here. Tell us what you&apos;ve been tinkering with and we&apos;ll help you publish it.</p>
-            <Link
-              to="/contact"
+            <p className="max-w-[28rem] text-base text-white/60">Every post here is written by our own execom, about what we&apos;ve built and learned. Follow us on Medium to catch the next one.</p>
+            <a
+              href={MEDIUM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="group inline-flex items-center gap-3 rounded-full bg-white py-2 pr-2 pl-6 text-sm font-semibold text-black transition-shadow hover:shadow-[0_0_44px_rgba(66,133,244,0.6)]"
             >
-              Pitch a post
+              Follow us on Medium
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black text-white transition-transform duration-300 group-hover:rotate-45">
                 <ArrowUpRight size={16} />
               </span>
-            </Link>
+            </a>
           </motion.div>
         </section>
       </main>
