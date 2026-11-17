@@ -500,3 +500,26 @@ html.lenis, html.lenis body { height: auto; }
 .honey-in {
   animation: honey-in 1.1s ease-out both;
 }
+
+/* team page: the Executive Committee credits light up as they cross the middle of the screen, and dim as they
+   leave. Without scroll-driven animations (or with reduced motion) every line simply stays fully visible. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .credit-line {
+      animation: credit-focus linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
+
+@keyframes credit-focus {
+  0%,
+  100% {
+    opacity: 0.14;
+  }
+  42%,
+  58% {
+    opacity: 1;
+  }
+}
