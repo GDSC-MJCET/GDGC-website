@@ -39,6 +39,26 @@ export const span = (year: string) => year.replace("-", "–");
 // Oldest year first, so scrolling travels forward in time; within a year its latest few events, in date order.
 const PAST = [...YEARS].reverse();
 let count = 0;
+
+/** one event of a year as a poster on the archive chapter; numbered in the order they are built */
+const posterOf = (e: PastEvent, year: string, phase: number): Poster => {
+  const image = e.poster || e.image1;
+  return {
+    kind: "poster",
+    key: `${year}-${e.title}`,
+    name: nameOf(e),
+    date: dateOf(e),
+    image,
+    thumb: thumbOf(image),
+    type: metaOf(e).category,
+    to: eventHref(e, year),
+    state: { event: e, year },
+    phase,
+    no: ++count,
+  };
+};
+/** the events of the year now showing that have a recap page, latest few, in date order */
+const CURRENT_PICKS = [...(eventsByYear[CURRENT_YEAR] ?? [])].sort((a, b) => sortKey(b) - sortKey(a)).slice(0, PER_PHASE).reverse();
 export const ITEMS: Item[] = [
   { kind: "intro" },
   ...PAST.flatMap((year, idx): Item[] => {
@@ -47,22 +67,7 @@ export const ITEMS: Item[] = [
     const picks = all.slice(0, PER_PHASE).reverse();
     return [
       { kind: "phase", name: phaseName(n), year, meta: `Complete · ${span(year)} · ${all.length} events`, dot: phaseDot(n), now: false, phase: idx },
-      ...picks.map((e: PastEvent): Poster => {
-        const image = e.poster || e.image1;
-        return {
-          kind: "poster",
-          key: `${year}-${e.title}`,
-          name: nameOf(e),
-          date: dateOf(e),
-          image,
-          thumb: thumbOf(image),
-          type: metaOf(e).category,
-          to: eventHref(e, year),
-          state: { event: e, year },
-          phase: idx,
-          no: ++count,
-        };
-      }),
+      ...picks.map((e) => posterOf(e, year, idx)),
     ];
   }),
   {
@@ -74,6 +79,7 @@ export const ITEMS: Item[] = [
     now: true,
     phase: PAST.length,
   },
+  ...CURRENT_PICKS.map((e) => posterOf(e, CURRENT_YEAR, PAST.length)),
   ...CURRENT_EVENTS.map(
     (e): Poster => ({ kind: "poster", key: e.key, name: e.name, date: e.date, image: e.image, thumb: thumbOf(e.image), type: e.category, to: "/events", phase: PAST.length, no: ++count })
   ),

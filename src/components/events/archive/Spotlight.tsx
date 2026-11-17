@@ -35,7 +35,8 @@ const CAT_DOT: Record<string, string> = {
 // newest phase first; within a phase, newest event first (undated ones on top, they are the latest)
 const PHASES = [...PHASE_YEARS].reverse().map((year) => {
   const now = year === CURRENT_YEAR;
-  const items: Item[] = now
+  // events without a recap yet, then the ones with a page, newest first
+  const pending: Item[] = now
     ? CURRENT_EVENTS.map((e) => ({
         key: e.key,
         name: e.name,
@@ -43,25 +44,29 @@ const PHASES = [...PHASE_YEARS].reverse().map((year) => {
         poster: e.image,
         category: e.category,
         tags: [],
-        desc: "The year opened with GDGC 101, our welcome for new members. The full recap is on its way.",
+        desc: "The recap is on its way.",
       }))
-    : [...(eventsByYear[year] ?? [])]
-        .sort((a: PastEvent, b: PastEvent) => (Number.isFinite(sortKey(b)) ? sortKey(b) : Infinity) - (Number.isFinite(sortKey(a)) ? sortKey(a) : Infinity))
-        .map((e) => {
-          const m = metaOf(e);
-          return {
-            key: `${year}-${e.title}`,
-            name: nameOf(e),
-            date: dateOf(e),
-            poster: e.poster || e.image1,
-            category: m.category,
-            tags: m.tags,
-            desc: e.desc,
-            href: eventHref(e, year),
-            state: { event: e, year },
-            transitionName: posterName(e, year),
-          };
-        });
+    : [];
+  const items: Item[] = [
+    ...pending,
+    ...[...(eventsByYear[year] ?? [])]
+      .sort((a: PastEvent, b: PastEvent) => (Number.isFinite(sortKey(b)) ? sortKey(b) : Infinity) - (Number.isFinite(sortKey(a)) ? sortKey(a) : Infinity))
+      .map((e) => {
+        const m = metaOf(e);
+        return {
+          key: `${year}-${e.title}`,
+          name: nameOf(e),
+          date: dateOf(e),
+          poster: e.poster || e.image1,
+          category: m.category,
+          tags: m.tags,
+          desc: e.desc,
+          href: eventHref(e, year),
+          state: { event: e, year },
+          transitionName: posterName(e, year),
+        };
+      }),
+  ];
   return { year, now, name: phaseName(year), dot: phaseDot(year), items };
 });
 
