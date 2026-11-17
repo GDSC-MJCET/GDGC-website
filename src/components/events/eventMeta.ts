@@ -9,6 +9,10 @@ export const CATEGORIES: Category[] = ["Workshop", "Talk", "Competition", "Commu
 type Meta = { category: Category; tags: string[]; name?: string };
 
 const META: Record<string, Meta> = {
+  "GCC INFO SESSION": { category: "Talk", tags: ["Talk", "Google Cloud"], name: "GCC Info Session" },
+  "EXPLORING GEMINI 4": { category: "Workshop", tags: ["Workshop", "Gemini 4"], name: "Exploring Gemini 4" },
+  "GDGC TAKEOFF": { category: "Workshop", tags: ["Workshop", "Python"], name: "GDGC Takeoff" },
+  "GDGC 101": { category: "Community", tags: ["Community", "Orientation"], name: "GDGC 101" },
   ADSOPHOS: { category: "Competition", tags: ["Competition", "Creative"], name: "Adsophos" },
   "ANTIGRAVITY 2.0": { category: "Workshop", tags: ["Workshop", "Agentic AI"], name: "Antigravity 2.0" },
   "EPISODE 4: BUILD WEEK": { category: "Workshop", tags: ["Multi-domain programme"], name: "Episode 4 — Build Week" },

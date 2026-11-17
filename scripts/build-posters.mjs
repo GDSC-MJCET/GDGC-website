@@ -5,7 +5,7 @@
 //            entry in currentPhase.ts
 //   public<path>  ->  public/posters/<slug>.webp   (640px wide, webp)
 //
-// 2. Photos, page-sized: image1, image2 and image3 of each event in PastEvents.tsx
+// 2. Photos, page-sized: image1 to image4 of each event in PastEvents.tsx
 //   public<path>  ->  public/event-photos/<slug>.webp   (1600px wide, webp)
 //
 // It also writes src/components/events/posterThumbs.ts, which maps each original path to its copy, for
@@ -52,7 +52,7 @@ async function collectSources() {
 // The photos on each event's own page.
 async function collectPhotos() {
   const past = await fs.readFile(PAST, "utf8");
-  const found = [...past.matchAll(/\bimage[123]:\s*"([^"]*)"/g)].map((m) => m[1]);
+  const found = [...past.matchAll(/\bimage[1-4]:\s*"([^"]*)"/g)].map((m) => m[1]);
   return [...new Set(found.filter((p) => p.startsWith("/")))];
 }
 
